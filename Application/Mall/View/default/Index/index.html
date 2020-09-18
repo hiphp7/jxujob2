@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<include file="Home@default/public/meta" />
+	<link href="__HOMEPUBLIC__/css/common.css" rel="stylesheet" type="text/css" />
+	<link href="../public/css/mall.css" rel="stylesheet" type="text/css" />
+	<link href="__HOMEPUBLIC__/css/common_ajax_dialog.css" rel="stylesheet" type="text/css" />
+<script src="__HOMEPUBLIC__/js/jquery.common.js" type="text/javascript" language="javascript"></script>
+</head>
+<body>
+<include file="header" />
+<div class="mall_index">
+  <div class="l">
+  <!-- -->
+	<div class="banner"><img src="../public/banner/01.jpg" border="0"/></div>
+	
+    <div class="dynamic">
+	  	<div class="dyl">兑换情况</div>
+	  	<qscms:goods_exchange_list 列表名="ex_list" 显示数目="1" />
+	  	<volist name="ex_list['list']" id="vo">
+		<div class="dyc link_yellow">
+			{$vo['username']}&nbsp;&nbsp;&nbsp;<strong>兑换了</strong><a target="_blank" href="{$vo['goods_url']}">{$vo['goods_title']}</a>
+		</div>
+		<div class="dyr">{$vo['addtime_cn']}</div>
+		<div class="clear"></div>
+		</volist>
+	</div>
+	<!-- -->
+	<div class="gbox">
+	  <div class="title"><div class="txt">推荐商品</div></div>
+	  
+	  <div class="goods link_gray6">
+	  	<qscms:goods_list 列表名="recommend_list" 推荐="1" 显示数目="6" />
+	  	<volist name="recommend_list['list']" id="vo">
+  		<div class="list">
+		  	<div class="pic"><a href="{$vo['goods_url']}"><img src="{$vo['goods_img']}" border="0"/></a></div>
+		    <div class="txt"><a href="{$vo['goods_url']}">{$vo['goods_title']}</a></div>
+			<div class="price">{$vo['goods_points']}{:C('qscms_points_byname')}</div>
+  		</div>
+  		</volist>
+		<div class="clear"></div>
+	  </div>
+	</div>
+	<div class="gbox">
+	  <div class="title"><div class="txt">最新商品</div>
+	    <div class="more link_gray6"><a href="{:url_rewrite('QS_goods_list')}">更多</a></div>
+	  </div>
+	  <div class="goods link_gray6">
+	  	<qscms:goods_list 列表名="new_list" 排序="addtime:desc" 显示数目="6" />
+	  	<volist name="new_list['list']" id="vo">
+  		<div class="list">
+		  	<div class="pic">
+		  	  <div class="news"></div>
+	  	    <a href="{$vo['goods_url']}"><img src="{$vo['goods_img']}" border="0"/></a></div>
+		    <div class="txt"><a href="{$vo['goods_url']}">{$vo['goods_title']}</a></div>
+			<div class="price">{$vo['goods_points']}{:C('qscms_points_byname')}</div>
+  		</div>
+  		</volist>
+		<div class="clear"></div>
+	  </div>
+	</div>
+  </div>
+   <div class="r">
+   <!--签到 -->
+     <div class="sign">
+	   <div class="topbtn">
+	   	<if condition="$issign">
+	   	<div class="btn" id="J_sign_in">您今天已签到了</div>
+	    <else />
+		<div class="btn" id="J_sign_in">马上签到送{:C('qscms_points_byname')}</div>
+	    </if>
+	   </div>
+	   <div class="txt">
+   		 <div class="t">如何获取{:C('qscms_points_byname')}</div>
+		 <ul class="link_gray6">
+		 	<qscms:help_list 列表名="help_list" 显示数目="5" 标题长度="12" 小类="34"/>
+		 	<volist name="help_list['list']" id="vo">
+		 	<li><a href="{$vo['url']}" target="_blank">{$vo['title']}</a></li>
+		 	</volist>
+		 </ul>
+	   </div>
+     </div>
+	 <qscms:ad 列表名="ad" 广告位名称="QS_mallrecommend" 广告数量="1"/>
+	<volist name="ad['list']" id="ad_info">
+		<div class="ad340_190">{$ad_info.html}</div>
+	</volist>
+	 <div class="gbox link_gray6">
+	   <div class="title">
+	     <div class="txt">猜你喜欢</div>
+	   </div>
+	   <qscms:goods_list 列表名="favor_list" 排序="ex_time:desc" 显示数目="6" />
+	   <volist name="favor_list['list']" id="vo">
+	   <div class="list">
+	     <div class="glil">
+	       <div class="pic"><a href="{$vo['goods_url']}"><img src="{$vo['goods_img']}" border="0"/></a>
+		   </div>
+	     </div>
+	     <div class="glir">
+ 		   <div class="txt substring"><a href="{$vo['goods_url']}">{$vo['goods_title']}</a></div>
+		    <div class="txt c substring">{$vo['goods_points']}{:C('qscms_points_byname')}</div>
+			 <div class="txt substring"><a href="{$vo['goods_url']}" class="btn">立即兑换</a></div>
+		 </div>
+		 <div class="clear"></div>
+	   </div>
+	   </volist>
+	 </div>
+   </div>
+   <div class="clear"></div>
+</div>
+<include file="Home@default/public/footer_min" />
+<script type="text/javascript" src="__HOMEPUBLIC__/js/jquery.modal.dialog.js"></script>
+<script type="text/javascript" src="__HOMEPUBLIC__/js/jquery.disappear.tooltip.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#J_sign_in').click(function(){
+			var f = $(this);
+	    	$.getJSON("{:U('Home/Members/sign_in')}",function(result){
+	    		if(result.status == 1){
+	    			disapperTooltip("goldremind", '每天签到增加'+result.data+'{:C('qscms_points_byname')}<span class="point">+'+result.data+'</span>');
+	    			f.text('您今天已签到了');
+	    		}
+	    		else if(result.dialog){
+	    			var loginUrl = "{:U('Home/AjaxCommon/get_login_dig')}";
+					$.getJSON(loginUrl, function(result){
+			            if(result.status==1){
+		            		var qsDialog = $(this).dialog({
+                                title: '会员登录',
+								content: result.data.html,
+								footer: false,
+								border: false
+							});
+			    			qsDialog.setInnerPadding(false);
+			            } else {
+							disapperTooltip('remind',result.msg);
+			            }
+			        });
+	    		}
+	    		else{
+	    			disapperTooltip('remind',result.msg);
+	    		}
+	    	});
+	    });
+	});	
+</script>
+</body>
+</html>

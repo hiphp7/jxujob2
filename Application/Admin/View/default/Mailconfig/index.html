@@ -1,0 +1,227 @@
+<include file="public:header" />
+	   <div class="toptip">
+  		<h2>提示：</h2>
+  		<p>您可以通过发送测试邮件来调试配置信息。<br />
+  		通过连接 SMTP 服务器发送邮件需邮箱账户开通SMTP服务。
+  		<br />
+  		您可以添加多个SMTP账户，系统将随机使用SMTP账户。
+      <br />
+      <font color="red">如需使用阿里云邮件推送服务，请先登录阿里云官方网站申请api权限。<a href="https://help.aliyun.com/product/29412.html" target="_blank">立即申请</a></font>。
+      <br />
+      阿里云邮件推送控制台地址：<a href="https://dm.console.aliyun.com" target="_blank">https://dm.console.aliyun.com</a>
+  		</p>
+	  </div>
+    <div class="toptit">设置</div>
+    <form action="{:U('mailconfig/index')}" method="post"   name="form1" id="form1">
+    <table width="100%" border="0" cellspacing="8" cellpadding="0">
+      <tr>
+        <td width="120" align="right">接口类型：</td>
+        <td>
+          <label><input name="api_type" class="api_type" type="radio" value="normal" <if condition="in_array($info['method'],array('1','2','3'))">checked="checked"</if>/>系统API</label>
+          &nbsp;&nbsp;&nbsp;&nbsp; 
+          <label ><input type="radio" class="api_type" name="api_type" value="aliyun" <if condition="$info['method'] eq 4">checked="checked"</if>/>阿里云DirectMail API</label>
+        </td>
+      </tr>
+    </table>
+<div id="normal-block">
+    <table width="100%" border="0" cellspacing="8" cellpadding="0" id="methodsel">
+      <tr>
+        <td width="120" align="right">发送方式：</td>
+        <td>
+    	<label>
+    	<input name="method" type="radio" class="method_first" value="1" <if condition="$info['method'] eq 1">checked="checked"</if>/>
+          通过连接 SMTP 服务器发送邮件
+    	  </label>
+    	  </td>
+        </tr>
+      <tr>
+        <td width="120" align="right">&nbsp;</td>
+        <td>
+    	<label>
+    	<input type="radio" name="method" value="2" <if condition="$info['method'] eq 2">checked="checked"</if>/>
+          通过sendmail 发送邮件
+    	  </label>
+    	</td>
+        </tr>
+      <tr>
+        <td width="120" align="right">&nbsp;</td>
+        <td>
+    	<label>
+    	<input type="radio" name="method" value="3" <if condition="$info['method'] eq 3">checked="checked"</if>/>
+         通过 PHP 函数 SMTP 发送邮件
+    	  </label>
+    	</td>
+        </tr>
+    </table>
+<div style=" display:none;"  id="method_sendmail">
+<volist name="list" id="list">
+  <div class="html_tpl">
+    <table width="700" border="0" cellspacing="8" cellpadding="1" style=" margin-bottom:3px; border-bottom:1px #CCCCCC solid" >
+          <tr>
+            <td width="121" align="right">SMTP服务器地址：</td>
+            <td><input name="smtpservers[]" type="text"  class="input_text_200" id="smtpservers" value="{$list.smtpservers}" maxlength="30"/><span class="admin_note" style="color: rgb(153, 153, 153);">如：smtp.qq.com</span></td>
+            <td><span style="color:#0066CC; cursor:pointer" class="delsmtp">X 删除此账户</span></td>
+          </tr>
+          <tr>
+            <td align="right">SMTP服务帐户名：</td>
+            <td><input name="smtpusername[]" type="text"  class="input_text_200" id="smtpusername" value="{$list.smtpusername}" maxlength="100"/></td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td align="right">SMTP服务密码：</td>
+            <td><input name="smtppassword[]" type="password"  class="input_text_200" id="smtppassword" value="{$list.smtppassword}" maxlength="40"/></td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td align="right">发信人邮件地址：</td>
+            <td><input name="smtpfrom[]" type="text"  class="input_text_200" id="site_title" value="{$list.smtpfrom}" maxlength="60"/>            </td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td align="right">SMTP 端口：</td>
+            <td><input name="smtpport[]" type="text"  class="input_text_200" id="smtpport" value="{$list.smtpport}" maxlength="60"/><span class="admin_note" style="color: rgb(153, 153, 153);">默认：25</span></td>
+            <td>&nbsp;</td>
+          </tr>
+      </table>
+    </div>
+</volist>  
+	 <div id="html"></div>
+    </div>
+	  <table width="700" border="0" cellspacing="8" cellpadding="1"  >
+          <tr>
+            <td width="120" align="right">&nbsp;</td>
+            <td> 
+              <input name="save" type="submit" class="admin_submit"    value="保存修改"/>
+			        <input type="button" name="add_form" id="add_form" value="继续添加" class="admin_submit" />
+            </td>
+          </tr>
+      </table>
+</div>
+<div id="aliyun-block" style="display:none;">
+  <table width="700" border="0" cellspacing="8" cellpadding="1" >
+          <tr>
+            <td width="121" align="right">Access Key：</td>
+            <td><input name="aliyun_accessKey" type="text"  class="input_text_200" id="aliyun_accessKey" value="{$info.aliyun_accessKey}"/>
+            <span class="admin_note" style="color: rgb(153, 153, 153);">阿里云Access Key ID</span>
+            </td>
+          </tr>
+          <tr>
+            <td align="right">Access Secret：</td>
+            <td><input name="aliyun_accessSecret" type="password"  class="input_text_200" id="aliyun_accessSecret" value="{$info.aliyun_accessSecret}"/>
+            <span class="admin_note" style="color: rgb(153, 153, 153);">阿里云Access Key Secret</span></td>
+          </tr>
+          <tr>
+            <td align="right">发信地址：</td>
+            <td><input name="aliyun_account" type="text"  class="input_text_200" id="aliyun_account" value="{$info.aliyun_account}"/>
+            <span class="admin_note" style="color: rgb(153, 153, 153);">管理控制台中配置的发信地址</span></td>
+          </tr>
+          <tr>
+            <td align="right">标签：</td>
+            <td><input name="aliyun_tag" type="text"  class="input_text_200" id="aliyun_tag" value="{$info.aliyun_tag}"/>
+            <span class="admin_note" style="color: rgb(153, 153, 153);">控制台创建的标签</span></td>
+          </tr>
+          <tr>
+            <td width="120" align="right">&nbsp;</td>
+            <td> 
+              <input name="save" type="submit" class="admin_submit"    value="保存修改"/>
+            </td>
+          </tr>
+      </table>
+</div>
+  </form>
+</div>
+<include file="public:footer" />
+<script id="J_email" type="text/html">
+  <div class="html_tpl">
+  <table width="700" border="0" cellspacing="8" cellpadding="1" style=" margin-bottom:3px; border-bottom:1px #CCCCCC solid" >
+        <tr>
+          <td width="121" align="right">SMTP服务器地址：</td>
+          <td><input name="smtpservers[]" type="text"  class="input_text_200" id="smtpservers" value="" maxlength="30"/><span class="admin_note" style="color: rgb(153, 153, 153);">如：smtp.qq.com</span></td>
+          <td><span style="color:#0066CC; cursor:pointer" class="delsmtp">X 删除此账户</span></td>
+        </tr>
+        <tr>
+          <td align="right">SMTP服务帐户名：</td>
+          <td><input name="smtpusername[]" type="text"  class="input_text_200" id="smtpusername" value="" maxlength="100"/></td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="right">SMTP服务密码：</td>
+          <td><input name="smtppassword[]" type="password"  class="input_text_200" id="smtppassword" value="" maxlength="40"/></td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="right">发信人邮件地址：</td>
+          <td><input name="smtpfrom[]" type="text"  class="input_text_200" id="site_title" value="" maxlength="60"/>            </td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="right">SMTP 端口：</td>
+          <td><input name="smtpport[]" type="text"  class="input_text_200" id="smtpport" value="25" maxlength="60"/><span class="admin_note" style="color: rgb(153, 153, 153);">默认：25</span></td>
+          <td>&nbsp;</td>
+        </tr>
+    </table>
+  </div>
+</script>
+<script type="text/javascript">
+$(document).ready(function()
+{
+  setsendmailshow();
+  $("#methodsel :radio").click(function () {setsendmailshow();});
+  function setsendmailshow()
+  {
+    var stlval=$("#methodsel :radio[checked]").val();
+    if (stlval=="1")
+    {
+    $("#method_sendmail,#add_form").show();
+    $("#add_form").show();
+    }
+    else
+    {
+    $("#method_sendmail,#add_form").hide();
+    }
+  }
+  $("#add_form").click(function()
+  {
+    $("#html").append($("#J_email").html());
+  });
+  
+  $(".delsmtp").hover(function(){
+  $(this).parentsUntil('div').css('background-color','#F3F3F3');
+  },function(){
+  $(this).parentsUntil('div').css('background-color','');
+  });
+  
+  $('.delsmtp').live('click', function()
+  {
+    if ($("#method_sendmail div:nth-child(2)").text()=='')
+    {
+    alert('至少留一个SMTP账户！');
+    }
+    else
+    {
+    $(this).closest('div').empty();
+    }
+  });
+  if($('.api_type:checked').val()=='normal'){
+    $('#normal-block').show();
+      $('#aliyun-block').hide();
+  }else{
+    $('#normal-block').hide();
+      $('#aliyun-block').show();
+  }
+  $('.api_type').click(function(){
+    var type = $(this).val();
+    if(type=='normal'){
+      $('#normal-block').show();
+      $('#aliyun-block').hide();
+      $('.method_first').attr('checked',true);
+      $('#method_sendmail').show();
+    }else{
+      $('#normal-block').hide();
+      $('#aliyun-block').show();
+    }
+  });
+});
+</script>
+</body>
+</html>

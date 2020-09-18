@@ -1,0 +1,198 @@
+<include file="public:header" />
+  <div class="toptit">基本信息 <span style="color:#0066CC">({$info.username})</span> </div>
+  <table width="100%" border="0" cellpadding="4" cellspacing="0" bgcolor="#FFFFFF"  >
+    <tr>
+      <td width="120" height="30" align="right" bgcolor="#FFFFFF" style=" border-bottom:1px #CCCCCC dashed">注册时间：</td>
+      <td bgcolor="#FFFFFF" style=" border-bottom:1px #CCCCCC dashed" >{$info.reg_time|date="Y-m-d H:i",###}</td>
+      <td width="120" align="right" bgcolor="#FFFFFF" style=" border-bottom:1px #CCCCCC dashed" >最后登录时间：</td>
+      <td bgcolor="#FFFFFF" style=" border-bottom:1px #CCCCCC dashed" >{$info.last_login_time|date="Y-m-d H:i",###}</td>
+    </tr>
+    <tr>
+      <td height="30" align="right" bgcolor="#FFFFFF" style=" border-bottom:1px #CCCCCC dashed">注册IP：</td>
+      <td bgcolor="#FFFFFF" style=" border-bottom:1px #CCCCCC dashed" >{$info.reg_ip|default="- - - -"}</td>
+      <td align="right" bgcolor="#FFFFFF" style=" border-bottom:1px #CCCCCC dashed" >最后登录IP：</td>
+      <td bgcolor="#FFFFFF" style=" border-bottom:1px #CCCCCC dashed" >{$info.last_login_ip|default="- - - -"}</td>
+    </tr>
+    <tr>
+      <td height="30" align="right" valign="center" bgcolor="#FFFFFF">个人简历：</td>
+      <td colspan="3" bgcolor="#FFFFFF"  class="link_lan">
+        <table border="0" cellspacing="12" cellpadding="0">
+          <volist name="resume" id="list">
+          <tr>
+            <td>
+              <if condition="$list['complete'] eq '2'">
+              {$list['title']}
+              <else />
+              <a href="{:url_rewrite('QS_resumeshow',array('id'=>$list['id']))}" target="_blank"> {$list['title']}</a>
+              </if>
+             </td>
+            <td  style="color:#009900">(完整指数：{$list['complete_percent']}%)</td>
+            <td><a href="{:U('resume_delete',array('id'=>$list['id'],'_k_v'=>$_GET['_k_v']))}"  onClick="return confirm('您确定删除吗?')">[删除]</a></td>
+          </tr>
+        </volist>
+          <if condition="!$resume">
+          <tr>
+            <td colspan="3"><span style="color:#999999">未创建简历</span></td>
+          </tr>
+         </if>
+        </table>    </td>
+      </tr>
+    </table>
+    <div class="toptit">基本信息</div>
+    <form id="form4" name="form4" method="post" action="{:U('member_edit')}">
+      <table width="700" border="0" cellpadding="4" cellspacing="0"   >
+        <tr>
+          <td width="120" height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">用户名：</td>
+          <td  style=" border-bottom:1px #CCCCCC dashed;" >
+            <input name="username" type="text" class="input_text_200"   maxlength="50" value="{$info['username']}"  >
+          </td>
+        </tr>
+        <tr>
+          <td width="120" height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">邮箱：</td>
+          <td  style=" border-bottom:1px #CCCCCC dashed;" >
+            <input name="email" type="text" class="input_text_200"   maxlength="50" value="{$info['email']}"  >
+            
+            &nbsp;&nbsp;&nbsp;
+            <label>
+              <input class="email_audit" type="checkbox" value="1" <if condition="$info['email_audit'] eq '1'">checked="checked"</if> />
+            已验证</label>
+          </td>
+        </tr>
+        <tr>
+          <td width="120" height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">手机：</td>
+          <td  style=" border-bottom:1px #CCCCCC dashed;" >
+            <input name="mobile" type="text" class="input_text_200"   maxlength="50" value="{$info['mobile']}"  >
+            
+            &nbsp;&nbsp;&nbsp;
+            <label>
+              <input class="mobile_audit" type="checkbox" value="1" <if condition="$info['mobile_audit'] eq '1'">checked="checked"</if> />
+            已验证</label>
+          </td>
+        </tr>
+        <tr>
+          <td width="120" height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">QQ绑定：</td>
+          <td  style=" border-bottom:1px #CCCCCC dashed;" >
+            <!-- 
+            待开发
+            <if condition="$info['qq_openid']">
+            已绑定QQ账号
+            &nbsp;&nbsp;&nbsp;
+            <label>
+              <input type="checkbox" name="qq_openid" value="1"  />
+            取消绑定</label>
+            <else />
+            未绑定QQ帐号
+            </if> -->
+          </td>
+        </tr>
+        <tr>
+          <td height="30" align="right"  >&nbsp;</td>
+          <td height="50"  >
+            <input type="hidden" name="uid"  value="{$info['uid']}" />
+            <input name="_k_v" type="hidden" value="{$Think.get._k_v}">
+            <input type="hidden" name="mobile_audit" value="{$info['mobile_audit']}">
+            <input type="hidden" name="email_audit" value="{$info['email_audit']}">
+            <input name="submit32" type="submit" class="admin_submit"    value="确定"/>
+            <input name="submit222" type="button" class="admin_submit"    value="返 回" onclick="Javascript:window.history.go(-1)"/>        </td>
+          </tr>
+        </table>
+      </form>
+      
+      <div class="toptit">用户状态</div>
+      <form id="form9" name="form9" method="post" action="{:U('member_edit')}">
+        <table width="100%" border="0" cellpadding="4" cellspacing="0"   >
+          <tr>
+            <td width="120" height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">帐号状态：</td>
+            <td  style=" border-bottom:1px #CCCCCC dashed;" >
+              <label>
+                <input name="status" type="radio" value="1"  <if condition="$info['status'] eq '1'">checked="checked"</if>/>
+              正常</label>
+              <label>&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="radio" name="status" value="2" <if condition="$info['status'] eq '2'">checked="checked"</if>/>
+              暂停</label>
+            </td>
+          </tr>
+          <tr>
+            <td height="30" align="right"   >&nbsp;</td>
+            <td height="60"   ><span style="font-size:14px;">
+              <input type="hidden" name="uid"  value="{$info['uid']}" />
+              <input name="_k_v" type="hidden" value="{$Think.get._k_v}">
+              <input name="submit3" type="submit" class="admin_submit"    value="确定"/>
+              <input name="submit22" type="button" class="admin_submit"    value="返 回" onclick="Javascript:window.history.go(-1)"/>
+            </span></td>
+          </tr>
+        </table>
+      </form>
+      
+      <div class="toptit">密码修改</div>
+      <form id="form1" name="form1" method="post" action="{:U('member_edit')}">
+        <table width="700" border="0" cellpadding="4" cellspacing="0" bgcolor="#FFFFFF"  >
+          
+          <tr>
+            <td height="30" align="right" bgcolor="#FFFFFF"  >新密码：</td>
+            <td bgcolor="#FFFFFF" >
+              <input name="password" type="text" class="input_text_200" id="password" maxlength="50" value=""  />        </td>
+            </tr>
+            <tr>
+              <td height="30" align="right" bgcolor="#FFFFFF"  >&nbsp;</td>
+              <td  bgcolor="#FFFFFF"  >
+                <input type="hidden" name="uid"  value="{$info['uid']}" />
+                <input name="_k_v" type="hidden" value="{$Think.get._k_v}">
+                <input name="submit3" type="submit" class="admin_submit"    value="确定"/>
+                <input name="submit22" type="button" class="admin_submit"    value="返 回" onclick="Javascript:window.history.go(-1)"/>
+              </td>
+            </tr>
+            
+          </table>
+        </form>
+        <notempty name="apply['Subsite']">
+          <div class="toptit">所属分站</div>
+          <form id="form9" name="form9" method="post" action="{:U('member_edit')}">
+            <table width="100%" border="0" cellpadding="4" cellspacing="0"   >
+              <tr>
+                <td width="120" height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">所属分站：</td>
+                <td  style=" border-bottom:1px #CCCCCC dashed;" >
+                  <qscms:subsite 列表名="subsite_list"/>
+                  <if condition="$visitor['role_id'] eq 1">
+                    <volist name="subsite_list" id="subsite">
+                      <label style="color: rgb(102, 102, 102);">
+                        <input name="subsite_id" type="radio" value="{$subsite.s_id}" <if condition="$info['subsite_id'] eq $subsite['s_id']">checked="checked"</if>>{$subsite.s_sitename}
+                      </label>&nbsp;&nbsp;&nbsp;
+                    </volist>
+                  <else/>
+                    <volist name="subsite_list" id="subsite">
+                      <if condition="in_array($subsite['s_id'],$visitor['subsite'])">
+                        <label style="color: rgb(102, 102, 102);">
+                          <input name="subsite_id" type="radio" value="{$subsite.s_id}" <if condition="$info['subsite_id'] eq $subsite['s_id']">checked="checked"</if>>{$subsite.s_sitename}
+                        </label>&nbsp;&nbsp;&nbsp;
+                      </if>
+                    </volist>
+                  </if>
+                </td>
+              </tr>
+              <tr>
+                <td height="30" align="right"   >&nbsp;</td>
+                <td height="60"   ><span style="font-size:14px;">
+                  <input type="hidden" name="uid"  value="{$info.uid}" />
+                  <input type="hidden" name="_k_v" value="{$Think.get._k_v}">
+                  <input name="submit3" type="submit" class="admin_submit"    value="确定"/>
+                  <input name="submit22" type="button" class="admin_submit"    value="返 回" onclick="Javascript:window.history.go(-1)"/>
+                </span></td>
+              </tr>
+            </table>
+          </form>
+        </notempty>
+      </div>
+    <include file="public:footer" />
+    <script type="text/javascript">
+        $('.email_audit').click(function(){
+          var s = $(this).attr('checked')?1:0;
+          $('input[name="email_audit"]').val(s);
+        });
+        $('.mobile_audit').click(function(){
+          var s = $(this).attr('checked')?1:0;
+          $('input[name="mobile_audit"]').val(s);
+        });
+    </script>
+  </body>
+</html>

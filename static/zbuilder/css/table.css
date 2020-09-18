@@ -1,0 +1,17 @@
+.table-bordered>thead>tr>td, .table-bordered>thead>tr>th { border-bottom-width: 0px; }
+.table { width: 100%; max-width: 100%; margin-bottom: 0; }
+.data-table-toolbar { margin-bottom: 10px; }
+.search-bar { width: 280px; }
+.pull-right { float: right !important; }
+.table-cell { overflow: hidden; text-overflow: ellipsis; word-break: break-all; box-sizing: border-box; min-height: 22px; }
+.item { display: inline-block; width: unset; height: unset; text-align: unset; font-size: unset; font-weight: unset; line-height: unset; }
+.alert .close { right: unset; }
+table .btn { border-bottom: 1px none; }
+.btn-group-vertical>.btn, .btn-group>.btn { float: left; }
+.btn { margin-right: unset; }
+.uploader-list { border: unset; }
+
+/*表格效果重写*/
+.table-striped > tbody > tr:nth-of-type(odd) { background-color: #fff; }
+.table-striped tbody tr:nth-child(even) { background-color: #fff; }
+.table-hover > tbody > tr > td.active:hover, .table-hover > tbody > tr > th.active:hover, .table-hover > tbody > tr.active:hover > td, .table-hover > tbody > tr:hover > .active, .table-hover > tbody > tr.active:hover > th, .table-hover > tbody > tr:hover { background-color: #f5f5f5; }

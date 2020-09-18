@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <qscms:subject 列表名="list" 分页显示="1" 填补字符="…" 摘要长度="160" 显示数目="12"/>
+    <include file="Home@default/public/meta" />
+    <link href="{:C('TPL_HOME_PUBLIC_DIR')}/css/common.css" rel="stylesheet" type="text/css" />
+    <link href="{$url}/css/subject_new.css?v={:strtotime('today')}" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <include file="Home@default/public/header_other" />
+    <div class="top_ba"></div>
+    <div class="in_group">
+        <notempty name="list['list']">
+        <volist name="list['list']" id="vo">
+        <a href="{$vo.url}" class="g_cell c{$key+1}">
+            <div class="face_img"><img src="{$vo.subject_ad_img}" alt=""></div>
+            <div class="g_name substring">{$vo.title}</div>
+            <div class="g_date substring">时间：{:date('Y-m-d',$vo['holddate_start'])}-{:date('Y-m-d',$vo['holddate_end'])}</div>
+            <div class="g_bot">
+                <div class="gb">{$vo.com_count}个企业</div>
+                <div class="gb bl">{$vo.job_count}个职位</div>
+                <div class="clear"></div>
+            </div>
+        </a>
+        </volist>
+        <div class="clear"></div>
+        <else />
+        <div class="g_empty">暂无企业参加本场招聘会</div>
+        </notempty>
+    </div>
+    <notempty name="list['list']"><div class="qspage">{$list['page']}</div></notempty>
+    <include file="Home@default/public/footer_min" />
+</body>
+</html>

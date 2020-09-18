@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<include file="public:meta" />
+	<link href="../public/css/personal/common.css" rel="stylesheet" type="text/css" />
+	<link href="../public/css/personal/personal_resume.css" rel="stylesheet" type="text/css" />
+	<link href="../public/css/personal/personal_ajax_dialog.css" rel="stylesheet" type="text/css" />
+	<script src="../public/js/personal/jquery.common.js" type="text/javascript" language="javascript"></script>
+</head>
+<body>
+	<include file="index_header" />
+	<div class="user_main">
+		<include file="index_left_nav" />
+	  <div class="mainbox">
+			<!--职位切换卡 -->
+			<div class="tab">
+				<a class="li J_hoverbut" href="{:U('personal/resume_list')}">我的简历</a>
+				<a class="li J_hoverbut"  href="{:U('personal/resume_outward')}">简历外发</a>
+				<a class="li select">隐私设置</a>
+			  	<div class="clear"></div>
+			</div>
+		  <!--切换卡结束 -->
+	    
+		<div class="resume_tip">
+		
+		  <div class="tiptit">小提示</div>
+				  <div class="tiptxt link_blue">
+				 <strong>公开：</strong>允许所有企业查看您的简历。如不想被某企业查看，请设置 屏蔽企业。   <br />
+  <strong>保密：</strong>不允许企业主动查看您的简历，只有您应聘的企业才可查看
+
+		  </div>
+		 </div>
+ 	 
+		<!-- -->
+		<div class="resume_privacy">
+				  <div class="title">我的简历</div>
+				  
+				  <volist name="resume_list" id="vo">
+
+				  	<div class="r_list link_blue J_hoverbut">
+						<div class="td1"><a href="{:url_rewrite('QS_resumeshow',array('id'=>$vo['id']))}" class="resume-title <if condition="$vo['display'] eq 0">close</if>">{$vo['title']}</a></div>
+						<div class="td2">
+							<if condition="$vo['audit'] eq '3'">
+							<span class="t0">审核未通过</span>
+							<elseif condition="$vo['audit'] eq '1'"/>
+							<span class="t2">审核通过</span>
+							<else />
+							<span class="t1">审核中</span>
+							</if>
+						</div>
+						<div class="td3">完整度{$vo['complete_percent']}%&nbsp;
+							(<span class="t1">
+								<if condition="$vo['level'] eq '3'">
+								<span class="t2">优</span>
+								<elseif condition="$vo['level'] eq '2'"/>
+								<span class="t1">良</span>
+								<else />
+								<span class="t1">差</span>
+								</if>
+							</span>)
+						</div>
+						<div class="td4">
+							<div class="radio_list">
+							    <div class="sex-radio rli <if condition="$vo['display'] eq 1">checked</if>" data-code="1" pid="{$vo['id']}">公开</div>
+								<div class="sex-radio rli <if condition="$vo['display'] eq 0">checked</if>" data-code="0" pid="{$vo['id']}">保密</div>
+								<div class="clear"></div>
+							</div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					</volist>
+		
+		<div class="title tit3">屏蔽企业</div>
+		
+		<div class="shield">
+		  		<div class="td1">
+				<input name="comkeyword" id="comkeyword" type="text" class="input_sty" placeholder="请输入要屏蔽的企业" />
+				</div>
+				<div class="td1"><input name="submit" type="button" class="but_blue_80 J_hoverbut" value="屏蔽企业" id="add-shield"/>
+				</div>
+				<div class="clear"></div>
+		</div>
+		<div class="shield shield-block">
+		  	<div class="sdtit">已屏蔽的企业</div>
+			<if condition="!$keywords">
+			    <div class="empty">你目前没有屏蔽任何企业</div>
+			    <div class="shield-list"></div>
+			<else />
+				<div class="shield-list">
+					<volist name="keywords" id="vo">
+						<div class="tag J_hoverbut del-comkeyword" data="{$vo.id}">{$vo.comkeyword}</div>
+					</volist>
+				</div>
+			</if>
+			<div class="clear"></div>
+		</div>
+	    </div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<include file="index_footer" />
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("#add-shield").click(function(){
+				var comkeyword = $("#comkeyword").val();
+				if(comkeyword==''){
+					disapperTooltip("remind", "请输入要屏蔽的企业");
+					return false;
+				}
+				$.post("{:U('save_shield_company')}",{comkeyword:comkeyword},function(result){
+					var is_empty = $(".shield-block .empty").length>0?false:true;
+					if(result.status==1){
+						false === is_empty && $(".shield-block .empty").remove();
+						var html = '<div class="tag J_hoverbut del-comkeyword" data="'+result.data['id']+'">'+result.data['comkeyword']+'</div>';
+						$(".shield-list").append(html);
+						$("#comkeyword").val('');
+						$(".J_hoverbut").hover(function(){
+							$(this).addClass("hover");
+						},function(){
+							$(this).removeClass("hover");
+						});
+						disapperTooltip("success", result.msg);
+					}else{
+						disapperTooltip('remind',result.msg);
+					}
+				},'json');
+			});
+			$(".del-comkeyword").live('click',function(){
+				var url = "{:U('del_shield_company')}";
+				var thisObj = $(this);
+				var keyword_id = thisObj.attr('data');
+				var qsDialog=$(this).dialog({
+					title: '删除屏蔽企业',
+					loading: true,
+					border: false,
+					yes: function() {
+						$.post(url,{keyword_id:keyword_id},function(result){
+							var is_empty = $(".del-comkeyword").length>1?false:true;
+							if(result.status==1){
+								var html = '<div class="empty">你目前没有屏蔽任何企业</div>';
+								true === is_empty && $(".shield-block .sdtit").after(html);
+								thisObj.remove();
+							}
+						},'json');
+					}
+				});
+				$.getJSON(url,{keyword_id:keyword_id},function(result){
+	        		if(result.status == 1){
+	        			qsDialog.setContent(result.data.html);
+	        		}else{
+	        			disapperTooltip('remind',result.msg);
+	        		}
+	        	});
+			});
+			$(".sex-radio").click(function(){
+				var thisObj = $(this);
+				$(this).addClass("checked").siblings(".sex-radio").removeClass("checked");
+				var pid = $(this).attr('pid');
+				var display = $(this).attr('data-code');
+				$.post("{:U('save_resume_privacy')}",{pid:pid,display:display},function(result){
+					if(result.status==1){
+						var title_obj = thisObj.parents('.r_list').find('.resume-title');
+						var has_close = title_obj.hasClass('close');
+						if(has_close){
+							title_obj.removeClass('close');
+						}else{
+							title_obj.addClass('close');
+						}
+						disapperTooltip("success", result.msg);
+					}
+				},'json');
+			});
+			
+		});
+	</script>
+</body>
+</html>

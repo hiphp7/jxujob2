@@ -1,0 +1,128 @@
+<include file="Admin@default/public/header"/>
+
+<form action="{:U($action)}" method="post" name="FormData" id="FormData" >
+    <div class="toptit link_blue">
+        {$action_cn}职位
+    </div>
+    <div class="form_main width120">
+        <div class="fl"><span style="color:#FF3300; font-weight:bold">*</span> 招聘岗位:</div>
+        <div class="fr">
+            <input name="jobs_name" type="text" class="input_text_default" maxlength="50" value="{$info['jobs_name']}"/>
+        </div>
+        <div class="fl"><span style="color:#FF3300; font-weight:bold">*</span> 显示状态:</div>
+        <div class="fr">
+            <div class="imgradio">
+                <input name="display" type="hidden" value="{$info['display']}">
+                <div class="radio <if condition="$info['display'] eq 1 || $info['display'] eq ''">select</if>" data="1">显示</div>
+                <div class="radio <eq name='info.display' value='0'>select</eq>" data="0">隐藏</div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="fl"><span style="color:#FF3300; font-weight:bold">*</span> 薪资待遇:</div>
+        <div class="fr txt">
+            <select name="wage" id="wage">
+                <option value="0">请选择薪资待遇</option>
+                <volist name="category_wage" id="vo">
+                    <option value="{$key}" <if condition="$info['wage'] eq $key">selected</if>>{$vo}</option>
+                </volist>
+            </select>
+        </div>
+        <div class="fl">招聘人数:</div>
+        <div class="fr">
+            <input name="amount" type="text" class="input_text_default" maxlength="3" value="{$info['amount']|default='0'}" style="width: 50px;"
+                   onKeyUp="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');"onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/> 人
+            &nbsp;&nbsp;<span style="color: #999999;">0表示若干</span>
+        </div>
+        <div class="fl"><span style="color:#FF3300; font-weight:bold">*</span> 工作地区:</div>
+        <div class="fr">
+            <input name="district_cn" id="district_cn" type="text" class="input_text_default arrow J_resuletitle_city" value="{$info['district_cn']|default='请选择工作地区'}" readonly="readonly" data-toggle="funCityModal" data-title="请选择地区" data-multiple="false" data-maximum="0" data-width="760"/>
+            <input name="district" id="district" type="hidden" class="J_resultcode_city" value="{$info['district']}" keep="{$info['district']}" />
+        </div>
+        <div class="fl"><span style="color:#FF3300; font-weight:bold">*</span> 详细地址:</div>
+        <div class="fr">
+            <input name="address" type="text" class="input_text_default" maxlength="80" value="{$info['address']}"/>
+        </div>
+        <div class="fl"><span style="color:#FF3300; font-weight:bold">*</span> 学历要求:</div>
+        <div class="fr txt">
+            <select name="education" id="education">
+                <option value="0">请选择学历要求</option>
+                <volist name="category_education" id="vo">
+                    <option value="{$key}" <if condition="$info['education'] eq $key">selected</if>>{$vo}</option>
+                </volist>
+            </select>
+        </div>
+        <div class="fl">性别要求:</div>
+        <div class="fr">
+            <div class="imgradio J_job_sex">
+                <input name="sex" type="hidden" value="{$info['sex']|default='0'}">
+                <div class="radio <if condition="$info['sex'] eq 1 || $info['sex'] eq ''">select</if>" data="0" title="不限">不限</div>
+                <div class="radio <eq name='info.sex' value='1'>select</eq>" data="1" title="男">男</div>
+                <div class="radio <eq name='info.sex' value='2'>select</eq>" data="2" title="女">女</div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="fl">年龄要求:</div>
+        <div class="fr">
+            <input name="minage" type="text" class="input_text_default" maxlength="3" value="{$info['minage']}" style="width: 50px;" onKeyUp="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');"onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/> 岁 -
+            <input name="maxage" type="text" class="input_text_default" maxlength="3" value="{$info['maxage']}" style="width: 50px;" onKeyUp="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');"onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/> 岁
+        </div>
+        <div class="fl">职位福利:</div>
+        <div class="fr">
+            <input name="tag_cn" id="J_store_tag" type="text" class="input_text_default arrow J_resuletitle_jobtag" value="{$tagStr.cn|default='请选择职位福利'}" readonly="readonly" data-title="请选择职位福利" data-multiple="true" data-maxnum="6" data-width="582"/>
+            <input class="J_resultcode_jobtag" name="tag" id="tag" type="hidden" value="{$tagStr.id}" />
+        </div>
+        <div class="fl"><span style="color:#FF3300; font-weight:bold">*</span> 吃住福利:</div>
+        <div class="fr">
+            <textarea id="welfare" name="welfare" class="input_text_default" style="line-height:200%; height:150px;">{$info.welfare}</textarea>
+        </div>
+        <div class="fl"><span style="color:#FF3300; font-weight:bold">*</span> 工作简介:</div>
+        <div class="fr">
+            <textarea id="intro" name="intro" class="input_text_default" style="line-height:200%; height:150px;">{$info.intro}</textarea>
+        </div>
+        <div class="fl"><span style="color:#FF3300; font-weight:bold">*</span> 招聘要求:</div>
+        <div class="fr">
+            <textarea id="demand" name="demand" class="input_text_default" style="line-height:200%; height:150px;">{$info.demand}</textarea>
+        </div>
+        <notempty name="apply['Subsite']">
+            <div class="fl">选择分站:</div>
+            <qscms:subsite 列表名="subsite_list"/>
+            <div class="fr txt">
+                <if condition="$visitor['role_id'] eq 1">
+                    <volist name="subsite_list" id="subsite">
+                        <label style="color: rgb(102, 102, 102);">
+                            <input name="subsite_id[]" type="checkbox" value="{$subsite.s_id}" <if condition="$i eq 1">checked="checked"</if>>{$subsite.s_sitename}
+                        </label>&nbsp;&nbsp;&nbsp;
+                    </volist>
+                    <else/>
+                    <volist name="subsite_list" id="subsite">
+                        <if condition="in_array($subsite['s_id'],$visitor['subsite'])">
+                            <label style="color: rgb(102, 102, 102);">
+                                <input name="subsite_id[]" type="checkbox" value="{$subsite.s_id}" <if condition="$i eq 1">checked="checked"</if>>{$subsite.s_sitename}
+                            </label>&nbsp;&nbsp;&nbsp;
+                        </if>
+                    </volist>
+                </if>
+            </div>
+        </notempty>
+        <div class="fl"></div>
+        <div class="fr">
+            <input type="hidden" name="id" value="{$info.id}" />
+            <input type="submit" class="admin_submit" value="{$action_cn}"/>
+            <input type="button" class="admin_submit" value="返回" onClick="history.go(-1)"/>
+        </div>
+        <div class="clear"></div>
+    </div>
+</form>
+
+</div>
+<include file="Admin@default/public/footer"/>
+<qscms:load type="category" search="1"/>
+<script type="text/javascript">
+    var categoryTagArray = {:json_encode($category_tag)};
+</script>
+<script type="text/javascript" src="__ADMINPUBLIC__/js/jquery.user.city.js"></script>
+<script type="text/javascript" src="__ADMINPUBLIC__/js/jquery.modal.userselectlayer.js"></script>
+<link href="__ADMINPUBLIC__/css/date_input.css" rel="stylesheet" type="text/css" />
+<script src="__ADMINPUBLIC__/js/jquery.date_input.js" type='text/javascript' language="javascript"></script>
+</body>
+</html>

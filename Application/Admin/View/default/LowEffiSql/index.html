@@ -1,0 +1,25 @@
+<include file="public:header" />
+    <div class="toptip">
+		<h2>提示：</h2>
+		<p>您可以通过此日志查看系统运行过程中MySQL低效查询信息。</p>
+	</div>
+	<table width="100%" border="0" cellpadding="0" cellspacing="0" id="list" class="link_lan">
+	    <tr>
+	      <td height="26" width="90"  class="admin_list_tit admin_list_first" >日志文件</td>
+	      <td height="26" width="90"  class="admin_list_tit" >操作</td>
+	    </tr>
+	    <volist name="list" id="vo">
+	      <tr>
+	      <td  class="admin_list admin_list_first">{$vo}</td>
+	      <td  class="admin_list"><a href="{:U('detail',array('filename'=>$vo))}">查看详情</a></td>
+	      </tr>
+		</volist>
+	</table>
+	<empty name="list">
+		<div class="admin_list_no_info">没有任何信息！</div>
+	</empty>
+	<div class="qspage">{$page}</div>
+</div>
+<include file="public:footer" />
+</body>
+</html>

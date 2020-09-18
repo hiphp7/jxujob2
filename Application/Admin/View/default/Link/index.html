@@ -1,0 +1,125 @@
+<include file="public:header" />
+<notempty name="apply['Subsite']">
+<div class="seltpye_x">
+    <div class="left">所属分站</div>
+    <qscms:subsite 列表名="subsite_list"/>
+    <div class="right">
+      <a href="{:P(array('subsite_id'=>''))}" <if condition="$Think.get.subsite_id eq ''">class="select"</if>>不限</a>
+      <if condition="$visitor['role_id'] eq 1">
+        <volist name="subsite_list" id="subsite">
+          <a href="{:P(array('subsite_id'=>$subsite['s_id']))}" <if condition="$Think.get.subsite_id eq $subsite['s_id']">class="select"</if>>{$subsite.s_sitename}</a>
+        </volist>
+      <else/>
+        <volist name="subsite_list" id="subsite">
+          <if condition="in_array($subsite['s_id'],$visitor['subsite'])">
+            <a href="{:P(array('subsite_id'=>$subsite['s_id']))}" <if condition="$Think.get.subsite_id eq $subsite['s_id']">class="select"</if>>{$subsite.s_sitename}</a>
+          </if>
+        </volist>
+      </if>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+</div>
+</notempty>
+ <div class="seltpye_x">
+    <div class="left">链接位置</div>  
+    <div class="right">
+    <a href="{:P(array('alias'=>''))}" <if condition="$Think.get.alias eq ''">class="select"</if>>不限</a>
+     <volist name="category" id="vo">
+    <a href="{:P(array('alias'=>$vo['c_alias']))}" <if condition="$Think.get.alias eq $vo['c_alias']">class="select"</if>>{$vo['categoryname']}</a>
+     </volist>
+    <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+</div>
+ <form id="form1" name="form1" method="post" action="{:U('delete')}">
+   <table width="100%" border="0" cellpadding="0" cellspacing="0"  id="list" class="link_lan">
+    <tr>
+      <td width="30%" class="admin_list_tit admin_list_first">
+      <label id="chkAll"><input type="checkbox" name="chkAll"  id="chk" title="全选/反选" />链接标题</label>    </td>
+      <td class="admin_list_tit"> 地址 </td>
+      <td   align="center" class="admin_list_tit">顺序</td>
+      <td   align="center"  class="admin_list_tit">位置</td>
+      <td width="130" align="center"  class="admin_list_tit" >操作</td>
+    </tr>
+    <volist name="list" id="vo">
+    <tr>
+      <td   class="admin_list admin_list_first">
+    <input name="link_id[]" type="checkbox"  value="{$vo['link_id']}" />
+    <a href="{$vo['link_url']}" target="_blank"  <if condition="$vo['display'] neq '1'">style="color:#CCCCCC"</if>>{$vo['link_name']}</a> 
+     <if condition="$vo['notes'] neq ''">
+	 <span class="notestip vtip"   title="备注：{$vo['notes']}">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    </if>
+     <if condition="$vo['link_logo'] neq ''">
+	 <span class="pictip vtip"   title="<img src='{:attach($vo['link_logo'],'link_logo')}' border=0/>">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+   </if>
+     <if condition="$vo['display'] neq '1'">
+    <span style="color: #999999">[不显示]</span>
+    </if>
+      </td>
+      <td  class="admin_list">
+      <a href="{$vo['link_url']}" target="_blank">{$vo['link_url']}</a>   </td>
+      <td align="center"  class="admin_list">{$vo['show_order']}</td>
+      <td align="center"  class="admin_list">{$vo['categoryname']}</td>
+      <td align="center"   class="admin_list">
+    <a href="{:U('edit',array('link_id'=>$vo['link_id']))}">修改</a> <a href="{:U('delete',array('link_id'=>$vo['link_id']))}" onclick="return confirm('你确定要删除吗？')">删除</a>    </td>
+    </tr>
+   </volist>
+  </table>
+  </form>
+  <if condition="!$list">
+<div class="admin_list_no_info">没有任何信息！</div>
+</if>
+<table width="100%" border="0" cellspacing="10" cellpadding="0" class="admin_list_btm">
+      <tr>
+        <td>
+<input type="button" class="admin_submit" id="ButAudit" value="添加"  onclick="window.location='{:U('add')}'"/>
+<input type="button" class="admin_submit" id="ButDlete" value="删除"/>
+    </td>
+        <td width="305" align="right">
+    <form id="formseh" name="formseh" method="get" action="?">  
+          <input type="hidden" name="m" value="{:C('admin_alias')}">
+          <input type="hidden" name="c" value="{:CONTROLLER_NAME}">
+          <input type="hidden" name="a" value="{:ACTION_NAME}">
+      <div class="seh">
+          <div class="keybox"><input name="key" type="text"   value="{$Think.get.key}" /></div>
+          <div class="selbox">
+          <input name="key_type_cn"  id="key_type_cn" type="text" value="{$Think.get.key_type_cn|default="标题"}" readonly="true"/>
+            <div>
+                <input name="key_type" id="key_type" type="hidden" value="{$Think.get.key_type|default="1"}" />
+                        <div id="sehmenu" class="seh_menu">
+                            <ul>
+                            <li id="1" title="标题">标题</li>
+                            <li id="2" title="URL">URL</li>
+                            </ul>
+                        </div>
+            </div>        
+        </div>
+        <div class="sbtbox">
+        <input type="submit" name="" class="sbt" id="sbt" value="搜索"/>
+        </div>
+        <div class="clear"></div>
+      </div>
+      </form>
+      </td>
+      </tr>
+  </table>
+<div class="qspage">{$page}</div>
+</div>
+<include file="public:footer" />
+<script type="text/javascript">
+$(document).ready(function()
+{
+  showmenu("#key_type_cn","#sehmenu","#key_type");
+  //点击批量删除  
+  $("#ButDlete").click(function(){
+    if (confirm('你确定要删除吗？'))
+    {
+      $("form[name=form1]").submit()
+    }
+  });
+    
+});
+</script>
+</body>
+</html>

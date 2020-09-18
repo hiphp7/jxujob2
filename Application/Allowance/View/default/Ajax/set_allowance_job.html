@@ -1,0 +1,252 @@
+<qscms:load type="category"/>
+<form id="allowance_form" method="post" target="_blank">
+<div class="j-m-d-box J_modal_job_money">
+    <div class="j-m-d-l">
+        <div class="tit">选择打赏方式</div>
+        <div class="tab-group">
+            <div class="tab selected" data-code="apply">投递红包<div class="arr"></div></div>
+            <div class="h25"></div>
+            <div class="tab" data-code="interview">面试红包<div class="arr"></div></div>
+            <div class="h25"></div>
+            <div class="tab" data-code="entry">入职红包<div class="arr"></div></div>
+            <input type="hidden" value="apply" name="type_alias" id="type_alias">
+        </div>
+    </div>
+    <div class="j-m-d-r">
+        <div class="re-box">
+            <div class="re-line">
+                <div class="re-l-l">投递红包：</div>
+                <div class="re-l-r">符合设置要求的个人简历投递后可直接领取红包，提高收到的简历质量和招聘效率</div>
+                <div class="clear"></div>
+            </div>
+            <div class="re-line last">
+                <div class="re-l-l">温馨提示：</div>
+                <div class="re-l-r">
+                您的职位打赏设置成功后，中途不可取消！ 如果打赏不成功，对应金额会回退到您的账户中。<br />
+                符合条件的个人只要投递简历红包后红包自动发放。
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="re-box" style="display: none">
+            <div class="re-line">
+                <div class="re-l-l">面试红包：</div>
+                <div class="re-l-r">符合您职位条件的个人参加过面试即可领取红包，可极大的调动求职位者的参与性；</div>
+                <div class="clear"></div>
+            </div>
+            <div class="re-line">
+                <div class="re-l-l">流程说明：</div>
+                <div class="re-l-r">1.发布面试红包职位；2.求职者投递简历并申请面试；3.企业同意面试；4.个人参加面试并确认已面试；5.企业确认已面试，系统发放面试红包。</div>
+                <div class="clear"></div>
+            </div>
+            <div class="re-line last">
+                <div class="re-l-l">温馨提示：</div>
+                <div class="re-l-r">
+                您的职位打赏设置成功后，中途不可取消！ 如果打赏不成功，可联系您的招聘顾问返回您的账户！<br />
+                符合条件的个人只要参加面试，必须发放面试红包
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="re-box" style="display: none">
+            <div class="re-line">
+                <div class="re-l-l">入职红包：</div>
+                <div class="re-l-r">个人入职签订劳动合同后发放红包，提高职位申请转化率</div>
+                <div class="clear"></div>
+            </div>
+            <div class="re-line last">
+                <div class="re-l-l">温馨提示：</div>
+                <div class="re-l-r">
+                您的职位打赏设置成功后，中途不可取消！ 如果打赏不成功，对应金额会回退到您的账户中。<br />
+                符合条件条件的个人投递简历后，成功入职签合同后须发放红包
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="r-l-group">
+            <div class="h20"></div>
+            <div class="r-l-tit">打赏设置</div>
+            <div class="h22"></div>
+            <div class="r-l-inp-line">
+                <div class="inp-l"><span></span>每个红包金额：</div>
+                <div class="inp-r"><input name="per_amount" id="per_amount" type="text" class="input_250_34 counter_input" value="" placeholder="求职者每次领取红包的金额，如：3" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) {value=value.replace(/\D/g,'');}" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"></div>
+                <div class="inp-t">元</div>
+                <div class="clear"></div>
+            </div>
+            <div class="h16"></div>
+            <div class="r-l-inp-line">
+                <div class="inp-l"><span></span>红包总数量：</div>
+                <div class="inp-r"><input name="total_num" id="total_num" type="text" class="input_250_34 counter_input" value="" placeholder="此职位红包总数量，如：100" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"></div>
+                <div class="inp-t">个</div>
+                <div class="clear"></div>
+            </div>
+            <div class="h30"></div>
+            <div class="r-l-tit">简历要求 （符合条件的简历才能申请面试）</div>
+            <div class="h26"></div>
+            <div class="r-l-inp-line">
+                <div class="inp-l">简历基本情况：</div>
+                <div class="select_input w98 fl mr10 J_hoverinput J_dropdown J_listitme_parent">
+                    <span class="J_listitme_text">选择完整度</span>
+                    <div class="dropdowboxCompletion J_dropdown_menu">
+                        <div class="dropdow_innerCompletion">
+                            <ul class="nav_box">
+                                <li><a class="J_listitme" href="javascript:;" data-code="0">不限</a></li>
+                                <li><a class="J_listitme" href="javascript:;" data-code="35">35</a></li>
+                                <li><a class="J_listitme" href="javascript:;" data-code="50">50</a></li>
+                                <li><a class="J_listitme" href="javascript:;" data-code="65">65</a></li>
+                                <li><a class="J_listitme" href="javascript:;" data-code="80">80</a></li>
+                                <li><a class="J_listitme" href="javascript:;" data-code="100">100</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <input class="J_listitme_code" name="complete_percent" id="complete_percent" type="hidden" value="0">
+                </div>
+                <div class="select_input w98 fl mr10 J_hoverinput J_dropdown J_listitme_parent">
+                    <span class="J_listitme_text mc-result" data-title="学历要求" title="学历要求">学历要求</span>
+                    <div class="dropdowboxMchoice J_dropdown_menu">
+                        <div class="dropdow_innerMchoice">
+                            <ul class="nav_box">
+                                <li><label><input class="J_listitme_m" type="checkbox" data-code="0" data-title="不限"> 不限</label></li>
+                                <volist name="category['QS_education']" id="education">
+                                    <li><label><input class="J_listitme_m" type="checkbox" data-code="{$key}" data-title="{$education}"> {$education}</label></li>
+                                </volist>
+                                <div class="clear"></div>
+                            </ul>
+                        </div>
+                    </div>
+                    <input class="J_listitme_code" name="education" id="education" type="hidden" value="0">
+                </div>
+                <div class="select_input w98 fl mr10 J_hoverinput J_dropdown J_listitme_parent">
+                    <span class="J_listitme_text mc-result" data-title="工作经验" title="学历要求">工作经验</span>
+                    <div class="dropdowboxMchoice J_dropdown_menu">
+                        <div class="dropdow_innerMchoice">
+                            <ul class="nav_box nav_box1">
+                                <li><label><input class="J_listitme_m" type="checkbox" data-code="0" data-title="不限"> 不限</label></li>
+                                <volist name="category['QS_experience']" id="experience">
+                                    <li><label><input class="J_listitme_m" type="checkbox" data-code="{$key}" data-title="{$experience}"> {$experience}</label></li>
+                                </volist>
+                                <div class="clear"></div>
+                            </ul>
+                        </div>
+                    </div>
+                    <input class="J_listitme_code" name="experience" id="experience" type="hidden" value="0">
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="h16"></div>
+            <div class="r-l-inp-line">
+                <div class="inp-l">允许意向职位：</div>
+                <div class="inp-r">
+                    <div class="select_input_multi select_350_34 fl J_hoverinput" id="J_showmodal_jobs_money" data-title="请选择允许意向职位" data-multiple="true" data-maxnum="3" <if condition="C('qscms_category_jobs_level') gt 2">data-width="667"<else/>data-width="520"</if> data-category="{:C('qscms_category_jobs_level')}">
+                    <span title="" class="result J_resuletitle_jobs">请选择</span>
+                    <input class="J_resultcode_jobs" name="intention_jobs" id="intention_jobs" type="hidden" value="">
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="r-l-c-line"></div>
+    </div>
+    <div class="h20"></div>
+    <div class="m-s-line">应付金额：<span class="code" id="show_need_pay">0</span> 元</div>
+    <div class="h30"></div>
+    <div class="c-b-group">
+        <div class="c-b-cell">
+            <a href="javascript:;" class="cash_pay_submit" payment="wxpay">
+                <div class="c-icon"></div>
+                <div class="c-txt">微信扫码支付</div>
+            </a>
+        </div>
+        <div class="c-b-cell">
+            <a href="javascript:;" class="cash_pay_submit" payment="alipay">
+                <div class="c-icon icon2"></div>
+                <div class="c-txt">支付宝快捷支付</div>
+            </a>
+        </div>
+        <input type="hidden" name="payment" id="payment" value="wxpay">
+        <input type="hidden" name="jobsid" id="jobsid" value="{$jobsid}">
+        <div class="clear"></div>
+    </div>
+    <div class="r-rem">注：使用过程中遇到任何问题请及时联系您的专属顾问</div>
+</div>
+</form>
+<div class="clear"></div>
+<script type="text/javascript" src="../public/js/jquery.modal.jobmoney.js"></script>
+<script>
+    //计算需要支付的金额
+    function count_need_pay(){
+        var per_amount = $.trim($('#per_amount').val())!=''?parseInt($('#per_amount').val()):0;
+        var total_num = $.trim($('#total_num').val())!=''?parseInt($('#total_num').val()):0;
+        return per_amount * total_num;
+    }
+    //扫描是否支付成功
+    function run(){
+        $.getJSON("{:U('check_weixinpay_notify')}",function(result){
+            if(result.status==1){
+               location.href=result.data;
+            }
+        });
+    }
+    // 左侧切换
+    $('.j-m-d-l .tab').die().live('click', function () {
+        $(this).addClass('selected').siblings().removeClass('selected');
+        var cIndex = $('.j-m-d-l .tab').index($(this));
+        var tCode = $(this).data('code');
+        $('#type_alias').val(tCode);
+        $('.j-m-d-r .re-box').eq(cIndex).show().siblings('.re-box').hide();
+    });
+    $('.counter_input').keyup(function(){
+        var total = count_need_pay();
+        $('#show_need_pay').html(total);
+    });
+    $('.cash_pay_submit').die().live('click', function () {
+        var action_url = qscms.root+'?m=Allowance&c=Ajax&a=set_allowance_job_save';
+        var payment = $(this).attr('payment');
+        var amount_min = parseInt("{$range[0]}");
+        var amount_max = parseInt("{$range[1]}");
+        $('#payment').val(payment);
+        if(!parseInt($('#per_amount').val())){
+            disapperTooltip('remind','请填写红包金额！');
+            return false;
+        }
+        if(parseInt($('#per_amount').val())<amount_min){
+            disapperTooltip('remind','红包金额不能小于'+amount_min+'元！');
+            return false;
+        }
+        if(parseInt($('#per_amount').val())>amount_max){
+            disapperTooltip('remind','红包金额不能大于'+amount_max+'元！');
+            return false;
+        }
+        if(!parseInt($('#total_num').val())){
+            disapperTooltip('remind','请填写红包总数量！');
+            return false;
+        }
+
+        if(payment=='wxpay'){
+            var qsDialog = $(this).dialog({
+                title: '微信支付',
+                loading:true,
+                footer:false
+            });
+            $.ajax({
+                cache: true,
+                type: "POST",
+                url:action_url,
+                data:$('#allowance_form').serialize(),
+                dataType:"json",
+                success: function(result) {
+                    if(result.status==1){
+                        qsDialog.setContent("<img src='"+result.data+"' alt='扫描二维码' width='250' height='250' />");
+                        window.setInterval(run, 5000);
+                    }else{
+                        qsDialog.setContent(result.msg);
+                        return false;
+                    }
+                }
+            });
+        }else{
+            $('#allowance_form').attr('action',action_url);
+            $('#allowance_form').submit();
+        }
+    });
+</script>

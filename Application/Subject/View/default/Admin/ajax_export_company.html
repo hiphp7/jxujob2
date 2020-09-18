@@ -1,0 +1,83 @@
+<style type="text/css">
+	.form_main{width: 430px;}
+	.form_main .fr{width: 300px;}
+</style>
+<form name="form_dia" method="post">
+<div class="dialog_box">
+    <div class="form_main "> 
+        <div class="fl">刷新时间：</div>
+        <div class="fr">
+            <div class="select_input_new w200 J_hoverinput J_dropdown J_listitme_parent">
+                <span class="J_listitme_text">不限</span>
+                <div class="dropdowbox_sn J_dropdown_menu">
+                    <div class="dropdow_inner_sn">
+                        <ul class="nav_box">
+                            <li><a class="J_listitme " href="javascript:;" data-code="">不限</a></li>
+                            <li><a class="J_listitme " href="javascript:;" data-code="3">三天内</a></li>
+                            <li><a class="J_listitme " href="javascript:;" data-code="7">一周内</a></li>
+                            <li><a class="J_listitme " href="javascript:;" data-code="30">一月内</a></li>
+                            <li><a class="J_listitme " href="javascript:;" data-code="180">半年内</a></li>
+                            <li><a class="J_listitme " href="javascript:;" data-code="360">一年内</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <input class="J_listitme_code" name="settr" id="settr" type="hidden" value="" />
+            </div>
+        </div>
+        <div class="fl">企业认证：</div>
+        <div class="fr">
+            <div class="select_input_new w200 J_hoverinput J_dropdown J_listitme_parent">
+                <span class="J_listitme_text">不限</span>
+                <div class="dropdowbox_sn J_dropdown_menu">
+                    <div class="dropdow_inner_sn">
+                        <ul class="nav_box">
+                            <li><a class="J_listitme " href="javascript:;" data-code="">不限</a></li>
+                            <li><a class="J_listitme " href="javascript:;" data-code="1">已通过</a></li>
+                            <li><a class="J_listitme " href="javascript:;" data-code="2">待认证</a></li>
+                            <li><a class="J_listitme " href="javascript:;" data-code="3">未通过</a></li>
+                            <li><a class="J_listitme " href="javascript:;" data-code="0">未认证</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <input class="J_listitme_code" name="audit" id="audit" type="hidden" value="" />
+            </div>
+        </div>
+        <div class="fl">套餐类型：</div>
+        <div class="fr">
+            <div class="select_input_new w200 J_hoverinput J_dropdown J_listitme_parent">
+                <span class="J_listitme_text">不限</span>
+                <div class="dropdowbox_sn J_dropdown_menu">
+                    <div class="dropdow_inner_sn">
+                        <ul class="nav_box">
+                            <li><a class="J_listitme " href="javascript:;" data-code="">不限</a></li>
+                            <volist name="setmeal" id="vo">
+                            <li><a class="J_listitme " href="javascript:;" data-code="{$key}">{$vo}</a></li>
+                            </volist>
+                        </ul>
+                    </div>
+                </div>
+                <input class="J_listitme_code" name="setmeal_id" id="setmeal_id" type="hidden" value="" />
+            </div>
+        </div>
+        <div class="fl"></div>
+        <div class="fr">
+            <input type="hidden" name="subject_id" value="{$subject_id}">
+            <input type="submit" class="admin_submit" id="J_dia_export" value="添加"/>
+        </div>
+    </div>
+</div>
+</form>
+<script type="text/javascript" src="__ADMINPUBLIC__/js/jquery.listitem.js"></script>
+<script type="text/javascript" src="__ADMINPUBLIC__/js/jquery.dropdown.js"></script>
+<qscms:load type="category" search="1"/>
+<script type="text/javascript" src="__ADMINPUBLIC__/js/jquery.modal.userselectlayer.js"></script>
+<script type="text/javascript">
+	$("#J_dia_export").click(function () {
+        disapperTooltip("success", "正在导出，请稍候",function(){
+        	$('.modal_backdrop').remove();
+			$('.modal').remove();
+        });
+        $("form[name=form_dia]").attr("action", "{:U('add_company_s')}");
+        $("form[name=form_dia]").submit();
+    });
+</script>

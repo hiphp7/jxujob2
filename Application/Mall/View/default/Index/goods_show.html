@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<qscms:goods_show 列表名="info" 商品id="$_GET['id']"/>
+	<include file="Home@default/public/meta" />
+	<link href="__HOMEPUBLIC__/css/common.css" rel="stylesheet" type="text/css" />
+	<link href="__HOMEPUBLIC__/css/common_ajax_dialog.css" rel="stylesheet" type="text/css" />
+	<link href="../public/css/mall.css" rel="stylesheet" type="text/css" />
+	<script src="__HOMEPUBLIC__/js/jquery.common.js" type="text/javascript" language="javascript"></script>
+</head>
+<body>
+<include file="header" />
+<div class="gshow_top">
+  <div class="l">
+  	 <div class="pic"><a target="_blank" href="{$info['goods_img']}"><img src="{$info['goods_img']}" border="0"/></a>
+    </div>	
+  </div>
+  <div class="r">
+	<div class="t"><strong>{$info['goods_title']}</strong></div>
+    <div class="gold">
+	  	<div class="gl">{$info['goods_points']}{:C('qscms_points_byname')}</div>
+		<div class="gr">累计兑换 <span>{$info['ex_time']}</span> 次</div>
+		<div class="clear"></div>
+	</div>
+    <div class="txt">
+	商品编号：{$info['goods_number']}<br />
+    品牌：{$info['goods_brand']}<br />
+	剩余库存：<span>{$info['goods_stock']}</span><br />
+	</div>
+    <div class="n">
+      <div class="td1">兑换数量：</div>
+      <div class="td2"><div class="reduction">-</div><span class="num">1</span><div class="add">+</div></div>
+      <div class="td3">每人限兑<if condition="$info['goods_customer'] neq 0">{$info['goods_customer']}<else />无限</if>件</div>
+	  <div class="clear"></div>
+    </div>
+	<input type="button" value="立即兑换" class="btn exchange" />
+  </div>
+   <div class="clear"></div>
+</div>
+
+<div class="gshow link_gray6">
+  <div class="l">
+  <!-- -->
+	<div class="gbox">
+	  <div class="title">
+	    <div class="tnav">	
+	      <div class="nl tab select" data="content">商品介绍</div>
+	      <div class="nl tab last " data="ex_list">兑换记录</div>
+		  
+	      <div class="clear"></div>
+        </div>
+	  </div>
+	  <div class="info tab-wrap" id="content">{$info['content']}</div>
+	  <div class="info list tab-wrap" id="ex_list">
+		  <div class="th1">兑换人</div>
+		  <div class="th2">兑换数量</div>
+		  <div class="th3">兑换时间</div>
+		  <div class="clear"></div>
+	  	<qscms:goods_exchange_list 列表名="ex_list" 商品id="$_GET['id']" 分页显示="1"/>
+	  	<volist name="ex_list['list']" id="vo">
+		   <div class="td1">{$vo['username']}</div>
+		   <div class="td2">{$vo['num']}</div>
+		   <div class="td3">{:date('Y-m-d H:i',$vo['addtime'])}</div>
+		   <div class="clear"></div>
+		 </volist>
+		 <div class="qspage">{$ex_list['page']}</div>
+      </div>
+	</div>
+  </div>
+   <div class="r">
+	 <div class="gbox link_gray6">
+	   <div class="title">
+	     <div class="txt">猜你喜欢</div>
+	   </div>
+	   <qscms:goods_list 列表名="favor_list" 排序="ex_time:desc" 显示数目="6" />
+	   <volist name="favor_list['list']" id="vo">
+	   <div class="list">
+	     <div class="glil">
+	       <div class="pic"><a target="_blank" href="{$vo['goods_url']}"><img src="{$vo['goods_img']}" border="0"/></a>
+		   </div>
+	     </div>
+	     <div class="glir">
+ 		   <div class="txt substring"><a target="_blank" href="{$vo['goods_url']}">{$vo['goods_title']}</a></div>
+		    <div class="txt c substring">{$vo['goods_points']}{:C('qscms_points_byname')}</div>
+			 <div class="txt substring"><a target="_blank" href="{$vo['goods_url']}" class="btn">立即兑换</a></div>
+		 </div>
+		 <div class="clear"></div>
+	   </div>
+	   </volist>
+	 </div>
+	 <!-- -->
+   </div>
+   <div class="clear"></div>
+</div>
+<include file="Home@default/public/footer_min" />
+<script type="text/javascript" src="__HOMEPUBLIC__/js/jquery.modal.dialog.js"></script>
+<script type="text/javascript" src="__HOMEPUBLIC__/js/jquery.disappear.tooltip.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$(".tab").click(function(){
+			$(".tab-wrap").hide();
+			$("#"+$(this).attr('data')).show();
+			$(".tab").removeClass('select');
+			$(this).addClass('select');
+		});
+		$(".add").click(function(){
+			var num = parseInt($(".num").html())+1;
+			var max1 = parseInt("{$info['goods_customer']}");
+			var max2 = parseInt("{$info['goods_stock']}");
+			if(max1<=max2){
+				var max = max1;
+			}else{
+				var max = max2;
+			}
+			if(num>max){
+				num = max;
+			}
+			$(".num").html(num);
+		});
+		$(".reduction").click(function(){
+			var num = parseInt($(".num").html())-1;
+			if(num<1){
+				num = 1;
+			}
+			$(".num").html(num);
+		});
+		$(".goods_page a").live('click',function(){
+			var url = $(this).attr('href');
+			$.getJSON(url,function(result){
+				if(result.status==1){
+					$("#ex_list").html(result.data);
+				}
+			});
+			return false;
+		});
+		$(".exchange").click(function(){
+			var url = "{:U('ajax_exchange_commit')}";
+			var num = parseInt($(".num").html());
+			var goods_id = "{$info['id']}";
+            $.getJSON(url,{num:num,goods_id:goods_id},function(result){
+                if(result.status == 1){
+                	var qsDialog=$(this).dialog({
+		                title: '兑换商品',
+		                content: result.data,
+		                border: false,
+		                footer:false
+		            });
+                }
+                else if(eval(result.dialog))
+                {
+                	var loginUrl = "{:U('Home/AjaxCommon/get_login_dig')}";
+					$.getJSON(loginUrl, function(result){
+			            if(result.status==1){
+		            		var qsDialog = $(this).dialog({
+                                title: '会员登录',
+								content: result.data.html,
+								footer: false,
+								border: false
+							});
+			    			qsDialog.setInnerPadding(false);
+			            } else {
+			            	qsDialog.hide();
+							disapperTooltip('remind',result.msg);
+			            }
+			        });
+                }
+                else
+                {
+                    disapperTooltip('remind',result.msg);
+                }
+            });
+		});
+	});
+</script>
+</body>
+</html>

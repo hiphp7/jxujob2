@@ -1,0 +1,285 @@
+<include file="./public/header_subject"/>
+<div class="toptit">{$title}--企业列表</div>
+<div class="seltpye_y">
+    <div class="tit">审核状态</div>
+    <div class="ct">
+        <div class="txt <neq name='Think.get.audit' value=''>select</neq>">{$Think.get.audit_cn|default='不限'}</div>
+    </div>
+    <div class="downlist">
+        <li url="{:P(array('s_audit'=>'','audit_cn'=>'不限'))}">不限</li>
+        <li url="{:P(array('s_audit'=>'1','audit_cn'=>'审核通过'))}">审核通过</li>
+        <li url="{:P(array('s_audit'=>'2','audit_cn'=>'等待审核'))}">等待审核</li>
+        <li url="{:P(array('s_audit'=>'3','audit_cn'=>'审核未通过'))}">审核未通过</li>
+    </div>
+</div>
+<div class="seltpye_y">
+    <div class="tit">套餐类型</div>
+    <div class="ct">
+        <div class="txt <neq name='Think.get.setmeal_id' value=''>select</neq>">{$Think.get.setmeal_cn|default='不限'}</div>
+    </div>
+    <div class="downlist">
+        <li url="{:P(array('setmeal_id'=>'','setmeal_cn'=>'不限'))}">不限</li>
+        <volist name="setmeal" id="vo">
+            <li url="{:P(array('setmeal_id'=>$key,'setmeal_cn'=>$vo))}">{$vo}</li>
+        </volist>
+    </div>
+</div>
+<div class="seltpye_y">
+    <div class="tit">来源</div>
+    <div class="ct">
+        <div class="txt <notempty name='Think.get.robot'>select</notempty>">{$Think.get.robot_cn|default="不限"}</div>
+    </div>
+    <div class="downlist">
+        <li url="{:P(array('robot'=>'','robot_cn'=>'不限'))}">不限</li>
+        <li url="{:P(array('robot'=>'1','robot_cn'=>'后台添加'))}">后台添加</li>
+        <li url="{:P(array('robot'=>'0','robot_cn'=>'自主申请'))}">自主申请</li>
+    </div>
+</div>
+<div class="seltpye_y">
+    <div class="tit">微信直面</div>
+    <div class="ct">
+        <div class="txt <notempty name='Think.get.add_status'>select</notempty>">{$Think.get.add_status_cn|default="不限"}</div>
+    </div>
+    <div class="downlist">
+        <li url="{:P(array('add_status'=>'','add_status_cn'=>'不限'))}">不限</li>
+        <li url="{:P(array('add_status'=>'0','add_status_cn'=>'未添加'))}">未添加</li>
+        <li url="{:P(array('add_status'=>'1','add_status_cn'=>'已添加'))}">已添加</li>
+		<li url="{:P(array('add_status'=>'2','add_status_cn'=>'添加大于7天'))}">添加大于7天</li>
+		<li url="{:P(array('add_status'=>'3','add_status_cn'=>'联系客服'))}">联系客服</li>
+    </div>
+</div>
+<div class="seltpye_y">
+    <div class="tit">置顶</div>
+    <div class="ct">
+        <div class="txt <notempty name='Think.get.c_order'>select</notempty>">{$Think.get.c_order_cn|default="不限"}</div>
+    </div>
+    <div class="downlist">
+        <li url="{:P(array('c_order'=>'','c_order_cn'=>'不限'))}">不限</li>
+        <li url="{:P(array('c_order'=>'1','c_order_cn'=>'已置顶'))}">已置顶</li>
+    </div>
+</div>
+<div class="clear"></div>
+
+<form id="form1" name="form1" method="post" action="{:U('subject_company_delete')}">
+    <div class="list_th">
+        <div class="td" style=" width:20%;">
+            <label id="chkAll" class="left_padding">
+                <input type="checkbox" name="chkAll" id="chk" title="全选/反选"/>参会企业名称
+            </label>
+        </div>
+        <div class="td center" style=" width:10%;">会员套餐</div>
+        <div class="td center" style=" width:10%;">认证状态</div>
+        <div class="td center" style=" width:5%;">数据来源</div>
+        <div class="td center" style=" width:10%;">审核状态</div>
+        <div class="td center" style=" width:10%;">联系方式</div>
+        <div class="td center" style=" width:10%;">添加日期</div>
+        <!-- <div class="td center" style=" width:15%;">微信直面</div> -->
+        <div class="td" style=" width:25%;">操作</div>
+        <div class="clear"></div>
+    </div>
+    <volist name="info" id="vo">
+        <div class="list_tr link_blue">
+            <div class="td" style=" width:20%;">
+                <div class="left_padding striking">
+                    <input name="id[]" type="checkbox" id="id" value="{$vo['id']}"/>
+                    <if condition="$vo['c_order'] eq 1">&nbsp;<span style="color: #FF3399" title="置顶">[顶]</span></if>{$vo.companyname|default="该企业已删除"}
+                </div>
+            </div>
+            <div class="td center" style=" width:10%;">{$vo.setmeal_name|default="-----"}</div>
+            <div class="td center" style=" width:10%;">
+                <if condition="$vo['audit'] eq 0">未认证</if>
+                <if condition="$vo['audit'] eq 1"><span style="color: #009900">已通过</span></if>
+                <if condition="$vo['audit'] eq 2"><span style="color:#FF3300">待认证</span></if>
+                <if condition="$vo['audit'] eq 3">未通过</if>
+            </div>
+            <div class="td center" style=" width:5%;">
+                <if condition="$vo['robot'] eq 0">自主申请</if>
+                <if condition="$vo['robot'] eq 1">后台添加</if>
+            </div>
+            <div class="td center" style=" width:10%;">
+                <if condition="$vo['s_audit'] eq 1"><span style="color: #009900">审核通过</span></if>
+                <if condition="$vo['s_audit'] eq 2"><span style="color:#FF3300">等待审核</span></if>
+                <if condition="$vo['s_audit'] eq 3">审核未通过</if></div>
+            <div class="td center" style=" width:10%;">{$vo.telephone|default="-----"}({$vo.contact|default="-----"})</div>
+            <div class="td center" style=" width:10%;">{:admin_date($vo['addtime'])}</div>
+            <div class="td center" style=" width:15%;">
+            <if condition="$vo['add_status'] eq 1">
+                客服
+            <else />
+              <!-- <if condition="$vo['wx_photo']">
+                 <if condition="$vo['day'] egt 7"><span style="color:#FF3300">已添加({$vo.day}天)</span><else />已添加({$vo.day}天)</if>
+              <else />
+               未添加
+              </if>    -->
+            </if>    
+            </div>
+            <div class="td edit" style=" width:25%;">
+                <a href="{:U('subject_company_edit',array('id'=>$vo['id']))}">修改</a>
+				<a href="javascript:;" cid="{$vo['id']}" class="J_to_face">直面</a>
+                <a href="javascript:;" cid="{$vo['id']}" class="J_to_order">置顶</a>
+                <a href="{:U('subject_company_delete',array('id'=>$vo['id']))}" class="gray" onclick="return confirm('你确定要删除吗？')">删除</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </volist>
+</form>
+<empty name="info">
+    <div class="list_empty">没有任何信息！</div>
+</empty>
+
+<div class="list_foot">
+    <div class="btnbox">
+        <input type="button" class="admin_submit" id="ButAdd" value="添加企业" onclick="window.location='{:U('subject_company_add')}&subject_id={$Think.get.id}'"/>
+        <input type="button" class="admin_submit" id="ButAudit" value="参会状态"/>
+		<input type="button" class="admin_submit" id="ButAuditWx" value="微信直面设置为客服"/>
+        <input type="button" class="admin_submit" id="ButDel" value="删除所选"/>
+        <input type="button" class="admin_submit" id="ExPort" subject_id="{$Think.get.id}" value="批量添加"/>
+        <input type="button" class="admin_submit" id="ButOrder" value="批量置顶"/>
+    </div>
+     <div class="footso">
+        <form action="?" method="get">
+            <div class="sobox">
+                <input type="hidden" name="m" value="{:MODULE_NAME}">
+                <input type="hidden" name="c" value="{:CONTROLLER_NAME}">
+                <input type="hidden" name="a" value="{:ACTION_NAME}">
+                <input name="key" type="text" class="sinput" value="{$Think.get.key}"/>
+                <input name="id" type="hidden"  value="{$Think.get.id}"/>
+                <input name="key_type" id="J_key_type_id" type="hidden" value="{$Think.get.key_type|default='1'}" />
+                <input name="key_type_cn" id="J_key_type_cn" type="hidden" value="{$Think.get.key_type_cn|default='公司名'}"/>
+                <input name="" type="submit" value="" class="sobtn"/>
+                <div class="sotype" id="J_key_click">{$Think.get.key_type_cn|default='公司名'}</div>
+                <div class="mlist" id="J_mlist">
+                    <ul>
+                        <li id="1" title="公司名">公司名</li>
+                        <li id="2" title="电话">电话</li>
+                    </ul>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="pages">{$page}</div>
+
+</div>
+<script type="text/javascript">
+    var uploadUrl = "{:U('Admin/Upload/form_upload')}";
+</script>
+<script src="__ADMINPUBLIC__/js/ajaxfileupload.js"></script>
+<script src="__ADMINPUBLIC__/js/fileupload.js"></script>
+<include file="Admin@default/public/footer"/>
+
+</body>
+<script type="text/javascript">
+    $(document).ready(function () {
+        // 直面
+        $('.J_to_face').die().click(function() {
+            var idVal = $(this).attr('cid');
+            var qsDialog = $(this).dialog({
+                title: '设置微信直面二维码',
+                loading: true,
+                footer : false
+            });
+            var url = "{:U('subject_wx')}";
+            $.post(url, { id:idVal }, function (result) {
+                if(result.status == 1){
+                    qsDialog.setContent(result.data);
+                } else {
+                    qsDialog.hide();
+                    disapperTooltip('remind',result.msg);
+                }
+            });
+        });
+        // 置顶
+        $('.J_to_order').die().click(function() {
+            var idVal = $(this).attr('cid');
+            var qsDialog = $(this).dialog({
+                title: '设置参会企业置顶',
+                loading: true,
+                footer : false
+            });
+            var url = "{:U('subject_order')}";
+            $.post(url, { id:idVal }, function (result) {
+                if(result.status == 1){
+                    qsDialog.setContent(result.data);
+                } else {
+                    qsDialog.hide();
+                    disapperTooltip('remind',result.msg);
+                }
+            });
+        });
+        //参会状态
+        $("#ButOrder").click(function () {
+            var data = $("form[name=form1]").serialize();
+            if(data.length == 0){
+                disapperTooltip('remind','请选择参会企业！');
+            } else {
+                var qsDialog = $(this).dialog({
+                    title: '设置参会企业置顶',
+                    loading: true,
+                    footer : false
+                });
+                var url = "{:U('subject_order')}";
+                $.post(url, data, function (result) {
+                    if(result.status == 1){
+                        qsDialog.setContent(result.data);
+                    } else {
+                        qsDialog.hide();
+                        disapperTooltip('remind',result.msg);
+                    }
+                });
+            }
+        });
+        //点击批量删除
+        $("#ButDel").click(function () {
+            var ids = $("input[name='id[]']:checked");
+            if(ids.length == 0){
+                disapperTooltip('remind','请选择企业！');
+            } else {
+                if(confirm('确定删除吗？')){
+                    $("form[name=form1]").submit();
+                }
+            }
+        });
+        //参会状态
+        $("#ButAudit").click(function () {
+            var data = $("form[name=form1]").serialize();
+            if(data.length == 0){
+                disapperTooltip('remind','请选择参会企业！');
+            } else {
+                var qsDialog = $(this).dialog({
+                    title: '设置参会状态',
+                    loading: true,
+                    footer : false
+                });
+                var url = "{:U('subject_audit')}";
+                $.post(url, data, function (result) {
+                    if(result.status == 1){
+                        qsDialog.setContent(result.data);
+                    } else {
+                        qsDialog.hide();
+                        disapperTooltip('remind',result.msg);
+                    }
+                });
+            }
+        });
+        $("#ButAuditWx").click(function () {
+            if (confirm('您确定要把微信直面设置为当前客服吗？')) {
+                $("form[name=form1]").attr("action", "{:U('subject_wx_audit')}");
+                $("form[name=form1]").submit();
+            }
+        });
+        $("#ExPort").click(function () {
+            var idVal = $(this).attr('subject_id');
+            var qsDialog = $(this).dialog({
+                title: '批量添加企业',
+                loading: true,
+                footer : false
+            });
+            var url = "{:U('ajax_export_company')}";
+            $.getJSON(url,{subject_id:idVal}, function (result) {
+                qsDialog.setContent(result.data);
+            });
+        });
+    });
+</script>
+</html>

@@ -1,0 +1,23 @@
+﻿/*HR工具箱首页*/
+.hr_nav{width:1198px; margin:0 auto; height:42px; line-height:42px;  border:1px #EEEEEE solid;  margin-top:25px;}
+.hr_nav .txt{ padding-left:30px;}
+.hr_nav .txt span{ padding-left:3px; padding-right:3px;}
+
+.hrlistbox{ width:1200px; margin:0 auto;  padding-bottom:30px;}
+.hrlistbox .list{ float:left; width:600px; padding-top:50px;}
+.hrlistbox .list .l{float:left; width:110px;}
+.hrlistbox .list .l img{ width:98px; height:98px;}
+.hrlistbox .list .r{float:left; width:460px;}
+.hrlistbox .list .r .tit{ height:30px; font-size:16px; padding-right:25px; padding-top:7px; position:relative; float:left}
+.hrlistbox .list .r .tit .hot{ position:absolute; right:0px ; top:0px; width:21px; height:16px; background-image:url(../images/134.gif)}
+.hrlistbox .list .r .txt{ line-height:190%;}
+ /*HR工具列表页*/
+ 
+.hrl{width:1198px; margin:0 auto;  border:1px #EEEEEE solid;  margin-top:25px;}
+.hrl .tit{ height:46px; line-height:46px; width:1168px; border-bottom:1px #EEEEEE solid; padding-left:30px; background-color:#F9F9F9}
+.hrl .tit span{ padding-left:3px; padding-right:3px;}
+.hrl .txt{ padding-left:30px; padding-top:15px; padding-bottom:15px;}
+.hrl .txt li{background-image:url(../images/123.png);background-repeat:no-repeat; background-position:10px -16px; width:180px; margin-left:20px; height:28px; line-height:28px; padding-left:20px;overflow:hidden;white-space: nowrap;text-overflow: ellipsis; float:left; margin-top:5px; margin-bottom:5px;}
+.hrl .txt li a{ color: #0066CC}
+
+ 

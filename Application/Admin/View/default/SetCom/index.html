@@ -1,0 +1,175 @@
+<include file="public:header" />
+    <div class="toptip">
+        <h2>提示：</h2>
+        <p>不同的运营阶段您可以选择不同的设置。</p>
+    </div>
+    <div class="toptit">基本设置</div>
+	<form action="{:U('index')}" method="post" enctype="multipart/form-data" name="form1" id="form1">
+		<table width="100%" border="0" cellspacing="5" cellpadding="5">
+			<tr>
+				<td width="220" align="right">上传营业执照文件限制：</td>
+				<td><input name="certificate_max_size" type="text"  class="input_text_100" id="certificate_max_size" value="{:C('qscms_certificate_max_size')}" maxlength="30" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/> kb</td>
+			</tr>
+			<tr>
+				<td align="right">企业LOGO文件限制：</td>
+				<td><input name="logo_max_size" type="text"  class="input_text_100" id="logo_max_size" value="{:C('qscms_logo_max_size')}" maxlength="30" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/> kb</td>
+			</tr>
+			<tr>
+				<td align="right">职位列表数最大为：</td>
+				<td><input name="jobs_list_max" type="text"  class="input_text_100" id="jobs_list_max" value="{:C('qscms_jobs_list_max')}" maxlength="30" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/> 条</td>
+			</tr>
+			<tr>
+				<td align="right">关闭职位更新时间：</td>
+				<td>
+					<label>
+					<input name="closetime" type="radio" id="closetime" value="0" <if condition="C('qscms_closetime') eq 0">checked="checked"</if>/>否</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<label >
+					<input type="radio" name="closetime" value="1" <if condition="C('qscms_closetime') eq 1">checked="checked"</if>/>是</label>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">是否开启订单发票：</td>
+				<td>
+					<label>
+					<input name="open_invoice" type="radio" id="open_invoice" value="0" <if condition="C('qscms_open_invoice') eq 0">checked="checked"</if>/>否</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<label >
+					<input type="radio" name="open_invoice" value="1" <if condition="C('qscms_open_invoice') eq 1">checked="checked"</if>/>是</label>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">&nbsp;</td>
+				<td height="50"> 
+					<input name="submit" type="submit" class="admin_submit"    value="保存修改"/>
+				</td>
+			</tr>
+		</table>
+	</form>
+	    <div class="toptit">显示设置</div>
+	<form action="{:U('index')}" method="post" enctype="multipart/form-data" name="form1" id="form1">
+		<table width="100%" border="0" cellspacing="5" cellpadding="5">
+	 
+			<tr>
+				<td width="220" align="right">职位显示：</td>
+				<td>
+					<label>
+					<input name="jobs_display" type="radio" value="1" <if condition="C('qscms_jobs_display') eq 1">checked="checked"</if>/>先审核再显示</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<label >
+					<input name="jobs_display" type="radio" value="2" <if condition="C('qscms_jobs_display') eq 2">checked="checked"</if>/>先显示再审核</label>
+					 <span class="admin_note">（先显示后审核可提高用户体验和程序执行效率)</span>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">企业风采图片：</td>
+				<td>
+					<label>
+					<input name="companyimg_display" type="radio" value="1" <if condition="C('qscms_companyimg_display') eq 1">checked="checked"</if>/>先审核再显示</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<label >
+					<input name="companyimg_display" type="radio" value="2" <if condition="C('qscms_companyimg_display') eq 2">checked="checked"</if>/>先显示再审核</label>
+					 <span class="admin_note">（先显示后审核可提高用户体验和程序执行效率)</span>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">&nbsp;</td>
+				<td height="50"> 
+					<input name="submit" type="submit" class="admin_submit"    value="保存修改"/>
+				</td>
+			</tr>
+		</table>
+	</form>
+	<div class="toptit">查看联系方式设置</div>
+	<form action="{:U('index')}" method="post" enctype="multipart/form-data" name="form1" id="form1">
+		<table width="100%" border="0" cellspacing="5" cellpadding="5">
+			
+			<tr>
+				<td width="220" align="right">Web端允许查看联系方式：</td>
+				<td>
+					<label><input name="showjobcontact" type="radio" id="showjobcontact" value="0" <if condition="C('qscms_showjobcontact') eq 0">checked="checked"</if>/>游客</label>
+					&nbsp;&nbsp;&nbsp;&nbsp; 
+					<label ><input type="radio" name="showjobcontact" value="1" id="showjobcontact" <if condition="C('qscms_showjobcontact') eq 1">checked="checked"</if>/>已登录会员</label>
+				</td>
+			</tr>
+			
+			<tr>
+				<td align="right">移动端允许查看联系方式：</td>
+				<td>
+					<label><input name="showjobcontact_wap" type="radio" id="showjobcontact_wap" value="0" <if condition="C('qscms_showjobcontact_wap') eq 0">checked="checked"</if>/>游客</label>
+					&nbsp;&nbsp;&nbsp;&nbsp; 
+					<label ><input type="radio" name="showjobcontact_wap" value="1" id="showjobcontact_wap" <if condition="C('qscms_showjobcontact_wap') eq 1">checked="checked"</if>/>已登录会员</label>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">&nbsp;</td>
+				<td height="50"> 
+					<input name="submit" type="submit" class="admin_submit"    value="保存修改"/>
+				</td>
+			</tr>
+		</table>
+	</form>
+	<div class="toptit">
+		联系方式图形化
+		<span class="admin_note" >图形化需要将中文字体文件上传到data/contactimgfont/，字体文件命名为“cn.ttc”</span>
+	</div>
+	<form action="{:U('index')}" method="post" enctype="multipart/form-data" name="form1" id="form1">
+		<table width="100%" border="0" cellspacing="5" cellpadding="5">
+			
+			<tr>
+				<td width="220" align="right">企业联系方式：</td>
+				<td>
+					<label><input name="contact_img_com" type="radio" id="contact_img_com" value="1" <if condition="C('qscms_contact_img_com') eq 1">checked="checked"</if>/>文字</label>
+					&nbsp;&nbsp;&nbsp;&nbsp; 
+					<label ><input type="radio" name="contact_img_com" value="2" id="contact_img_com" <if condition="C('qscms_contact_img_com') eq 2">checked="checked"</if>/>图形化</label>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">&nbsp;</td>
+				<td height="50"> 
+					<input name="submit" type="submit" class="admin_submit"    value="保存修改"/>
+				</td>
+			</tr>
+		</table>
+	</form>
+	
+	
+	<div class="toptit">其他设置</div>
+	<form action="{:U('index')}" method="post" enctype="multipart/form-data" name="form1" id="form1">
+		<table width="100%" border="0" cellspacing="5" cellpadding="5">
+			<tr>
+	        <td align="right">刷新职位时间间隔：</td>
+	        <td><input name="refresh_jobs_space" type="text" class="input_text_200" id="refresh_jobs_space" value="{:C('qscms_refresh_jobs_space')}"  maxlength="10" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/>
+	        分钟   <span class="admin_note"  >(0表示不限制)</span></td>
+	      </tr>
+			<tr>
+				<td width="220" align="right">允许公司名称重复：</td>
+				<td>
+					<label ><input type="radio" name="company_repeat" value="1" id="company_repeat" <if condition="C('qscms_company_repeat') eq 1">checked="checked"</if>/>是</label>
+					&nbsp;&nbsp;&nbsp;&nbsp; 
+					<label ><input type="radio" name="company_repeat" value="0" id="company_repeat" <if condition="C('qscms_company_repeat') eq 0">checked="checked"</if>/>否</label>
+				</td>
+			</tr>
+			<tr>
+				<td width="220" align="right">会员短信费用承担方：</td> 
+				<td>
+					<label ><input type="radio" name="company_sms" value="1" id="company_sms" <if condition="C('qscms_company_sms') eq 1">checked="checked"</if>/>企业承担</label>
+					&nbsp;&nbsp;&nbsp;&nbsp; 
+					<label ><input type="radio" name="company_sms" value="0" id="company_sms" <if condition="C('qscms_company_sms') eq 0">checked="checked"</if>/>运营者承担</label>
+					<span class="admin_note" >（如设置为企业承担，则企业需要在增值服务区购买短信包才能发送各种短信提醒）</span>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">&nbsp;</td>
+				<td height="50"> 
+					<input name="submit" type="submit" class="admin_submit"    value="保存修改"/>
+				</td>
+			</tr>
+		</table>
+	</form>
+	
+ 
+</div>
+<include file="public:footer" />
+</body>
+</html>

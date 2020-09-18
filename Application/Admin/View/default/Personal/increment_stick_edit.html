@@ -1,0 +1,34 @@
+<include file="public:header" />
+<div class="toptit">修改简历置顶推广</div>
+    <form id="form1" name="form1" method="post" action="{:U('Personal/increment_stick_edit')}">
+    <table width="800" border="0" cellpadding="3" cellspacing="3">
+      <tr>
+        <td width="120" align="right">置顶天数：</td>
+        <td width="391"><input name="days" type="text" class="input_text_200" id="name" value="{$info['days']}"/></td>
+      </tr>
+      <tr>
+        <td align="right">{:C('qscms_points_byname')}：</td>
+        <td>
+          <input name="points" type="text" class="input_text_200" id="name" value="{$info['points']}"/>
+        </td>
+      </tr>
+      <tr>
+        <td align="right">排序：</td>
+        <td><input name="sort" type="text" class="input_text_50" id="sort" maxlength="10" value="{$info['sort']}"/>
+         <span class="admin_note">(数字越大越靠前) </span></td>
+      </tr>
+      <tr>
+        <td align="center">&nbsp;</td>
+        <input type="hidden" name="id" value="{$info['id']}">
+        <td height="50" align="left"><input type="submit" name="Submit3" value="提交" class="admin_submit"   />
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+             <input name="submit22" type="button" class="admin_submit"    value="返 回" onclick="Javascript:window.history.go(-1)"/>
+    </td>
+      </tr>
+    </table>
+  
+    </form>
+    </div>
+<include file="public:footer" />
+</body>
+</html>

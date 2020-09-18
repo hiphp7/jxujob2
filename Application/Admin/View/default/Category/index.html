@@ -1,0 +1,78 @@
+<include file="public:header" />
+<div class="toptip">
+  <h2>提示：</h2>
+  <p>
+正式使用后删除分类会导致与此分类关联的信息类别丢失，修改不会受影响。<br />
+删除顶级级分类将会自动删除此分类下的子分类。<br />
+</p>
+</div>
+  
+    <div class="classification_th">
+    <div class="th1">
+    <label><input type="checkbox" name=" " title="全选/反选" id="J_checkall" />{$group.g_name}<span style="color: #999999; font-size:11px;">({$group.g_alias})</span></label>
+    </div>
+    
+    <div class="th2">
+        <div class="thorder">排序</div>
+      <div class="thedit">操作</div>
+       <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+    <form id="form1" name="form1" method="post" action="{:U('categoryAllSave')}">
+<div class="classification">
+<volist name="category" id="list">
+  <div class="menubg">
+    <div class="linput">
+      <div class="td1"><input type="checkbox" name="c_id[]" value="{$list.c_id}" id="{$list.c_id}" class="J_select"/></div>
+     <input name="save_id[]" type="hidden" value="{$list.c_id}"/>
+    <div class="td3"><input name="c_name[]" type="text" value="{$list.c_name}" class="input_text_150"  /></div>
+    <div class="td4">(id:{$list.c_id})</div>
+    <div class="clear"></div>
+    </div>
+    <div class="edit">
+        <div class="order"><input name="c_order[]" type="text"  value="{$list.c_order|default="0"}" class="input_text_50"/></div>
+        <div class="edittxt link_lan">
+              <a href="{:U('Category/edit',array('c_id'=>$list['c_id']))}">修改</a>
+              <a onclick="return confirm('你确定要删除吗？')" href="{:U('Category/delete',array('c_id'=>$list['c_id']))}">删除</a>
+        </div>
+        <div class="clear"></div>
+    </div>
+  </div>
+
+</volist>
+
+
+</div>
+ <table width="100%" border="0" cellspacing="10"  class="admin_list_btm">
+<tr>
+        <td>
+    <input name="ButSave" type="submit" class="admin_submit" id="ButSave" value="保存分类"/>
+        <input name="ButADD" type="button" class="admin_submit" id="ButADD" value="添加分类"  onclick="window.location='{:U('Category/add',array('alias'=>$group['g_alias']))}'"/>
+    <input name="ButDel" type="button" class="admin_submit" id="ButDel"  value="删除所选" />
+    </td>
+        <td width="305" align="right">
+    
+      </td>
+      </tr>
+  </table>
+</form>
+</div>
+<include file="public:footer" />
+<script type="text/javascript">
+$(document).ready(function(){
+  //全选所有项目
+  $("#J_checkall").live('click',function()
+  {
+     $(".classification").find("input[type=checkbox]").attr("checked",this.checked);
+  });
+  $("#ButDel").click(function(){
+    if(confirm('确定删除选中的分类吗？')){
+      $("#form1").attr("action","{:U('delete')}");
+      $("#form1").submit();
+    }
+  });
+});
+</script>
+</body>
+</html>

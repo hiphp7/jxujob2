@@ -1,0 +1,39 @@
+<include file="Admin@default/public/header" />
+<div class="toptip">
+<h2>提示：</h2>
+<p>
+您可以修改关键字搜索次数来改变关键词排序；
+</p>
+</div> 
+ <div class="toptit">修改关键词</div>
+    <form id="form1" name="form1" method="post"   action="{:U('hotword_edit')}" >
+    <div id="html_tpl">
+  <table width="100%" border="0" cellpadding="4" cellspacing="0"   >
+    <tr>
+      <td width="120" height="30" align="right"  >关键词：</td>
+      <td><input name="w_word" type="text" class="input_text_200"   maxlength="100" value="{$info['w_word']}"/>
+       </td>
+    </tr>
+	    <tr>
+      <td height="30" align="right"  >搜索次数：</td>
+      <td><input name="w_hot" type="text" class="input_text_200"  maxlength="100" value="{$info['w_hot']}"/>
+       </td>
+    </tr>
+  </table>
+  </div>
+     <div id="html"></div>
+     <table width="100%" border="0" cellspacing="6" cellpadding="0">
+	  <tr>
+	    <td width="120" height="30" align="right"  >&nbsp;</td>
+       <td height="50"  > 
+       <input type="hidden" name="id" value="{$info['id']}">
+            <input name="submit3" type="submit" class="admin_submit"    value="保存"/>
+        <input name="submit22" type="button" class="admin_submit"    value="返回" onclick="Javascript:window.history.go(-1)"/>
+       </td>
+	  </tr>
+	</table>
+    </form>
+</div>
+<include file="Admin@default/public/footer" />
+</body>
+</html>

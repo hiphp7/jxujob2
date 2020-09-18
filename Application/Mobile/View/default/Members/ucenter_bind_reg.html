@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+        <include file="public:meta" />
+        <link rel="stylesheet" href="../public/css/members.css">
+	</head>
+	<body>
+        <include file="public:header" />
+        <div class="split-block"></div>
+        <div class="bind-top-box qs-center">
+            <img src="<if condition="$user_bind_info['keyavatar_big']">{$user_bind_info.keyavatar_big}<else/>{:attach('no_photo_male.png','resource')}</if>" alt="{$user_bind_info.username}" class="b-img">
+            <div class="b-nickname">{$user_bind_info.username}</div>
+            <div class="font12 txt-color-9">您已登录{$third_name}账号</div>
+        </div>
+        <div class="split-block"></div>
+        <form action="" method="post" id="registerForm">
+            <div class="list-group b-list-group">
+                <div class="list_height plist-txt notarrow">
+                    <div class="pic"></div>
+                    <div class="tit font14">选择身份</div>
+                    <div class="describe font12">
+                        <input class="p-radio" name="utype" type="radio" value="2" title="个人会员" checked="checked"/>&nbsp;&nbsp;个人会员&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input class="p-radio" name="utype" type="radio" value="1" title="企业会员" onclick="window.location='{:U('members/ucenter_bind_reg_com',array('openid'=>$openid),true,false,true)}'"/>&nbsp;&nbsp;企业会员
+                    </div>
+                    <div class="arrow"></div>
+                    <div class="clear"></div>
+                </div>
+                <div class="list_height plist-txt notarrow">
+                    <div class="pic"></div>
+                    <div class="tit font14">账户名</div>
+                    <div class="describe font12"><input type="text" name="username" id="username" placeholder="请输入用户名" value="{$user_bind_info.username}" readonly="readonly"></div>
+                    <div class="arrow"></div>
+                    <div class="clear"></div>
+                </div>
+                <div class="list_height plist-txt notarrow">
+                    <div class="pic"></div>
+                    <div class="tit font14">邮箱</div>
+                    <div class="describe font12"><input type="text" name="email" id="email" placeholder="请输入常用邮箱" value="{$user_bind_info.email}" readonly="readonly"></div>
+                    <div class="arrow"></div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <input type="hidden" name="reg_type" value="2" />
+            <input type="hidden" name="utype" value="2">
+            <input name="ucenter" type="hidden" value="bind">
+            <input type="hidden" name="openid" value="{$openid}">
+            <div id="pop" style="display:none"></div>
+            <div class="btn-spacing mt4"><a id="bindRegBtn" href="javascript:;" class="qs-btn qs-btn-blue font18">注册并绑定</a></div>
+        </form>
+        <include file="public:footer" />
+        <include file="public:footer_min" />
+        <script src="http://static.geetest.com/static/tools/gt.js"></script>
+	</body>
+    <script>
+        /**
+         * 配置极验
+         */
+        $.ajax({
+            url: qscms.root+'?m=Mobile&c=Captcha&type=mobile&t=' + (new Date()).getTime(),
+            type: 'get',
+            dataType: 'json',
+            success: function(config) {
+                initGeetest({
+                    gt: config.gt,
+                    challenge: config.challenge,
+                    offline: !config.success
+                }, function(captchaObj) {
+                    captchaObj.appendTo("#pop");
+                    captchaObj.onSuccess(function() {
+                        doAjax();
+                    });
+                    window.captchaObj = captchaObj
+                });
+            }
+        });
+
+        /**
+         * ajax 提交注册信息
+         */
+        function doAjax() {
+            var url = "{:U('mobile/members/register','',true,false,true)}";
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: $('#registerForm').serialize(),
+                success: function (data) {
+                    if(data.status==1){
+                        window.location.href = data.data.url;
+                    }else{
+                        qsToast({type:2,context: data.msg});
+                    }
+                }
+            });
+        }
+        /**
+         * 注册验证
+         */
+        $('#bindRegBtn').on('click', function() {
+            var configVarifyReg = <if condition="C('qscms_mobile_captcha_open') eq 1 and C('qscms_wap_captcha_config.varify_reg') eq 1">1<else/>0</if>;// 后台是否开启注册验证
+            if (eval(configVarifyReg)) {
+                window.captchaObj.refresh();
+                $('#pop').show();
+            } else {
+                doAjax();
+            }
+        })
+    </script>
+</html>

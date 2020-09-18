@@ -1,0 +1,72 @@
+<div class="modal_mall_exchange">
+    <div class="mall_exc_head"><div class="head_txt">商品信息</div></div>
+    <div class="info_line">商品名称： {$goods_info['goods_title']}</div>
+    <div class="info_line last">兑换数量：  {$num} 个</div>
+    <div class="mall_exc_head last"><div class="head_txt">联系人信息</div></div>
+    <div class="errbox"></div>
+    <div class="info_line_input">
+        <div class="info_line_input_left">联系人</div>
+        <div class="info_line_input_right"><input type="text" name="username" class="info_input" value="{$contact_info['contact']}"></div>
+        <div class="clear"></div>
+    </div>
+    <div class="info_line_input">
+        <div class="info_line_input_left">联系电话</div>
+        <div class="info_line_input_right"><input type="text" name="mobile" class="info_input" value="{$contact_info['mobile']}"></div>
+        <div class="clear"></div>
+    </div>
+    <div class="info_line_input">
+        <div class="info_line_input_left">邮寄地址</div>
+        <div class="info_line_input_right"><textarea class="info_area" name="address" id="address">{$contact_info['address']}</textarea></div>
+        <div class="clear"></div>
+    </div>
+    <div class="btn_group">
+        <input type="button" id="doExchange" class="btn_block" value="立即兑换">
+    </div>
+    <script type="text/javascript">
+        // 验证
+        var regularMobile = /^13[0-9]{9}$|14[0-9]{9}$|15[0-9]{9}$|18[0-9]{9}$|17[0-9]{9}$|16[0-9]{9}$|19[0-9]{9}$/; // 验证手机号正则
+        $('#doExchange').click(function() {
+            var usernameValue = $.trim($('input[name="username"]').val());
+            var mobileValue = $.trim($('input[name="mobile"]').val());
+            var addressValue = $.trim($('#address').val());
+            $('.info_input').removeClass('focus');
+            $('.info_area').removeClass('focus');
+            if (usernameValue == "") {
+                $('.errbox').text('请填写联系人').show();
+                $('input[name="username"]').focus().addClass('focus');
+                return false;
+            }
+            if (mobileValue == "") {
+                $('.errbox').text('请填写联系电话').show();
+                $('input[name="mobile"]').focus().addClass('focus');
+                return false;
+            }
+            if (mobileValue != "" && !regularMobile.test(mobileValue)) {
+                $('.errbox').text('手机号码格式不正确').show();
+                $('input[name="mobile"]').focus().addClass('focus');
+                return false;
+            }
+            if (addressValue == "") {
+                $('.errbox').text('请填写邮寄地址').show();
+                $('#address').focus().addClass('focus');
+                return false;
+            }
+            $('.errbox').text('').hide();
+            var goods_id = "{$goods_info['id']}";
+            var ex_number = "{$num}";
+            var url = "{:U('ajax_exchange_commit')}";
+            $.post(url,{goods_id:goods_id,contact:usernameValue,mobile:mobileValue,address:addressValue,ex_number:ex_number},function(result){
+                if(result.status==1){
+                    $('.modal').remove();
+                    $('.modal_backdrop').remove();
+                    disapperTooltip('success',result.msg);
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 2000);
+                }else{
+                    disapperTooltip('remind',result.msg);
+                }
+            },'json');
+        });
+    </script>
+</div>

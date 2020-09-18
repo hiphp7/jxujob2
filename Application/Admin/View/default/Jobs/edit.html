@@ -1,0 +1,418 @@
+<include file="public:header" />
+<div class="toptit">修改职位- <span style="color:#0066CC">{$info.jobs_name}</span> </div>
+<form id="Form1" name="Form1" method="post" action="{:U('edit')}" >
+  <table width="100%" border="0" cellpadding="4" cellspacing="0" bgcolor="#FFFFFF"  >
+<tr>
+          <td width="110" height="30" align="right" bgcolor="#FFFFFF" >所属会员：</td>
+          <td bgcolor="#FFFFFF" >
+{$info.user.username}
+     </td>
+    </tr>
+    <tr>
+          <td height="30" align="right" bgcolor="#FFFFFF" >所属企业：</td>
+          <td bgcolor="#FFFFFF"  class="link_lan">
+            <a href="{:url_rewrite('QS_companyshow',array('id'=>$info['company_id']))}" target="_blank">{$info.companyname}</a>
+       </td>
+        </tr>
+    <tr>
+          <td height="30" align="right" bgcolor="#FFFFFF" >刷新时间：</td>
+          <td bgcolor="#FFFFFF"  class="link_lan">
+          {:date('Y-m-d',$info['refreshtime'])}
+       </td>
+        </tr>
+        <tr>
+          <td height="30" align="right" bgcolor="#FFFFFF">有效日期：</td>
+          <td bgcolor="#FFFFFF" >发布日期：{:date('Y-m-d H:i',$info['addtime'])}，截止日期：<eq name="info['deadline']" value="0">无限期<else />{:date('Y-m-d H:i',$info['deadline'])}</eq><input name="olddeadline" type="hidden" value="{$info['deadline']}" /></td>
+        </tr>
+     <tr>
+          <td height="30" align="right" bgcolor="#FFFFFF"  ><span style="color:#FF3300; font-weight:bold">*</span> 职位名称：</td>
+          <td  ><input name="jobs_name" type="text" class="input_text_200" id="jobs_name" value="{$info['jobs_name']}" maxlength="50" />
+       </td>
+    </tr>
+        <tr>
+          <td height="30" align="right" bgcolor="#FFFFFF" ><span style="color:#FF3300; font-weight:bold">*</span>  招聘状态：</td>
+          <td bgcolor="#FFFFFF" >
+      <label><input name="display"  type="radio" value="1" <if condition="$info['display'] eq 1">checked="checked"</if> />在招</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     <label><input name="display"  type="radio" value="2" <if condition="$info['display'] eq 2">checked="checked"</if> />关闭</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     </td>
+        </tr>
+    <tr>
+          <td height="30" align="right" bgcolor="#FFFFFF" ><span style="color:#FF3300; font-weight:bold">*</span> 审核状态：</td>
+          <td bgcolor="#FFFFFF" >
+       <label><input name="audit"  type="radio" value="1" <if condition="$info['audit'] eq 1">checked="checked"</if> />审核通过</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label><input name="audit"  type="radio" value="2" <if condition="$info['audit'] eq 2">checked="checked"</if> />审核中</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     
+       <label><input name="audit"  type="radio" value="3" <if condition="$info['audit'] eq 3">checked="checked"</if> />审核未通过</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     </td>
+        </tr>
+       
+     
+    <tr>
+          <td width="110" height="30" align="right" bgcolor="#FFFFFF"  ><span style="color:#FF3300; font-weight:bold">*</span> 性别要求：</td>
+          <td  >
+      
+       <label><input name="sex"  type="radio" value="1"  title="男" <if condition="$info['sex'] eq 1">checked="checked"</if> />男</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <label><input name="sex"  type="radio" value="2"  title="女"  <if condition="$info['sex'] eq 2">checked="checked"</if> />女</label>
+      
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+       <label><input name="sex"  type="radio" value="0"  title="不限" <if condition="$info['sex'] eq 0">checked="checked"</if> />不限</label>
+       <input name="sex_cn" type="hidden" value="{$info.sex_cn}" id="sex_cn" />
+      </td>
+        </tr>
+     <tr>
+          <td width="110" height="30" align="right" bgcolor="#FFFFFF"  >年龄要求：</td>
+          <td class="modVal"  >
+            <input name="minage" type="text" class="input_text_50" id="minage" value="{$info['minage']}" maxlength="3" /> 岁 - <input name="maxage" type="text" class="input_text_50" id="maxage" value="{$info['maxage']}" maxlength="3" /> 岁
+               </td>
+        </tr>
+        <tr>
+          <td height="30" align="right" bgcolor="#FFFFFF" ><span style="color:#FF3300; font-weight:bold">*</span> 职位性质：</td>
+          <td bgcolor="#FFFFFF" >
+<volist name="category['QS_jobs_nature']" id="nature">
+<label><input type="radio" name="nature" value="{$key}" title="{$nature}" <if condition="$info['nature'] eq $key">checked="checked"</if> >{$nature}</label>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</volist>
+<input name="nature_cn" type="hidden" value="{$info.nature_cn}"  id="nature_cn"/>
+      </td>
+        </tr>
+        <tr>
+          <td height="30" align="right" bgcolor="#FFFFFF" ><span style="color:#FF3300; font-weight:bold;">*</span> 招聘人数：</td>
+          <td bgcolor="#FFFFFF" ><input name="amount" type="text" class="input_text_200" id="amount" value="{$info.amount}" maxlength="4" onKeyUp="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');"onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/>
+            人</td>
+        </tr>
+        <tr>
+          <td height="30" align="right"   bgcolor="#FFFFFF" ><span style="color:#FF3300; font-weight:bold">*</span> 职位类别：</td>
+          <td bgcolor="#FFFFFF" >
+       
+      <div>
+        <input type="text" value="{$info['category_cn']|default="请选择"}" readonly="readonly" name="category_cn" id="category_cn" data-title="请选择职位类别" data-multiple="false" data-addjob="true" data-maxnum="0" <if condition="C('qscms_category_jobs_level') gt 2">data-width="667"<else/>data-width="520"</if> data-category="{:C('qscms_category_jobs_level')}" class="input_text_200 input_text_selsect J_resuletitle_jobs"/>
+        <input class="J_resultcode_jobs" name="jobcategory" id="jobcategory" type="hidden" value="{$info['topclass']}.{$info['category']}.{$info['subclass']}" />
+      </div>
+      </td>
+        </tr>
+        <tr>
+          <td height="30" align="right" bgcolor="#FFFFFF" ><span style="color:#FF3300; font-weight:bold">*</span> 工作地区：</td>
+          <td bgcolor="#FFFFFF" >
+      <div>
+        <input type="text" value="{$info['district_cn']|default="请选择"}"  readonly="readonly" name="district_cn" id="district_cn" data-title="请选择工作地区" data-multiple="false" data-maxnum="0" <if condition="C('qscms_category_district_level') gt 2">data-width="667"<else/>data-width="520"</if> data-category="{:C('qscms_category_district_level')}" class="input_text_200 input_text_selsect J_resuletitle_city"/>
+        <input class="J_resultcode_city" name="districtcategory" id="districtcategory" type="hidden" value="{$info['district']}.{$info['sdistrict']}.{$info['tdistrict']}" />
+      </div>
+
+      </td>
+        </tr>
+     <tr>
+          <td width="110" height="30" align="right" bgcolor="#FFFFFF"  ><span style="color:#FF3300; font-weight:bold">*</span> 薪资待遇：</td>
+          <td class="modVal"  >
+            <span class="input_wrap"><input name="minwage" type="text" class="input_text_100 input_val" id="minwage" value="{$info['minwage']}" maxlength="50" /> 元/月 - <input name="maxwage" type="text" class="input_text_100 input_val" id="maxwage" value="{$info['maxwage']}" maxlength="50" /> 元/月 </span><!-- <label><input name="negotiable" type="checkbox" id="J_negotiable" value="1" <if condition="$info['negotiable'] eq 1">checked</if>/>面议</label> -->
+               </td>
+        </tr>
+        <tr>
+          <td height="30" align="right" bgcolor="#FFFFFF" >所属部门：</td>
+          <td bgcolor="#FFFFFF" ><input name="department" type="text" class="input_text_200" id="department" value="{$info.department}" maxlength="4" /></td>
+        </tr>
+       <tr>
+          <td height="30" align="right" bgcolor="#FFFFFF" > 学历要求：</td>
+          <td bgcolor="#FFFFFF" >
+      <div>
+    <input type="text" value="{$info['education_cn']|default="请选择"}"  readonly="readonly" name="education_cn" id="education_cn" class="input_text_200 input_text_selsect"/>
+    <input name="education" id="education" type="hidden" value="{$info.education}" />
+    <div id="menu3" class="menu">
+      <ul>
+      <volist name="category['QS_education']" id="list">
+        <li id="{$key}" title="{$list}">{$list}</li>
+      </volist>
+      </ul>
+    </div>
+      </div>
+       </td>
+          </tr>
+        <tr>
+          <td height="30" align="right" bgcolor="#FFFFFF" >工作经验：</td>
+          <td bgcolor="#FFFFFF" >
+     
+     <div>
+    <input type="text" value="{$info['experience_cn']|default="请选择"}"  readonly="readonly" name="experience_cn" id="experience_cn" class="input_text_200 input_text_selsect"/>
+    <input name="experience" id="experience" type="hidden" value="{$info.experience}" />
+    <div id="menu4" class="menu">
+      <ul>
+      <volist name="category['QS_experience']" id="experience">
+        <li id="{$key}" title="{$experience}">{$experience}</li>
+      </volist>
+      </ul>
+    </div>
+      </div>
+     
+      </td>
+            </tr>
+            <tr>
+          <td height="30" align="right" bgcolor="#FFFFFF" >职位亮点：</td>
+          <td bgcolor="#FFFFFF" >
+     
+     <div>
+      <input type="text" value="{$info['tag_cn']|default="请选择"}"  readonly="readonly" name="tag" id="tag" data-title="请选择职位亮点" data-multiple="true" data-maxnum="6" data-width="582" class="input_text_300 input_text_selsect J_resuletitle_jobtag"/>
+      <input class="J_resultcode_jobtag" name="tag" id="tag" type="hidden" value="{$info.tag}" />
+      </div>
+      </td>
+            </tr>
+
+        <tr>
+          <td align="right" valign="top" bgcolor="#FFFFFF" >
+      <span style="color:#FF3300; font-weight:bold">*</span> 职位描述：</td>
+  <td bgcolor="#FFFFFF" >
+       <textarea name="contents" class="company_mb_textarea" id="contents" style="width:580px; height:180px;" >{$info.contents}</textarea>
+        <br />
+            <div style="line-height:30px; height:30px;">&nbsp;说明：请详细描述该职位，内容可包括：职位要求，岗位职责等。</div></td>
+        </tr>
+    
+    </table>
+    
+<div class="toptit">联系方式</div>
+      <table width="100%" border="0" cellpadding="4" cellspacing="0" bgcolor="#FFFFFF"  >
+    <tr>
+          <td width="110" height="30" align="right" bgcolor="#FFFFFF" ><span style="color:#FF3300; font-weight:bold">*</span> 联 系 人：</td>
+          <td bgcolor="#FFFFFF" >
+      <input name="contact" type="text" class="input_text_200" id="contact" value="{$info.contact.contact}" maxlength="15" />
+           <label><input name="contact_show"  type="checkbox" value="1" <if condition="$info['contact']['contact_show'] eq 1">checked="checked"</if> />联系人在职位详细页中显示</label>
+      </td>
+        </tr>
+    <tr>
+          <td height="30" align="right" bgcolor="#FFFFFF" ><span style="color:#FF3300; font-weight:bold">*</span> 联系手机：</td>
+          <td bgcolor="#FFFFFF" >
+      <input name="telephone" type="text" class="input_text_200" id="telephone" maxlength="35" value="{$info.contact.telephone}" />
+           <label><input name="telephone_show"  type="checkbox" value="1" <if condition="$info['contact']['telephone_show'] eq 1">checked="checked"</if> />联系电话在职位详细页中显示</label>
+      </td>
+        </tr>
+        <tr>
+        <td height="30" align="right"  >固定电话：</td>
+        <td  >
+          <input type="text" id="landline_tel_first" name="landline_tel_first" class="input_text_50" style="width:40px;" maxlength="4"   value="{$telarray[0]}"/>&nbsp;-
+          <input id="landline_tel_next" name="landline_tel_next" type="text" class="input_text_100" style="width:90px;" maxlength="11"   value="{$telarray[1]}"/>&nbsp;-
+          <input id="landline_tel_last" name="landline_tel_last" type="text" class="input_text_50" style="width:40px;" maxlength="6"   value="{$telarray[2]}"/> <label><input name="landline_tel_show"  type="checkbox" value="1" <if condition="$info['contact']['landline_tel_show'] eq 1">checked="checked"</if> />固定电话在职位详细页中显示</label>
+        </td>
+        <td>&nbsp;</td>
+        </tr>
+  <tr>
+          <td height="30" align="right" bgcolor="#FFFFFF" >联系邮箱：</td>
+          <td bgcolor="#FFFFFF" ><label>
+          <input name="email" type="text" class="input_text_200" id="email" maxlength="80"  value="{$info.contact.email}"/>
+          </label>
+           <label><input name="notify"  type="checkbox" value="1" <if condition="$info['contact']['notify'] eq 1">checked="checked"</if> />接收投递的简历</label>
+      </td>
+        </tr>
+        <tr>
+          <td height="30" align="right" bgcolor="#FFFFFF" ><span style="color:#FF3300; font-weight:bold">*</span> 联系地址：</td>
+          <td bgcolor="#FFFFFF" >
+      <input name="address" type="text" class="input_text_200" id="address" maxlength="50"  value="{$info.contact.address}"/>
+      </td>
+        </tr>
+          <tr>
+            <td height="30" align="right" bgcolor="#FFFFFF" >&nbsp;</td>
+            <td height="120" bgcolor="#FFFFFF"><span style="font-size:14px;">
+              <input type="hidden" name="id"  value="{$info.id}" />
+              <input type="hidden" name="uid"  value="{$info.uid}" />
+              <input type="hidden" name="company_id"  value="{$info.company_id}" />       
+              <input name="submit3" type="submit" class="admin_submit"    value="保存修改"/> 
+              <input name="submit22" type="button" class="admin_submit"    value="返 回" onclick="history.go(-1);"/>
+            </span></td>
+          </tr>
+  </table>
+  </form>
+ <!--    
+<form id="Form2" name="Form2" method="post" action="?act=del_auditreason">
+<div class="toptit">职位审核日志</div>
+    <table width="100%" border="0" cellpadding="4" cellspacing="0" bgcolor="#FFFFFF"  >
+    {#foreach from=$jobsaudit item=list#}
+    <tr>
+          <td height="30" width="180" align="right" bgcolor="#FFFFFF" >
+      <label>
+        <input type="checkbox" name="a_id[]" value="{#$list.id#}">
+        <span style="font-weight:bold">{#$list.addtime|date_format:"%Y-%m-%d %H:%M:%S"#}</span> 
+      <label>
+      </td>
+          <td bgcolor="#FFFFFF" >
+        {#$list.reason#}
+      </td>
+        </tr>
+    {#/foreach#}
+    <tr>
+            <td height="30" align="right" bgcolor="#FFFFFF" >&nbsp;</td>
+            <td height="120" bgcolor="#FFFFFF" ><span style="font-size:14px;">
+              <input name="submit3" type="submit" class="admin_submit"    value="删除所选"/> 
+              <input name="submit22" type="button" class="admin_submit"    value="返 回" onclick="window.location.href='{#$url#}'"/>
+            </span></td>
+          </tr>
+  </table>
+ </form> -->
+    
+</div>
+<include file="public:footer" />
+<qscms:load type="category"/>
+<script type="text/javascript" src="../public/js/jquery.modal.userselectlayer.js"></script>
+<script type="text/javascript">
+$(document).ready(function()
+{
+  if ($('#J_negotiable').is(':checked')) {
+    $('#J_negotiable').closest('.modVal').find('.input_val').val('').prop('disabled', !0);
+    $('#J_negotiable').closest('.modVal').find('.input_wrap').hide();
+  } 
+  // 面议选中后，最低和最高薪资不能编辑
+  $('#J_negotiable').die().live('click', function(event) {
+    if ($(this).is(':checked')) {
+      $(this).closest('.modVal').find('.input_val').val('').prop('disabled', !0);
+      $(this).closest('.modVal').find('.input_wrap').hide();
+    } else {
+      $(this).closest('.modVal').find('.input_val').each(function(index, el) {
+        $(this).val($(this).data('title')).prop('disabled', 0);
+      });
+      $(this).closest('.modVal').find('.input_wrap').show();
+    }
+  });
+  showmenu("#education_cn","#menu3","#education");
+  showmenu("#experience_cn","#menu4","#experience");
+  showmenu("#wage_cn","#menu5","#wage");
+  //设置性别中文字段
+  $("input[name='sex']").click(function(){$("#sex_cn").val($(this).attr("title")) });
+  
+  //设置职位性质中文字段
+  $("input[name='nature']").click(function(){$("#nature_cn").val($(this).attr("title")) });
+  jQuery.validator.addMethod("isPhoneNumber", function(value, element) {   
+      var tel = /^((0\d{2,3}-[2-9][0-9]{6,7})|(0\d{2,3}[2-9][0-9]{6,7})|([2-9][0-9]{6,7})|(1[35847]\d{9}))$/;
+      return this.optional(element) || (tel.test(value));
+  }, "请正确填写联系电话");
+  jQuery.validator.addMethod("isLineNumber", function(value, element) {   
+      var tel = /^[0-9]{6,11}$/;
+      return this.optional(element) || (tel.test(value));
+  }, "请输入6-11位的数字");
+  // 自定义验证方法，验证区号
+  $.validator.addMethod("inputRegValiZone", function(value, element, param) {
+    if (this.optional(element))
+        return "dependency-mismatch";
+    var reg = param;
+    if (typeof param == 'string') {
+        reg = new RegExp(param);
+    }
+    return reg.test(value);
+  }, '区号格式不正确');
+  // 自定义验证方法，固话手机二选一
+  $.validator.addMethod("lineMobileAchoice", function(value, element, param) {
+    var regularTelphone = /^13[0-9]{9}$|14[0-9]{9}$|15[0-9]{9}$|18[0-9]{9}$|17[0-9]{9}$|16[0-9]{9}$|19[0-9]{9}$/;
+    var achoice = true;
+    var telphoneValue = $.trim($('#telephone').val());
+    var landlinefirstValue = $.trim($("#landline_tel_first").val());
+    var landlinenextValue = $.trim($("#landline_tel_next").val());
+    if (telphoneValue == '' && landlinenextValue == '') {
+        achoice = false;
+    }
+    if (telphoneValue != "" && !regularTelphone.test(telphoneValue) && landlinenextValue == '') {
+        achoice = false;
+    }
+    return achoice;
+  }, '固定电话和手机号码请至少填写一项');
+  $("#Form1").validate({
+     rules:{
+     jobs_name:{
+      required: true,
+    minlength:2,
+      maxlength:30
+     },
+     amount: {
+      required: true,
+    range:[0,9999]
+     },
+     category: "required",
+     district: "required",
+     wage: "required",
+     education: "required",
+     experience: "required",
+     contents:{
+     required: true,
+      minlength:20,
+      maxlength:2000
+     },
+     contact:{
+     required: true
+     },
+      telephone: {
+        isPhoneNumber: true,
+        lineMobileAchoice: true
+    },
+    landline_tel_first: {
+      inputRegValiZone: '^[0-9]{3}[0-9]?$'
+    },
+    landline_tel_next: {
+      isLineNumber: true,
+      lineMobileAchoice: true
+    },
+    landline_tel_last: {
+      number: true,
+      minlength: 1,
+      maxlength: 4
+    },
+      address: "required"
+    },
+      messages: {
+      jobs_name: {
+      required: "请输入职位名称",
+      minlength: jQuery.format("职位名称不能小于{0}个字符"),
+    maxlength: jQuery.format("职位名称不能大于{0}个字符")
+     },
+     amount: {
+      required: "请输入招聘人数",
+      range: jQuery.format("请输入一个介于 {0} 和 {1} 之间的值")
+     },
+      category: {
+      required: jQuery.format("请选择职位类别，精确选择职位类别可以有效提高招聘效果")
+     },
+      district: {
+      required: jQuery.format("请选择工作地区")
+     },
+     wage: {
+      required: jQuery.format("请选择月薪范围")
+     },
+     education: {
+      required: jQuery.format("请选择学历要求")
+     },
+      experience: {
+      required: jQuery.format("请选择工作经验")
+     },
+     contents: {
+      required: jQuery.format("请填写职位描述"),
+    minlength: jQuery.format("职位描述内容不能小于{0}个字符"),
+    maxlength: jQuery.format("职位描述内容不能大于{0}个字符")
+     },
+     contact: {
+      required: jQuery.format("请填写联系人")
+     },
+      telephone: {
+        isPhoneNumber: jQuery.format("请正确填写联系电话"),
+        lineMobileAchoice: jQuery.format("固定电话和手机号码请至少填写一项")
+     },
+     landline_tel_first: {
+        inputRegValiZone: jQuery.format("请填写正确的区号")
+      },
+      landline_tel_next: {
+        isLineNumber: jQuery.format("请输入6-11位的数字"),
+        lineMobileAchoice: jQuery.format("固定电话和手机号码至少填写一项")
+      },
+      landline_tel_last: {
+        number: jQuery.format("分机号码为数字"),
+        minlength: jQuery.format("分机号码不能小于{0}个字符"),
+        maxlength: jQuery.format("分机号码不能大于{0}个字符")
+      },
+     address: {
+      required: jQuery.format("请填写联系地址")
+     } 
+    },
+    errorPlacement: function(error, element) {
+      if ( element.is(":radio") )
+          error.appendTo( element.parent().next().next() );
+      else if ( element.is(":checkbox") )
+          error.appendTo ( element.next());
+      else
+          error.appendTo(element.parent());
+    }
+      });
+  });
+</script>
+</body>
+</html>

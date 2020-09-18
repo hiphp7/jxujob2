@@ -1,0 +1,21 @@
+<notempty name="article_list">
+  	<div class="imgnews">
+		<div class="imgs">
+			<a href="{$article_list[0]['url']}">
+				<img src="{$article_list[0]['img']}" border="0"/>
+			</a>
+		</div>
+		<div class="txt substring link_yellow">
+			<a href="{$article_list[0]['url']}">{$article_list[0]['title']}</a>
+		</div>
+  	</div>
+    <div class="txtnews link_gray6">
+    	<volist name="article_list" id="article" offset="1" length="14">
+			<div class="nlist substring">
+				<a href="<if condition="$article['is_url'] neq '' and $article['is_url'] neq 'http://'">{$article.is_url}<else/>{:url_rewrite('QS_newsshow',array('id'=>$article['id']),$article['subsite_id'])}</if>" style="<if condition="$article['tit_color']">color:{$article.tit_color};</if><if condition="$article['tit_b'] gt 0">font-weight:bold</if>">{$article.title}</a>
+			</div>
+    	</volist>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+</notempty>

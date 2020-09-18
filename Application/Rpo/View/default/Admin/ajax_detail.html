@@ -1,0 +1,46 @@
+<div class="toptit">
+  <strong>{$info['companyname']}</strong>&nbsp;
+  <span style="color: #999999;">(用户名：{$info['username']}，UID：{$info['uid']})</span>
+</div>
+<table width="702" border="0" cellpadding="10" cellspacing="1" bgcolor="#D0E7F9" class="link_lan">
+  <tr>
+    <td bgcolor="#FFFFFF">
+      服务状态：<empty name="info.status_cn"><span style="color: #FF6600;">未标记</span><else/><span style="color: #003399;">{$info['status_cn']}</span></empty>
+    </td>
+    <td bgcolor="#FFFFFF">申请时间：{:admin_date($info['add_time'])}</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF">服务岗位类别：{$info['job_cn']}</td>
+    <td bgcolor="#FFFFFF">申请服务类型：{$info['stage_cn']}</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF">联系人：{$info['contact']}</td>
+    <td bgcolor="#FFFFFF">联系方式：{$info['phone']}</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF" colspan="2">备注：{$info['notes']}</td>
+  </tr>
+</table>
+<div class="toptit" style="margin-top:15px"><strong>联系记录</strong></div>
+<div style="max-height:200px;width:702px;overflow-y:auto">
+<table width="100%" border="0" cellpadding="10" cellspacing="1" id="list" bgcolor="#D0E7F9" class="link_lan">
+  <notempty name="list">
+    <tr>
+      <td width="120" bgcolor="#FFFFFF" align="center">联系时间</td>
+      <td width="80" bgcolor="#FFFFFF" align="center">联系人</td>
+      <td bgcolor="#FFFFFF">内容</td>
+    </tr>
+    <volist name="list" id="vo">
+    <tr>
+      <td bgcolor="#FFFFFF" align="center">{:date('Y-m-d H:i',$vo['add_time'])}</td>
+      <td bgcolor="#FFFFFF" align="center">{$vo['admin_username']}</td>
+      <td bgcolor="#FFFFFF">{$vo['comment']}</td>
+    </tr>
+    </volist>
+  <else />
+    <tr>
+      <td colspan="3" bgcolor="#FFFFFF">没有任何联系记录！</td>
+    </tr>
+  </notempty>
+</table>
+</div>

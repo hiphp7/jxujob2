@@ -1,0 +1,1 @@
+<?php	return array ( 'module' => 'Crm', 'module_name' => 'CRM接口程序', 'appid' => '', 'version' => '4.2.1', 'is_create_table' => 0, 'is_insert_data' => 0, 'is_exe' => 0, 'is_delete_data' => 0, 'update_time' => '2017-06-09 09:18:52', 'explain' => 'CRM接口程序，需配合CRM客户关系管理系统使用。', ); ?>

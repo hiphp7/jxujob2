@@ -1,0 +1,98 @@
+<include file="Admin@default/public/header" />
+    <div class="toptip">
+        <h2>提示：</h2>
+        <p>退款需要线下处理。<br/>请点击列表中的“退款记录/退款”按钮查看待退款记录。<br />线下退款后请点击列表中的“退款记录/退款”按钮，选择已退款的记录确认退款。</p>
+    </div>
+ <div class="seltpye_x">
+		<div class="left">添加时间</div>	
+		<div class="right">
+        <a href="{:P(array('settr'=>''))}" <if condition="$Think.get.settr eq ''">class="select"</if>>不限</a>
+        <a href="{:P(array('settr'=>'3'))}" <if condition="$Think.get.settr eq '3'">class="select"</if>>三天内</a>
+        <a href="{:P(array('settr'=>'7'))}" <if condition="$Think.get.settr eq '7'">class="select"</if>>一周内</a>
+        <a href="{:P(array('settr'=>'30'))}" <if condition="$Think.get.settr eq '30'">class="select"</if>>一月内</a>
+        <a href="{:P(array('settr'=>'180'))}" <if condition="$Think.get.settr eq '180'">class="select"</if>>半年内</a>
+        <a href="{:P(array('settr'=>'360'))}" <if condition="$Think.get.settr eq '360'">class="select"</if>>一年内</a>
+		<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+  </div>
+  
+  <form id="form1" name="form1" method="post">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" id="list" class="link_lan">
+    <tr>
+      <td height="26" class="admin_list_tit admin_list_first" width="220">
+      <label id="chkAll"><input type="checkbox" name=" " title="全选/反选" id="chk"/>用户名</label>
+	  </td>
+      <td width="140"  align="center" class="admin_list_tit">企业名称</td>
+      <td width="140"  align="center" class="admin_list_tit">待退款金额</td>
+      <td width="140"   align="center" class="admin_list_tit"> 退款状态 </td>
+      <td width="140"   align="center" class="admin_list_tit"> 最后申请时间 </td>
+      <td width="300"   align="center" class="admin_list_tit" >操作</td>
+    </tr>
+	  <volist name="list" id="vo">
+      <tr>
+      <td  class="admin_list admin_list_first">
+        <input name="id[]" type="checkbox" id="id" value="{$vo['id']}"/>   
+        {$vo['username']}
+	    </td>
+		<td align="center"  class="admin_list" >{$vo['companyname']}</td>
+		<td align="center"  class="admin_list" >{$vo['amount']}元</td>
+		<td align="center"  class="admin_list" ><eq name="vo['status']" value="1"><font color="red">待退款</font><else /><font color="gray">已退款</font></eq></td>
+        <td align="center"  class="admin_list">{:admin_date($vo['lasttime'])}</td>
+        <td align="center"  class="admin_list">
+		<a class="fund_detail"  parameter="id={$vo['id']}&uid={$vo['uid']}" href="javascript:void(0);" hideFocus="true">退款记录 / 退款</a></td>
+      </tr>
+      </volist>
+    </table>
+  </form>
+	<if condition="!$list"> 
+	<div class="admin_list_no_info">没有任何信息！</div>
+	</if>
+<table width="100%" border="0" cellspacing="10"  class="admin_list_btm">
+<tr>
+        <td>
+		</td>
+        <td width="305" align="right">
+		<form id="formseh" name="formseh" method="get" action="?">	
+              <input type="hidden" name="m" value="{:MODULE_NAME}">
+              <input type="hidden" name="c" value="{:CONTROLLER_NAME}">
+              <input type="hidden" name="a" value="{:ACTION_NAME}">
+			<div class="seh">
+			    <div class="keybox"><input name="key" type="text"   value="{$Think.get.key}" /></div>
+			    <div class="selbox">
+					<input name="key_type_cn"  id="key_type_cn" type="text" value="{$Think.get.key_type_cn|default="用户名"}" readonly="true"/>
+						<div>
+								<input name="key_type" id="key_type" type="hidden" value="{$Think.get.key_type|default="1"}" />
+												<div id="sehmenu" class="seh_menu">
+														<ul>
+														<li id="1" title="用户名">用户名</li>
+														<li id="2" title="UID">UID</li>
+														</ul>
+												</div>
+						</div>				
+				</div>
+				<div class="sbtbox">
+				<input type="submit" name="" class="sbt" id="sbt" value="搜索"/>
+				</div>
+				<div class="clear"></div>
+		  </div>
+		  </form>
+	    </td>
+      </tr>
+  </table>
+<div class="qspage">{$page}</div>
+</div>
+<include file="Admin@default/public/footer" />
+<script type="text/javascript">
+$(document).ready(function()
+{
+	showmenu("#key_type_cn","#sehmenu","#key_type");
+	  $(".fund_detail").QSdialog({
+	  DialogTitle:"退款记录详情",
+	  DialogContentType:"url",
+	  DialogContent:"{:U('Admin/refund_detail')}&"
+	  });
+});
+</script>
+</body>
+</html>

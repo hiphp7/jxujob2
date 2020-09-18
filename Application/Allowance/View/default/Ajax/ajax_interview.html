@@ -1,0 +1,130 @@
+<div class="interview_dialog">
+	<div class="alw-tip-box">
+        该用户 <span class="co-y">7天内共申请面试 {$count_record} 次</span> 。
+		<notempty name="avg">
+        工作经验与简历相符：<span class="co-y">{$avg['experience']} 分</span>；学历与简历描述相符：<span class="co-y">{$avg['education']}分</span>。
+        </notempty>
+        如果有异常请拒绝面试申请，或向网站客服举报！
+    </div>
+	<div class="tip">
+		<strong>{$fullname}</strong> 您好：<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;感谢您关注 {$company['companyname']}！我们诚挚邀请您来参加面试，请您务必准时到达面试地点，如果时间上有变化请尽快与我们联系。
+	</div>
+	<form id="J_interviewWrap">
+	<input name="record_id" id="record_id" type="hidden" value="{$record_id}"/>
+	<input name="fullname" id="fullname" type="hidden" value="{$fullname}"/>
+	<input name="company_name" id="company_name" type="hidden" value="{$company['companyname']}"/>
+		<div class="content">
+			<div class="td1">
+				<span class="asterisk"></span>&nbsp;面试职位：
+			</div>
+			<div class="td2 J_dropdown J_listitme_parent">
+				<div class="jobname">
+					{$jobs['jobs_name']}
+				</div>
+				<input name="jobs_name" id="jobs_name" type="hidden" value="{$jobs['jobs_name']}"/>
+			</div>
+			<div class="clear"></div>
+			<div class="td1">
+				<span class="asterisk"></span>&nbsp;面试时间：
+			</div>
+			<div class="td2">
+				<div>
+					<input class="J_listitme_code select_input_date" name="date" id="date" value="" placeholder="请选择日期" />
+				</div>
+				<div class="select_input am_or_pm J_dropdown J_listitme_parent">
+					<span class="J_listitme_text">上午</span>
+					<div class="dropdowbox4 J_dropdown_menu">
+			            <div class="dropdow_inner4 w80">
+			                <ul class="nav_box">
+			                	<li><a class="J_listitme J_morafter" href="javascript:;" data-code="1">上午</a></li>
+			                	<li><a class="J_listitme J_morafter" href="javascript:;" data-code="2">下午</a></li>
+			                </ul>
+			            </div>
+			        </div>
+					<input class="J_listitme_code" name="ap" type="hidden" value="1"/>
+				</div>
+				<div class="select_input time J_dropdown J_listitme_parent">
+					<span class="J_listitme_text J_forafmor_txt">请选择</span>
+					<div class="dropdowbox4 J_dropdown_menu">
+			            <div class="dropdow_inner4 w100">
+			                <ul class="nav_box">
+			                	<li class="J_forafternoon"><a class="J_listitme" href="javascript:;" data-code="2">2：00</a></li>
+			                	<li class="J_forafternoon"><a class="J_listitme" href="javascript:;" data-code="3">3：00</a></li>
+			                	<li class="J_forafternoon"><a class="J_listitme" href="javascript:;" data-code="4">4：00</a></li>
+			                	<li class="J_forafternoon"><a class="J_listitme" href="javascript:;" data-code="5">5：00</a></li>
+			                	<li class="J_formorning"><a class="J_listitme" href="javascript:;" data-code="8">8：00</a></li>
+			                	<li class="J_formorning"><a class="J_listitme" href="javascript:;" data-code="9">9：00</a></li>
+			                	<li class="J_formorning"><a class="J_listitme" href="javascript:;" data-code="10">10：00</a></li>
+			                	<li class="J_formorning"><a class="J_listitme" href="javascript:;" data-code="11">11：00</a></li>
+			                </ul>
+			            </div>
+			        </div>
+					<input class="J_listitme_code J_forafmor_code" name="time" type="hidden" value="0"/>
+				</div>
+				<div class="clear"></div>
+				
+			</div>
+			<div class="clear"></div>
+			<div class="td1">
+				<span class="asterisk"></span>&nbsp;面试地点：
+			</div>
+			<div class="td2">
+				<input type="text" value="{$company.address|default=$company.district_cn}" class="input_300_34" name="address">
+			</div>
+			<div class="clear"></div>
+			<div class="td1">
+				<span class="asterisk"></span>&nbsp;联系人：
+			</div>
+			<div class="td2">
+				<input type="text" value="{$company.contact}" class="input_300_34" name="contact">
+			</div>
+			<div class="clear"></div>
+			<div class="td1">
+				<span class="asterisk"></span>&nbsp;联系电话：
+			</div>
+			<div class="td2">
+				<div class="select_input contact_type J_dropdown J_listitme_parent">
+					<span class="J_listitme_text">手机</span>
+					<div class="dropdowbox4 J_dropdown_menu">
+			            <div class="dropdow_inner4 w80">
+			                <ul class="nav_box">
+			                	<li><a class="J_listitme tel_type" href="javascript:;" data-code="{$company.telephone}">手机</a></li>
+			                	<li><a class="J_listitme tel_type" href="javascript:;" data-code="{$company.landline_tel}">座机</a></li>
+			                </ul>
+			            </div>
+			        </div>
+				</div>
+				<input type="text" class="contact" value="{$company.telephone}" name="telephone">
+			</div>
+			<div class="clear"></div>
+			<div class="td1">
+				&nbsp;备注：
+			</div>
+			<div class="td2">
+				<input type="text" placeholder="最多输入40个字！" class="input_300_34" name="notes">
+			</div>
+			<div class="clear"></div>
+		</div>
+		<input name="resume_id" type="hidden" value="{$resume_id}"/>
+	</form>
+</div>
+<script type="text/javascript">
+	$(".tel_type").click(function(){
+		$(".contact").val($(this).attr('data-code'));
+	});
+	// 面试时间上下午切换
+	$('.J_forafternoon').hide();
+	$('.J_morafter').die().live('click', function(event) {
+		$('.J_forafmor_txt').text('请选择');
+		$('.J_forafmor_code').val('0');
+		var thisCode = $(this).data('code');
+		if (thisCode > 1) {
+			$('.J_forafternoon').show();
+			$('.J_formorning').hide();
+		} else {
+			$('.J_formorning').show();
+			$('.J_forafternoon').hide();
+		}
+	});
+</script>

@@ -1,0 +1,19 @@
+﻿/*说明页*/
+.explain_topimg{margin:0 auto; width:1200px; margin-top:25px;}
+.explain_topimg img{ width:1200px; height:110px;}
+
+.explain{margin:0 auto; width:1200px; margin-top:25px;}
+.explain .el{float:left;width:180px;}
+.explain .el .enav{ width:179px; border-right:1px #EEEEEE solid; padding-top:20px; padding-bottom:300px;}
+.explain .el .enav .tli{ width:179px; border-bottom:1px #EEEEEE solid; text-align:center; font-size:22px; padding-bottom:20px; }
+.explain .el .enav .eli{ width:178px; border-bottom:1px #EEEEEE solid; border-left:1px #EEEEEE solid; text-align:center; font-size:14px; height:48px; line-height:48px; }
+.explain .el .enav .eli:hover{ background-color:#F7F7F7; color:#FF6600;}
+.explain .el .enav .eli:hover a{color:#FF6600;}
+.explain .el .enav .eli.select{ background-color:#F7F7F7; color:#FF6600; font-weight:bold}
+.explain .el .enav .eli.select a{color:#FF6600;}
+.explain .er{float:left;width:1020px;}
+.explain .er .main{ width:940px; margin:0 auto; padding-top:20px; padding-bottom:15px;}
+.explain .er .main .tit{font-size:22px; height:45px;}
+.explain .er .main .txt{font-size:14px; line-height:180%;}
+ 
+ 

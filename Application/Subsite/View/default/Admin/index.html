@@ -1,0 +1,56 @@
+<include file="Admin@default/public/header" />
+	<div class="toptip">
+        <h2>提示：</h2>
+        <p>增分站后，需要将分站域名解析至主站；</br>
+如需使用触屏版域名，需要将触屏版域名解析至主站。
+		</p>
+    </div>
+	<form action="{:U('admin/delete')}" method="post" enctype="multipart/form-data" name="form1" id="form1">
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" id="list" class="link_lan">
+		    <tr>
+		      <td width="180" class="admin_list_tit admin_list_first"><label id="chkAll"><input type="checkbox" name="chkAll"  id="chk" title="全选/反选" />分站名称</label></td>
+		      <td  class="admin_list_tit">域名</td>
+		      <td  class="admin_list_tit">触屏版域名</td>
+		      <td width="100"  class="admin_list_tit">状态</td>
+		      <td width="150"  class="admin_list_tit">地区</td>
+		      <td width="150"  class="admin_list_tit">模版</td>
+		      <td width="150" align="center"  class="admin_list_tit">操作</td>
+		    </tr>
+			<volist name="list" id="list">
+				<tr>
+			      <td  class="admin_list admin_list_first"><input type="checkbox" name="s_id[]" value="{$list.s_id}"/>{$list.s_sitename}<span style="color: #999999">(id:{$list.s_id})</span>
+				  </td>
+			      <td   class="admin_list"><a href="http://{$list.s_domain}" target="_blank">{$list.s_domain}</a></td>
+			      <td   class="admin_list"><if condition="$list['s_m_domain']"><a href="http://{$list.s_m_domain}" target="_blank">{$list.s_m_domain}</a><else/>/</if></td>
+			      <td   class="admin_list"><if condition="$list['s_effective'] eq 1">可用<else/><span style="color:#CCCCCC">禁用</span></if></td>
+			      <td   class="admin_list">
+				   {$list.s_districtname}
+				  </td>
+			      <td   class="admin_list">
+			      	<if condition="$list['s_tpl']">默认<else/>{$list.s_tpl}</if>
+				  </td>
+			      <td align="center"   class="admin_list">
+				  <a href="{:U('admin/edit',array('s_id'=>$list['s_id']))}" >修改</a>
+					&nbsp;&nbsp;
+					<a href="{:U('admin/delete',array('s_id'=>$list['s_id']))}" onclick="return confirm('删除后无法恢复，您确定要删除吗？')">删除</a>	  </td>
+			    </tr>
+			</volist>
+		</table>
+		<if condition="!$list">
+			<div class="admin_list_no_info">没有任何信息！</div>
+		</if>
+		<table width="100%" border="0" cellspacing="10" cellpadding="0" class="admin_list_btm">
+		      <tr>
+		        <td>
+					<input type="button" class="admin_submit" id="ButAudit" value="添加分站"  onclick="window.location='{:U('admin/add')}'"/>
+					<input type="submit" class="admin_submit" id="ButAudit" onclick="return confirm('删除后无法恢复，您确定要删除吗？')"  value="删除"/>
+				</td>
+		        <td width="305" align="right"></td>
+		      </tr>
+		</table>
+	</form>
+	<div class="qspage">{$page}</div>
+</div>
+<include file="Admin@default/public/footer" />
+</body>
+</html>

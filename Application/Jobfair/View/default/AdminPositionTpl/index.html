@@ -1,0 +1,73 @@
+<include file="Admin@default/public/header" />
+   <div class="seltpye_x">
+		<div class="left">可用状态</div>	
+		<div class="right">
+        <a href="{:P(array('status'=>''))}" <if condition="$Think.get.status eq ''">class="select"</if>>不限</a>
+        <a href="{:P(array('status'=>1))}" <if condition="$Think.get.status eq 1">class="select"</if>>可用</a>
+        <a href="{:P(array('status'=>2))}" <if condition="$Think.get.status eq 2">class="select"</if>>不可用</a>
+		<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+  </div>
+  
+  <form id="form1" name="form1" method="post" action="{:U('delete')}">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" id="list" class="link_bk">
+    <tr>
+      <td height="26" class="admin_list_tit admin_list_first" width="220">
+      <label id="chkAll"><input type="checkbox" name=" " title="全选/反选" id="chk"/>模板名称</label>
+	  </td>
+      <td width="80"   align="center" class="admin_list_tit"> 状态 </td>
+      <td width="300"   align="center" class="admin_list_tit" >操作</td>
+    </tr>
+	  <volist name="list" id="vo">
+      <tr>
+      <td  class="admin_list admin_list_first">
+        <input name="id[]" type="checkbox" id="id" value="{$vo['id']}"/>   
+        {$vo['title']}
+	    </td>
+        <td align="center"  class="admin_list">
+		<if condition="$vo['status'] eq 1"> 
+		可用
+		<else />
+		<span style="color: #999999">不可用</span>
+		</if>
+		</td>
+        <td align="center"  class="admin_list">
+		<a href="{:U('edit',array('id'=>$vo['id']))}">修改</a> &nbsp;&nbsp;
+		<a href="{:U('delete',array('id'=>$vo['id']))}" onclick="return confirm('你确定要删除吗？')">删除</a></td>
+      </tr>
+      </volist>
+    </table>
+  </form>
+	<if condition="!$list"> 
+	<div class="admin_list_no_info">没有任何信息！</div>
+	</if>
+<table width="100%" border="0" cellspacing="10"  class="admin_list_btm">
+<tr>
+        <td>
+        <input name="ButADD" type="button" class="admin_submit" id="ButADD" value="新增"  onclick="window.location='{:U('add')}'"/>
+		<input name="ButDel" type="button" class="admin_submit" id="ButDel"  value="删除所选"/>
+		</td>
+        <td width="305" align="right">
+		
+	    </td>
+      </tr>
+  </table>
+<div class="qspage">{$page}</div>
+</div>
+<include file="Admin@default/public/footer" />
+<script type="text/javascript">
+$(document).ready(function()
+{
+	//点击批量取消	
+	$("#ButDel").click(function(){
+		if (confirm('你确定要删除吗？'))
+		{
+			$("form[name=form1]").submit()
+		}
+	});
+		
+});
+</script>
+</body>
+</html>

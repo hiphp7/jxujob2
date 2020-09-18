@@ -1,0 +1,66 @@
+<include file="Admin@default/public/header" />
+	<form action="{:U('Admin/msg_del')}" method="post" enctype="multipart/form-data" name="form1" id="form1">
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" id="list" class="link_lan"  >
+			<tr>
+				<td height="26" class="admin_list_tit admin_list_first" >
+				<label id="categorychkAll"><input type="checkbox" name=" " title="全选/反选" id="chk" />用户名
+				</label>
+				</td>
+				<td width="200"   align="center"  class="admin_list_tit">OpenId</td>
+				<td width="500"   align="center"  class="admin_list_tit">消息内容</td>
+				<td width="100"   align="center"  class="admin_list_tit">发送时间</td>
+				<td width="200"   align="center" class="admin_list_tit">操作</td>
+			</tr>
+			<notempty name="list">
+				<volist name="list" id="list">
+					<tr id="tr_{$list.id}">
+					<td   class="admin_list admin_list_first" >
+					<input type="checkbox" name="id[]" value="{$list.id}" id="{$list.id}"  class="Bcheck"/>
+					{$list.username}
+					<span style="color:#CCCCCC">(uid:{$list.uid})</span>	  </td>
+					<td align="center"  class="admin_list">
+					{$list.weixin_openid}
+					</td>
+					<td align="center"  class="admin_list">
+					{$list.content}
+					</td>
+					<td align="center"  class="admin_list">
+					{:admin_date($list['sendtime'])}
+					</td>
+					<td align="center" class="admin_list">
+					<a href="{:U('Admin/msg_send',array('uid'=>$list['uid']))}">发送消息</a>&nbsp;&nbsp;
+					<a onclick="return confirm('你确定要解除此记录吗？')" href="{:U('Admin/msg_del',array('id'=>$list['id']))}">删除</a>
+					</td>
+					</tr>
+		    	</volist>
+		    <else/>
+				<tr>
+					<td class="admin_list" style="padding-left:10px;">没有任何信息!</td>
+					<td align="center" class="admin_list">&nbsp;</td>
+					<td class="admin_list">&nbsp;</td>
+					<td class="admin_list">&nbsp;</td>
+					<td class="admin_list">&nbsp;</td>
+				</tr>
+			</notempty>
+		</table>
+		<table width="100%" border="0" cellspacing="10"  class="admin_list_btm">
+			<tr>
+		        <td>
+			        <input name="ButAddQueue" type="button" class="admin_submit" id="ButAddQueue" value="批量发送" onclick="javascript:location.href='{:U('Admin/msg_queue_send')}'"/>
+			        <input name="ButADD" type="submit" class="admin_submit" id="ButCancel" value="删除"/>
+				</td>
+		        <td width="305" align="right"></td>
+		    </tr>
+		</table>
+		<div class="qspage">{$page}</div>
+	</form>
+</div>
+<include file="Admin@default/public/footer" />
+<script type="text/javascript">
+$(document).ready(function(){
+	//全选
+	$('#categorychkAll').click(function(){$("#form1 :checkbox").attr('checked',$("#chk").attr('checked'))});
+});
+</script>
+</body>
+</html>

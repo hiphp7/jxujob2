@@ -1,0 +1,23 @@
+<volist name="log_list" id="vo">
+    <if condition="$vo['note']">
+        <div class="other_msg_box" fid="{$vo.id}">
+            <img src="{$vo.photosrc}" alt="" onclick="window.location='{$vo.url}'" class="m_ava">
+            <div class="m_wra_name">{$vo.name}</div>
+            <div class="m_wra_i"></div>
+            <div class="m_wra_txt">
+                {$vo.note}
+            </div>
+            <div class="m_wra_time">{:date('Y-m-d',$vo['addtime'])}</div>
+        </div>
+    <else />
+        <div class="other_msg_box" fid="{$vo.id}">
+            <img src="{$vo.photosrc}" onclick="window.location='{$vo.url}'" alt="" class="m_ava">
+            <div class="m_wra_name">{$vo.name}</div>
+            <div class="m_wra_i"></div>
+            <div class="m_wra_txt">
+                <div class="m_wra_img"><img class="J_for_bigimg" data-src="{:attach($vo['note_img'],'subject_message_img')}" src="{:attach($vo['note_img'],'subject_message_img')}" alt=""></div>
+            </div>
+            <div class="m_wra_time">{:date('Y-m-d',$vo['addtime'])}</div>
+        </div>
+    </if>
+</volist>

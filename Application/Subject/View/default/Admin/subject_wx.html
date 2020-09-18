@@ -1,0 +1,130 @@
+<div class="dialog_box">
+    <form action="{:U('subject_wx')}" method="post" name="form" id="form">
+        <table width="500" border="0" align="center" cellpadding="0" cellspacing="6">
+            <tr>
+                <td width="90" height="20">参会企业：</td>
+                <td height="20">{$info.companyname}</td>
+            </tr>
+            <tr>
+                <td width="90" height="25">二维码方式：</td>
+                <td>
+                    <div class="imgradio">
+                        <input name="audit" type="hidden" value="2">
+                        <div class="J_face_up radio select" data="2">自主上传</div>
+                        <div class="J_face_up radio " data="1">当场客服</div>
+                        <div class="clear"></div>
+                    </div>
+                </td>
+            </tr>
+            <tr id="J_up_bar">
+                <td width="90" height="20">&nbsp;</td>
+                <td height="20" id="J_up_content">
+                    <if condition="!$subject['wx_photo']">
+                        <div class="fr J-file-input-box">
+                            <div class="file-input-block" id="J_upload_qr" name="wx_photo">
+                                <span class="o-txt">上传微信群或个人二维码</span>
+                            </div>
+                        </div>
+                    <else />
+                        <div class="imglist J_img_list">
+                            <div class="li" style="margin:0">
+                                <a class="J_li_a" href="" target="_blank">
+                                    <img src="{:attach($subject['wx_photo'],'images')}" border="0" align="absmiddle">
+                                </a>
+                                <div class="imgfoot link_w">
+                                    <div class="date">2020-02-05 15:22</div>
+                                    <div class="manager"><a id="J_upload_qr_change_btn"  name="wx_photo" href="javascript:void(0);" class="userinfo" parameter="" hidefocus="true">修改</a></div>
+                                    <div class="del"><a class="J_qr_del" href="javascript:;" onclick="return confirm('你确定要删除吗？')">删除</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </if>
+                </td>
+            </tr>
+            <tr>
+                <td width="90" height="25">备注：</td>
+                <td>
+                    <textarea name="note" class="input_text_default small" style="height:60px; line-height:180%"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td height="25">&nbsp;</td>
+                <td>
+                    <input type="hidden" class="file-input-save-name" name="wx_photo" value="">
+                    <input type="hidden" name="id" value="{$subject.id}">
+                    <input type="submit" name="set_audit" value="确定" class="admin_submit"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script>
+    <if condition="!$subject['wx_photo']">
+        // 上传二维码
+        $.upload('#J_upload_qr',{name:'wx_photo',dir:'images'},function(result){
+            if(result.error == 1){
+                $('.file-input-save-name').val(result.url.savename);
+                var eHtml = '<div class="imglist J_img_list"><div class="li" style="margin:0"><a class="J_li_a" href="'+result.url.src+'" target="_blank"><img src="'+result.url.src+'" border="0" align="absmiddle"></a><div class="imgfoot link_w"><div class="date">'+result.url.time+'</div><div class="manager"><a id="J_upload_qr_change_btn"  name="wx_photo" href="javascript:void(0);" class="userinfo" parameter="" hidefocus="true">修改</a></div><div class="del"><a class="J_qr_del" href="javascript:;" onclick="return confirm(\'你确定要删除吗？\')">删除</a></div></div></div></div>';
+                $('#J_up_content').html(eHtml);
+                // 修改
+                $.upload('#J_upload_qr_change_btn',{name:'wx_photo',dir:'images'},function(result){
+                    if(result.error == 1){
+                        $('.J_img_list').find('.J_li_a').attr('href', result.url.src);
+                        $('.J_img_list').find('img').attr('src', result.url.src);
+                        $('.file-input-save-name').val(result.url.savename);
+                    } else {
+                        disapperTooltip("remind", "上传失败："+result.message);
+                    }
+                });
+            } else {
+                disapperTooltip("remind", "上传失败："+result.message);
+            }
+        });
+    <else />
+        // 修改
+        $.upload('#J_upload_qr_change_btn',{name:'wx_photo',dir:'images'},function(result){
+            if(result.error == 1){
+                $('.J_img_list').find('.J_li_a').attr('href', result.url.src);
+                $('.J_img_list').find('img').attr('src', result.url.src);
+                $('.file-input-save-name').val(result.url.savename);
+            } else {
+                disapperTooltip("remind", "上传失败："+result.message);
+            }
+        });
+    </if>
+    // 删除
+    $('.J_qr_del').die().live('click', function() {
+        $(this).closest('.J_img_list').remove();
+        var addHtml = '<div class="fr J-file-input-box"><div class="file-input-block" id="J_upload_qr" name="wx_photo"><span class="o-txt">上传微信群或个人二维码</span></div></div>';
+        $('#J_up_content').html(addHtml);
+        // 上传二维码
+        $.upload('#J_upload_qr',{name:'wx_photo',dir:'images'},function(result){
+            if(result.error == 1){
+                $('.file-input-save-name').val(result.url.savename);
+                var eHtml = '<div class="imglist J_img_list"><div class="li" style="margin:0"><a class="J_li_a" href="'+result.url.src+'" target="_blank"><img src="'+result.url.src+'" border="0" align="absmiddle"></a><div class="imgfoot link_w"><div class="date">'+result.url.time+'</div><div class="manager"><a id="J_upload_qr_change_btn"  name="wx_photo" href="javascript:void(0);" class="userinfo" parameter="" hidefocus="true">修改</a></div><div class="del"><a class="J_qr_del" href="javascript:;" onclick="return confirm(\'你确定要删除吗？\')">删除</a></div></div></div></div>';
+                $('#J_up_content').html(eHtml);
+                // 修改
+                $.upload('#J_upload_qr_change_btn',{name:'wx_photo',dir:'images'},function(result){
+                    if(result.error == 1){
+                        $('.J_img_list').find('.J_li_a').attr('href', result.url.src);
+                        $('.J_img_list').find('img').attr('src', result.url.src);
+                        $('.file-input-save-name').val(result.url.savename);
+                    } else {
+                        disapperTooltip("remind", "上传失败："+result.message);
+                    }
+                });
+            } else {
+                disapperTooltip("remind", "上传失败："+result.message);
+            }
+        });
+    });
+    // 二维码方式
+    $('.J_face_up').click(function() {
+        var cuData = $(this).attr('data');
+        if (eval(cuData) === 1) {
+            $('#J_up_bar').hide();
+        } else {
+            $('#J_up_bar').show();
+        }
+    });
+</script>

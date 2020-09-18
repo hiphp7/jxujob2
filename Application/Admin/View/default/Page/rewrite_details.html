@@ -1,0 +1,48 @@
+<include file="public:header" />
+	<div class="toptit">伪静态规则详情</div>
+	<table width="100%" border="0" cellpadding="4" cellspacing="0" class="admin_table" >
+		<tr>
+			<td height="30" align="right" width="120" style="border:0px;">规则名称：</td>
+			<td style="border:0px;" width="220">{$info.name}</td>
+			<td height="30" align="right" width="120">更新时间：</td>
+			<td>{$info.update_time}</td>
+		</tr>
+		<tr>
+			<td height="30" align="right" width="120">别名：</td>
+			<td>{$info.alias}</td>
+			<td height="30" align="right" width="120">作者：</td>
+			<td>{$info.author}</td>
+		</tr>
+		<tr>
+			<td height="30" align="right" width="120">版本：</td>
+			<td>{$info.versions}</td>
+			<td height="30" align="right" width="120">说明：</td>
+			<td>{$info.explain}</td>
+		</tr>
+	</table>
+	<div class="toptit">页面规则</div>
+	<table width="100%" border="0" cellpadding="0" cellspacing="0"  id="list" class="link_lan">
+		<tr>
+			<td width="16%" class="admin_list_tit  admin_list_first">页面名称</td>
+			<td width="20%" class="admin_list_tit">别名</td>
+			<td class="admin_list_tit">链接</td>
+		</tr>
+		<volist name="page" id="page">
+			<tr>
+				<td class="admin_list admin_list_first">{$page.pname}</td>
+				<td class="admin_list">{$page.alias}</td>
+				<td class="admin_list" title="{$info['config_url'][$page['alias']]['rewrite']|nl2br}">{$info['config_url'][$page['alias']]['rewrite']}</td>
+			</tr>
+		</volist>
+	</table>
+	<table width="100%" border="0" cellspacing="10"  class="admin_list_btm">
+		<tr id="J_run">
+			<td>
+				<input name="ButADD" type="button" class="admin_submit" id="ButADD" value="返回"  onclick="window.location='{:U('page/rewrite')}'"/>
+			</td>
+		</tr>
+	</table>
+</div>
+<include file="public:footer" />
+</body>
+</html>

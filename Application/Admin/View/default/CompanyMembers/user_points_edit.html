@@ -1,0 +1,78 @@
+<include file="public:header" />
+  
+      <div class="toptit">会员{:C('qscms_points_byname')}设置 <span style="color:#0066CC">({$company_user.username})</span> </div>
+      <form id="form1" name="form1" method="post" action="{:U('user_points_edit')}">
+        <table width="800" border="0" cellpadding="4" cellspacing="0"   >
+          <tr>
+            <td width="120" height="30" align="right"  >会员{:C('qscms_points_byname')}：</td>
+            <td  style="color: #FF6600; font-size:16px;" >{$userpoints}&nbsp;</td>
+          </tr>
+          <tr>
+            <td height="30" align="right"  >操作{:C('qscms_points_byname')}：</td>
+            <td   >
+              <label><input name="points_type" type="radio" value="1" checked="checked" />增加</label>
+              &nbsp;&nbsp;&nbsp;
+              <label><input name="points_type" type="radio" value="2" />减少</label>
+            </td>
+          </tr>
+          <tr>
+            <td height="30" align="right"  >增减{:C('qscms_points_byname')}：</td>
+            <td   >
+              <input name="points" type="text"  id="points" maxlength="5" value="0"  class="input_text_50"  />
+            {:C('qscms_points_quantifier')}        </td>
+          </tr>
+          <tr>
+            <td height="30" align="right"  >操作说明：</td>
+            <td   >
+              <input name="points_notes" type="text" class="input_text_200" id="points_notes" maxlength="60" value="" style="width:450px;"/>        </td>
+          </tr>
+            <tr>
+              <td align="right" ><span style="color:#FF0000">是否已收费：</span></td>
+              <td >
+                <label>
+                  <input name="is_money" type="radio" value="1" checked="checked" class="yes_money3"/>
+                是</label> &nbsp;&nbsp;&nbsp;<label>
+                <input name="is_money" type="radio" value="0"  class="no_money3"/>
+              否</label>
+            </td>
+          </tr>
+          <tr class="log_amount3">
+            <td align="right"  ><span style="color:#FF0000">收费金额：</span></td>
+            <td ><input name="log_amount" type="text" class="input_text_200"  value="{$setmeal.log_amount}" maxlength="5"/> 元
+            <span class="admin_note">(请填写收费金额)</span> </td>
+          </tr>
+          <tr>
+            <td height="30" align="right"  >&nbsp;</td>
+            <td height="35"   ><span style="font-size:14px;">
+              <input type="hidden" name="_k_v" value="{$Think.get._k_v}">
+              <input type="hidden" name="uid"  value="{$company_user.uid}" />
+              <input name="submit3" type="submit" class="admin_submit"    value="确定"/>
+              <input name="submit22" type="button" class="admin_submit"    value="返 回" onclick="Javascript:window.history.go(-1)"/>
+            </span></td>
+          </tr>
+        </table>
+      </form>
+  <div class="toptit">
+  {:C('qscms_points_byname')}消费明细 <span style="color:#0066CC">({$company_user.username})</span></div>
+  <table width="800" border="0" cellpadding="0" cellspacing="0" id="list" class="link_lan">
+      <volist name="list['list']" id="vo">
+        <tr>
+        <td  class="admin_list admin_list_first">
+        {:admin_date($vo['addtime'])}
+        </td>
+        <td  class="admin_list" align="center">
+        <if condition="$vo['operate'] eq 1">
+          + {$vo['points']}
+          <else />
+          - {$vo['points']}
+          </if>
+        </td>
+        <td class="admin_list" align="center">{$vo['htype_cn']}</td>
+        </tr>
+      </volist>
+</table>
+    <div class="qspage">{$list['page']}</div>
+  </div>
+<include file="public:footer" />
+</body>
+</html>

@@ -1,0 +1,93 @@
+<include file="public:header" />
+	<div class="toptit">注册设置</div>
+	<form action="{:U('config/edit')}" method="post"  name="form1" id="form1">
+	<table width="100%" border="0" cellspacing="10" cellpadding="1" style=" margin-bottom:3px; margin-top:10px;">
+		<tr>
+				<td align="right">关闭会员注册：</td>
+				<td>
+					<label>
+					<input name="closereg" type="radio" id="closereg" value="0" <if condition="C('qscms_closereg') eq 0">checked="checked"</if>/>否</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<label >
+					<input type="radio" name="closereg" value="1" <if condition="C('qscms_closereg') eq 1">checked="checked"</if>/>是</label>
+				</td>
+			</tr>
+			
+			<tr>
+				<td align="right">邮件注册会员激活：</td>
+				<td>
+					<label>
+					<input name="check_reg_email" type="radio" id="check_reg_email" value="0" <if condition="C('qscms_check_reg_email') eq 0">checked="checked"</if>/>否</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<label >
+					<input type="radio" name="check_reg_email" value="1" <if condition="C('qscms_check_reg_email') eq 1">checked="checked"</if>/>是</label>
+					
+					<span class="admin_note" >（如选择必须激活，邮箱注册成后系统会发一份邮件到注册邮箱，点击链接激活后才能注册成功）</span>
+				</td>
+			</tr>
+		<tr>
+			<td width="180" align="right">手机注册用户名前缀：</td>
+			<td > 
+				<input name="reg_prefix" type="text"  class="input_text_200" id="reg_prefix" value="{:C('qscms_reg_prefix')}" maxlength="10"/>
+				<span class="admin_note" >（手机注册会自动生成用户名，生成规则：随机字符+手机号，如:user_18636535353）</span>
+			</td>
+		</tr>
+		<tr>
+			<td width="180" align="right">邮箱注册用户名前缀：</td>
+			<td > 
+				<input name="email_reg_prefix" type="text"  class="input_text_200" id="email_reg_prefix" value="{:C('qscms_email_reg_prefix')}" maxlength="10"/>
+				<span class="admin_note" >（邮箱注册会自动生成用户名，生成规则：随机字符+邮箱，如:user_1234qqcom）</span>
+			</td>
+		</tr>
+		<tr>
+			<td width="180" align="right">第三方注册生成用户名前缀：</td>
+			<td > 
+			<input name="third_reg_prefix" type="text"  class="input_text_200" id="third_reg_prefix" value="{:C('qscms_third_reg_prefix')}" maxlength="10"/> <span class="admin_note" >第三方注册是指微信注册，QQ注册后生成的用户名</span>
+			</td>
+		</tr>
+		<tr>
+			<td width="180" align="right">快速注册生成密码：</td>
+			<td  id="reg_weixin_password_tpye">
+				<label>
+					<input name="reg_password_tpye"  type="radio" value="1" <if condition="C('qscms_reg_password_tpye') eq 1">checked="checked"</if>/>
+					与用户名相同
+				</label>&nbsp;&nbsp;&nbsp;
+				<label>
+					<input name="reg_password_tpye"  type="radio" value="2" <if condition="C('qscms_reg_password_tpye') eq 2">checked="checked"</if>/>
+					随机密码
+				</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<label>
+					<input name="reg_password_tpye"  type="radio" value="3" <if condition="C('qscms_reg_password_tpye') eq 3">checked="checked"</if>/>
+					指定密码
+				</label>&nbsp;&nbsp;&nbsp;
+			</td>
+		</tr>
+		<tr id="config_reg_password" <if condition="C('qscms_reg_password_tpye') neq 3">style="display:none"</if>>
+			<td width="180" align="right">输入指定密码：</td>
+			<td >
+				<input name="reg_weixin_password" type="text"  class="input_text_200" id="reg_weixin_password" value="{:C('qscms_reg_weixin_password')}" maxlength="16"/> 
+			</td>
+		</tr>
+		<tr>
+			<td align="right">&nbsp;</td>
+			<td height="50">
+				<span style="font-size:14px;">
+					<input name="submit2" type="submit" class="admin_submit" value="保存修改"/>
+				</span>
+			</td>
+		</tr>
+	</table>
+	</form>
+</div>
+<include file="public:footer" />
+<script type="text/javascript">
+	$('input[name="reg_password_tpye"]').click(function(){
+		if($(this).val() == 3){
+			$('#config_reg_password').show();
+		}else{
+			$('#config_reg_password').hide();
+		}
+	});
+</script>
+</body>
+</html>

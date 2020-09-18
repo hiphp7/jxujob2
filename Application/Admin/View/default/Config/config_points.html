@@ -1,0 +1,27 @@
+<include file="public:header" />
+  <div class="toptit">积分配置</div>
+	<form action="{:U('edit')}" method="post" enctype="multipart/form-data" name="form1" id="form1">
+		<table width="100%" border="0" cellspacing="5" cellpadding="5">
+		 
+			 
+			<tr>
+				<td width="220" align="right">积分代替名：</td>
+				<td><input name="points_byname" type="text"  class="input_text_100" id="points_byname" value="{:C('qscms_points_byname')}" maxlength="30"/> <span class="admin_note" style="color: rgb(153, 153, 153);">(如：铜板、元宝等，默认为“积分”)</span></td>
+			</tr>
+			<tr>
+				<td align="right">积分量词：</td>
+				<td><input name="points_quantifier" type="text"  class="input_text_100" id="points_quantifier" value="{:C('qscms_points_quantifier')}" maxlength="30"/> <span class="admin_note" style="color: rgb(153, 153, 153);">(如：个、只、把等，默认为“点”)</span></td>
+			</tr>
+			 
+			<tr>
+				<td align="right">&nbsp;</td>
+				<td height="50"> 
+					<input name="submit" type="submit" class="admin_submit"    value="保存修改"/>
+				</td>
+			</tr>
+		</table>
+	</form>	 
+</div>
+<include file="public:footer" />
+</body>
+</html>

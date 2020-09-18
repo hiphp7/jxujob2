@@ -1,0 +1,222 @@
+<include file="public:header" />
+	<notempty name="apply['Subsite']">
+	<div class="seltpye_x">
+	    <div class="left">所属分站</div>
+	    <qscms:subsite 列表名="subsite_list"/>
+	    <div class="right">
+	      <a href="{:P(array('subsite_id'=>''))}" <if condition="$Think.get.subsite_id eq ''">class="select"</if>>不限</a>
+	      <if condition="$visitor['role_id'] eq 1">
+	        <volist name="subsite_list" id="subsite">
+	          <a href="{:P(array('subsite_id'=>$subsite['s_id']))}" <if condition="$Think.get.subsite_id eq $subsite['s_id']">class="select"</if>>{$subsite.s_sitename}</a>
+	        </volist>
+	      <else/>
+	        <volist name="subsite_list" id="subsite">
+	          <if condition="in_array($subsite['s_id'],$visitor['subsite'])">
+	            <a href="{:P(array('subsite_id'=>$subsite['s_id']))}" <if condition="$Think.get.subsite_id eq $subsite['s_id']">class="select"</if>>{$subsite.s_sitename}</a>
+	          </if>
+	        </volist>
+	      </if>
+	      <div class="clear"></div>
+	    </div>
+	    <div class="clear"></div>
+	</div>
+	</notempty>
+	<div class="seltpye_x">
+		<div class="left">处理状态</div>	
+		<div class="right">
+			<a href="{:P(array('audit'=>''))}" <if condition="$Think.get.audit eq ''">class="select"</if>>不限</a>
+			<a href="{:P(array('audit'=>1))}" <if condition="$Think.get.audit eq '1'">class="select"</if>>已处理</a>
+			<a href="{:P(array('audit'=>0))}" <if condition="$Think.get.audit eq '0'">class="select"</if>>待处理<if condition="$count"><span>({$count})</span></if></a>
+			<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="seltpye_x">
+		<div class="left">发票抬头</div>	
+		<div class="right">
+			<a href="{:P(array('title'=>''))}" <if condition="$Think.get.title eq ''">class="select"</if>>不限</a>
+			<a href="{:P(array('title'=>1))}" <if condition="$Think.get.title eq '1'">class="select"</if>>单位</a>
+			<a href="{:P(array('title'=>2))}" <if condition="$Think.get.title eq 2">class="select"</if>>个人</a>
+			<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="seltpye_x">
+		<div class="left">发票内容</div>	
+		<div class="right">
+			<a href="{:P(array('cid'=>''))}" <if condition="$Think.get.cid eq 0 || $Think.get.cid eq ''">class="select"</if>>不限</a>
+			<volist name="category" id="category">
+				<a href="{:P(array('cid'=>$key))}" <if condition="$Think.get.cid eq $key">class="select"</if>>{$category}</a>
+			</volist>
+			<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="seltpye_x">
+		<div class="left">添加时间</div>	
+		<div class="right">
+		<a href="{:P(array('settr'=>0))}" <if condition="!$Think.get.settr || $Think.get.settr eq 0">class="select"</if>>不限</a>
+		<a href="{:P(array('settr'=>3))}" <if condition="$Think.get.settr eq 3">class="select"</if>>三天内</a>
+		<a href="{:P(array('settr'=>7))}" <if condition="$Think.get.settr eq 7">class="select"</if>>一周内</a>
+		<a href="{:P(array('settr'=>30))}" <if condition="$Think.get.settr eq 30">class="select"</if>>一月内</a>
+		<a href="{:P(array('settr'=>180))}" <if condition="$Think.get.settr eq 180">class="select"</if>>半年内</a>
+		<a href="{:P(array('settr'=>360))}" <if condition="$Think.get.settr eq 360">class="select"</if>>一年内</a>
+		<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+	</div>
+  <form id="form1" name="form1" method="post" action="{:U('delete')}">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0"  id="list" class="link_lan">
+    <tr>
+      <td  width="10%" class="admin_list_tit admin_list_first">
+	  	<label id="chkAll"><input type="checkbox" name=" " title="全选/反选" id="chk"/>发票内容</label>
+	  </td>
+	  <td class="admin_list_tit">处理状态</td>
+      <td class="admin_list_tit">发票抬头</td>
+	  <td class="admin_list_tit">单位名称</td>
+	  <td class="admin_list_tit">收件人</td> 
+	  <td align="center" class="admin_list_tit" width="190">手机号</td>
+	  <td width="10%" align="center" class="admin_list_tit">邮寄地址</td>
+	  <td width="8%" align="center" class="admin_list_tit">邮编</td>
+      <td width="15%" align="center"  class="admin_list_tit">操作</td>
+    </tr>
+	<volist name="list" id="vo">
+      <tr>
+    	<td class="admin_list admin_list_first">	 
+			<input name="order_id[]" type="checkbox" id="id" value="{$vo.order_id}"/>
+			<switch name="vo['cid']">
+				<case value="1">
+					咨询费
+				</case>
+				<case value="2">
+					咨询服务费
+				</case>
+				<case value="3">
+					服务费
+				</case>
+			</switch>
+		</td>
+		<td class="admin_list">
+            <switch name="vo['audit']">
+                <case value="0"><font color="red">未处理</font></case>
+                <case value="1"><font color="green">已处理</font></case>
+            </switch> 
+        </td> 
+        <td class="admin_list">
+        	<if condition="$vo['title'] eq 1">
+				单位
+			<else/>
+				个人
+        	</if>
+        </td> 
+		<td class="admin_list">{$vo.organization}</td>   
+		<td class="admin_list">{$vo.addressee}</td>     
+		<td align="center" class="admin_list">{$vo.mobile}</td>
+		<td align="center" class="admin_list">{$vo.address}</td>
+		<td align="center" class="admin_list">{$vo.postcode}</td>      
+        <td align="center" class="admin_list">
+			<a href="{:U('OrderInvoice/invoice_show',array('order_id'=>$vo['order_id']))}">详情</a>&nbsp;
+			<a class="userinfo" parameter="uid={$vo['uid']}" href="javascript:void(0);" hideFocus="true">管理</a>
+		</td>
+      </tr>
+      </volist>
+  </table>
+	<if condition="!$list">
+	<div class="admin_list_no_info">没有任何信息！</div>
+	</if>
+	<span id="OpSet"></span>
+  </form>
+	<table width="100%" border="0" cellspacing="10" cellpadding="0" class="admin_list_btm">
+      <tr>
+        <td>
+          <input name="ButAudit" type="button" class="admin_submit" id="ButSet"  value="处理状态"  />
+          <input name="ButAudit" type="button" class="admin_submit" id="ButDelOrder"  value="删除"  />
+		</td>
+        <td width="305" align="right">
+		<form id="formseh" name="formseh" method="get" action="?">	
+              <input type="hidden" name="m" value="{:C('admin_alias')}">
+              <input type="hidden" name="c" value="{:CONTROLLER_NAME}">
+              <input type="hidden" name="a" value="{:ACTION_NAME}">
+			<div class="seh">
+			    <div class="keybox"><input name="key" type="text"   value="{$Think.get.key}" /></div>
+			    <div class="selbox">
+					<input name="key_type_cn"  id="key_type_cn" type="text" value="{$Think.get.key_type_cn|default="UID"}" readonly="true"/>
+						<div>
+							<input name="key_type" id="key_type" type="hidden" value="{$Think.get.key_type|default="1"}" />
+							<div id="sehmenu" class="seh_menu">
+									<ul>
+										<li id="1" title="UID">UID</li>
+										<li id="2" title="收件人">收件人</li>
+									</ul>
+							</div>
+						</div>				
+				</div>
+				<div class="sbtbox">
+				<input type="submit" name="" class="sbt" id="sbt" value="搜索"/>
+				</div>
+				<div class="clear"></div>
+		  </div>
+		  </form>
+	    </td>
+      </tr>
+  </table>
+<div class="qspage">{$page}</div>
+</div>
+<div style="display:none" id="OpSetLayer">
+  <table width="400" border="0" align="center" cellpadding="0" cellspacing="6" >
+    <tr>
+      <td width="20" height="30">&nbsp;</td>
+      <td height="30"><strong  style="color:#0066CC; font-size:14px;">将所选记录设置为：</strong></td>
+    </tr>
+    
+    <tr>
+      <td height="25">&nbsp;</td>
+      <td>
+        <label >
+          <input name="audit" type="radio" value="1" checked="checked"/>
+        已处理 </label>   </td>
+      </tr>
+      <tr>
+        <td height="25">&nbsp;</td>
+        <td><label >
+          <input type="radio" name="audit" value="0" />
+        未处理</label></td>
+      </tr>
+      <tr>
+        <td height="25">&nbsp;</td>
+        <td><input type="button" name="set_status" id="set_status" value="确定" class="admin_submit"    /></td>
+      </tr>
+    </table>
+  </div>
+<include file="public:footer" />
+
+<script type="text/javascript">
+$(document).ready(function()
+{
+	showmenu("#key_type_cn","#sehmenu","#key_type");
+$(".userinfo").QSdialog({
+  DialogTitle:"管理",
+  DialogContentType:"url",
+  DialogContent:"{:U('ajax/userinfo')}&"
+  });
+	//点击批量取消	
+	$("#ButDelOrder").click(function(){
+		if (confirm('你确定要删除吗？'))
+		{
+			$("form[name=form1]").submit()
+		}
+	});
+	$("#ButSet").QSdialog({
+		DialogAddObj:"#OpSet",
+		DialogTitle:"请选择",
+		DialogContent:"#OpSetLayer",
+		DialogContentType:"id"
+    });
+    $("#set_status").live('click',function(){
+        $("#form1").attr('action',"{:U('set_audit')}");
+        $("#form1").submit();
+    });
+});
+</script>
+</body>
+</html>

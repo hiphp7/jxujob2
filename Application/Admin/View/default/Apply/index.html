@@ -1,0 +1,112 @@
+<include file="public:header" />
+	<div class="toptip link_g">
+		<h2>提示：</h2>
+		<p>
+		骑士人才系统核心模块是基础模块，任何周边模块需在核心模块的基础上安装。
+		<br />
+		卸载应用将会清空与此模块相关的数据，并且不可恢复，请谨慎卸载。
+		<br />
+		安装更多应用请点击 <a href="http://www.74cms.com" target="_blank">获取更多应用</a>，我们将不断更新更多优秀应用，如果您是开发者，欢迎您上传自己的应用。</p>
+	</div>
+	<table width="100%" border="0" cellpadding="0" cellspacing="0" id="list" class="link_lan">
+		<tr>
+			<td class="admin_list_tit admin_list_first">应用名称</td>
+			<td width="240" align="center" colspan="2" class="admin_list_tit">当前版本号</td>
+			<td width="140" align="center" class="admin_list_tit">安装时间</td>
+			<td width="120" align="center" class="admin_list_tit">操作</td>
+		</tr>
+		<tr class="J_mod" m="{$base.module}" v="{$base.version.version}">
+			<td class="admin_list admin_list_first apply_list">
+				<a class="ico" href="{:U('apply/details',array('mod'=>$base['module']))}">
+					<img src="{$base.ico}">
+				</a>
+				<div class="info">
+					<p><a class="title" href="{:U('apply/details',array('mod'=>$base['module']))}">{$base.version.module_name}</a>（{$base.module}）</p>
+					<p>{$base.version.explain}</p>
+				</div>
+			</td>
+			<td align="right" class="admin_list apply_list">
+				<p>版本号：</p>
+				<p>更新时间：</p>
+			</td>
+			<td align="left" class="admin_list apply_list">
+				<p class="J_v">{$base.version.version}</p>
+				<p class="J_t">{$base.version.update_time}</p>
+			</td>
+			<td align="center" class="admin_list">{:date("Y-m-d H:i",$base['setup_time'])}</td>
+			<td align="center" class="admin_list">
+				<if condition="$Think.APP_UPDATER">
+					<a class="J_updater" href="{:U('apply/updater',array('mod'=>$base['module']))}" >升级</a>
+					&nbsp;
+					<eq name="base['enable_rollback']" value="1">
+					<a class="J_rollback" href="{:U('apply/rollback',array('mod'=>$base['module']))}" >回滚</a>&nbsp;
+					</eq>
+				</if>
+				<a href="{:U('apply/details',array('mod'=>$base['module']))}" >详情</a>
+			</td>
+		</tr>
+		<volist name="list" id="list">
+			<tr class="J_mod" m="{$list.module}" v="{$list.version.version}">
+				<td class="admin_list admin_list_first apply_list">
+					<a class="ico" href="{:U('apply/details',array('mod'=>$list['module']))}">
+						<img src="{$list.ico}">
+					</a>
+					<div class="info">
+						<p><a class="title" href="{:U('apply/details',array('mod'=>$list['module']))}">{$list.version.module_name}</a>（{$list.module}）</p>
+						<p>{$list.version.explain}</p>
+					</div>
+				</td>
+				<td align="right" class="admin_list apply_list">
+					<p>版本号：</p>
+					<p>更新时间：</p>
+				</td>
+				<td align="left" class="admin_list apply_list">
+					<p class="J_v">{$list.version.version}</p>
+					<p class="J_t">{$list.version.update_time}</p>
+				</td>
+				<td align="center" class="admin_list"><if condition="$list['is_setup'] neq 0">{:date("Y-m-d H:i",$list['setup_time'])}<else/>未安装</if></td>
+				<td align="center" class="admin_list">
+					<if condition="$list['is_setup'] neq 0">
+						<a href="{:U('apply/unload',array('mod'=>$list['module']))}" >卸载</a>
+					<else/>
+						<a href="{:U('apply/setup',array('mod'=>$list['module']))}" >安装</a>
+					</if>
+					&nbsp;
+					<if condition="$Think.APP_UPDATER">
+						<if condition="$apply[$list['module']]">
+							<a class="J_updater" href="{:U('apply/updater',array('mod'=>$list['module']))}" >升级</a>
+						<else/>
+							升级
+						</if>
+						&nbsp;
+						<eq name="list['enable_rollback']" value="1">
+						<a class="J_rollback" href="{:U('apply/rollback',array('mod'=>$list['module']))}" >回滚</a>&nbsp;
+						</eq>
+					</if>
+					<a href="{:U('apply/details',array('mod'=>$list['module']))}" >详情</a>
+				</td>
+			</tr>
+		</volist>
+	</table>
+	<div class="qspage">{$page}</div>
+</div>
+<include file="public:footer" />
+<script type="text/javascript">
+	function callback(a){
+		$.each(a.data,function(k,v){
+			var version = $('.J_mod[m="'+k+'"]').attr('v'),h='';
+			if(v.version){
+				if(version != v.version){
+					v.update_time = v.update_time ? v.update_time : '未发布';
+					$('.J_mod[m="'+k+'"] .J_v').append('<a href="http://www.74cms.com/app/list-1.html" target="_blank" class="newsv">有新版</a>');
+					$('.J_mod[m="'+k+'"] .J_t').html(v.update_time);
+				}else{
+					$('.J_mod[m="'+k+'"] .J_updater').replaceWith('升级');
+				}
+			}
+		});
+	}
+</script>
+<script src="http://www.74cms.com/plus/check_module.php?module_name={$module_name}" language="javascript"></script>
+</body>
+</html>

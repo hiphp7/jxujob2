@@ -1,0 +1,80 @@
+<include file="Admin@default/public/header"/>
+<div class="toptit">网络专题招聘会企业列表</div>
+<div class="seltpye_y">
+    <div class="tit">添加时间</div>
+    <div class="ct">
+        <div class="txt <notempty name='Think.get.settr'>select</notempty>">{$Think.get.settr_cn|default="不限"}</div>
+    </div>
+    <div class="downlist">
+        <li url="{:P(array('settr'=>'','settr_cn'=>'不限'))}">不限</li>
+        <li url="{:P(array('settr'=>'3','settr_cn'=>'三天内'))}">三天内</li>
+        <li url="{:P(array('settr'=>'7','settr_cn'=>'一周内'))}">一周内</li>
+        <li url="{:P(array('settr'=>'30','settr_cn'=>'一月内'))}">一月内</li>
+        <li url="{:P(array('settr'=>'180','settr_cn'=>'半年内'))}">半年内</li>
+        <li url="{:P(array('settr'=>'360','settr_cn'=>'一年内'))}">一年内</li>
+    </div>
+</div>
+<div class="clear"></div>
+
+<form id="form1" name="form1" method="post" action="{:U('subject_company_delete')}">
+    <div class="list_th">
+        <div class="td" style=" width:40%;">
+            <label id="chkAll" class="left_padding">
+                <input type="checkbox" name="chkAll" id="chk" title="全选/反选"/>网络专题招聘会标题
+            </label>
+        </div>
+        <div class="td center" style=" width:20%;">网络专题招聘会企业</div>
+        <div class="td center" style=" width:20%;">添加日期</div>
+        <div class="td" style=" width:20%;">操作</div>
+        <div class="clear"></div>
+    </div>
+
+    <volist name="info" id="vo">
+        <div class="list_tr link_blue">
+            <div class="td" style=" width:40%;">
+                <div class="left_padding striking">
+                    <input name="id[]" type="checkbox" id="id" value="{$vo['id']}"/>
+                    {$vo.title}
+                </div>
+            </div>
+            <div class="td center" style=" width:20%;">{$vo.companyname|default="----"}</div>
+            <div class="td center" style=" width:20%;">{:admin_date($vo['addtime'])}</div>
+            <div class="td edit" style=" width:20%;">
+                <a href="{:U('subject_company_delete',array('id'=>$vo['id']))}" class="gray" onclick="return confirm('你确定要删除吗？')">删除</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </volist>
+</form>
+<empty name="info">
+    <div class="list_empty">没有任何信息！</div>
+</empty>
+
+<div class="list_foot">
+    <div class="btnbox">
+        <input type="button" class="admin_submit" id="ButAdd" value="添加企业" onclick="window.location='{:U('subject_company_add')}&subject_id={$Think.get.id}'"/>
+        <input type="button" class="admin_submit" id="ButDel" value="删除所选"/>
+    </div>
+</div>
+<div class="pages">{$page}</div>
+
+</div>
+<include file="public:footer"/>
+
+</body>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //点击批量删除
+        $("#ButDel").click(function () {
+            var ids = $("input[name='id[]']:checked");
+            if(ids.length == 0){
+                disapperTooltip('remind','请选择企业！');
+            } else {
+                if(confirm('确定删除吗？')){
+                    $("form[name=form1]").submit();
+                }
+            }
+        });
+    });
+</script>
+</html>

@@ -1,0 +1,57 @@
+<include file="public:header" />
+	<div class="toptip link_g">
+		<h2>提示：</h2>
+		<p>系统默认使用“原始URL链接”进行访问，如需使用其它伪静态规则，请确保服务器正常开启伪静态服务！</p>
+		<p>并且“./74cms40new/Application/Common/Conf/url.php”文件有可读写权限！</p>
+		<p>骑士人才系统支持多种URL样式，无论您是<strong>asp , aspx , jsp ，shtml , ......</strong>程序都可以完美转换为骑士系统，且URL可以保持不变，具体请咨询<a href="http://www.74cms.com" target="_blank">骑士客服</a></p>
+	</div>
+	<table width="100%" border="0" cellpadding="0" cellspacing="0"  id="list" class="link_lan">
+		<tr> 
+			<td class="admin_list_tit  admin_list_first">规则名称</td>
+			<td width="10%" align="center" class="admin_list_tit">版本号</td>
+			<td width="12%" align="center" class="admin_list_tit">更新时间</td>
+			<td width="10%" align="center" class="admin_list_tit">作者</td>
+			<td width="8%" align="center" class="admin_list_tit"></td>
+			<td width="12%" align="center" class="admin_list_tit">操作</td>
+		</tr>
+		<tr>
+			<td class="admin_list admin_list_first">{$normal.name}</td>
+			<td align="center" class="admin_list">{$normal.versions}</td>
+			<td align="center" class="admin_list">{$normal.update_time}</td>
+			<td align="center" class="admin_list">{$normal.author}</td>
+			<td align="center" class="admin_list">
+				<if condition="C('qscms_rewrite_type') eq $normal['alias']">使用中</if>
+			</td>
+			<td align="center" class="admin_list">
+				<if condition="C('qscms_rewrite_type') neq $normal['alias']">
+					<a href="{:U('page/rewrite_set',array('type'=>$normal['alias']))}">应用</a>
+				</if>
+			</td>
+		</tr>
+		<volist name="list" id="list">
+			<tr>
+				<td class="admin_list admin_list_first">{$list.name}</td>
+				<td align="center" class="admin_list">{$list.versions}</td>
+				<td align="center" class="admin_list">{$list.update_time}</td>
+				<td align="center" class="admin_list">{$list.author}</td>
+				<td align="center" class="admin_list">
+					<if condition="C('qscms_rewrite_type') eq $list['alias']">使用中</if>
+				</td>
+				<td align="center" class="admin_list">
+					<a href="{:U('page/rewrite_details',array('type'=>$list['filename']))}">详情</a>
+					&nbsp;
+					<if condition="C('qscms_rewrite_type') neq $list['alias']">
+						<a href="{:U('page/rewrite_set',array('type'=>$list['filename']))}" onclick="return confirm('请确保服务器正常开启伪静态服务！')">应用</a>
+						&nbsp;
+					</if>
+					<if condition="$list['alias'] neq 'default'">
+						<a href="{:U('page/rewrite_delete',array('type'=>$list['filename']))}"  onclick="return confirm('你确定要删除吗？')">删除</a>
+					</if>
+				</td>
+			</tr>
+		</volist>
+	</table>
+</div>
+<include file="public:footer" />
+</body>
+</html>

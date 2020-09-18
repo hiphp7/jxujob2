@@ -1,0 +1,198 @@
+<include file="public:header" />
+	<div class="toptip">
+	<h2>提示：</h2>
+	  <p>过多的项目设置邮件通知会消耗系统资源。<br />
+	  </p>
+	</div>
+	<div class="toptit">邮件发送规则</div>
+  <table width="100%" border="0" cellspacing="0" cellpadding="5">
+       <tr>
+        <td height="30" style="font-size:12px;padding-left:20px;">
+    <form action="{:U('mailconfig/rule')}" method="post"   name="form1" id="form1">
+    <table width="700" border="0" cellspacing="7" cellpadding="1" style=" margin-bottom:3px;" class="link_lan">
+            <tr>
+              <td width="137" align="right">注册会员：</td>
+              <td width="150">
+        <label>
+                <input name="set_reg" type="radio" value="1" <if condition="$info['set_reg'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                  <input type="radio" name="set_reg" value="0" <if condition="$info['set_reg'] eq 0">checked="checked"</if>/>
+              不通知</label>       </td>
+              <td  style="color:#999999">(注册会员成功后发送邮件通知)</td>
+            </tr>
+            <tr>
+              <td align="right">申请职位：</td>
+              <td>
+         <label>
+                <input name="set_applyjobs" type="radio" value="1" <if condition="$info['set_applyjobs'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                  <input type="radio" name="set_applyjobs" value="0" <if condition="$info['set_applyjobs'] eq 0">checked="checked"</if>/>
+              不通知</label>       </td>
+              <td  style="color:#999999">(个人申请了职位是否通知企业)</td>
+            </tr>
+            <tr>
+              <td align="right">邀请面试：</td>
+              <td>
+        <label>
+                <input name="set_invite" type="radio" value="1" <if condition="$info['set_invite'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_invite" type="radio"  value="0" <if condition="$info['set_invite'] eq 0">checked="checked"</if>/>
+              不通知</label>       </td>
+              <td  style="color:#999999">(企业邀请个人面试是否通知个人)</td>
+            </tr>
+            <tr>
+              <td align="right">新增订单：</td>
+              <td>
+          <label>
+                <input name="set_order" type="radio" value="1" <if condition="$info['set_order'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_order" type="radio"  value="0" <if condition="$info['set_order'] eq 0">checked="checked"</if>/>
+              不通知</label>       </td>
+              <td  style="color:#999999">(会员下充值订单是否邮件通知)</td>
+            </tr>
+            <tr>
+              <td align="right">付款成功：</td>
+              <td>
+         <label>
+                <input name="set_payment" type="radio" value="1" <if condition="$info['set_payment'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_payment" type="radio"  value="0" <if condition="$info['set_payment'] eq 0">checked="checked"</if>/>
+              不通知</label>       </td>
+              <td  style="color:#999999">(会员订单付款完成是否邮件通知)</td>
+            </tr>
+            <tr>
+              <td align="right">修改密码：</td>
+              <td>
+        <label>
+                <input name="set_editpwd" type="radio" value="1" <if condition="$info['set_editpwd'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_editpwd" type="radio"  value="0" <if condition="$info['set_editpwd'] eq 0">checked="checked"</if>/>
+              不通知</label>       </td>
+              <td  style="color:#999999">(会员修改密码后是否邮件通知)</td>
+            </tr>
+            <tr>
+              <td align="right">职位审核通过：</td>
+              <td>
+          <label>
+                <input name="set_jobsallow" type="radio" value="1" <if condition="$info['set_jobsallow'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_jobsallow" type="radio"  value="0" <if condition="$info['set_jobsallow'] eq 0">checked="checked"</if>/>
+              不通知</label>       </td>
+              <td  style="color:#999999">(职位审核通过是否邮件通知)</td>
+            </tr>
+            <tr>
+              <td align="right">职位审核未通过：</td>
+              <td>
+          <label>
+                <input name="set_jobsnotallow" type="radio" value="1" <if condition="$info['set_jobsnotallow'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_jobsnotallow" type="radio"  value="0" <if condition="$info['set_jobsnotallow'] eq 0">checked="checked"</if>/>
+              不通知</label>       </td>
+              <td  style="color:#999999">(职位审核未通过是否邮件通知)</td>
+            </tr>
+            <tr>
+              <td align="right">营业执照审核通过：</td>
+              <td>
+        <label>
+                <input name="set_licenseallow" type="radio" value="1" <if condition="$info['set_licenseallow'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_licenseallow" type="radio"  value="0" <if condition="$info['set_licenseallow'] eq 0">checked="checked"</if>/>
+              不通知</label>       </td>
+              <td  style="color:#999999">(营业执照审核通过是否邮件通知)</td>
+            </tr>
+            <tr>
+              <td align="right">营业执照审核未通过：</td>
+              <td>
+          <label>
+                <input name="set_licensenotallow" type="radio" value="1" <if condition="$info['set_licensenotallow'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_licensenotallow" type="radio"  value="0" <if condition="$info['set_licensenotallow'] eq 0">checked="checked"</if>/>
+              不通知</label>       </td>
+              <td  style="color:#999999">(营业执照审核未通过是否邮件通知)</td>
+            </tr>
+         
+            <tr>
+              <td align="right">简历审核通过：</td>
+              <td>
+        <label>
+                <input name="set_resumeallow" type="radio" value="1" <if condition="$info['set_resumeallow'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_resumeallow" type="radio"  value="0" <if condition="$info['set_resumeallow'] eq 0">checked="checked"</if>/>
+              不通知</label>       </td>
+              <td  style="color:#999999">(个人简历审核通过是否邮件通知)</td>
+            </tr>
+            <tr>
+              <td align="right">简历审核未通过：</td>
+              <td>
+          <label>
+                <input name="set_resumenotallow" type="radio" value="1" <if condition="$info['set_resumenotallow'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_resumenotallow" type="radio"  value="0" <if condition="$info['set_resumenotallow'] eq 0">checked="checked"</if>/>
+              不通知</label>       </td>
+              <td  style="color:#999999">(个人简历审核未通过是否邮件通知)</td>
+            </tr>
+            
+            <tr>
+              <td align="right">简历头像审核通过：</td>
+              <td>
+        <label>
+                <input name="set_resume_photoallow" type="radio" value="1" <if condition="$info['set_resume_photoallow'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_resume_photoallow" type="radio"  value="0" <if condition="$info['set_resume_photoallow'] eq 0">checked="checked"</if>/>
+              不通知</label>       </td>
+              <td  style="color:#999999">(个人简历头像审核通过是否邮件通知)</td>
+            </tr>
+            <tr>
+              <td align="right">简历头像审核未通过：</td>
+              <td>
+          <label>
+                <input name="set_resume_photonotallow" type="radio" value="1" <if condition="$info['set_resume_photonotallow'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_resume_photonotallow" type="radio"  value="0" <if condition="$info['set_resume_photonotallow'] eq 0">checked="checked"</if>/>
+              不通知</label>       </td>
+              <td  style="color:#999999">(个人简历头像审核未通过是否邮件通知)</td>
+            </tr>
+            <tr>
+              <td align="right">&nbsp;</td>
+              <td height="55"><span style="font-size:14px;">
+                <input type="submit" class="admin_submit" value="保存修改"/>
+              </span></td>
+              <td>&nbsp;</td>
+            </tr>
+          </table>
+      </form>
+      </td>
+      </tr>
+    </table>
+</div>
+<include file="public:footer" />
+</body>
+</html>

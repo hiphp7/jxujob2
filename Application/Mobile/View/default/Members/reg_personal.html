@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<include file="public:meta" />
+		<link rel="stylesheet" href="../public/css/members.css">
+	</head>
+	<body>
+        <include file="public:header" />
+        <div class="qs-top-nav x2 list_height">
+            <div class="n-cell active">手机注册<div class="b-line"></div></div>
+            <div class="n-cell" onclick="javascript:location.href='{:U("Members/register",array("utype"=>2,"regtype"=>"email","openid"=>$openid))}'">邮箱注册<div class="b-line"></div></div>
+            <div class="clear"></div>
+        </div>
+        <div class="split-block"></div>
+        <form id="registerForm" method="post">
+            <div class="loging-input-group">
+                <div class="group-list mobile">
+                    <input id="mobile" name="mobile" type="text" class="l-input font14" placeholder="请输入手机号码" autocomplete="off" value="{$Think.get.mobile|default=''}">
+                    <a href="javascript:;" id="getVerfyCode" class="qs-btn qs-btn-inline qs-btn-medium qs-btn-border-gray font14">获取验证码</a>
+                </div>
+                <div class="group-list had-remind-box qs-center link_blue" onclick="javascript:location.href='{:U('Members/login_mobile')}'"><a href="javascript:;"><span class="mal"></span><span class="txt-o-red">点击立即登录</span></a></div>
+                <div class="group-list verfy">
+                    <input id="mobile_vcode" name="mobile_vcode" type="text" class="l-input font14" placeholder="请输入手机验证码" autocomplete="off">
+                </div>
+                <div class="group-list pwd">
+                    <input id="password" name="password" type="password" class="l-input font14" placeholder="请输入账户密码" autocomplete="off">
+                </div>
+                <div class="group-list pwd">
+                    <input id="passwordVerify" name="passwordVerify" type="password" class="l-input font14" placeholder="请确认账户密码" autocomplete="off">
+                </div>
+            </div>
+            <div class="split-block"></div>
+            <div class="btn-spacing btn-spacing-nmb"><a id="btnRegPersonal" href="javascript:;" class="qs-btn qs-btn-blue font18">注册个人会员</a></div>
+            <input type="hidden" name="reg_type" value="1" />
+            <input type="hidden" name="utype" value="2">
+            <input type="hidden" id="doType" value="1">
+            <div id="pop" style="display:none"></div>
+        </form>
+        <div class="r-link-box qs-center link_blue"><a href="{:U('members/login')}">已有账号，立即登录</a></div>
+        <input type="hidden" id="J_captcha_open" value="<if condition="C('qscms_mobile_captcha_open') eq 1 && C('qscms_wap_captcha_config.varify_mobile') eq 1">1<else/>0</if>" />
+		<include file="public:footer" />
+        <include file="public:footer_min" />
+        <script src="http://static.geetest.com/static/tools/gt.js"></script>
+        <script>
+            // 图片验证码
+            var verifyPhoto = false;
+            /**
+             * 配置极验
+             */
+            $.ajax({
+                url: qscms.root+'?m=Mobile&c=Captcha&type=mobile&t=' + (new Date()).getTime(),
+                type: 'get',
+                dataType: 'json',
+                success: function(config) {
+                    initGeetest({
+                        gt: config.gt,
+                        challenge: config.challenge,
+                        offline: !config.success
+                    }, function(captchaObj) {
+                        captchaObj.appendTo("#pop");
+                        captchaObj.onSuccess(function() {
+                            var doType = eval($('#doType').val()); // 判断是发送手机验证码还是注册
+                            doType ? doAjax() : sendVerfy();
+                        });
+                        window.captchaObj = captchaObj
+                    });
+                }
+            });
+
+            /**
+             * 发送手机验证码
+             */
+            function sendVerfy() {
+                var mobileValue = $.trim($('input[name=mobile]').val());
+                $.ajax({
+                    url: "{:U('Members/reg_send_sms')}",
+                    cache: false,
+                    async: false,
+                    type: 'post',
+                    dataType: 'json',
+                    data: { sms_type: 'reg', mobile: mobileValue ,geetest_challenge: $("input[name='geetest_challenge']").val(),geetest_validate: $("input[name='geetest_validate']").val(),geetest_seccode: $("input[name='geetest_seccode']").val()},
+                    success: function(result) {
+                        $('#pop').hide();
+                        qsToast({type:2,context: result.msg});
+                        if (result.status) {
+                            // 开始倒计时
+                            var countdown = 180;
+                            function settime() {
+                                if (countdown == 0) {
+                                    $('#getVerfyCode').removeClass('qs-btn-border-disabled');
+                                    $('#getVerfyCode').text('获取验证码');
+                                    countdown = 180;
+                                    return;
+                                } else {
+                                    $('#getVerfyCode').addClass('qs-btn-border-disabled');
+                                    $('#getVerfyCode').text('重新发送' + countdown + '秒');
+                                    countdown--;
+                                }
+                                setTimeout(function() {
+                                    settime()
+                                },1000)
+                            }
+                            settime();
+                        } else {
+                            $('#pop').hide();
+                            qsToast({type:2,context: result.msg});
+                        }
+                    }
+                });
+            }
+
+            /**
+             * ajax 提交注册信息
+             */
+            function doAjax() {
+                var url = "{:U('members/register')}";
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: $('#registerForm').serialize(),
+                    success: function (data) {
+                        if(data.status==1){
+                            window.location.href = data.data.url;
+                        }else{
+                            qsToast({type:2,context: data.msg});
+                            $('#pop').hide();
+                        }
+                    }
+                });
+            }
+
+            // 图片验证码
+            function verifyPhotoDialog() {
+                var verifyCodePop = new QSpopout('请输入下图中的文字或字母');
+                verifyCodePop.setContent([
+                    '<div class="dia-captcha-item">',
+                    '<img src="' + qscms.root + '?m=Home&c=captcha&a=captcha&t=' + (new Date()).getTime() + '" class="dia-captcha-img">',
+                    '<input type="text" name="captcha-solution" class="dia-captcha-solution font16" maxlength="10">',
+                    '</div>'
+                ].join(''));
+                verifyCodePop.setBtn(1);
+                verifyCodePop.show();
+                verifyCodePop.setClose(false);
+                $('.dia-captcha-img').on('click', function() {
+                    $(this).attr('src', qscms.root + '?m=Home&c=captcha&a=captcha&t=' + (new Date()).getTime());
+                })
+                // 确定按钮事件
+                verifyCodePop.getPrimaryBtn().on('click', function () {
+                    var currentPhotoVal = $.trim($('.dia-captcha-solution').val());
+                    if (currentPhotoVal.length) {
+                        $.ajax({
+                            url: qscms.root + '?m=Home&c=captcha&a=captchaCode',
+                            cache: false,
+                            async: false,
+                            type: 'post',
+                            dataType: 'json',
+                            data: { postcaptcha: currentPhotoVal },
+                            success: function(result) {
+                                if (result.status) {
+                                    verifyCodePop.hide();
+                                    var doType = eval($('#doType').val()); // 判断是发送手机验证码还是注册
+                                    doType ? doAjax() : sendVerfy();
+                                } else {
+                                    qsToast({type:2,context: '验证码输入错误'});
+                                    $('.dia-captcha-img').attr('src', qscms.root + '?m=Home&c=captcha&a=captcha&t=' + (new Date()).getTime());
+                                }
+                            }
+                        });
+                    } else {
+                        $('.dia-captcha-solution').focus();
+                        qsToast({type:2,context: '请输入文字或字母'});
+                    }
+                });
+            }
+
+            var regularMobile = /^13[0-9]{9}$|14[0-9]{9}$|15[0-9]{9}$|18[0-9]{9}$|17[0-9]{9}$|16[0-9]{9}$|19[0-9]{9}$/;
+            $('input[name=mobile]').keyup(function () {
+              var currentValue = $(this).val();
+              if (currentValue.length >= 11) {
+                if(regularMobile.test(currentValue) && !remoteValid('mobile',currentValue)) {
+                  $('.had-remind-box .mal').text('手机号 ' + currentValue + ' 已注册，');
+                  $('.had-remind-box').show();
+                } else {
+                  $('.had-remind-box').hide();
+                }
+              } else {
+                $('.had-remind-box').hide();
+              }
+            })
+            /**
+             * 发送手机验证码
+             */
+            $('#getVerfyCode').on('click', function() {
+              if ($(this).hasClass('qs-btn-border-disabled')) return false;
+              var captcha_open = eval($('#J_captcha_open').val());
+              var mobileValue = $.trim($('input[name=mobile]').val());
+              if (mobileValue == '') {
+                  qsToast({type:2,context: '请输入手机号码'});
+                  return false;
+              }
+              if (mobileValue != "" && !regularMobile.test(mobileValue)) {
+                  qsToast({type:2,context: '手机号码格式不正确'});
+                  return false;
+              }
+              if(!remoteValid('mobile',mobileValue)){
+                  qsToast({type:2,context: '该手机号已被注册'});
+                  return false;
+              }
+                if (captcha_open) {
+                    $('#doType').val('0'); // 标识为发送验证码
+                    if (verifyPhoto) {
+                        // 图片验证码
+                        verifyPhotoDialog();
+                    } else {
+                        // 极验
+                        window.captchaObj.refresh();
+                        $('#pop').show();
+                    }
+                } else {
+                    sendVerfy();
+                }
+            })
+
+            /**
+             * 注册验证
+             */
+            $('#btnRegPersonal').on('click', function() {
+                var configVarifyReg = <if condition="C('qscms_mobile_captcha_open') eq 1 and C('qscms_wap_captcha_config.varify_reg') eq 1">1<else/>0</if>;
+                var mobileValue = $.trim($('input[name=mobile]').val());
+                var verifycodeValue = $.trim($('input[name=mobile_vcode]').val());
+                var passwordValue = $.trim($('input[name=password]').val());
+                if (mobileValue == '') {
+                    qsToast({type:2,context: '请输入手机号码'});
+                    return false;
+                }
+                if (mobileValue != "" && !regularMobile.test(mobileValue)) {
+                    qsToast({type:2,context: '手机号码格式不正确'});
+                    return false;
+                }
+                if(!remoteValid('mobile',mobileValue)){
+                    qsToast({type:2,context: '该手机号已被注册'});
+                    return false;
+                }
+                if (verifycodeValue == '') {
+                    qsToast({type:2,context: '请输入手机验证码'});
+                    return false;
+                }
+                if (passwordValue == '') {
+                    qsToast({type:2,context: '请输入密码'});
+                    return false;
+                }
+                if(!inputRegValiPassword(passwordValue)){
+                    qsToast({type:2,context: '密码长度要求为6-16个字符'});
+                    return false;
+                }
+                if (eval(configVarifyReg)) {
+                    // 后台是否开启注册验证
+                    $('#doType').val('1'); // 标识为注册
+                    if (verifyPhoto) {
+                        // 图片验证码
+                        verifyPhotoDialog();
+                    } else {
+                        // 极验
+                        window.captchaObj.refresh();
+                        $('#pop').show();
+                    }
+                } else {
+                  doAjax();
+                }
+            })
+
+            /**
+             * 验证用户名等是否重复
+             * @param validType 验证类型
+             * @param validValue 值
+             * @returns {boolean|*}
+             */
+            function remoteValid(validType, validValue){
+                var result = false;
+                $.ajax({
+                    url: "{:U('members/ajax_check')}",
+                    cache: false,
+                    async: false,
+                    type: 'post',
+                    dataType: 'json',
+                    data: { type: validType, param: validValue },
+                    success: function(json) {
+                        if (json && json.status) {
+                            result = true;
+                        } else {
+                            result = false;
+                        }
+                    }
+                });
+                return result;
+            }
+
+            /**
+             * 验证密码长度
+             * @param value 密码
+             * @returns {boolean}
+             */
+            function inputRegValiPassword(value){
+                achoice = true;
+                if(value.length>16 || value.length<6){
+                    achoice = false;
+                }
+                return achoice;
+            }
+        </script>
+	</body>
+</html>

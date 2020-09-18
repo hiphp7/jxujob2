@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <qscms:subject 列表名="list" 分页显示="1" 填补字符="…" 摘要长度="160" 显示数目="4"/>
+    <include file="Home@default/public/meta" />
+    <link href="{:C('TPL_HOME_PUBLIC_DIR')}/css/common.css" rel="stylesheet" type="text/css" />
+    <link href="{$url}/css/subject.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <include file="Home@default/public/header_other" />
+    <div class="top_box"><div class="tb_main">网络专题招聘会</div></div>
+    <div class="list_group">
+        <notempty name="list['list']">
+          <volist name="list['list']" id="vo">
+                <div class="list_cell">
+                    <div class="list_box">
+                        <div class="img"><a href="{$vo.url}"><img src="{$vo.img}" alt="" /></a></div>
+                        <div class="tit substring"><a href="{$vo.url}">{$vo.title}</a></div>
+                        <div class="img_some">
+                            <div class="img_some_left">{:date('Y-m-d',$vo['addtime'])}</div>
+                            <div class="img_some_right link_yellow"><a href="{$vo.url}">进入专题>></a></div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </div>
+          </volist>
+        <else/>
+            <div class="list_empty_group">
+                <div class="list_empty">
+                    <div class="list_empty_left"></div>
+                    <div class="list_empty_right">
+                        <div class="sorry_box">对不起，暂无网络专题招聘会信息！</div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </notempty>     
+        <div class="clear"></div>
+        <notempty name="list['list']"><div class="qspage">{$list['page']}</div></notempty>
+    </div>
+    <include file="Home@default/public/footer_min" />
+</script>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<include file="public:header" />
+    <div class="toptip">
+        <h2>提示：</h2>
+        <p>不同的运营阶段您可以选择不同的设置。</p>
+    </div>
+    <div class="toptit">基本设置</div>
+	<form action="{:U('index')}" method="post" enctype="multipart/form-data" name="form1" id="form1">
+		<table width="100%" border="0" cellspacing="5" cellpadding="5">
+			<tr>
+				<td width="220" align="right">个人会员允许发布简历：</td>
+				<td><input name="resume_max" type="text"  class="input_text_100" id="resume_max" value="{:C('qscms_resume_max')}" maxlength="30" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/> 份</td>
+			</tr>
+			<tr>
+				<td align="right">每天允许申请职位：</td>
+				<td><input name="apply_jobs_max" type="text"  class="input_text_100" id="apply_jobs_max" value="{:C('qscms_apply_jobs_max')}" maxlength="30" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/> 个</td>
+			</tr>
+			<tr>
+				<td align="right">上传简历照片大小不能超过：</td>
+				<td><input name="resume_photo_max" type="text"  class="input_text_100" id="resume_photo_max" value="{:C('qscms_resume_photo_max')}" maxlength="30" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/> KB</td>
+			</tr>
+			<tr>
+				<td align="right">简历列表数最大为：</td>
+				<td><input name="resume_list_max" type="text"  class="input_text_100" id="resume_list_max" value="{:C('qscms_resume_list_max')}" maxlength="30" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/> 条<span class="admin_note" style="color: rgb(153, 153, 153);">0为不限制</span></td>
+			</tr>
+			<tr>
+				<td align="right">刷新简历时间间隔：</td>
+				<td><input name="per_refresh_resume_space" type="text"  class="input_text_100" id="per_refresh_resume_space" value="{:C('qscms_per_refresh_resume_space')}" maxlength="30" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/> 分钟<span class="admin_note" style="color: rgb(153, 153, 153);">0为不限制</span></td>
+			</tr>
+			<tr>
+				<td align="right">每天刷新简历次数限制：</td>
+				<td><input name="per_refresh_resume_time" type="text"  class="input_text_100" id="per_refresh_resume_time" value="{:C('qscms_per_refresh_resume_time')}" maxlength="30" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/> 次<span class="admin_note" style="color: rgb(153, 153, 153);">0为不限制</span></td>
+			</tr>
+			<tr>
+				<td align="right">简历姓名默认显示方式：</td>
+				<td>
+					<label>
+					<input name="default_display_name" type="radio" value="1" <if condition="C('qscms_default_display_name') eq 1">checked="checked"</if>/>公开</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<label >
+					<input name="default_display_name" type="radio" value="2" <if condition="C('qscms_default_display_name') eq 2">checked="checked"</if>/>编号</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<label >
+					<input name="default_display_name" type="radio" value="3" <if condition="C('qscms_default_display_name') eq 3">checked="checked"</if>/>隐藏</label>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">&nbsp;</td>
+				<td height="50"> 
+					<input name="submit" type="submit" class="admin_submit"    value="保存修改"/>
+				</td>
+			</tr>
+		</table>
+	</form>
+ 	<div class="toptit">显示设置</div>
+	<form action="{:U('index')}" method="post" enctype="multipart/form-data" name="form1" id="form1">
+		<table width="100%" border="0" cellspacing="5" cellpadding="5">
+			<tr>
+				<td width="220" align="right">简历显示：</td>
+				<td>
+					<label>
+					<input name="resume_display" type="radio" value="1" <if condition="C('qscms_resume_display') eq 1">checked="checked"</if>/>先审核再显示</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<label >
+					<input name="resume_display" type="radio" value="2" <if condition="C('qscms_resume_display') eq 2">checked="checked"</if>/>先显示再审核</label>
+					 <span class="admin_note">（先显示后审核可提高用户体验和程序执行效率)</span>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">简历照片/作品：</td>
+				<td>
+					<label>
+					<input name="resume_img_display" type="radio" value="1" <if condition="C('qscms_resume_img_display') eq 1">checked="checked"</if>/>先审核再显示</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<label >
+					<input name="resume_img_display" type="radio" value="2" <if condition="C('qscms_resume_img_display') eq 2">checked="checked"</if>/>先显示再审核</label>
+					 <span class="admin_note">（先显示后审核可提高用户体验和程序执行效率)</span>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">&nbsp;</td>
+				<td height="50"> 
+					<input name="submit" type="submit" class="admin_submit"    value="保存修改"/>
+				</td>
+			</tr>
+		</table>
+	</form>
+	<div class="toptit">简历联系方式设置</div>
+	<form action="{:U('index')}" method="post" enctype="multipart/form-data" name="form1" id="form1">
+		<table width="100%" border="0" cellspacing="5" cellpadding="5">
+			
+			<tr>
+				<td width="220" align="right">Web端允许查看联系方式：</td>
+				<td>
+					<label><input name="showresumecontact" type="radio" id="showresumecontact" value="0" <if condition="C('qscms_showresumecontact') eq 0">checked="checked"</if>/>游客</label>
+					&nbsp;&nbsp;&nbsp;&nbsp; 
+					<label ><input type="radio" name="showresumecontact" value="1" id="showresumecontact" <if condition="C('qscms_showresumecontact') eq 1">checked="checked"</if>/>已登录会员</label>
+					&nbsp;&nbsp;&nbsp;&nbsp; 
+					<label ><input type="radio" name="showresumecontact" value="2" id="showresumecontact" <if condition="C('qscms_showresumecontact') eq 2">checked="checked"</if>/>下载后可见</label>
+					<span class="admin_note" style="color: rgb(153, 153, 153);">(如此项为“游客可见”或“已登录会员可见”，网站将会失去重要赢利点)</span>
+				</td>
+			</tr>
+			
+			<tr>
+				<td align="right">移动端允许查看联系方式：</td>
+				<td>
+					<label><input name="showresumecontact_wap" type="radio" id="showresumecontact_wap" value="0" <if condition="C('qscms_showresumecontact_wap') eq 0">checked="checked"</if>/>游客</label>
+					&nbsp;&nbsp;&nbsp;&nbsp; 
+					<label ><input type="radio" name="showresumecontact_wap" value="1" id="showresumecontact_wap" <if condition="C('qscms_showresumecontact_wap') eq 1">checked="checked"</if>/>已登录会员</label>
+					&nbsp;&nbsp;&nbsp;&nbsp; 
+					<label ><input type="radio" name="showresumecontact_wap" value="2" id="showresumecontact_wap" <if condition="C('qscms_showresumecontact_wap') eq 2">checked="checked"</if>/>下载后可见</label>
+					<span class="admin_note" style="color: rgb(153, 153, 153);">(如此项为“游客可见”或“已登录会员可见”，网站将会失去重要赢利点)</span>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">&nbsp;</td>
+				<td height="50"> 
+					<input name="submit" type="submit" class="admin_submit"    value="保存修改"/>
+				</td>
+			</tr>
+		</table>
+	</form>
+	<div class="toptit">
+		联系方式图形化
+		<span class="admin_note" style="color: rgb(153, 153, 153);">图形化需要将中文字体文件上传到data/contactimgfont/，字体文件命名为“cn.ttc”</span>
+	</div>
+	<form action="{:U('index')}" method="post" enctype="multipart/form-data" name="form1" id="form1">
+		<table width="100%" border="0" cellspacing="5" cellpadding="5">
+			
+			<tr>
+				<td width="220" align="right">简历联系方式：</td>
+				<td>
+					<label><input name="contact_img_resume" type="radio" id="contact_img_resume" value="1" <if condition="C('qscms_contact_img_resume') eq 1">checked="checked"</if>/>文字</label>
+					&nbsp;&nbsp;&nbsp;&nbsp; 
+					<label ><input type="radio" name="contact_img_resume" value="2" id="contact_img_resume" <if condition="C('qscms_contact_img_resume') eq 2">checked="checked"</if>/>图形化</label>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">&nbsp;</td>
+				<td height="50"> 
+					<input name="submit" type="submit" class="admin_submit"    value="保存修改"/>
+				</td>
+			</tr>
+		</table>
+	</form>
+	<div class="toptit">
+		简历下载设置
+	</div>
+	<form action="{:U('index')}" method="post" enctype="multipart/form-data" name="form1" id="form1">
+		<table width="100%" border="0" cellspacing="5" cellpadding="5">
+			
+			<tr>
+				<td width="220" align="right">简历下载要求：</td>
+				<td>
+					<label ><input type="radio" name="down_resume_limit" value="2" id="down_resume_limit" <if condition="C('qscms_down_resume_limit') eq 2">checked="checked"</if>/>已登录的企业可下载</label>
+					&nbsp;&nbsp;&nbsp;&nbsp; 
+					<label><input name="down_resume_limit" type="radio" id="down_resume_limit" value="1" <if condition="C('qscms_down_resume_limit') eq 1">checked="checked"</if>/>已登录且有发布职位的企业可下载</label>
+					&nbsp;&nbsp;&nbsp;&nbsp; 
+					<label ><input type="radio" name="down_resume_limit" value="3" id="down_resume_limit" <if condition="C('qscms_down_resume_limit') eq 3">checked="checked"</if>/>已认证企业可下载</label>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">&nbsp;</td>
+				<td height="50"> 
+					<input name="submit" type="submit" class="admin_submit"    value="保存修改"/>
+				</td>
+			</tr>
+		</table>
+	</form>
+	
+</div>
+<include file="public:footer" />
+</body>
+</html>

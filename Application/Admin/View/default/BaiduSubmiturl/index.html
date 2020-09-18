@@ -1,0 +1,83 @@
+<include file="public:header" />
+<div class="toptip link_lan">
+  <h2>提示：</h2>
+  <p>
+开启百度提交链接功能可以缩短百度爬虫发现您站点新链接的时间，使新发布的页面可以在第一时间被百度收录<br />
+并且对于网站的最新原创内容，可以快速通知到百度，使内容可以在转发之前被百度发现<br />
+请输入准入密钥并配置开启项，系统会在信息录入时自动把生成的链接地址发送给百度。<a href="http://zhanzhang.baidu.com/" target="_blank">现在就去申请</a>
+</p>
+</div>
+<div class="toptit">配置</div>
+  <form action="{:U('BaiduSubmiturl/index')}" method="post"  name="form1" id="form1">
+    <table width="100%" border="0" cellspacing="5" cellpadding="5">
+    <tr>
+      <td width="150" align="right">准入密钥：</td>
+      <td><input name="token" type="text"  class="input_text_200" id="token" value="{$info.token}" maxlength="16"/></td>
+    </tr>
+    <tr>
+      <td align="right"  >职位：</td>
+      <td >
+     <label><input name="addjob" type="radio"   value="1" <if condition="$info['addjob'] eq '1'">checked="checked"</if>/>开启</label>
+       &nbsp;&nbsp;&nbsp;&nbsp; 
+     <label ><input type="radio" name="addjob" value="0" <if condition="$info['addjob'] eq '0'">checked="checked"</if>/>关闭</label>
+    </td>
+    </tr>
+    <tr>
+      <td align="right"  >简历：</td>
+      <td >
+     <label><input name="addresume" type="radio"   value="1" <if condition="$info['addresume'] eq '1'">checked="checked"</if>/>开启</label>
+       &nbsp;&nbsp;&nbsp;&nbsp; 
+     <label ><input type="radio" name="addresume" value="0" <if condition="$info['addresume'] eq '0'">checked="checked"</if> />关闭</label>
+    </td>
+    </tr>
+    <tr>
+      <td align="right"  >新闻资讯：</td>
+      <td >
+     <label><input name="addarticle" type="radio"   value="1" <if condition="$info['addarticle'] eq '1'">checked="checked"</if>/>开启</label>
+       &nbsp;&nbsp;&nbsp;&nbsp; 
+     <label ><input type="radio" name="addarticle" value="0" <if condition="$info['addarticle'] eq '0'">checked="checked"</if>/>关闭</label>
+    </td>
+    </tr>
+    <tr>
+      <td align="right"  >企业：</td>
+      <td >
+     <label><input name="addcompany" type="radio"   value="1" <if condition="$info['addcompany'] eq '1'">checked="checked"</if>/>开启</label>
+       &nbsp;&nbsp;&nbsp;&nbsp; 
+     <label ><input type="radio" name="addcompany" value="0" <if condition="$info['addcompany'] eq '0'">checked="checked"</if>/>关闭</label>
+    </td>
+    </tr>
+    <tr>
+      <td align="right"  >招聘会：</td>
+      <td >
+     <label><input name="addjobfair" type="radio"   value="1" <if condition="$info['addjobfair'] eq '1'">checked="checked"</if>/>开启</label>
+       &nbsp;&nbsp;&nbsp;&nbsp; 
+     <label ><input type="radio" name="addjobfair" value="0" <if condition="$info['addjobfair'] eq '0'">checked="checked"</if>/>关闭</label>
+    </td>
+    </tr>
+    <tr>
+      <td align="right"  >说明页：</td>
+      <td >
+     <label><input name="addexplain" type="radio"   value="1" <if condition="$info['addexplain'] eq '1'">checked="checked"</if>/>开启</label>
+       &nbsp;&nbsp;&nbsp;&nbsp; 
+     <label ><input type="radio" name="addexplain" value="0" <if condition="$info['addexplain'] eq '0'">checked="checked"</if>/>关闭</label>
+    </td>
+    </tr>
+    <tr>
+      <td align="right"  >公告：</td>
+      <td >
+     <label><input name="addnotice" type="radio"   value="1" <if condition="$info['addnotice'] eq '1'">checked="checked"</if>/>开启</label>
+       &nbsp;&nbsp;&nbsp;&nbsp; 
+     <label ><input type="radio" name="addnotice" value="0" <if condition="$info['addnotice'] eq '0'">checked="checked"</if>/>关闭</label>
+    </td>
+    </tr>
+         <tr>
+           <td align="right">&nbsp;</td>
+           <td height="50"> 
+             <input name="submit" type="submit" class="admin_submit"    value="保存修改"/>             </td>
+      </tr>
+  </table>
+  </form>
+</div>
+<include file="public:footer" />
+</body>
+</html>

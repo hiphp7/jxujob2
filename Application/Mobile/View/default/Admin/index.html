@@ -1,0 +1,207 @@
+<include file="Admin@default/public/header" />
+    <div class="toptit">触屏端配置</div>
+	<form action="{:U('admin/edit')}" method="post" enctype="multipart/form-data" name="form1" id="form1">
+		<table width="100%" border="0" cellspacing="5" cellpadding="5">
+			<tr>
+				<td width="200" align="right">触屏版域名：</td>
+				<td><input name="wap_domain" type="text"  class="input_text_200" id="wap_domain" value="{:C('qscms_wap_domain')}" maxlength="100"/>
+				结尾不要加 " / ",如：http://m.xxxx.com</td>
+			</tr>
+			<tr>
+				<td align="right">暂时关闭网站：</td>
+				<td>
+					<label><input name="mobile_isclose" type="radio" id="isclose" value="0" <if condition="C('qscms_mobile_isclose') eq 0">checked="checked"</if>/>否</label>
+					&nbsp;&nbsp;&nbsp;&nbsp; 
+					<label ><input type="radio" name="mobile_isclose" value="1" id="isclose1" <if condition="C('qscms_mobile_isclose') eq 1">checked="checked"</if>/>是</label>				</td>
+			</tr>
+			<tr>
+				<td align="right" valign="top">暂时关闭原因：</td>
+				<td>
+					<textarea name="mobile_close_reason" class="input_text_400" id="close_reason" style="height:60px;">{:C('qscms_mobile_close_reason')}</textarea>				</td>
+			</tr>
+			<tr>
+				<td align="right" valign="top">触屏版第三方流量统计代码：</td>
+				<td>
+					<textarea name="mobile_statistics" class="input_text_400" id="statistics" style="height:60px;">{:C('qscms_mobile_statistics')}</textarea>				</td>
+			</tr>
+			<tr>
+				<td align="right">关闭会员注册：</td>
+				<td>
+					<label>
+					<input name="mobile_closereg" type="radio" id="closereg" value="0" <if condition="C('qscms_mobile_closereg') eq 0">checked="checked"</if>/>否</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<label >
+					<input type="radio" name="mobile_closereg" value="1" <if condition="C('qscms_mobile_closereg') eq 1">checked="checked"</if>/>是</label>				</td>
+			</tr>
+			<tr>
+				<td width="200" align="right">职位基数：</td>
+				<td><input name="jobs_base" type="text"  class="input_text_200" id="jobs_base" value="{:C('qscms_jobs_base')}" maxlength="999999"/></td>
+			</tr>
+			<tr>
+				<td width="200" align="right">简历基数：</td>
+				<td><input name="resume_base" type="text"  class="input_text_200" id="resume_base" value="{:C('qscms_resume_base')}" maxlength="999999"/></td>
+			</tr>
+      <tr>
+        <td align="right">底部导航是否开启：</td>
+        <td>
+          <label>
+          <input name="footer_nav_status" type="radio" id="closereg" value="0" <if condition="C('qscms_footer_nav_status') eq 0">checked="checked"</if>/>否</label>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <label >
+          <input type="radio" name="footer_nav_status" value="1" <if condition="C('qscms_footer_nav_status') eq 1">checked="checked"</if>/>是</label>        </td>
+      </tr>
+      <tr>
+        <td align="right">页面是否全屏显示：</td>
+        <td>
+          <label>
+          <input name="page_full_screen" type="radio" id="page_full_screen" value="0" <if condition="C('qscms_page_full_screen') eq 0">checked="checked"</if>/>否</label>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <label >
+          <input type="radio" name="page_full_screen" value="1" <if condition="C('qscms_page_full_screen') eq 1">checked="checked"</if>/>是</label>
+            <span class="admin_note" style="color: rgb(153, 153, 153);">（部分机型不支持，建议在UC,QQ浏览器下体验)</span>
+        </td>
+      </tr>
+      <if condition="C('apply.Subsite')">
+      <tr>
+        <td align="right">分站选择样式：</td>
+        <td>
+          <label><input name="mobile_subsite_choose_type" type="radio" value="simple" <if condition="C('qscms_mobile_subsite_choose_type') eq 'simple'">checked="checked"</if>/>简单模式</label>
+          &nbsp;&nbsp;&nbsp;&nbsp; 
+          <label ><input type="radio" name="mobile_subsite_choose_type" value="complex" <if condition="C('qscms_mobile_subsite_choose_type') eq 'complex'">checked="checked"</if>/>高级模式</label>        
+        <span class="admin_note" style="color: rgb(153, 153, 153);">（开启分站不多时推荐使用简单模式，反之使用高级模式)</span>
+          </td>
+      </tr>
+      <tr>
+        <td align="right">&nbsp;</td>
+        <td>
+          <a href="../public/images/244.png" target="_blank"><img style="border:1px solid #d3d3d3" src="../public/images/244.png" width="80" height="100"/></a>&nbsp;&nbsp;
+          <a href="../public/images/243.png" target="_blank"><img style="border:1px solid #d3d3d3" src="../public/images/243.png" width="80" height="100"/></a>
+          </td>
+      </tr>
+      </if>
+			<tr>
+				<td align="right">&nbsp;</td>
+				<td height="50"> 
+					<input name="submit" type="submit" class="admin_submit"    value="保存修改"/>				</td>
+			</tr>
+		</table>
+	</form>
+	<div class="toptit">触屏端极验设置</div>
+    <form id="form1" name="form1" method="post"   action="{:U('admin/edit')}" >
+    <table width="100%" border="0" cellpadding="4" cellspacing="0"   >
+    <tr>
+      <td width="120" height="30" align="right"  >开启验证：</td>
+      <td > <label><input type="radio" class="J_type" name="mobile_captcha_open" id="J_type_open" value="1" <if condition="C('qscms_mobile_captcha_open') eq '1'">checked="checked"</if>/>开启</label>
+         &nbsp;&nbsp;&nbsp;&nbsp; 
+       <label ><input type="radio" class="J_type" name="mobile_captcha_open" id="job_mode_2" value="0" <if condition="C('qscms_mobile_captcha_open') eq '0'">checked="checked"</if>/>关闭</label>
+       </td>
+     </tr>
+  </table>
+  <table width="100%" border="0" cellpadding="4" cellspacing="0"  class="captcha_show" <if condition="C('qscms_mobile_captcha_open') neq 1">style="display:none"</if>>
+    <tr>
+      <td width="120" height="30" align="right"  >极验ID：</td>
+      <td  ><input name="mobile_captcha[id]" type="text" class="input_text_300" value="{:C('qscms_mobile_captcha.id')}"/>
+       </td>
+    </tr>
+     <tr>
+      <td width="120" height="30" align="right"  >极验KEY：</td>
+      <td  ><input name="mobile_captcha[key]" type="text" class="input_text_300" value="{:C('qscms_mobile_captcha.key')}"/>
+       </td>
+    </tr>
+  </table>
+   <table width="100%" border="0" cellpadding="4" cellspacing="0"   >
+    
+    <tr>
+      <td width="120" height="30" align="right"  >&nbsp;</td>
+      <td height="50"  > 
+            <input name="submit3" type="submit" class="admin_submit"    value="保存"/>
+      </td>
+    </tr>
+  
+  </table>
+    </form>
+    <div class="toptit captcha_show" <if condition="C('qscms_mobile_captcha_open') neq 1">style="display:none"</if>>验证项目</div>
+    <form id="form2" name="form2" method="post"   action="{:U('admin/edit')}" >
+  <table width="100%" border="0" cellpadding="4" cellspacing="0"   class="captcha_show" <if condition="C('qscms_mobile_captcha_open') neq 1">style="display:none"</if>>
+    <tr>
+      <td width="120" height="30" align="right"  >注册验证：</td>
+      <td  >
+       <label><input name="wap_captcha_config[varify_reg]" type="radio" value="1" <if condition="C('qscms_wap_captcha_config.varify_reg') eq 1">checked</if>/> 开启</label>
+       <label><input name="wap_captcha_config[varify_reg]" type="radio" value="0" <if condition="C('qscms_wap_captcha_config.varify_reg') eq 0">checked</if>/> 关闭</label>
+       <span class="admin_note" >（开启后，用户在注册时发起验证）</span>
+       </td>
+    </tr>
+  <tr>
+      <td width="120" height="30" align="right"  >手机验证：</td>
+      <td  >
+       <label><input name="wap_captcha_config[varify_mobile]" type="radio" value="1" <if condition="C('qscms_wap_captcha_config.varify_mobile') eq 1">checked</if>/> 开启</label>
+       <label><input name="wap_captcha_config[varify_mobile]" type="radio" value="0" <if condition="C('qscms_wap_captcha_config.varify_mobile') eq 0">checked</if>/> 关闭</label>
+       <span class="admin_note" >（开启后，用户在注册、验证手机号发送短信时发起验证）</span>
+       </td>
+    </tr>
+    <tr>
+      <td width="120" height="30" align="right"  >意见/建议：</td>
+      <td  >
+       <label><input name="wap_captcha_config[varify_suggest]" type="radio" value="1" <if condition="C('qscms_wap_captcha_config.varify_suggest') eq 1">checked</if>/> 开启</label>
+       <label><input name="wap_captcha_config[varify_suggest]" type="radio" value="0" <if condition="C('qscms_wap_captcha_config.varify_suggest') eq 0">checked</if>/> 关闭</label>
+       <span class="admin_note" >（开启后，用户在提交意见建议时发起验证）</span>
+       </td>
+    </tr>
+    <tr>
+      <td width="120" height="30" align="right"  >会员登录：</td>
+      <td  >
+	  <input name="wap_captcha_config[user_login]" type="text" class="input_text_100" value="{:C('qscms_wap_captcha_config.user_login')}"/> 次
+	  <span class="admin_note" >（填写数字，0为开启验证码，如设置为3，则错误3次才发起验证）</span>
+       </td>
+    </tr>
+
+    <tr>
+      <td height="30" align="right"  >&nbsp;</td>
+      <td height="50"  > 
+            <input type="submit" class="admin_submit"    value="保存"/>
+       </td>
+    </tr>
+  
+  </table>
+    </form>
+	<div class="toptit">web版app下载设置</div>
+    <form id="form1" name="form1" method="post"   action="{:U('admin/edit')}" >
+  <table width="100%" border="0" cellpadding="4" cellspacing="0"  class="">
+    <tr>
+      <td width="120" height="30" align="right"  >android下载链接：</td>
+      <td  ><input name="android_download" type="text" class="input_text_300" value="{:C('qscms_android_download')}"/>
+       </td>
+    </tr>
+     <tr>
+      <td width="120" height="30" align="right"  >ios下载链接：</td>
+      <td  ><input name="ios_download" type="text" class="input_text_300" value="{:C('qscms_ios_download')}"/>
+       </td>
+    </tr>
+  </table>
+   <table width="100%" border="0" cellpadding="4" cellspacing="0"   >
+    
+    <tr>
+      <td width="120" height="30" align="right"  >&nbsp;</td>
+      <td height="50"  > 
+            <input name="submit3" type="submit" class="admin_submit"    value="保存"/>
+      </td>
+    </tr>
+  
+  </table>
+    </form>
+</div>
+<include file="Admin@default/public/footer" />
+<script type="text/javascript">
+	  $(".J_type").click(function(){
+    if($("#J_type_open").is(':checked')){
+      $(".captcha_show").show();
+    }else{
+      $(".captcha_show").hide();
+    }
+  });
+  $("#btnCheck").click(function(){
+    $("#test").show();
+  });
+</script>
+</body>
+</html>

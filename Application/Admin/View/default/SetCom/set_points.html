@@ -1,0 +1,36 @@
+<include file="public:header" />
+    <div class="toptip">
+        <h2>提示：</h2>
+        <p>不同的运营阶段您可以选择不同的设置。</p>
+    </div>
+   <div class="toptit">{:C('qscms_points_byname')}设置</div>
+	<form action="{:U('set_points')}" method="post" enctype="multipart/form-data" name="form1" id="form1">
+		<table width="100%" border="0" cellspacing="5" cellpadding="5">
+		<tr>
+				<td width="220" align="right">允许企业充值{:C('qscms_points_byname')}：</td>
+				<td>
+				<label ><input type="radio" name="enable_com_buy_points" value="1"  <if condition="C('qscms_enable_com_buy_points') eq 1">checked="checked"</if>/>是</label>
+					&nbsp;&nbsp;&nbsp;&nbsp; 
+					<label ><input type="radio" name="enable_com_buy_points" value="0"   <if condition="C('qscms_enable_com_buy_points') eq 0">checked="checked"</if>/>否</label>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">充值比例：1元等于：</td>
+				<td><input name="payment_rate" type="text"  class="input_text_100" id="payment_rate" value="{:C('qscms_payment_rate')}" maxlength="30"/> {:C('qscms_points_quantifier')}{:C('qscms_points_byname')}<span class="admin_note" style="color: rgb(153, 153, 153);"> (充值人民币与{:C('qscms_points_byname')}兑换比例，在购买服务时{:C('qscms_points_byname')}抵扣现金也是此比例)</span></td>
+			</tr>
+			<tr>
+				<td align="right">充值下限：</td>
+				<td><input name="com_buy_points_min" type="text"  class="input_text_100" id="com_buy_points_min" value="{:C('qscms_com_buy_points_min')}" maxlength="30"/> {:C('qscms_points_quantifier')}{:C('qscms_points_byname')}</td>
+			</tr>
+			<tr>
+				<td align="right">&nbsp;</td>
+				<td height="50"> 
+					<input name="submit" type="submit" class="admin_submit"    value="保存修改"/>				</td>
+			</tr>
+		</table>
+	</form>
+	 
+</div>
+<include file="public:footer" />
+</body>
+</html>

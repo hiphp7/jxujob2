@@ -1,0 +1,106 @@
+<div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="col-sm-12 col-xs-12">
+        <div class="block block-bordered">
+            <ul class="nav nav-tabs nav-tabs-alt" data-toggle="tabs" id="builder-form-group-tab">
+                <volist name="form.options" id="item" key="items_key">
+                <li <eq name="items_key" value="1">class="active"</eq>>
+                <a href="#tab-{$items_key}">{$key|htmlspecialchars}</a>
+                </li>
+                </volist>
+            </ul>
+            <div class="block-content tab-content block-group">
+                <volist name="form.options" id="items" key="items_key">
+                <div class="tab-pane row <eq name="items_key" value="1">active</eq>" id="tab-{$items_key}" >
+                    <volist name="items" id="form_group">
+                        <switch name="form_group.type">
+                            <case value="checkbox">
+                                {// 多选 }
+                                <include file="../V9WebRes/Application/Common/builder/form/items/checkbox.html" type='_group' />
+                            </case>
+
+                            <case value="file">
+                                {// 单文件上传 }
+                                <include file="../V9WebRes/Application/Common/builder/form/items/file.html" type='_group' />
+                            </case>
+
+                            <case value="files">
+                                {// 多文件上传 }
+                                <include file="../V9WebRes/Application/Common/builder/form/items/files.html" type='_group' />
+                            </case>
+
+                            <case value="hidden">
+                                {// 隐藏 }
+                                <include file="../V9WebRes/Application/Common/builder/form/items/hidden.html" type='_group' />
+                            </case>
+
+                            <case value="image">
+                                {// 单图片上传 }
+                                <include file="../V9WebRes/Application/Common/builder/form/items/image.html" type='_group' />
+                            </case>
+
+                            <case value="images">
+                                {// 多图片上传 }
+                                <include file="../V9WebRes/Application/Common/builder/form/items/images.html" type='_group' />
+                            </case>
+
+                            <case value="radio">
+                                {// 单选 }
+                                <include file="../V9WebRes/Application/Common/builder/form/items/radio.html" type='_group' />
+                            </case>
+
+                            <case value="select">
+                                {// 下拉菜单 }
+                                <include file="../V9WebRes/Application/Common/builder/form/items/select.html" type='_group' />
+                            </case>
+
+                            <case value="select2">
+                                {// 下拉多选 }
+                                <include file="../V9WebRes/Application/Common/builder/form/items/select2.html" type='_group' />
+                            </case>
+
+                            <case value="static">
+                                {// 静态文本 }
+                                <include file="../V9WebRes/Application/Common/builder/form/items/static.html" type='_group' />
+                            </case>
+
+                            <case value="text">
+                             
+                                {// 单行文本 }
+                                <include file="../V9WebRes/Application/Common/builder/form/items/text.html" type='_group' />
+                            </case>
+
+                            <case value="time">
+                                {// 时间 }
+                                <include file="../V9WebRes/Application/Common/builder/form/items/time.html" type='_group' />
+                            </case>
+
+                            <case value="number">
+                                <include file="../V9WebRes/Application/Common/builder/form/items/number.html" type='_group' />
+                            </case>
+
+                            <case value="switch">
+                                <include file="../V9WebRes/Application/Common/builder/form/items/switch.html" type='_group' />
+                            </case>
+
+                            <case value="textarea|array">
+                                {// 文本框|数组 }
+                                <include file="../V9WebRes/Application/Common/builder/form/items/textarea.html" type='_group' />
+                            </case>
+
+                            <case value="datetime">
+                                <include file="../V9WebRes/Application/Common/builder/form/items/datetime.html" type='_group' />
+                            </case>
+
+                            <case value="ueditor">
+                                <include file="../V9WebRes/Application/Common/builder/form/items/ueditor.html" type='_group' />
+                            </case>
+                            <default/>
+                            {:extend_form_item($form_group, $_layout)}
+                        </switch>
+                    </volist>
+                </div>
+                </volist>
+            </div>
+        </div>
+    </div>
+</div>

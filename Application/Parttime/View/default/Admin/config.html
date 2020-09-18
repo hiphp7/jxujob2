@@ -1,0 +1,59 @@
+<include file="Admin@default/public/header" />
+<div class="toptip">
+    <div class="toptit">提示：</div>
+    <p>不同的运营阶段您可以选择不同的设置。</p>
+</div>
+<div class="toptit">参数配置</div>
+<form action="{:U('Parttime/Admin/config')}" method="post">
+    <div class="form_main width200">
+        <div class="fl">发布兼职最大条数:</div>
+        <div class="fr">
+            <input name="parttime_max" type="text" class="input_text_default middle" maxlength="10" value="{:C('qscms_parttime_max')}" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/> 条
+        </div>
+        <div class="fl">修改兼职后审核状态:</div>
+        <div class="fr">
+            <div class="imgradio">
+                <input name="audit_edit_parttime" type="hidden" value="{:C('qscms_audit_edit_parttime')}">
+                <div class="radio <eq name='Think.config.qscms_audit_edit_parttime' value='-1'>select</eq>" data="-1" title="保持不变">保持不变</div>
+                <div class="radio <eq name='Think.config.qscms_audit_edit_parttime' value='1'>select</eq>" data="1" title="重新审核">重新审核</div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="fl"></div>
+        <div class="fr">
+            <input type="submit" class="admin_submit" value="保存修改"/>
+            <input type="button" class="admin_submit" value="返回" onClick="history.go(-1)"/>
+        </div>
+        <div class="clear"></div>
+    </div>
+</form>
+
+<div class="toptit">联系方式展现方式<span style="color: #999999; font-size: 12px;">（图形化需要将中文字体文件上传到data/contactimgfont/，字体文件命名为“cn.ttc”)</span></div>
+<form action="{:U('Parttime/Admin/config')}" method="post">
+    <div class="form_main width200">
+        <div class="fl">兼职职位联系方式:</div>
+        <div class="fr">
+            <div class="imgradio">
+                <input name="contact_img_parttime" type="hidden" value="{:C('qscms_contact_img_parttime')}">
+                <div class="radio <eq name='Think.config.qscms_contact_img_parttime' value='1'>select</eq>" data="1" title="文字">文字</div>
+                <div class="radio <eq name='Think.config.qscms_contact_img_parttime' value='2'>select</eq>" data="2" title="图形化">图形化</div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="fl"></div>
+        <div class="fr">
+            <input type="submit" class="admin_submit" value="保存修改"/>
+            <input type="button" class="admin_submit" value="返回" onClick="history.go(-1)"/>
+        </div>
+        <div class="clear"></div>
+    </div>
+</form>
+
+</div>
+<include file="Admin@default/public/footer" />
+</body>
+<script type="text/javascript">
+    $(document).ready(function () {
+    });
+</script>
+</html>

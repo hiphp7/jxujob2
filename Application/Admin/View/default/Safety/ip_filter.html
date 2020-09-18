@@ -1,0 +1,26 @@
+<include file="public:header" />
+
+ <div class="toptit">禁止访问IP</div>
+ <form action="{:U('safety/ip_filter')}" method="post"  name="form1" id="form1">
+    <table width="700" border="0" cellspacing="10" cellpadding="1" style=" margin-bottom:3px;">
+        <tr>
+          <td width="162" align="right" valign="top" style="padding:3px;">ip地址：<br />
+            (请用“|”隔开多个ip地址)</td>
+          <td valign="top"><textarea name="filter_ip" class="input_text_400" id="filter_ip" style="height:100px;">{:C('qscms_filter_ip')}</textarea></td>
+        </tr>
+        <tr>
+          <td align="right">出错提示</td>
+          <td><input name="filter_ip_tips" type="text"  class="input_text_400" id="filter_ip_tips" value="{:C('qscms_filter_ip_tips')}" maxlength="150"/></td>
+        </tr>
+        <tr>
+          <td align="right">&nbsp;</td>
+          <td>
+            <input name="submit2" type="submit" class="admin_submit"    value="保存修改"/>
+          </td>
+        </tr>
+      </table>
+      </form>
+  </div>
+<include file="public:footer" />
+</body>
+</html>

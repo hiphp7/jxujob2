@@ -1,0 +1,148 @@
+<include file="public:header" />
+<span id="version"></span>
+<volist name="message" id="message">
+  <if condition="$message['type'] eq 'warning'">
+    <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#990000"  style=" margin-bottom:6px; color:#FFFFFF">
+    <tr>
+      <td bgcolor="#CC0000">&nbsp;{$message.content}</td>
+    </tr>
+  </table>
+  <else/>
+    <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#FF9900"  style=" margin-bottom:6px;">
+      <tr>
+        <td bgcolor="#FFFFCC">&nbsp;{$message.content}</td>
+      </tr>
+    </table>
+  </if>
+</volist>
+<div class="toptit">今日统计</div>
+<table width="900" border="0" cellpadding="0" cellspacing="0" class="link_lan" style="padding-left:15px; line-height:220%; margin-bottom:10px; color:#666666">
+      <tr>
+        <td width="300"  >新增个人会员：&nbsp;<strong id="personal_users">...</strong></td>
+        <td width="300"  >新增简历：&nbsp;<strong id="resumes">...</strong></td>
+        <td  >简历刷新次数：&nbsp;<strong id="resume_refresh">...</strong></td>
+      </tr>
+      <tr>
+        <td  >新增企业会员：&nbsp;<strong id="company_users">...</strong></td>
+        <td  >新增职位：&nbsp;<strong id="jobs">...</strong></td>
+        <td  >简历下载量：&nbsp;<strong id="resume_down">...</strong></td>
+      </tr>
+      <tr>
+        <td  >企业新增订单：&nbsp;<strong id="company_order">...</strong>		  </td>
+        <td  >个人新增订单：&nbsp; <strong id="personal_order">...</strong> </td>
+		<td  >发出面试邀请：&nbsp;<strong id="interview">...</strong></td>
+      </tr>
+      <tr>
+        <td  >简历投递数：&nbsp;<strong id="jobs_apply">...</strong>      </td>
+        <td  >职位刷新数：&nbsp; <strong id="jobs_refresh">...</strong> </td>
+        <td></td>
+      </tr>
+</table>
+<div class="toptit">昨日统计</div>
+<table width="900" border="0" cellpadding="0" cellspacing="0" class="link_lan" style="padding-left:15px; line-height:220%; margin-bottom:10px; color:#666666">
+      <tr>
+        <td width="300"  >新增个人会员：&nbsp;<strong id="yesterday_personal_users">...</strong></td>
+        <td width="300"  >新增简历：&nbsp;<strong id="yesterday_resumes">...</strong></td>
+        <td  >简历刷新次数：&nbsp;<strong id="yesterday_resume_refresh">...</strong></td>
+      </tr>
+      <tr>
+        <td  >新增企业会员：&nbsp;<strong id="yesterday_company_users">...</strong></td>
+        <td  >新增职位：&nbsp;<strong id="yesterday_jobs">...</strong></td>
+        <td  >简历下载量：&nbsp;<strong id="yesterday_resume_down">...</strong></td>
+      </tr>
+      <tr>
+        <td  >企业新增订单：&nbsp;<strong id="yesterday_company_order">...</strong>     </td>
+        <td  >个人新增订单：&nbsp; <strong id="yesterday_personal_order">...</strong> </td>
+    <td  >发出面试邀请：&nbsp;<strong id="yesterday_interview">...</strong></td>
+      </tr>
+      <tr>
+        <td  >简历投递数：&nbsp;<strong id="yesterday_jobs_apply">...</strong>      </td>
+        <td  >职位刷新数：&nbsp; <strong id="yesterday_jobs_refresh">...</strong> </td>
+        <td></td>
+      </tr>
+</table>
+<div class="toptit">待处理事务</div>
+<table width="900" border="0" cellpadding="0" cellspacing="0" class="link_lan" style="padding-left:15px; line-height:220%; margin-bottom:10px; color:#666666">
+      <tr>
+        <td width="300"  >待审核职位：&nbsp;<a href="{:U('jobs/index_noaudit')}" id="jobs_audit">...</a></td>
+        <td width="300"  >待认证企业：&nbsp;<a href="{:U('company/index',array('audit'=>2))}" id="company_audit">...</a></td>
+        <td  >举报信息：&nbsp;<a href="{:U('report/index')}" id="report">...</a></td>
+      </tr>
+      <tr>
+        <td  >待审核简历：&nbsp;<a href="{:U('personal/index_noaudit')}" id="resume_audit">...</a></td>
+        <td  >待审核简历照片/作品：&nbsp;<a href="{:U('ResumeImg/index',array('audit'=>2))}" id="resume_img_audit">...</a></td>
+        <td  >意见/建议：&nbsp; <a href="{:U('feedback/index')}" id="feedback">...</a> </td>
+      </tr>
+     
+</table>
+ 
+<div class="toptit">最近30天会员注册趋势</div>
+<script language="JavaScript" src="__ADMINPUBLIC__/js/FusionCharts.js"></script>
+<div id="chartdiv">FusionCharts. </div>
+<script type="text/javascript">
+   var chart = new FusionCharts("__ADMINPUBLIC__/js/statement/area2D.swf", "ChartId", "800", "150");
+   chart.setDataURL("{$charts}");
+   chart.render("chartdiv");
+</script>
+<script type="text/javascript">
+		var tsTimeStamp= new Date().getTime();
+		$.getJSON("{:U('index/total')}",function(result){
+				for(var i in result.data){
+				if(result.data[i]==0)
+				{
+				 $("#"+i).html(result.data[i]);
+				}
+				else
+				{
+				 $("#"+i).html('+'+result.data[i]);
+				}
+         
+        }
+		});
+</script>
+<div class="toptit">骑士cms人才系统</div>
+<table width="100%" border="0" cellspacing="0" cellpadding="4">
+  <tr>
+    <td style=" line-height:220%; color:#666666; padding-left:15px;"><table width="900" border="0" cellpadding="0" cellspacing="0" class="link_lan">
+      <tr>
+        <td width="300">系统当前版本：v{:C('QSCMS_VERSION')}<span id="update_notice"></span></td>
+        <td width="300">认证授权：<span id="certification">载入中...</span>        </td>
+        <td>官方论坛：<a href="http://www.74cms.com" target="_blank">www.74cms.com</a></td>
+      </tr>
+      <tr>
+        <td  >程序开发：74CMS程序开发组<br /></td>
+        <td  >版权所有：骑士CMS</td>
+      </tr>
+      
+    </table></td>
+  </tr>
+</table>
+<div class="toptit">系统信息</div>
+<table width="100%" border="0" cellspacing="0" cellpadding="4">
+  <tr>
+    <td style="  color:#666666; padding-left:15px;line-height:220%;">
+	<table width="600" border="0" cellpadding="0" cellspacing="0" class="link_lan">
+      <tr>
+        <td width="300"  >操作系统：{$system_info.server_os}</td>
+        <td  >PHP 版本：{$system_info.php_version}</td>
+      </tr>
+      <tr>
+        <td  >服务器软件：{$system_info.web_server}<br /></td>
+        <td  >MySQL 版本：{$system_info.mysql_version}</td>
+      </tr>
+    </table></td>
+  </tr>
+</table>
+<div class="toptit">官方动态</div>
+<table width="100%" border="0" cellspacing="0" cellpadding="4">
+  <tr>
+    <td style=" line-height:220%; color:#666666; padding-left:15px;">
+	<span id="announcement" class="link_lan">载入中...</span>
+	</td>
+  </tr>
+</table>
+</div>
+<include file="public:footer" />
+</body>
+<script src="http://www.74cms.com/plus/external.php?version={$system_info.version}&certification={:C('qscms_site_domain')}&announcement=1" language="javascript"></script>
+</html>

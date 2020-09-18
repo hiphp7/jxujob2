@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <include file="Home@default/public/meta" />
+    <link href="{:C('TPL_HOME_PUBLIC_DIR')}/css/common.css" rel="stylesheet" type="text/css" />
+    <link href="{:C('TPL_PUBLIC_DIR')}/css/gworker.css" rel="stylesheet" type="text/css" />
+    <qscms:load type="category" search="1"/>
+    <if condition="C('SUBSITE_VAL.s_id') gt 0 and !$_GET['citycategory']">
+        <qscms:classify 列表名="city" 类型="QS_citycategory" 地区分类="$subsite_val['s_district']" 显示数目="100"/>
+    <else/>
+        <qscms:classify 列表名="city" 类型="QS_citycategory" 地区分类="$_GET['citycategory']" 显示数目="100"/>
+    </if>
+</head>
+<body>
+<include file="Home@default/public/header_other" />
+<!--搜索 -->
+<div class="new-search-box">
+    <div class="ns-main">
+        <div class="main-sip">
+            <div class="ip-group">
+                <form id="ajax_search_location" action="{:U('Home/ajaxCommon/ajax_search_location',array('type'=>'QS_gworker'))}" method="get">
+                    <div class="ip-box"><input type="text" name="key" id="autoKeyInput" data-original="{$Think.get.key|urldecode|urldecode}" value="{$Think.get.key|urldecode|urldecode}" placeholder="请输入关键字" /></div>
+                    <div class="for-border"></div>
+                    <div class="ip-city" data-toggle="funCityModal" data-title="请选择地区" data-multiple="false" data-maximum="0" data-width="630"><if condition="$Think.get.citycategory neq ''">{$city['parent']['categoryname']}<else/>选择地区</if></div>
+                    <input type="hidden" name="search_type" value="{$Think.get.search_type}" />
+                    <input id="searchCityModalCode" type="hidden" name="citycategory" value="<if condition="$Think.get.citycategory neq ''">{$city['select']['citycategory']}</if>" />
+                    <input id="recoverSearchCityModalCode" type="hidden" name="" value="" />
+                    <input class="J_forclear" type="hidden" name="wage" value="{$Think.get.wage}" />
+                    <div class="ip-btn"><input type="submit" class="sobut J_hoverbut" value="搜索" /></div>
+                </form>
+            </div>
+            <div class="ip-txt J_map_some link_white">
+                <div class="cur-map-pos" title=""></div>
+                <div class="manage-btn">
+                    <div class="publish" data-checkurl="{:U('Index/check_jobs_num')}" data-url="{:U('Index/add')}">申请发布</div>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<div class="so_condition J_so_condition">
+    <notempty name="city['list']">
+        <div class="lefttit">地标地段</div>
+        <div class="rs">
+            <div onclick="javascript:location.href='{:P(array(\'citycategory\'=>$city[\'parent\'][\'citycategory\']))}'" class="li <if condition="$Think.get.citycategory neq '' and $city['parent']['id'] eq $city['select']['id']">select</if>">全{$city['parent']['categoryname']}</div>
+            <volist name="city['list']" id="district">
+                <div onclick="javascript:location.href='{:P(array(\'citycategory\'=>$district[\'citycategory\']))}'" class="li <if condition="$city['select']['id'] eq $key">select</if>">{$district['categoryname']}</div>
+            </volist>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </notempty>
+    <div class="lefttit">薪资待遇</div>
+    <div class="rs">
+        <qscms:classify 列表名="category_wage" 类型="QS_wage_gworker" 显示数目="100"/>
+        <div onclick="javascript:location.href='{:P(array(\'wage\'=>\'\'))}'" class="li <if condition="$Think.get.wage eq ''">select</if>">不限</div>
+        <volist name="category_wage" id="category">
+            <div onclick="javascript:location.href='{:P(array(\'wage\'=>$key))}'" class="li <if condition="$Think.get.wage eq $key">select</if>">{$category}</div>
+        </volist>
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+
+    <!--已选条件，当没有条件的时候不显示下面的DIV -->
+    <if condition="$_GET">
+        <div class="selected J_selected">
+            <div class="stit">已选条件</div>
+            <div class="sc">
+                <notempty name="Think.get.key">
+                    <div class="slist" <if condition="$Think.get.sort eq 'score'">onclick="window.location='{:P(array('key'=>'','sort'=>''))}';"<else/>onclick="window.location='{:P(array('key'=>''))}';"</if>><span>关键字：</span>{$Think.get.key|urldecode|urldecode}</div>
+                </notempty>
+                <if condition="$Think.get.citycategory neq ''">
+                    <div class="slist" onclick="window.location='{:P(array('citycategory'=>''))}';">
+                        <span>地区类别：</span>
+                        {$city['select']['categoryname']}
+                    </div>
+                </if>
+                <if condition="$Think.get.wage neq ''">
+                    <div class="slist" onclick="window.location='{:P(array('wage'=>''))}';"><span>薪资待遇：</span>{$category_wage[$_GET['wage']]}</div>
+                </if>
+                <div class="clear"></div>
+            </div>
+            <div class="sr">
+                <div class="empty" onclick="window.location='{:url_rewrite('QS_gworker')}';">清空</div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </if>
+</div>
+<div class="plist">
+    <div class="pl">    
+        <div class="toptitle">
+            <div class="ts">           
+                普工招聘
+            </div>
+        </div>
+        <!--列表 -->
+        <qscms:gworker_jobs_list 列表名="jobslist" 显示数目="18" 分页显示="1" 关键字="$_GET['key']" 地区分类="$_GET['citycategory']" 薪资待遇="$_GET['wage']" 描述长度="36"  填补字符="..."/>
+        <notempty name="jobslist['list']">
+        <div class="recruit-list">
+            <volist name="jobslist['list']" id="vo">
+            <div class="item <if condition="$i%3 eq 1">single</if>">
+                <div class="title substring link_gray6"><a href="{$vo['url']}">{$vo['jobs_name']}</a></div>
+                <div class="store substring">{$vo['store_name']}</div>
+                <div class="wage substring">月薪：{$vo['wage_cn']}，工作地：{$vo['district_cn']}</div>
+                <div class="detail">{$vo['briefly']}</div>
+                <div class="bottom">
+                    <span class="refreshtime">{$vo['refreshtime_cn']}</span>
+                </div>
+            </div>
+            </volist>
+        </div>
+        <div class="clear"></div>
+        <div class="qspage">{$jobslist.page}</div>
+        <else />
+        <div class="list_empty_group">
+            <div class="list_empty">
+                <div class="list_empty_left"></div>
+                <div class="list_empty_right">
+                    <div class="sorry_box">对不起，没有找到符合您条件的职位！</div>
+                    <div class="stips_box">放宽您的查找条件也许有更多合适您的职位哦~</div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        </notempty>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="clear"></div>
+<include file="Home@default/public/footer_min" />
+<script type="text/javascript" src="{:C('TPL_HOME_PUBLIC_DIR')}/js/jquery.jobslist.js"></script>
+<script type="text/javascript" src="{:C('TPL_HOME_PUBLIC_DIR')}/js/jquery.search.city.js"></script>
+<script type="text/javascript">
+    if ($('.J_selected .slist').length) {
+        $('.J_selected').show();
+    }
+    $('.publish').on('click',function(){
+        var url = $(this).data('url');
+        var checkurl = $(this).data('checkurl');
+        $.getJSON(checkurl,function(result){
+            if(result.status == 0){
+                disapperTooltip("remind", result.msg);
+                return false;
+            }else{
+                window.location.href=url;
+            }
+        });
+    });
+</script>
+</body>
+</html>

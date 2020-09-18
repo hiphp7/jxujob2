@@ -1,0 +1,675 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<include file="public:meta" />
+	<link href="../public/css/common.css" rel="stylesheet" type="text/css" />
+	<link href="../public/css/index.css" rel="stylesheet" type="text/css" />
+	<link href="../public/css/slider/themes/default/default.css" rel="stylesheet" type="text/css" />
+	<link href="../public/css/slider/nivo-slider.css" rel="stylesheet" type="text/css" />
+	<script src="../public/js/jquery.common.js" type="text/javascript" language="javascript"></script>
+</head>
+<body>
+<!--顶部小导航 -->
+<include file="public:header_min" />
+<!--logo通栏-->
+<div class="index_head">
+	<div class="logobox">
+		<a href="__ROOT__/"><img src="<if condition="C('qscms_logo_home')">{:attach(C('qscms_logo_home'),'resource')}<else/>../public/images/logo.gif</if>" border="0"/></a>
+        <if condition="$apply['Subsite']">
+	        <div class="sub-txt-group" id="J-choose-subcity">
+	            <div class="stg-txt">{:C('SUBSITE_VAL.s_sitename')}</div>
+	            <div class="stg-icon"></div>
+	            <div class="clear"></div>
+	        </div>
+	    </if>
+    </div>
+	
+	
+	
+	<div class="sobox">
+        <!-- <div><a>职位数：<strong class="jobs-roll-count">1</strong></a>     |     <a>简历数:<strong class="resume-roll-count">1</strong> </a></div>	 -->
+		<div class="inputbg">
+		<form id="ajax_search_location">
+			<div class="selecttype J_hoverbut">搜职位</div>
+			<div class="selecttype_down">
+				<div class="down_list J_hoverbut" data-type="QS_resumelist">搜简历</div>
+			</div>
+			<input type="hidden" name="act" id="top_search_type" value="QS_jobslist" />
+			<div class="inoputbox"><input id="top_search_input" name="key" type="text"  value=""/></div>
+			<input id="top_search_btn" type="button" class="sobut J_hoverbut" value="搜索" />
+            <input type="hidden" name="lng" id="lng"  value=""/>
+            <input type="hidden" name="lat" id="lat"  value=""/>
+            <input type="hidden" name="ldLng" id="ldLng"  value=""/>
+            <input type="hidden" name="ldLat" id="ldLat"  value=""/>
+            <input type="hidden" name="ruLng" id="ruLng"  value=""/>
+            <input type="hidden" name="ruLat" id="ruLat"  value=""/>
+            <if condition="$apply['Subsite'] and $subsite_val['s_id'] gt 0">
+                <input type="hidden" class="map-lng" value="<if condition="$Think.get.lng eq ''">{$subsite_val.s_map_center_x|default=C('qscms_map_center_x')}<else/>{$Think.get.lng}</if>">
+                <input type="hidden" class="map-lat" value="<if condition="$Think.get.lat eq ''">{$subsite_val.s_map_center_y|default=C('qscms_map_center_y')}<else/>{$Think.get.lat}</if>">
+            <else/>
+                <input type="hidden" class="map-lng" value="<if condition="$Think.get.lng eq ''">{:C('qscms_map_center_x')}<else/>{$Think.get.lng}</if>">
+                <input type="hidden" class="map-lat" value="<if condition="$Think.get.lat eq ''">{:C('qscms_map_center_y')}<else/>{$Think.get.lat}</if>">
+            </if>
+        </form>
+		</div>
+	    <div class="righttxt link_gray6"><a href="{:url_rewrite('QS_jobs')}">分类搜索</a> <a href="javascript:;" id="popupBox" class="map">地图找工作</a></div>
+	</div>
+	<notempty name="apply['Mobile']">
+		<div class="mob">
+			<img id="mobile_img" src="../data/upload/resource/weixin_img.jpg" border="0"/>
+			<!-- <img id="mobile_img" src="../public/images/115.png" border="0"/> -->
+			<img id="mobile_qrcode" src="../data/upload/resource/weixin_img.jpg" border="0"/>
+			<!-- <img id="mobile_qrcode" src="{:C('qscms_site_dir')}index.php?m=Home&c=Qrcode&a=index&url={:urlencode(build_mobile_url())}" border="0"/> -->
+		</div>
+        <script type="text/javascript">
+            $('#mobile_img').mouseenter(function() {
+                $('#mobile_img').hide();
+                $('#mobile_qrcode').toggle();
+            });
+            $('#mobile_qrcode').mouseleave(function() {
+                $('#mobile_qrcode').hide();
+                $('#mobile_img').toggle();
+            });
+        </script>
+	</notempty>
+	<div class="clear"></div>
+</div>
+<!-- 导航 -->
+<div class="index_nav_bg">
+  <div class="index_nav">
+    <ul class="link_gray6 nowrap">
+    	<qscms:nav 列表名="nav" 调用名称="QS_top" 数量="10"/>
+    	<volist name="nav" id="nav">
+			<li class="nli J_hoverbut <if condition="MODULE_NAME eq C('DEFAULT_MODULE')"><if condition="$nav['tag'] eq strtolower(CONTROLLER_NAME)">select</if><else/><if condition="$nav['tag'] eq strtolower(MODULE_NAME)">select</if></if>"><a href="{$nav['url']}" target="{$nav.target}">{$nav.title}</a></li>
+    	</volist>
+    </ul>
+	<div class="clear"></div>
+  </div>
+</div>
+<!-- 登录框 -->
+<div class="index_1">
+	<div class="leftlogin">
+		<div id="J_userWrap" class="shadowbg pie_about">
+			<!--未登录 -->
+	  		<div class="login">
+				<div class="lontit">
+					<span class="switch_txt active">会员登录</span>
+  					<span class="switch_txt">手机动态码登录</span>
+  					<div id="forAccountLogin" class="switch_account link_blue" data-index="0"><a href="javascript:;">切换为账号登录</a></div>
+					<if condition="C('qscms_weixin_apiopen') and C('qscms_weixin_scan_login')">
+						<div class="code_login" title="切换扫码登录"></div>
+						<div class="txt_login"  title="切换到用户名密码登录"></div>
+					</if>
+				</div>
+				<div class="type_box active">
+					<div class="errbox J_errbox"></div>
+					<div class="j_mob_show">
+							<div class="inputbox"><input name="username" type="text" value="" placeholder="请输入用户名" class="input"/></div>
+							<div class="inputbox"><input name="password" type="password" value="" placeholder="请输入密码" class="input J_loginword"/></div>
+							<div class="memorybox">
+								<div class="memory"><label><input name="expire" class="J_expire" type="checkbox" value="0"/> 自动登录</label></div>
+								<div class="getpwd link_yellow"><a href="{:U('members/user_getpass')}">忘记密码？</a></div>
+								<div class="clear"></div>
+							</div>
+							<div class="inputbox">
+								<input id="J_do_login_btn" type="button" value="立即登录"  class="index_login_btn"/>
+							</div>
+							<!-- 网站安全加密算法已升级!请2017年6月12日前注册的用户通过<a href="{:U('members/user_getpass')}">"密码找回"</a>功能设置新密码! -->
+							<div class="apptit">
+								<div class="t">
+									<notempty name="oauth_list">
+										<if condition="!(count($oauth_list) eq 1 AND array_key_exists('weixin',$oauth_list))">
+											使用合作账号登录
+										</if>
+									</notempty>
+								</div>
+								<!-- <if condition="C('qscms_sms_open') eq 1">
+									<div class="t link_blue last"><a id="forMobileLogin" href="javascript:;" data-index="1">使用手机动态码登录</a></div>
+								</if> -->
+								<div class="clear"></div>
+							</div>
+							<div class="appsparent">
+							    <div class="apps">
+							    	<volist name="oauth_list" id="oauth">
+								  		<if condition="$key neq 'weixin'">
+											<a class="ali {$key}" href="{:U('callback/index',array('mod'=>$key,'type'=>'login'))}" title="{$oauth.name}账号登录"></a>
+										</if>
+									</volist>
+								</div>
+							</div>
+							
+							<div class="btns">
+						  		<a class="addbut a1" href="{:U('members/register',array('utype'=>1))}">企业招聘注册</a>
+			  	              	<a class="addbut a2" href="{:U('members/register',array('utype'=>2))}">个人求职注册</a>
+			  	            	<div class="clear"></div>
+							</div>  
+					</div>
+				</div>
+				<div class="type_box">
+					<div class="errbox J_errbox"></div>
+					<div class="j_mob_show">
+							<div class="inputbox"><input name="mobile" type="text" value="" placeholder="请输入手机号" class="input"/></div>
+							<div class="inputbox">
+								<input name="verfy_code" type="text" value="" placeholder="请输入手机验证码" class="J_loginword input code"/>
+								<input id="getVerfyCode" type="button" value="获取验证码" class="index_login_btn_code"/>
+							</div>
+							<div class="memorybox">
+								<div class="memory"><label><input name="expire_obile" class="J_expire" type="checkbox" value="0"/> 自动登录</label></div>
+								<div class="getpwd link_yellow"><a href="{:U('members/user_getpass')}">忘记密码？</a></div>
+								<div class="clear"></div>
+							</div>
+							<div class="inputbox">
+								<input id="J_do_login_bymobile_btn" type="button" value="立即登录"  class="index_login_btn"/>
+							</div>
+							<div class="apptit">
+								<div class="t">其他账户登录</div>
+								<div class="t link_blue last"></div>
+								<div class="clear"></div>
+							</div>
+							<div class="appsparent">
+							    <div class="apps">
+							    	<volist name="oauth_list" id="oauth">
+								  		<if condition="$key neq 'weixin'">
+											<a class="ali {$key}" href="{:U('callback/index',array('mod'=>$key,'type'=>'login'))}" title="{$oauth.name}账号登录"></a>
+										</if>
+									</volist>
+								</div>
+							</div>
+							<div class="btns">
+						  		<a class="addbut a1" href="{:U('company/add_jobs')}">发布职位</a>
+			  	              	<a class="addbut a2" href="{:U('personal/add_resume')}">填写简历</a>
+			  	            	<div class="clear"></div>
+							</div>  
+					</div>
+				</div>
+				<if condition="C('qscms_weixin_apiopen') and C('qscms_weixin_scan_login')">
+					<div class="J_qr_code_show" style="display: none">
+					    <div id="J_weixinQrCode" class="codebox"></div>
+		                <div class="codetip">请使用微信扫一扫登录</div>
+		    		</div>
+		    	</if>
+		    	<input type="hidden" id="J_loginType" value="0">
+		    	<input type="button" id="btnVerifiCode" style="display:none;">
+				<input type="hidden" id="verify_userlogin" value="{$verify_userlogin}">
+                <input type="hidden" id="J_captcha_open" value="<if condition="C('qscms_captcha_open') eq 1 && C('qscms_captcha_config.varify_mobile') eq 1">1<else/>0</if>" />
+				<input type="hidden" id="J_sendVerifyType" value="0">
+                <input type="hidden" id="whetherVisitors" value="<if condition="$visitor">1<else />0</if>">
+			</div>
+		</div>
+	</div>
+	<div class="rben">
+		<div class="wrapper">
+			<qscms:ad 列表名="ad" 广告位名称="QS_indexfocus" 广告数量="6"/>
+			<div class="slider-wrapper theme-default">
+				<div id="slider" class="rbanner nivoSlider">
+					<empty name="ad['list']">
+						<img src="{:attach('default_ad.png','resource')}" />
+					<else/>
+						<volist name="ad['list']" id="ad_info">
+							{$ad_info.html}
+						</volist>
+					</empty>
+				</div>
+			</div>
+		</div>
+        <div class="emerb">
+	 	    <div class="emerico"></div>
+	        <div class="more link_gray9"><a href="{:url_rewrite('QS_jobslist',array('emergency'=>1))}">更多></a></div>
+            <div class="slide">
+            	<qscms:jobs_list 列表名="emergency_jobs" 紧急招聘="1" 显示数目="6"/>
+				<volist name="emergency_jobs['list']" id="jobs">
+					<div class="sli">
+						<div class="tit substring link_gray6"><a target="_blank" href="{$jobs.jobs_url}">{$jobs.jobs_name}</a></div>
+						<div class="salary substring">{$jobs.wage_cn}</div>
+						<div class="clear"></div>
+					</div>
+				</volist>
+			</div>
+        </div>
+		<!--广告位 -->
+		<div class="ban_bot_ads">
+			<qscms:ad 列表名="ad" 广告位名称="QS_indexrecommend" 广告数量="4"/>
+			<volist name="ad['list']" id="ad_info">
+				<div class="alist">
+					<a target="_blank" href="{$ad_info.href}" title="{$ad_info.title}">
+						<img src="{:attach($ad_info['content'],'ads')}" border="0">
+					</a>
+					<notempty name="ad_info['company']['companyname']">
+						<div class="showname substring link_white pie_about"><a target="_blank" href="{$ad_info.href}">{$ad_info['company']['companyname']}</a></div>
+					</notempty>
+				</div>
+			</volist>
+		</div>
+		<!-- -->
+		<!--公告 -->
+		<div class="notices">
+			<div class="noticestab">
+				<div class="tli select">公告</div>
+				<notempty name="apply['Jobfair']">
+					<div class="tli last">招聘会</div>
+				</notempty>
+				<div class="clear"></div>
+			</div>
+			<div class="notice_showtabs first">
+				<ul class="link_gray6">
+					<qscms:notice_list 列表名="notice_list" 显示数目="3" 分类="1"/>
+					<volist name="notice_list['list']" id="notice">
+						<li class="substring new"><a href="{$notice.url}" target="_blank">{$notice.title}</a></li>
+					</volist>
+				</ul>
+			</div>
+			<notempty name="apply['Jobfair']">
+				<div class="notice_showtabs">
+					<!--招聘会 -->
+					<ul class="link_gray6">
+						<qscms:jobfair_list 列表名="jobfair_list" 显示数目="3" 排序="ordid:desc"/>
+						<volist name="jobfair_list['list']" id="jobfair">
+							<li class="substring new"><a href="{$jobfair['url']}" target="_blank">{$jobfair.title}</a></li>
+						</volist>
+					</ul>
+				</div>
+			</notempty>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+</div>
+<qscms:ad 列表名="ad" 广告位名称="1200x160" 广告数量="2"/>
+<notempty name="ad['list']">
+
+		<volist name="ad['list']" id="ad_info">
+			<div class="ad1200_160">
+			<a href="{$ad_info.href}" target="_blank" title="{$ad_info.title}">
+				<img src="{:attach($ad_info['content'],'ads')}" border="0" />
+			</a>
+			</div>
+		</volist>
+
+</notempty>
+
+<qscms:ad 列表名="ad" 广告位名称="QS_indextopimg" 广告数量="2"/>
+<notempty name="ad['list']">
+
+		<volist name="ad['list']" id="ad_info">
+			<div class="ad1200_80">
+			<a href="{$ad_info.href}" target="_blank" title="{$ad_info.title}">
+				<img src="{:attach($ad_info['content'],'ads')}" border="0" />
+			</a>
+			</div>
+		</volist>
+
+</notempty>
+<qscms:ad 列表名="ad" 广告位名称="QS_indexcentreimg" 广告数量="2"/>
+<notempty name="ad['list']">
+	<div class="index_2">
+		<volist name="ad['list']" id="ad_info">
+			<div class="ad590_80">
+				<a href="{$ad_info.href}" target="_blank" title="{$ad_info.title}">
+					<img src="{:attach($ad_info['content'],'ads')}" border="0"/>
+				</a>
+			</div>
+		</volist>
+		<div class="clear"></div>
+	</div>
+</notempty>
+<qscms:ad 列表名="ad" 广告位名称="QS_indexcenterrecommend" 职位数量="12" 广告数量="18"/>
+<notempty name="ad['list']">
+	<div class="index_3">
+		<volist name="ad['list']" id="ad_info">
+			<div class="J_hoverbut ad188_78">
+				<div class="imgbox">
+					<notempty name="ad_info['company']['companyname']">
+					<div class="showinfo pie_about">
+						<div class="comname substring link_yellow"><a target="_blank" href="{$ad_info.href}">{$ad_info['company']['companyname']}</a></div>
+						<notempty name="ad_info['company']['jobs']">
+					        <div class="jobslist link_gray6">
+						        <volist name="ad_info[company]['jobs']" id="jobs">
+									<div class="jli substring"><a target="_blank" href="{$jobs.jobs_url}">{$jobs.jobs_name}</a></div>
+						        </volist>
+							</div>
+						</notempty>
+						<notempty name="ad_info['company']['jobs_count']">
+					        <div class="count">
+					          	<div class="v">共有{$ad_info['company']['jobs_count']}个职位</div>
+								<div class="more link_blue"><a target="_blank" href="{:url_rewrite('QS_companyjobs',array('id'=>$ad_info['company']['id']))}">查看全部</a></div>
+								<div class="clear"></div>
+					        </div>
+						</notempty>
+					</div>
+					</notempty>
+					<a href="{$ad_info.href}" target="_blank" title="{$ad_info.title}">
+						<img src="{:attach($ad_info['content'],'ads')}" border="0"/>
+					</a>
+				</div>
+			</div>
+		</volist>
+		<div class="clear"></div>
+	</div>
+</notempty>
+<!--
+<div class="index_4">
+	<div class="nleft">
+	    <div class="ntit">
+		  	<div class="lt">名企招聘</div>
+		  	<div class="rt no_change link_gray6"><a target="_blank" href="{:url_rewrite('QS_helplist',array('id'=>19))}">我也要出现在这里</a></div>
+			<div class="clear"></div>
+		</div>
+	    <div class="vipjobs">
+			<qscms:company_jobs_list 列表名="company_list" 名企="1" 显示数目="15" 职位数量="2" 职位名长度="5"/>
+			<volist name="company_list['list']" id="company">
+				<div class="comlist">
+					<div class="comlogo"><a href="{$company.company_url}" target="_blank"><img src="<empty name="company['logo']">{:attach('no_logo.png','resource')}<else/>{:attach($company['logo'],'company_logo')}</empty>" border="0"/></a></div>
+					<div class="com link_gray6">
+						<div class="comname substring"><a href="{$company.company_url}" target="_blank">{$company.companyname}</a></div>
+						<div class="jobname_box">
+							<notempty name="company['jobs']">
+								<volist name="company['jobs']" id="jobs">
+									<a href="{$jobs.jobs_url}" class="jobname" title="{$jobs.jobs_name}" target="_blank">{$jobs.jobs_name}</a>&nbsp;&nbsp;
+								</volist>
+							<else />
+								该公司暂无招聘职位
+							</notempty>
+						</div>
+					</div>	
+					<div class="clear"></div>
+				</div>
+			</volist>
+			<div class="clear"></div>
+		</div>
+	</div>
+	<div class="nright">
+		<div class="ntit">
+		  	<div class="lt">本周热门职位</div>
+		  	<div class="rt txt_right link_gray6"><a href="{:url_rewrite('QS_jobslist',array('settr'=>7,'displayorder'=>'hot'))}" target="_blank">更多></a></div>
+			<div class="clear"></div>
+		</div>
+		<div class="hotjobs">
+			<qscms:jobs_list 列表名="hot_jobs" 日期范围="7" 排序="hot" 显示数目="3"/>
+			<volist name="hot_jobs['list']" id="jobs"> 
+				<div class="hjoslist">
+					<div class="hj_l link_yellow substring"><a href="{$jobs['jobs_url']}" target="_blank">{$jobs.jobs_name}</a></div>
+					<div class="hj_r font_gray9">{$jobs.wage_cn}</div>
+					<div class="clear"></div>
+					<div class="hj_com link_gray6 substring"><a href="{$jobs['company_url']}" target="_blank">{$jobs.companyname}</a></div>
+				</div>
+			</volist>
+		</div>
+		  <!--轮番广告位 -->
+		<div class="wrapper">
+			<div class="slider-wrapper theme-default">
+				<div id="slidersmall" class="ad300_175 nivoSlider">
+					<qscms:ad 列表名="ad" 广告位名称="QS_indexcentrefocus" 广告数量="5"/>
+					<volist name="ad['list']" id="ad_info">
+						{$ad_info.html}
+					</volist>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+	<div class="clear"></div>
+</div>
+<if condition="C('apply.Allowance')">
+<qscms:jobs_list 列表名="jobslist" 搜索内容="allowance" 显示数目="20" 排序="rtime"/>
+<div class="index_5 al-job">
+	<div class="ntit">
+		<div class="lt">红包职位</div>
+		<div class="rt link_gray6">
+			<span class="al-txt">当前共有 {$jobslist['allowance_count']} 个红包职位</span>
+			<a href="{:url_rewrite('QS_jobslist',array('search_cont'=>'allowance'))}" target="_blank">更多&gt;&gt;</a>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="jobs">
+		<volist name="jobslist['list']" id="vo" key="k">
+		<div class="jli j{$k}">
+			<div class="jcom_name_box link_gray6">
+				<a class="line_substring" href="{$vo['jobs_url']}" target="_blank">{$vo['jobs_name']}</a>
+				<div class="j-n-money">
+					<div class="j-m-l">￥{$vo['allowance_info']['per_amount']}</div>
+					<div class="j-m-r">{$vo['allowance_info']['type_cn']}</div>
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="jobs_gourp link_gray6">
+				<a target="_blank" href="{$vo['company_url']}" class="a_job">{$vo['companyname']}</a>
+				<div class="clear"></div>
+			</div>
+		</div>
+		</volist>
+	</div>
+</div>
+</if>
+<qscms:ad 列表名="ad" 广告位名称="QS_indexcenter" 广告数量="1"/>
+<notempty name="ad['list']">
+	<div class="ad1200_80">
+		<volist name="ad['list']" id="ad_info">
+			<a href="{$ad_info.href}" title="{$ad_info.title}" target="_blank">
+				<img src="{:attach($ad_info['content'],'ads')}" border="0"/>
+			</a>
+		</volist>
+	</div>
+</notempty>
+
+<div class="index_5 J_change_parent">
+	<div class="ntit">
+	  	<div class="lt">最新招聘</div>
+		<div class="rt"><div class="refreshbtn J_change_batch" data-url="{:U('AjaxCommon/jobs_list')}">换一批</div></div>
+		<div class="clear"></div>
+	</div>
+    <div class="jobs">
+		<div class="ajax_loading"><div class="ajaxloadtxt"></div></div> 
+		<qscms:company_jobs_list 列表名="new_jobs" 分页显示="1" 职位数量="2" 排序="rtime" 显示数目="20"/>
+		<div class="J_change_result">
+			<volist name="new_jobs['list']" id="company" key="k">
+				<div class="jli j{$k}">
+					<div class="jcom_name_box link_gray6">
+						<a class="line_substring" href="{$company.company_url}" target="_blank">{$company.companyname}</a>
+						<if condition="$company['audit'] eq 1"><img src="{:attach('auth.png','resource')}" title="认证企业"></if>
+						<if condition="$company['setmeal_id'] gt 1"><img src="{:attach($company['setmeal_id'].'.png','setmeal_img')}" title="{$company.setmeal_name}"></if>
+						<if condition="$company['famous'] eq 1">
+							<img src="<if condition="C('qscms_famous_company_img') eq ''">{:attach('famous.png','resource')}<else/>{:attach(C('qscms_famous_company_img'),'images')}</if>" title="诚聘通企业"/>
+						</if>
+						<div class="clear"></div>
+					</div>
+					<div class="jobs_gourp link_yellow">
+						<div class="a-job-icon"></div>
+						<volist name="company['jobs']" id="jobs">
+							<a target="_blank" href="{$jobs.jobs_url}" class="a_job">{$jobs.jobs_name}</a>
+						</volist>
+						<div class="clear"></div>
+					</div>
+				</div>
+			</volist>
+		</div>
+	</div>
+</div>
+
+
+
+<div class="J_change_parent">
+	<div class="index_6">
+		<div class="ntit">
+		  	<div class="lt">推荐简历</div>
+			<div class="rt"><div class="refreshbtn J_change_batch" data-url="{:U('AjaxCommon/resume_list')}">换一批</div></div>
+			<div class="clear"></div>
+		</div>
+	</div>
+
+	<div class="index_6_p">
+		<div class="ajax_loading"><div class="ajaxloadtxt"></div></div>
+		<qscms:resume_list 列表名="recommend_resume" 照片="1" 显示数目="5"/>
+		<div class="J_change_result">
+			<volist name="recommend_resume['list']" id="resume">
+				<div class="rlist">
+					<div class="li">
+						<div class="photo"><a href="{$resume.resume_url}" target="_blank"><img src="{$resume.photosrc}" border="0"/></a></div>
+            <div class="photo-blur">
+              <img class="p-blur" src="{$resume.photosrc}" width="226" border="0"/>
+            </div>
+						<div class="name link_gray6"><a href="{$resume.resume_url}" target="_blank">{$resume.fullname}</a></div>
+						<div class="txt">
+							{$resume.education_cn},{$resume.experience_cn}<br />
+							<div class="ijobs substring">{$resume.intention_jobs}</div>
+						</div>
+					</div>
+				</div>
+			</volist>
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+<div class="index_8">
+	<div class="ntit">
+  	<div class="lt">友情链接</div>
+	<div class="clear"></div>
+</div>
+<div class="links link_gray6">
+	<qscms:link 列表名="links" 类型="2"/>
+	<volist name="links" id="link">
+		<div class="imglink"><a href="{$link.link_url}" target="_blank"><img src="{:attach($link['link_logo'],'link_logo')}" border="0"/></a></div>
+	</volist>
+	<div class="clear"></div>
+	<!--文字链接 -->
+	<qscms:link 列表名="links" 类型="1"/>
+	<volist name="links" id="link">
+		<div class="txtlink substring"><a href="{$link.link_url}" target="_blank">{$link.title}</a></div>
+	</volist>
+	<div class="clear"></div>
+	</div>
+</div>
+<include file="public:footer" />
+<div id="popup-captcha"></div>
+<script type="text/javascript" src="../public/js/jquery.modal.dialog.js"></script>
+<script type="text/javascript" src="../public/js/jquery.tooltip.js"></script>
+<script type="text/javascript" src="../public/js/jquery.listitem.js"></script>
+<script type="text/javascript" src="../public/js/jquery.dropdown.js"></script>
+<script type="text/javascript" src="../public/js/jquery.nivo.slider.pack.js"></script>
+<script type="text/javascript" src="../public/js/jquery.hoverdir.js"></script>
+<!--[if lt IE 9]>
+	<script type="text/javascript" src="../public/js/PIE.js"></script>
+<![endif]-->
+<script src="http://static.geetest.com/static/tools/gt.js"></script>
+<script type="text/javascript" src="../public/js/jquery.index.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=<if condition="C('SUBSITE_VAL.s_id') gt 0 and $subsite_val['s_map_ak']">{$subsite_val.s_map_ak}<else/>{:C('qscms_map_ak')}</if>"></script>
+<script type="text/javascript" src="../public/js/jquery.mapjob.js"></script>
+<script type="text/javascript" src="../public/js/jquery.autocomplete.js"></script>
+<if condition="$apply['Subsite']">
+	<script id="J-sub-dialog-content" type="text/html">
+		<div class="sub-dialog-group">
+	        <div class="sdg-title">亲爱的用户您好：</div>
+	        <div class="sdg-split-20"></div>
+	        <div class="sdg-h-tips">请您切换到对应的地区分站，让我们为您提供更准确的职位信息。</div>
+	        <div class="sdg-split-30"></div>
+	        <div class="sdg-h-line"></div>
+	        <div class="sdg-split-20"></div>
+	        <div class="sdg-master-group">
+	            <if condition="$subsite_org">
+	            	<div class="sdg-txt-left">点击进入</div>
+		            <a href="{:U('subsite/set',array('sid'=>$subsite_org['s_id']))}" class="sdg-go">{$subsite_org.s_sitename}</a>
+		            <div class="sdg-txt-right">或者切换到以下城市</div>
+	            <else/>
+	            	<div class="sdg-txt-right">切换到以下城市</div>
+	            </if>
+	            <div class="clear"></div>
+	        </div>
+	        <div class="sdg-split-20"></div>
+	        <div class="sdg-sub-city-group">
+	        	<volist name="district" id="dis" offset="0" length="10">
+					<a href="{:U('subsite/set',array('sid'=>$dis['s_id']))}" class="sdg-sub-city">{$dis.s_sitename}</a>
+	        	</volist>
+	        	<if condition="count($district) gt 11">
+					<a href="{:U('subsite/index')}" class="sdg-sub-city more">更多地区</a>
+		        </if>
+	            <div class="clear"></div>
+	        </div>
+	        <div class="sdg-split-16"></div>
+	        <div class="sdg-bottom-tips">如果您在使用中遇到任何问题，请随时联系 <if condition="C('qscms_top_tel')">{:C('qscms_top_tel')}<else/>{:C('qscms_bootom_tel')}</if> 寻求帮助</div>
+	        <div class="sdg-split-11"></div>
+	    </div>
+	</script>
+	<script type="text/javascript">
+	    <notempty name="subsite_org">
+	    	showSubDialog();
+	    </notempty>
+	    $('#J-choose-subcity').click(function () {
+	        showSubDialog();
+	    });
+	    function showSubDialog() {
+	        var qsDialog = $(this).dialog({
+	            title: '切换地区',
+	            showFooter: false,
+	            border: false
+	        });
+	        qsDialog.setContent($('#J-sub-dialog-content').html());
+            $('.sdg-sub-city').each(function (index, value) {
+                if ((index + 1) % 4 == 0) {
+                    $(this).addClass('no-mr');
+                }
+            });
+	    }
+	</script>
+</if>
+<if condition="$apply['Recommend'] and $isRecommend">
+	<script type="text/javascript" src="__ROOT__/{$Think.APP_NAME}/Recommend/View/default/public/Recommend.js"></script>
+	<link href="__ROOT__/{$Think.APP_NAME}/Recommend/View/default/public/plugin-recomment.css" rel="stylesheet" type="text/css" />
+</if>
+<script type="text/javascript">
+    var qsMapUrl = "{:url_rewrite('QS_jobslist',array('lng'=>'lngVal','lat'=>'latVal','ldLng'=>'ldLngVal','ldLat'=>'ldLatVal','ruLng'=>'ruLngVal','ruLat'=>'ruLatVal'))}";
+    // 关键字联想
+    var hotKey = $('#top_search_input').autocomplete({
+        serviceUrl:"{:U('ajaxCommon/hotword')}",
+        minChars:1,
+        maxHeight:400,
+        width:274,
+        zIndex: 1,
+        deferRequestBy: 0
+    });
+</script>
+
+<script>
+		// 职位、简历数量动态效果
+		var jobCount = '{$jobs_count}';
+		var resumeCount = '{$resume_count}';
+		window.setTimeout(function() {
+			$('.jobs-roll-count').empty();
+			peopleRoll(jobCount, '.jobs-roll-count');
+		}, 300)
+		window.setTimeout(function() {
+			$('.resume-roll-count').empty();
+			peopleRoll(resumeCount, '.resume-roll-count');
+		}, 3)
+		function peopleRoll(a, container) {
+			function b(a) {
+				for (var b = 0; b < a.length; b++) {
+					var e = a.charAt(b);
+					d.push(e)
+				}
+				c()
+			}
+			function c() {
+				var a = 0;
+				$(container).append("<span></span>");
+				var b = window.setInterval(function() {
+					$(container + " span").eq(e).text(a), a == d[e] && (window.clearInterval(b), e++, d[e] && c()), a++
+				}, 30)
+			}
+			var d = [],
+					e = 0,
+					f = a + "";
+			b(f)
+		}
+    </script>
+
+								
+</body>
+</html>

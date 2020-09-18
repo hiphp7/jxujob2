@@ -1,0 +1,46 @@
+<include file="public:header" />
+    <div class="toptip">
+        <h2>提示：</h2>
+        <p>通过管理员角色设置，您可以进行编辑管理员角色权限以及删除管理员角色等操作；</p>
+    </div>
+    <div class="toptit">新增管理员角色</div>
+    <form id="form1" name="form1" method="post" action="{:U('AdminRole/add')}">
+        <table width="100%" border="0" cellpadding="4" cellspacing="0" bgcolor="#FFFFFF"  >
+            <tr>
+                <td width="120" height="30" align="right" bgcolor="#FFFFFF" style=" border-bottom:1px #CCCCCC dashed">角色名称：</td>
+                <td bgcolor="#FFFFFF" style=" border-bottom:1px #CCCCCC dashed">
+                    <input name="name" type="text" class="input_text_200" id="name" maxlength="25" value=""/>
+                </td>
+            </tr>
+            <tr>
+                <td height="30" align="right" bgcolor="#FFFFFF" style=" border-bottom:1px #CCCCCC dashed">角色描述：</td>
+                <td bgcolor="#FFFFFF" style=" border-bottom:1px #CCCCCC dashed" >
+                    <textarea name="remark" id="remark" cols="70" rows="3" style="font-size:12px;"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td width="120" align="right">排序:</td>
+                <td>
+                    <input name="ordid" type="text" class="input_text_200" value="0"/>
+                </td>
+            </tr>
+            <tr>
+                <td width="120" align="right">是否激活 :</td>
+                <td>
+                    <label><input type="radio" name="status" class="radio_style" value="1" checked="checked"> 是&nbsp;&nbsp;</label>
+                    <label><input type="radio" name="status" class="radio_style" value="0"> 否</label>
+                </td>
+            </tr>
+            <tr>
+                <td height="30" align="right" bgcolor="#FFFFFF" >&nbsp;</td>
+                <td height="50" bgcolor="#FFFFFF" > 
+                    <input name="submit3" type="submit" class="admin_submit" value="添加"/>
+                    <input name="submit22" type="button" class="admin_submit" value="返回" onclick="window.location='{:U('AdminRole/index')}'"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<include file="public:footer" />
+</body>
+</html>

@@ -1,0 +1,149 @@
+<include file="public:header" />
+<div class="toptip">
+	<h2>提示：</h2>
+	<p>
+服务套餐模式是指会员可以购买不同等级服务，如普通会员，VIP会员等，每个等级都有不同的使用权限
+</p>
+</div>
+<div class="toptit">新增服务套餐</div>
+	  <form id="form1" name="form1" method="post" action="{:U('setmeal/add')}" enctype="multipart/form-data">
+    <table border="0" cellspacing="3" cellpadding="3">
+      <tr>
+        <td width="200" align="right">套餐名称：</td>
+        <td width="391"><input name="setmeal_name" type="text" class="input_text_200" id="setmeal_name"/></td>
+      </tr>
+      <tr>
+        <td align="right">有效时间：</td>
+        <td><input name="days" type="text" class="input_text_200" id="days" value="15" maxlength="10" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/>
+        天 <span class="admin_note">(0表示不限制)</span> </td>
+      </tr>
+      <tr>
+        <td align="right">价格：</td>
+        <td><input name="expense" type="text" class="input_text_200" id="expense" value="0" maxlength="10"/>
+        元 <span class="admin_note">(0表示免费) </span></td>
+      </tr>
+<tr>
+        <td align="right">职位最大并发数：</td>
+        <td><input name="jobs_meanwhile" type="text" class="input_text_200" id="jobs_meanwhile" value="1" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/>
+        条  </td>
+      </tr>
+      <tr>
+        <td align="right">每天免费刷新职位次数：</td>
+        <td><input name="refresh_jobs_free" type="text" class="input_text_200" id="refresh_jobs_free" value="0"  maxlength="10" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/>
+        次</td>
+      </tr>
+	  <tr>
+        <td align="right">下载简历：</td>
+        <td><input name="download_resume" type="text" class="input_text_200" id="download_resume" value="1" maxlength="10" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/>
+        份  <span class="admin_note">(0为不允许) </span></td>
+      </tr>
+	  <tr>
+        <td align="right">每天下载简历数上限：</td>
+        <td><input name="download_resume_max" type="text" class="input_text_200" id="download_resume_max" value="1" maxlength="10" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/>
+        份  <span class="admin_note">(0为不限制) </span></td>
+      </tr>
+      <tr>
+        <td align="right">下载简历增值包折扣：</td>
+        <td><input name="discount_download_resume" type="text" class="input_text_200" id="discount_download_resume" value="0" maxlength="10" />
+        折  <span class="admin_note">(0为无折扣) </span></td>
+      </tr>
+      <tr>
+        <td align="right">短信增值包折扣：</td>
+        <td><input name="discount_sms" type="text" class="input_text_200" id="discount_sms" value="0" maxlength="10" />
+        折  <span class="admin_note">(0为无折扣) </span></td>
+      </tr>
+      <tr>
+        <td align="right">职位置顶增值包折扣：</td>
+        <td><input name="discount_stick" type="text" class="input_text_200" id="discount_stick" value="0" maxlength="10" />
+        折  <span class="admin_note">(0为无折扣) </span></td>
+      </tr>
+      <tr>
+        <td align="right">职位紧急增值包折扣：</td>
+        <td><input name="discount_emergency" type="text" class="input_text_200" id="discount_emergency" value="0" maxlength="10" />
+        折  <span class="admin_note">(0为无折扣) </span></td>
+      </tr>
+      <tr>
+        <td align="right">企业模板增值包折扣：</td>
+        <td><input name="discount_tpl" type="text" class="input_text_200" id="discount_tpl" value="0" maxlength="10" />
+        折  <span class="admin_note">(0为无折扣) </span></td>
+      </tr>
+      <tr>
+        <td align="right">职位预约刷新折扣：</td>
+        <td><input name="discount_auto_refresh_jobs" type="text" class="input_text_200" id="discount_auto_refresh_jobs" value="0" maxlength="10" />
+        折  <span class="admin_note">(0为无折扣) </span></td>
+      </tr>
+      <tr>
+        <td align="right">显示顺序：</td>
+        <td><input name="show_order" type="text" class="input_text_200" id="show_order" value="0" maxlength="3" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/>
+          数字越大越靠前</td>
+      </tr>
+	   <tr>
+        <td align="right">赠送短信条数：</td>
+        <td><input name="set_sms" type="text" class="input_text_200" id="set_sms" value="0" maxlength="3" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/>
+          条</td>
+      </tr>
+	   <tr>
+        <td align="right">赠送{:C('qscms_points_byname')}：</td>
+        <td><input name="set_points" type="text" class="input_text_200" id="set_points" value="0" maxlength="3" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/>
+          {:C('qscms_points_quantifier')}</td>
+      </tr>
+	  <tr>
+        <td align="right">主动申请的简历联系方式直接查看：</td>
+        <td><label>
+          <input name="show_apply_contact" type="radio" value="1" checked="checked" />
+        是</label> &nbsp;&nbsp;&nbsp;<label>
+        <input type="radio" name="show_apply_contact" value="0" />
+        否</label></td>
+      </tr>
+    <tr>
+        <td align="right">直接显示联系方式：</td>
+        <td><label>
+          <input name="show_contact_direct" type="radio" value="1" />
+        是</label> &nbsp;&nbsp;&nbsp;<label>
+        <input type="radio" name="show_contact_direct" value="0" checked="checked" />
+        否</label></td>
+      </tr>
+	  <tr>
+        <td align="right">显示状态：</td>
+        <td><label>
+          <input name="display" type="radio" value="1" checked="checked" />
+        正常</label> &nbsp;&nbsp;&nbsp;<label>
+        <input type="radio" name="display" value="0" />
+        屏蔽</label></td>
+      </tr>
+	  <tr>
+        <td align="right">允许会员申请此服务：</td>
+        <td><label>
+          <input name="apply" type="radio" value="1" checked="checked" />
+        是</label> &nbsp;&nbsp;&nbsp;<label>
+        <input type="radio" name="apply" value="0" />
+        否</label></td>
+      </tr>
+      <tr>
+        <td align="right">套餐图标(png格式)： </td>
+        <td>
+          <input name="setmeal_img" type="file" id="setmeal_img" style="width:300px; font-size:12px; padding:3px;" onKeyDown="alert('请点击右侧“浏览”选择您电脑上的图片！');return false"/>&nbsp;&nbsp;&nbsp;
+          <input type="button" name="Submit" value="查看图标" class="vtip" title="<img src={:attach($info['id'].'.png','setmeal_img')}  border=0  align=absmiddle>" style="font-size:12px;"/>
+        </td>
+      </tr>
+	  
+      <tr>
+        <td align="right" valign="top">其他说明：</td>
+        <td><textarea name="added" id="added" style="width:300px; height:50px; font-size:12px; line-height:180%" onpropertychange="if(this.value.length&gt;100){this.value=this.value.slice(0,100)}"></textarea>
+            <br />
+          (可填写：赠送广告位或者其他特殊推荐等) </td>
+      </tr>
+      <tr>
+        <td align="center">&nbsp;</td>
+        <td height="50" align="left"><input type="submit" name="Submit3" value="提交" class="admin_submit"   />
+		 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+             <input name="submit22" type="button" class="admin_submit"    value="返 回" onclick="Javascript:window.history.go(-1)"/>
+		</td>
+      </tr>
+    </table>
+  
+    </form>
+    </div>
+<include file="public:footer" />
+</body>
+</html>

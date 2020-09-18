@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+<head>
+<qscms:jobfair_show  列表名="info" 招聘会id="$_GET['id']"/>
+    <include file="public:meta"/>
+    <link rel="stylesheet" href="../public/css/jobfair.css">
+    <link rel="stylesheet" href="../public/css/jobs.css">
+	<script type="text/javascript" src="/Application/Admin/View/default/public/js/jquery.min.js"></script>
+
+</head>
+<style>
+._btn{
+    width: 2rem;
+    height: .7rem;
+    border-radius: 5px;
+    text-align: center;
+    line-height: .7rem;
+    border: none;
+    color: #fff;
+}
+.tab1{
+    width: 100%;
+    height: 1rem;
+}
+.tab1 .header{
+    width: 100%;
+    height: 1rem;
+}
+
+.tab1 .header li{
+    width: 50%;
+    height: 1rem;
+    float: left;
+}
+
+.active1{
+    background: #0180CF;
+}
+
+.tab1 .box>div{
+    display: none;
+}
+.tab1 .box .active{
+    display: block !important;
+}
+
+</style>
+<body>
+<include file="public:header"/>
+
+<div class="split-block"></div>
+
+<div class="jobfair-info">
+    <div class="title font16" style="    overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{$info['title']}</div>
+    <div class="pic date">{:date('Y年m月d日',$info['holddate_start'])} - {:date('Y年m月d日',$info['holddate_end'])}</div>
+    <div class="pic contact">{$info['phone']}（{$info['contact']}）</div>
+    <div class="pic district">{$info['address']}</div>
+    <div style="padding: .08rem 0">
+      <notempty name="signin">
+        <button class="_btn" style="background-color: #666;">已签到</button>
+        <else />
+        <if condition='$info.holddate_start lt time() && $info.holddate_end gt time()'>
+        <button class="_btn signin" data-utype=2 data-jobfairid='{$info.id}' style="background-color: #0180d1; margin-right: 0.2rem;">求职者签到</button>
+        <button class="_btn signin" data-utype=1 data-jobfairid='{$info.id}' style="background-color: #fc8618;">企业签到</button>
+        </if>
+      </notempty>
+    </div>
+    <if condition="$info['predetermined_ok'] eq 0">
+    <div class="status"></div>
+    </if>
+</div>
+<!-- <div class="statistics font16 link_gray6">
+    <div class="item J_to_comlist" data-num="{$info['booth_count']}" url="{$info.exhibitorsurl}">
+        <span>参会企业</span><br>
+        <span class="font20">{$info['booth_count']}</span>
+    </div>
+    <div class="item">
+        <span>展位数</span><br>
+        <span class="font20">{$info['position_count']}</span>
+    </div>
+    <a class="item last" href="tel:{$info['phone']}">
+        <span>电话咨询</span><br>
+        <span class="call"></span>
+    </a>
+    <div class="clear"></div>
+</div> -->
+
+<div class="split-block"></div>
+
+<div class="introduce">
+    <div class="title list_height">招聘会介绍</div>
+    <div class="txt desc">{$info['introduction']}</div>
+    <div class="more">
+        <div class="showbtn font12 ">展开信息</div>
+        <!--<div class="showbtn font12 topbtn">收起信息</div> -->
+    </div>
+</div>
+
+<if condition="!$signin and $info['holddate_start'] lt time() and $info['holddate_end'] gt time() ">
+<div class="introduce">
+  <div class="title list_height">签到企业/求职者</div>
+  <p style="line-height: 1.2rem; text-align: center;">点击签到按钮,查看签到企业或求职者</p>
+</div>
+</if>
+
+<!-- 求职者 -->
+<if condition="C('visitor.utype') eq 2">	
+<div>
+  <div id="Tab" class="tab1">
+    <ul class="header">
+        <li class="active1">签到企业</li>
+        <li>职位推荐</li>
+    </ul>
+    <div class="box">
+      <!-- 签到企业 -->
+        <div class="active">
+		<qscms:company_list 列表名="company_list" 招聘会id="$_GET['id']" 签到="1" 显示数目= '10' 企业名长度='10' 描述长度='50' 分页显示='1'  />
+			
+          <notempty name="company_list['list']">
+          <volist name="company_list['list']" id="ad_info">
+          <div class="job-list-item for-event" onclick="javascript:location.href='/index.php?m=Mobile&c=Jobs&a=comshow&id={$ad_info.id}'">
+          <div class="info clearfix" style="padding-top: .2rem;">
+             <div class="info_left"><img style="width:100px;height:100px;" src="{$ad_info['logo']}" alt=""></div>
+             <div class="info_right">
+               <p class="black">{$ad_info.title}</p>
+			   <p>{$ad_info.companyname}</p>
+               <p><span class="black">
+			   {$ad_info['nature_cn']} | {$ad_info['scale_cn']} | {$ad_info['district_cn']}
+			   </span>
+			   </p>
+               
+             </div>
+          </div>
+          <div class="company font13">
+          <div class="company-name substring">{$jobs.address}</div>
+          <div class="district my_color"> 共{$ad_info['jobs_count']}个在招职位>></div>
+          <div class="clear"></div>
+          </div>
+          </div>
+          <div class="list-split-block"></div>
+          </volist>
+          <div class="qspage">{$company_list['page']}</div>
+          <else />
+          <div class="list-split-block"></div>
+          <div class="list-empty link_blue">
+          抱歉，未有企业签到！<br />
+         
+          </div>
+          </notempty>
+        </div> 
+        <!-- 签到企业结束 -->
+        <!-- 职位推荐 -->
+        <div >
+          <qscms:jobs_list 列表名="jobslist" 推荐用户id="$ids" 搜索类型="$_GET['search_type']" 搜索内容="$_GET['search_cont']" 显示数目="10"  职位分类="$job_cate" 地区分类="$_GET['citycategory']" 行业="$_GET['trade']" 日期范围="$_GET['settr']" 学历="$_GET['education']" 工作经验="$_GET['experience']" 工资="$_GET['wage']" 职位性质="$_GET['nature']" 标签="$_GET['jobtag']" 公司规模="$_GET['scale']" 营业执照="$_GET['license']" 过滤已投递="$_GET['deliver']" 排序="$_GET['sort']" 合并="$_COOKIE['com_list']" 描述长度="100" 搜索范围="$_GET['range']"/>
+          <notempty name="jobslist['list']">
+          <volist name="jobslist['list']" id="jobs">
+          <div class="job-list-item for-event" onclick="javascript:location.href='{$jobs.jobs_url}'">
+          <div class="info">
+            <div class="line-one">
+            <div class="job-name substring font16">{$jobs.jobs_name}
+            <if condition="$jobs['emergency'] eq 1">
+                <img src="../public/images/231.png"/>
+            </if>
+            </div>
+            <if condition="C('apply.Allowance') && $jobs['allowance_id'] gt 0">
+            <div class="j-n-money">
+                <div class="j-m-l jm<eq name="jobs['allowance_info']['type_alias']" value="apply">2</eq><eq name="jobs['allowance_info']['type_alias']" value="interview">3</eq><eq name="jobs['allowance_info']['type_alias']" value="entry">1</eq>"></div>
+                <div class="j-m-r"><span class="font9">￥</span><span class="font12">{$jobs['allowance_info']['per_amount']}</span></div>
+                <div class="clear"></div>
+            </div>
+            </if>
+            <if condition="$jobs['stick'] eq 1 && (($_GET['search_type'] eq 'jobs' or $_GET['search_type'] eq 'company' or $_GET['jobs_commpany'] eq 'jobs_commpany' or $_GET['key'] eq '') && !$_GET['sort'])">
+            <div class="refresh-time font12 font_red_light">置顶</div>
+            <else />
+            <div class="refresh-time font12">{$jobs['refreshtime_cn']}</div>
+            </if>
+            <div class="clear"></div>
+          </div>
+          <div class="line-two font14">
+            <div class="salary">{$jobs.wage_cn}</div>
+            <div class="category substring">{$jobs.category_cn}</div>
+            <div class="clear"></div>
+          </div>
+          <empty name="jobs['tag_cn']">
+          <div class="line-four font13">
+            {$jobs.education_cn} / {$jobs.experience_cn} / 年龄{$jobs['age_cn']}
+          </div>
+          <else />
+          <div class="line-three fontag">
+            <volist name="jobs['tag_cn']" id="tag" offset="0" length="4">
+            <div class="job-tag">{$tag}</div>
+            </volist>
+            <div class="clear"></div>
+          </div>
+          </empty>
+          <eq name="jobs['allowance_id']" value="0">
+          <div class="apply-btn apply_jobs" data-jid="{$jobs['id']}" onClick="event.cancelBubble = true">申请</div>
+          <else />
+          <div class="apply-btn J_applyForJobAllowance" data-jid="{$jobs['id']}" onClick="event.cancelBubble = true">申请</div>
+          </eq>
+        </div>
+        <div class="company font13">
+          <div class="company-name substring">{$jobs.companyname}</div>
+          <div class="district <if condition="$Think.get.range neq ''">range</if> substring"><if condition="$Think.get.range neq ''">{$jobs.map_range}<else />{$jobs.district_cn}</if></div>
+          <div class="clear"></div>
+          </div>
+          </div>
+        <div class="list-split-block"></div>
+        </volist>
+        <div class="qspage">{$jobslist['page']}</div>
+        <else />
+      <div class="list-split-block"></div>
+      <div class="list-empty link_blue">
+          抱歉，没有找到符合您条件的职位！<br />
+          放宽搜索条件也许有更多合适您的职位哦~
+      </div>
+        </notempty>
+        </div>
+        <!-- 职位推荐结束 -->
+    </div>
+
+  </div>
+</div>
+</if>
+<if condition="C('visitor.utype') eq 1">	
+<!-- 企业 -->
+<div>
+  <div id="Tab2" class="tab2">
+    <ul class="header">
+        <li class="active1">签到人才</li>
+        <li>人才推荐</li>
+    </ul>
+    <div class="box">
+      <!-- 签到人才 -->
+        <div class="active">
+          <qscms:mine 列表名="resumelist" 签到="1" 招聘会id="$_GET['id']" 搜索类型="$_GET['search_type']" 显示数目="15" 分页显示="1" 关键字="$_GET['key']" 职位分类="$_GET['jobcategory']" 地区分类="$_GET['citycategory']" 日期范围="$_GET['settr']" 学历="$_GET['education']" 工作经验="$_GET['experience']" 工资="$_GET['wage']" 工作性质="$_GET['nature']" 标签="$_GET['resumetag']" 手机认证="$_GET['mobile_audit']" 照片="$_GET['photo']" 所学专业="$_GET['major']" 行业="$_GET['trade']" 年龄="$_GET['age']" 性别="$_GET['sex']" 特长描述长度="100" 排序="$_GET['sort']"/>
+          <notempty name="resumelist['list']">
+          <volist name="resumelist['list']" id="resume">
+          <div class="resume-list-item for-event" onclick="javascript:location.href='{$resume.resume_url}'">
+          <div class="info">
+            <div class="info-logo"><img src="{$resume.photosrc}" alt="{$resume.fullname}"></div>
+          <div class="line-one">
+            <div class="real-name substring font16">{$resume.fullname}</div>
+            <if condition="$resume['strong_tag']">
+			    <div class="gold font10">{$resume['strong_tag']}</div>
+			    </if>
+            <if condition="$resume['stick'] eq 1 && !$_GET['sort']">
+            <div class="refresh-time font12 font_red_light">置顶</div>
+            <else />
+            <div class="refresh-time font12">{$resume['refreshtime_cn']}</div>
+            </if>
+            <div class="clear"></div>
+          </div>
+          <div class="line-two font14 substring">
+            {$resume.sex_cn} / {$resume.age}岁 / {$resume.education_cn} / {$resume.experience_cn}
+          </div>
+          <if condition="$resume['tag_cn']">
+          <div class="line-three font9">
+            <volist name="resume['tag_cn']" id="tag" offset="0" length="4">
+                <div class="resume-tag">{$tag}</div>
+            </volist>
+            <div class="clear"></div>
+          </div>
+          <else />
+          <div class="line-four font13 substring">
+            意向地区: {$resume.district_cn}
+          </div>
+          </if>
+          </div>
+          <div class="intent-jobs font13 substring">
+              意向职位: {$resume.intention_jobs}
+              </div>
+          </div>
+          <div class="list-split-block"></div>
+          </volist>
+          <div class="qspage">{$resumelist['page']}</div>
+          <else />
+	        <div class="list-split-block"></div>
+	        <div class="list-empty link_blue">
+		      抱歉，未有人才签到！<br />
+		     
+	        </div>
+          </notempty>
+        </div>
+      <!-- 签到人才结束 -->
+
+      <!-- 人才推荐 -->
+        <div>
+          <qscms:resume_list 列表名="resumelist" 搜索类型="$_GET['search_type']" 显示数目="15" 关键字="$_GET['key']" 职位分类="$cate" 地区分类="$_GET['citycategory']" 日期范围="$_GET['settr']" 学历="$_GET['education']" 工作经验="$_GET['experience']" 工资="$_GET['wage']" 工作性质="$_GET['nature']" 标签="$_GET['resumetag']" 手机认证="$_GET['mobile_audit']" 照片="$_GET['photo']" 所学专业="$_GET['major']" 行业="$_GET['trade']" 年龄="$_GET['age']" 性别="$_GET['sex']" 特长描述长度="100" 排序="$_GET['sort']"/>
+          <notempty name="resumelist['list']">
+          <volist name="resumelist['list']" id="resume">
+          <div class="resume-list-item for-event" onclick="javascript:location.href='{$resume.resume_url}'">
+          <div class="info">
+            <div class="info-logo"><img src="{$resume.photosrc}" alt="{$resume.fullname}"></div>
+          <div class="line-one">
+            <div class="real-name substring font16">{$resume.fullname}</div>
+            <if condition="$resume['strong_tag']">
+			    <div class="gold font10">{$resume['strong_tag']}</div>
+			    </if>
+            <if condition="$resume['stick'] eq 1 && !$_GET['sort']">
+            <div class="refresh-time font12 font_red_light">置顶</div>
+            <else />
+            <div class="refresh-time font12">{$resume['refreshtime_cn']}</div>
+            </if>
+            <div class="clear"></div>
+          </div>
+          <div class="line-two font14 substring">
+            {$resume.sex_cn} / {$resume.age}岁 / {$resume.education_cn} / {$resume.experience_cn}
+          </div>
+          <if condition="$resume['tag_cn']">
+          <div class="line-three font9">
+            <volist name="resume['tag_cn']" id="tag" offset="0" length="4">
+                <div class="resume-tag">{$tag}</div>
+            </volist>
+            <div class="clear"></div>
+          </div>
+          <else />
+          <div class="line-four font13 substring">
+            意向地区: {$resume.district_cn}
+          </div>
+          </if>
+          </div>
+          <div class="intent-jobs font13 substring">
+              意向职位: {$resume.intention_jobs}
+              </div>
+          </div>
+          <div class="list-split-block"></div>
+          </volist>
+          <div class="qspage">{$resumelist['page']}</div>
+          <else />
+	        <div class="list-split-block"></div>
+	        <div class="list-empty link_blue">
+		      抱歉，没有找到符合您条件的简历！<br />
+		      放宽搜索条件也许有更多合适您的简历哦~
+	        </div>
+          </notempty>
+        </div>
+         <!-- 人才推荐结束 -->
+    </div>
+</div>
+</div> 
+</if>
+<!-- <div class="traffic">
+    <div class="title list_height">交通路线</div>
+    <div class="txt desc">
+        举办地址：{$info['address']}
+        <notempty name="info['bus']">
+        <br>
+        乘车路线：{$info['bus']}
+        </notempty>
+    </div>
+    <if condition="$info['map_x'] && $info['map_y'] && $info['map_zoom']">
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak={:C('qscms_map_ak')}"></script>
+    <div class="map" id="container"></div>
+    <script type="text/javascript">
+        var map = new BMap.Map("container");       // 创建地图实例  
+        var point = new BMap.Point({$info['map_x']},{$info['map_y']});  // 创建点坐标   
+        map.centerAndZoom(point, {$info['map_zoom']});
+        var qs_marker = new BMap.Marker(point);        // 创建标注   
+        map.addOverlay(qs_marker);  
+        map.setCenter(point); 
+        map.addControl(new BMap.NavigationControl());//添加鱼骨
+        map.enableScrollWheelZoom();//启用滚轮放大缩小，默认禁用。
+    </script>
+    </if>
+</div> -->
+<!-- <if condition="$info['predetermined_ok'] && $show_booth">
+<div class="split-block-footnav"></div>
+<div class="refootnav">
+    <div class="btns link_gray6">
+      <div class="qs-btn qs-btn-medium qs-btn-blue b-big qs-btn-inline" onclick="javascript:location.href='{:url_rewrite('QS_jobfairreserve',array('id'=>$info['id']))}'">立即参会</div>
+    </div>
+</div>
+</if> -->
+<include file="public:footer_min" />
+<script type="text/javascript" charset="utf-8" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript">
+  $(function(){
+    $('.signin').click(function(){
+      let utype=$(this).data('utype');
+      let jobfairid=$(this).data('jobfairid');
+      $.post('{:U("mobile/jobfair/signin")}',{
+        utype:utype,
+        jobfairid:jobfairid
+      },function(data){
+        layer.open({
+          content:data.msg+'<br /><br /><span class="login" style="cursor:pointer;">登录/注册</span>',
+          shadeClose:false,
+          btn: '关闭',
+          yes:function(index){
+            layer.close(index);
+            if (data.status==1) {
+              window.location.href=data.data.url;
+            }
+            console.log(data);
+          }
+        })
+      });
+    });
+  });
+  $(document).on("click",".login",function(){
+  		top.location.href="/index.php?m=Mobile&c=Members&a=login";
+  	});
+    $('.more').on('click',function(){
+        var prev = $(this).prev();
+        var child = $(this).children('.showbtn');
+        if(prev.hasClass('desc')){
+          prev.removeClass('desc');
+          child.addClass('topbtn');
+          child.html('收起信息');
+        }else{
+          prev.addClass('desc');
+          child.removeClass('topbtn');
+          child.html('展开信息');
+        }
+      });
+    $('.J_to_comlist').on('click',function(){
+        var com_num = parseInt($(this).data('num'));
+        if(com_num==0){
+            qsToast({type: 2, context: '当前还没有企业参会'});
+            return false;
+        }else{
+            window.location.href=$(this).attr('url');
+        }
+    });
+    wx.config({
+    // debug: true,
+    appId: '{$signPackage.appId}',
+    timestamp: '{$signPackage.timestamp}',
+    nonceStr: '{$signPackage.nonceStr}',
+    signature: '{$signPackage.signature}',
+    jsApiList: [
+      // 所有要调用的 API 都要加到这个列表中
+      "onMenuShareTimeline",
+      "onMenuShareAppMessage",
+      "onMenuShareQQ",
+      "onMenuShareWeibo"
+    ]
+  });
+  wx.ready(function () 
+  {
+      var linkUrl = "{:build_mobile_url(array('c'=>'Jobfair','a'=>'show','params'=>'id='.$info['id']))}";//放链接
+      var title = "{$info['title']}-{:C('qscms_site_name')} 举办时间：{:date('m月d日',$info['holddate_start'])} - {:date('m月d日',$info['holddate_end'])}  举办地址：{$info['address']}";
+      var desc = "{$info['title']}-{:C('qscms_site_name')} 举办时间：{:date('m月d日',$info['holddate_start'])} - {:date('m月d日',$info['holddate_end'])}  举办地址：{$info['address']}"; 
+      var imgUrl="{:C('qscms_site_domain')}{:C('qscms_site_dir')}{$info['thumb']}";//图片链接
+      
+      wx.onMenuShareTimeline({
+          title: title, // 分享标题
+          desc: desc, // 分享描述
+          link: linkUrl, // 分享链接
+          imgUrl: imgUrl, // 分享图标
+          success: function () { 
+          // 用户确认分享后执行的回调函数
+          },
+          cancel: function () { 
+              // 用户取消分享后执行的回调函数
+          }
+      });
+      wx.onMenuShareAppMessage({
+          title: title, // 分享标题
+          desc: desc, // 分享描述
+          link: linkUrl, // 分享链接
+          imgUrl: imgUrl, // 分享图标
+          type: '', // 分享类型,music、video或link，不填默认为link
+          dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                    success: function () { 
+          // 用户确认分享后执行的回调函数
+          },
+          cancel: function () { 
+              // 用户取消分享后执行的回调函数
+          }
+      });
+      wx.onMenuShareQQ({
+          title: title, // 分享标题
+          desc: desc, // 分享描述
+          link: linkUrl, // 分享链接
+          imgUrl: imgUrl, // 分享图标
+                    success: function () { 
+          // 用户确认分享后执行的回调函数
+          },
+          cancel: function () { 
+              // 用户取消分享后执行的回调函数
+          }
+      });
+      wx.onMenuShareWeibo({
+          title: title, // 分享标题
+          desc: desc, // 分享描述
+          link: linkUrl, // 分享链接
+          imgUrl: imgUrl, // 分享图标
+                    success: function () { 
+          // 用户确认分享后执行的回调函数
+          },
+          cancel: function () { 
+              // 用户取消分享后执行的回调函数
+          }
+      });
+  });
+</script>
+</body>
+</html>
+<script>
+	$('.tab2 li').click(function(){
+		 var ind = $(this).index()
+		 $(this).addClass('active1').siblings().removeClass('active1')
+		 $('.box>div').eq(ind).addClass('active').siblings().removeClass('active')
+	})
+</script>
+<script>
+  //    选项卡
+      function Tab (op) {
+          if(!op ||  !op.el){
+              return console.error("缺少元素!!")
+          };
+          this.op = op;
+          this._Gettag()
+          this._Option()
+      };
+      // 获取元素
+      Tab.prototype._Gettag = function(){
+          console.log(this.op)
+          const op = this.op
+          const el = op.el;
+          console.log(el)
+          const ele = document.querySelector(el);
+          console.log(ele)
+          this.toplist = ele.querySelectorAll('.header>li');
+          this.divlist = ele.querySelectorAll('.box>div');
+          // console.log(this.toplist)
+      }
+      //主要功能
+      Tab.prototype._Option = function(){
+          const toplist = this.toplist;
+          for(let i = 0; i < toplist.length; i++ ){
+              toplist[i].onclick = () => {
+                  this._Delete()
+                  this._Addname(i)
+              }
+          }
+      }
+      //删除类名
+      Tab.prototype._Delete = function(k){ 
+          for(let k = 0; k < this.toplist.length; k++ ){
+              this.toplist[k].className = "";
+              this.divlist[k].className = "";
+          }
+      }
+      //添加类名
+      Tab.prototype._Addname = function(i){
+          this.toplist[i].className = "active1";
+          this.divlist[i].className = "active";
+      }
+      new Tab({
+          el:"#Tab"
+      })
+      new Tab({
+          el:"#Tab2"
+      })
+      
+  </script>

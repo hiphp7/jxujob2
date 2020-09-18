@@ -1,0 +1,118 @@
+<include file="Admin@default/public/header" />
+ <div class="seltpye_x">
+		<div class="left">添加时间</div>	
+		<div class="right">
+        <a href="{:P(array('settr'=>''))}" <if condition="$Think.get.settr eq ''">class="select"</if>>不限</a>
+        <a href="{:P(array('settr'=>'3'))}" <if condition="$Think.get.settr eq '3'">class="select"</if>>三天内</a>
+        <a href="{:P(array('settr'=>'7'))}" <if condition="$Think.get.settr eq '7'">class="select"</if>>一周内</a>
+        <a href="{:P(array('settr'=>'30'))}" <if condition="$Think.get.settr eq '30'">class="select"</if>>一月内</a>
+        <a href="{:P(array('settr'=>'180'))}" <if condition="$Think.get.settr eq '180'">class="select"</if>>半年内</a>
+        <a href="{:P(array('settr'=>'360'))}" <if condition="$Think.get.settr eq '360'">class="select"</if>>一年内</a>
+		<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+  </div>
+   <div class="seltpye_x">
+		<div class="left">红包类型</div>	
+		<div class="right">
+        <a href="{:P(array('type'=>''))}" <if condition="$Think.get.type eq ''">class="select"</if>>不限</a>
+        <volist name="typelist" id='vo'>
+        <a href="{:P(array('type'=>$key))}" <if condition="$Think.get.type eq $key">class="select"</if>>{$vo}</a>
+        </volist>
+		<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+  </div>
+  
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" id="list" class="link_lan">
+    <tr>
+      <td height="26" class="admin_list_tit admin_list_first" width="220">
+      职位名称
+	  </td>
+      <td width="140"  align="center" class="admin_list_tit">红包类型</td>
+      <td width="140"   align="center" class="admin_list_tit"> 红包金额 </td>
+      <td width="140"   align="center" class="admin_list_tit"> 红包剩余数量 </td>
+      <td width="140"   align="center" class="admin_list_tit" >添加日期</td>
+      <td width="300"   align="center" class="admin_list_tit" >操作</td>
+    </tr>
+	  <volist name="list" id="vo">
+      <tr>
+      <td  class="admin_list admin_list_first">
+        <a target="_blank" href="{:url_rewrite('QS_jobsshow',array('id'=>$vo['jobsid']))}">{$vo['jobsname']}</a>
+	    </td>
+		<td align="center"  class="admin_list" >{$typelist[$vo['type_alias']]}</td>
+		<td align="center"  class="admin_list" >{$vo['per_amount']}元 x {$vo['total_num']}个</td>
+		<td align="center"  class="admin_list" >{$vo['surplus_num']}个</td>
+        <td align="center"  class="admin_list">{:admin_date($vo['addtime'])}</td>
+        <td align="center"  class="admin_list">
+        	<a href="javascript:;" class="signon_log" title="领取记录" parameter="id={$vo['id']}">领取记录</a>&nbsp;&nbsp;&nbsp;
+        	<a href="javascript:;" class="jobs_log" title="职位日志" parameter="id={$vo['jobsid']}">职位日志</a>&nbsp;&nbsp;&nbsp;
+			<a href="javascript:;" class="set_refund" title="申请退款" parameter="id={$vo['id']}">申请退款</a>
+		</td>
+      </tr>
+      </volist>
+    </table>
+	<if condition="!$list"> 
+	<div class="admin_list_no_info">没有任何信息！</div>
+	</if>
+<table width="100%" border="0" cellspacing="10"  class="admin_list_btm">
+<tr>
+        <td>
+		</td>
+        <td width="305" align="right">
+		<form id="formseh" name="formseh" method="get" action="?">	
+              <input type="hidden" name="m" value="{:MODULE_NAME}">
+              <input type="hidden" name="c" value="{:CONTROLLER_NAME}">
+              <input type="hidden" name="a" value="{:ACTION_NAME}">
+			<div class="seh">
+			    <div class="keybox"><input name="key" type="text"   value="{$Think.get.key}" /></div>
+			    <div class="selbox">
+					<input name="key_type_cn"  id="key_type_cn" type="text" value="{$Think.get.key_type_cn|default="职位名称"}" readonly="true"/>
+						<div>
+								<input name="key_type" id="key_type" type="hidden" value="{$Think.get.key_type|default="1"}" />
+												<div id="sehmenu" class="seh_menu">
+														<ul>
+														<li id="1" title="职位名称">职位名称</li>
+														<li id="2" title="职位id">职位id</li>
+														</ul>
+												</div>
+						</div>				
+				</div>
+				<div class="sbtbox">
+				<input type="submit" name="" class="sbt" id="sbt" value="搜索"/>
+				</div>
+				<div class="clear"></div>
+		  </div>
+		  </form>
+	    </td>
+      </tr>
+  </table>
+<div class="qspage">{$page}</div>
+</div>
+<include file="Admin@default/public/footer" />
+<script type="text/javascript">
+$(document).ready(function()
+{
+	showmenu("#key_type_cn","#sehmenu","#key_type");
+	 $(".jobs_log").QSdialog({
+	  DialogTitle:"职位日志",
+	  DialogContentType:"url",
+	  DialogContent:"{:U('Admin/Ajax/jobs_log')}&"
+	  });
+	 $(".signon_log").QSdialog({
+	  DialogTitle:"领取记录",
+	  DialogContentType:"url",
+	  DialogContent:"{:U('signon_log')}&"
+	  });
+	 $(".set_refund").QSdialog({
+	  DialogTitle:"申请退款",
+	  DialogContentType:"url",
+	  DialogContent:"{:U('set_refund')}&"
+	  });
+	 $('#set_refund_save').die().live('click',function(){
+	 	$('#form1').submit();
+	 });
+});
+</script>
+</body>
+</html>

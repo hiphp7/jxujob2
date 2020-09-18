@@ -1,0 +1,226 @@
+<include file="public:header" />
+  <notempty name="apply['Subsite']">
+  <div class="seltpye_x">
+    <div class="left">所属分站</div>
+    <qscms:subsite 列表名="subsite_list"/>
+    <div class="right">
+      <a href="{:P(array('subsite_id'=>''))}" <if condition="$Think.get.subsite_id eq ''">class="select"</if>>不限</a>
+      <if condition="$visitor['role_id'] eq 1">
+        <volist name="subsite_list" id="subsite">
+          <a href="{:P(array('subsite_id'=>$subsite['s_id']))}" <if condition="$Think.get.subsite_id eq $subsite['s_id']">class="select"</if>>{$subsite.s_sitename}</a>
+        </volist>
+      <else/>
+        <volist name="subsite_list" id="subsite">
+          <if condition="in_array($subsite['s_id'],$visitor['subsite'])">
+            <a href="{:P(array('subsite_id'=>$subsite['s_id']))}" <if condition="$Think.get.subsite_id eq $subsite['s_id']">class="select"</if>>{$subsite.s_sitename}</a>
+          </if>
+        </volist>
+      </if>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+  </notempty>
+  <div class="seltpye_x">
+    <div class="left">验证类型</div>
+    <div class="right">
+      <a href="{:P(array('verification'=>''))}" <if condition="$Think.get.verification eq ''">class="select"</if>>不限</a>
+      <a href="{:P(array('verification'=>'1'))}" <if condition="$Think.get.verification eq '1'">class="select"</if>>邮箱已验证</a>
+      <a href="{:P(array('verification'=>'2'))}" <if condition="$Think.get.verification eq '2'">class="select"</if>>邮箱未验证</a>
+      <a href="{:P(array('verification'=>'3'))}" <if condition="$Think.get.verification eq '3'">class="select"</if>>手机已验证</a>
+      <a href="{:P(array('verification'=>'4'))}" <if condition="$Think.get.verification eq '4'">class="select"</if>>手机未验证</a>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+  <div class="seltpye_x">
+    <div class="left">注册时间</div>
+    <div class="right">
+      <a href="{:P(array('settr'=>''))}" <if condition="$Think.get.settr eq ''">class="select"</if>>不限</a>
+      <a href="{:P(array('settr'=>'3'))}" <if condition="$Think.get.settr eq '3'">class="select"</if>>三天内</a>
+      <a href="{:P(array('settr'=>'7'))}" <if condition="$Think.get.settr eq '7'">class="select"</if>>一周内</a>
+      <a href="{:P(array('settr'=>'30'))}" <if condition="$Think.get.settr eq '30'">class="select"</if>>一月内</a>
+      <a href="{:P(array('settr'=>'180'))}" <if condition="$Think.get.settr eq '180'">class="select"</if>>半年内</a>
+      <a href="{:P(array('settr'=>'360'))}" <if condition="$Think.get.settr eq '360'">class="select"</if>>一年内</a>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+  <form id="form1" name="form1" method="post" action="{:U('member_delete')}">
+    <table width="100%" border="0" cellpadding="0" cellspacing="0"  id="list" class="link_lan">
+      <tr>
+        <td  width="20%" class="admin_list_tit admin_list_first" >
+          <label id="chkAll"><input type="checkbox" name=" " title="全选/反选" id="chk"/>用户名</label></td>
+          <td  width="20%" class="admin_list_tit">email</td>
+          <td  align="center" width="120"  class="admin_list_tit">手机</td>
+          <td align="center"   class="admin_list_tit">注册时间</td>
+          <td    align="center"   class="admin_list_tit">注册IP</td>
+          <td    align="center"   class="admin_list_tit">注册地址</td>
+          <td   align="center"   class="admin_list_tit">最后登录时间</td>
+          
+          <td width="13%"  align="center"  class="admin_list_tit" >操作</td>
+        </tr>
+        <volist name="list" id="vo">
+        <tr>
+          <td class="admin_list admin_list_first">
+            <input name="tuid[]" type="checkbox"   value="{$vo['uid']}"/>
+            {$vo['username']}
+            <if condition="$vo['avatars'] neq ''">
+            <span style="color: #009900"  class="vtip" title="<img src='{:attach($vo['avatars'],'avatar')}'  border=0  align=absmiddle>">[照片]</span>
+             </if>
+          </td>
+            <td class="admin_list">
+			
+			<span  <if condition="$vo['email_audit'] eq '1'"> style="color:#009900" </if>>{$vo['email']|default="未填写"}</span>
+             <if condition="$vo['email']"><span class="emailtip ajax_send_email" title="发送邮件" parameter="email={$vo['email']}&uid={$vo['uid']}">&nbsp;&nbsp;&nbsp;&nbsp;</span></if>
+              
+            </td>
+            <td align="center" class="admin_list">
+              <if condition="$vo['mobile']">
+			 <span <if condition="$vo['mobile_audit'] eq '1'"> style="color:#009900" </if>> {$vo['mobile']}</span>
+			  <span class="smstip ajax_send_sms" title="发送短信" parameter="mobile={$vo['mobile']}&uid={$vo['uid']}">&nbsp;&nbsp;&nbsp;&nbsp;</span><else />未填写</if>
+           
+            </td>
+            <td align="center" class="admin_list">
+            {:admin_date($vo['reg_time'])}   </td>
+            <td align="center" class="admin_list">
+            {$vo['reg_ip']|default=" - - - -"}</td>
+            <td align="center" class="admin_list">{$vo['ipAddress']}</td>
+            <td align="center" class="admin_list">
+              <if condition="$vo['last_login_time']">
+              {:admin_date($vo['last_login_time'])}
+              <else />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从未登录
+              </if>
+			  <span class="view login_log" title="最新5次登录记录" parameter="id={$vo['uid']}">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            </td>
+            <td align="center" class="admin_list">
+              <a href="{:U('member_edit',array('uid'=>$vo['uid'],'_k_v'=>$vo['uid']))}">编辑</a>
+              &nbsp;
+              <a class="userinfo"  parameter="uid={$vo['uid']}" href="javascript:void(0);" hideFocus="true">管理</a>
+            </td>
+          </tr>
+          </volist>
+        </table>
+        <span id="DelSel"></span>
+       <span id="OpPhotoresume"></span>
+      </form>
+      <if condition="!$list">
+      <div class="admin_list_no_info">没有任何信息！</div>
+      </if>
+      <table width="100%" border="0" cellspacing="10" cellpadding="0" class="admin_list_btm">
+        <tr>
+          <td>
+            <input type="button" name="ButAdd" value="添加会员" class="admin_submit"  onclick="window.location.href='{:U('member_add')}'"/>
+            <input type="button" name="ButDel"  id="ButDel" value="删除会员" class="admin_submit"/>
+          </td>
+          <td width="305" align="right">
+            <form id="formseh" name="formseh" method="get" action="?">
+              <input type="hidden" name="m" value="{:C('admin_alias')}">
+              <input type="hidden" name="c" value="{:CONTROLLER_NAME}">
+              <input type="hidden" name="a" value="{:ACTION_NAME}">
+              <div class="seh">
+                <div class="keybox"><input name="key" type="text"   value="{$Think.get.key}" /></div>
+                <div class="selbox">
+                  <input name="key_type_cn"  id="key_type_cn" type="text" value="{$Think.get.key_type_cn|default='用户名'}" readonly="true"/>
+                  <div>
+                    <input name="key_type" id="key_type" type="hidden" value="{$Think.get.key_type|default="1"}" />
+                    <div id="sehmenu" class="seh_menu">
+                      <ul>
+                        <li id="1" title="用户名">用户名</li>
+                        <li id="2" title="UID">UID</li>
+                        <li id="3" title="email">email</li>
+                        <li id="4" title="手机号">手机号</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="sbtbox">
+                  <input type="submit" name="" class="sbt" id="sbt" value="搜索"/>
+                </div>
+                <div class="clear"></div>
+              </div>
+            </form>
+          </td>
+        </tr>
+      </table>
+      <div class="qspage">{$page}</div>
+      <div id="GetDelInfo" style="display: none" >
+        <table width="400" border="0" align="center" cellpadding="0" cellspacing="6" >
+          <tr>
+            <td width="30" height="30">&nbsp;</td>
+            <td height="30"><strong  style="color:#0066CC; font-size:14px;">你确定要删除吗？</strong></td>
+          </tr>
+          <tr>
+            <td width="27" height="25">&nbsp;</td>
+            <td><label>
+              <input name="delete_user" type="checkbox" id="delete_user" value="yes" checked="checked" />
+            删除此会员 <span style="color:#666666">(删除后此会员将无法登录，无法管理已发布的信息等)<span></label></td>
+          </tr>
+          <tr>
+            <td width="27" height="25">&nbsp;</td>
+            <td width="425"><label>
+              <input name="delete_resume" type="checkbox" id="delete_resume" value="yes" checked="checked" />
+            删除此会员发布的简历</label></td>
+          </tr>
+          <tr>
+            <td height="25">&nbsp;</td>
+            <td><input type="submit" name="delete" value="确定删除" class="admin_submit"/></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <include file="public:footer" />
+
+<script type="text/javascript">
+$(document).ready(function()
+{
+  $(".ajax_send_sms").QSdialog({
+    DialogTitle:"发送短信",
+    DialogContentType:"url",
+    DialogContent:"{:U('Ajax/ajax_send_sms')}&"
+    });
+  $(".ajax_send_email").QSdialog({
+    DialogTitle:"发送邮件",
+    DialogContentType:"url",
+    DialogContent:"{:U('Ajax/ajax_send_email')}&"
+    });
+  showmenu("#key_type_cn","#sehmenu","#key_type");
+$("#ButDel").QSdialog({
+DialogAddObj:"#DelSel",
+DialogTitle:"请选择",
+DialogContent:"#GetDelInfo",
+DialogContentType:"id",
+DialogWidth:"500"
+});
+ $(".userinfo").QSdialog({
+  DialogTitle:"管理",
+  DialogContentType:"url",
+  DialogContent:"{:U('ajax/userinfo')}&"
+  });
+ $(".login_log").QSdialog({
+  DialogTitle:"最新5次登录记录",
+  DialogContentType:"url",
+  DialogContent:"{:U('ajax/login_log')}&"
+  });
+  $("#ButPhotoresume").QSdialog({
+  DialogAddObj:"#OpPhotoresume",
+  DialogTitle:"请选择",
+  DialogContent:"#PhotoresumeSet",
+  DialogContentType:"id"
+  });
+    $("#photo_submit").live('click',function(){
+      $("form[name=form1]").attr("action","{:U('set_photoaudit')}");
+      $("form[name=form1]").submit();
+    });
+    $('input[name="photoaudit"]').live('click',function(){
+      if($(this).val() == 3){
+        $('#is_del_img').show();
+      }else{
+        $('#is_del_img').hide();
+      }
+    });
+});
+</script>
+  </body>
+</html>

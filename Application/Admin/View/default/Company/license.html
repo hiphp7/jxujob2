@@ -1,0 +1,48 @@
+<include file="public:header" />
+    <div class="toptit">修改企业营业执照 - <span style="color:#0066CC">{$info.companyname}</span></div>
+	<form action="{:U('company/com_audit')}" method="post" enctype="multipart/form-data"  name="FormData" id="FormData" >
+		<table width="100%" border="0" cellpadding="4" cellspacing="0"  >
+		<if condition="$info['certificate_img']">
+	      <tr>
+	        <td width="120" height="30" align="right">企业全称：</td>
+	        <td>{$info['companyname_full']}</td>
+	      </tr>
+	      <tr>
+	        <td width="120" height="30" align="right">注册号：</td>
+	        <td>{$info['license']}</td>
+	      </tr>
+	      <tr>
+	        <td width="120" height="30" align="right">法人代表：</td>
+	        <td>{$info['legal_person']}</td>
+	      </tr>
+	      <tr>
+	        <td width="120" height="30" align="right">营业执照：</td>
+	        <td><a target="_blank" href="{:attach($info['certificate_img'],'certificate_img')}"><img width="200" src="{:attach($info['certificate_img'],'certificate_img')}"></a></td>
+	      </tr>
+	      <tr>
+	        <td width="120" height="30" align="right">认证状态：</td>
+	        <td>
+	        <label><input class="audit_radio" type="radio" name="audit" value="1" <if condition="$info['audit'] eq 1">checked</if>>认证通过</label>
+	        <label><input class="audit_radio" type="radio" name="audit" value="2" <if condition="$info['audit'] eq 2">checked</if>>等待认证</label>
+	        <label><input class="audit_radio" type="radio" name="audit" value="3" <if condition="$info['audit'] eq 3">checked</if>>认证未通过</label>
+	        </td>
+	      </tr>
+	      <tr>
+	        <td height="30" align="right" >&nbsp;</td>
+	        <td>
+	          <input type="hidden" name="y_id"  value="{$info['uid']}" />
+	          <input type="hidden" name="_k_v" value="{$Think.get._k_v}">
+	          <input name="submit3" type="submit" class="admin_submit" value="认证"/>
+	        </td>
+	      </tr>
+	    <else />
+	      <tr>
+	        <td colspan="2" width="120" height="30"><font color="red">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;未上传营业执照</font></td>
+	      </tr>
+	    </if>
+	    </table>
+	</form>
+</div>
+<include file="public:footer" />
+</body>
+</html>

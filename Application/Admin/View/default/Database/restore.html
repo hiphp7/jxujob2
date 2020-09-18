@@ -1,0 +1,60 @@
+<include file="public:header" />
+<div class="toptip">
+    <h2>提示：</h2>
+    <p>
+本功能在恢复备份数据的同时，将全部覆盖原有数据，请确定恢复前已将网站关闭，恢复全部完成后可以将网站重新开放。<br />
+        数据恢复功能只能恢复由当前版本74CMS 导出的数据文件，其他软件导出格式可能无法识别。
+</p>
+</div>
+     <form id="form1" name="form1" method="post" action="{:U('del')}">
+      <table width="100%" border="0" cellpadding="0" cellspacing="0"  style="color: #333333" id="list" class="link_lan">
+        <tr>
+          <td width="40%"   class="admin_list_tit admin_list_first">
+         <label id="chkAll"><input type="checkbox" name="chkAll"  id="chk" title="全选/反选" />备份目录</label>  </td>
+          <td align="center"  class="admin_list_tit">版本</td>
+          <td align="center"   class="admin_list_tit">MySQL版本</td>
+          <td align="center"   class="admin_list_tit">时间</td>
+          <td align="center"    class="admin_list_tit">尺寸</td>
+          <td align="center"    class="admin_list_tit" >操作</td>
+        </tr>
+        <volist name="list" id="vo">
+        <tr>
+          <td  class="admin_list admin_list_first">
+         <input name="name[]" type="checkbox"  value="{$vo.name}" />
+       {$vo.name}</td>
+          <td align="center" class="admin_list" >{$vo.74cms_ver}</td>
+          <td align="center" class="admin_list">{$vo.mysql_ver}</td>
+          <td align="center" class="admin_list">{$vo.date_str}</td>
+          <td align="center" class="admin_list">{$vo.total_size} <em  style="font-size:10px;">MB</em></td>
+          <td align="center" class="admin_list link_lan">
+        <a href="{:U('import',array('name'=>$vo['name']))}" onclick="if(confirm('还原将覆盖现有数据，你确定要这么做吗？')){document.getElementById('list').style.display='none';document.getElementById('btn_table').style.display='none';document.getElementById('hide').style.display='block';}else{return !1;}">还原</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="{:U('del',array('name'=>$vo['name']))}"  onclick="return confirm('你确定要删除吗？')">删除</a>  </td>
+        </tr>
+        </volist>
+      </table>
+      <table width="600" height="100" border="0" cellpadding="5" cellspacing="0" id="hide" style="display:none">
+          <tr>
+            <td align="center" valign="bottom"><img src="__ADMINPUBLIC__/images/ajax_loader.gif"  border="0" /></td>
+          </tr>
+          <tr>
+            <td align="center" valign="top" style="color: #009900">正在恢复数据，请稍候......</td>
+          </tr>
+        </table>
+   <if condition="!$list">
+  <div class="admin_list_no_info">没有任何信息！</div>
+  </if>
+  <table width="100%" border="0" cellspacing="10" cellpadding="0" class="admin_list_btm" id="btn_table">
+        <tr>
+          <td>
+  <input name="提交" type="submit" class="admin_submit" id="ButDel" value="删除所选" onclick="return confirm('你确定要删除吗？')"/>
+      </td>
+          <td width="305" align="right">
+       
+        </td>
+        </tr>
+    </table>
+  </form>
+ <div class="qspage">{$page}</div>
+</div>
+<include file="public:footer" />
+</body>
+</html>

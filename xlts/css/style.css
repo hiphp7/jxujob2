@@ -1,0 +1,26 @@
+@charset "utf-8";
+/* CSS Document */
+
+body{margin:0 auto; padding:0;font-family: "黑体", "微软雅黑", "宋体","Microsoft YaHei", Arial, Helvetica ,Verdana, Geneva, sans-serif; font-size:12px; line-height:30px; background:#0059ac;}
+form {margin:0 auto; padding:0;}
+td,p,div,span,li,select,input,textarea {font-family:Verdana;word-break:break-all;word-wrap:break-word;}
+img {margin:0 auto;border:0;}
+p,ul,li{margin:0;padding:0; list-style:none;}
+A {COLOR: #000; TEXT-DECORATION: none}
+A:hover {COLOR: #db0f18; TEXT-DECORATION: underline}
+clearfix {clear: both;}
+
+.warp{margin:0 auto; padding:0; width:100%; height:auto;}
+.loginBar{margin:0 auto; padding:0; width:1000px; height:60px; overflow:hidden;}
+.menu{width:320px;	float:right;color:#ffffff; line-height:60px;}
+.menu a {color:#ffffff;text-align:center;}
+.menu a:hover {text-decoration: underline;}
+.main{margin:0 auto; padding:0; width:910px; height:auto; background:#FFFFFF; padding:45px; margin-top:20px;}
+.main a{color:#0000FF; text-decoration:underline;}
+.guest1{padding:10px 0px; }
+.left{ width:213px; float:left;line-height:28px; text-align:center;}
+.right{width:660px; float:right;line-height:28px; }
+.news{line-height:35px; font-family:"黑体", "微软雅黑"; font-size:16px; color:#000000;}
+.footer{ margin:0 auto; padding:0; width:100%; color:#ffffff; text-align:center; line-height:40px; height:40px;}
+.color2{color:#FF0000; font-family:"黑体", "微软雅黑"; font-size:20px; font-weight:bold;}
+.color1{color:#0059ac; font-family:"黑体", "微软雅黑"; font-size:20px; font-weight:bold;}

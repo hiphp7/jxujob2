@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <qscms:subject_show 列表名="info" 专题id="$_GET['id']" />
+    <include file="Home@default/public/meta" />
+    <link href="{:C('TPL_HOME_PUBLIC_DIR')}/css/common.css" rel="stylesheet" type="text/css" />
+    <link href="{$url}/css/subject.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <include file="Home@default/public/header_other" />
+    <div class="suj_tmp4">
+        <div class="top_banner"></div>
+        <div class="tmp_container">
+            <div class="tmp_int">
+                <div class="ti_tit">专题介绍</div>
+                <div class="ti_bot"></div>
+                <div class="ti_con">{$info.content}</div>
+            </div>
+            <qscms:subject_company 列表名="list" 专题公司id="$_GET['id']" />
+            <notempty name="list['list']">
+            <div class="tmp_group">
+                <div class="ti_tit">名企招聘</div>
+                <div class="ti_tit_line"></div>
+                <volist name="list['list']" id="vo">
+                    <div class="tmp_cell">
+                        <div class="img"><img src="{$vo.logo}" alt="" /></div>
+                        <div class="mi_sp"></div>
+                        <div class="com_name substring link_blue"><a href="{$vo.company_url}" title="">{$vo.companyname}</a></div>
+                        <div class="job_box">
+                            <volist name="vo['jobs']" id="job" >
+                                <div class="job_line">
+                                    <div class="job_name substring link_gray6"><a href="{$job.jobs_url}" title="">{$job.jobs_name}</a></div>
+                                    <div class="job_wage">{$job.wage_cn}</div>
+                                    <div class="clear"></div>
+                                </div>
+                            </volist>    
+                        </div>
+                        <div class="more_bar link_white">
+                            <div class="more_bar_left">共 <span class="num">{$vo.jobs_num}</span> 个在招职位</div>
+                            <div class="more_bar_right"><a href="{:U('Home/jobs/com_jobs_list',array('id'=>$vo['id']))}">更多>></a></div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </volist>    
+                <div class="clear"></div>
+            </div>
+            </notempty>
+        </div>
+    </div>
+    <include file="Home@default/public/footer_min" />
+    <script type="text/javascript">
+        $('.tmp_cell').each(function(index, el) {
+            if ((index+1)%4 == 0) {
+                $(this).css('margin-right', 0);
+            }
+        });
+        $(document).ready(function(){
+        $.getJSON("{:U('Home/ajaxCommon/subject_click')}",{id:"{$info['id']}"},function(result){
+            if(result.status==1){
+                $(".click").html(result.data);
+            }
+        });
+    });
+    </script>
+</body>
+</html>

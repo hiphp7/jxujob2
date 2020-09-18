@@ -1,0 +1,110 @@
+<include file="public:header" />
+    <div class="seltpye_x">
+        <div class="left">帮助分类</div>    
+        <div class="right">
+            <a href="{:P(array('type_id'=>'','parentid'=>''))}" <if condition="$Think.get.parentid eq ''">class="select"</if>>不限</a>
+            <volist name="category[0]" id="parent">
+                <a href="{:P(array('type_id'=>'','parentid'=>$key))}" <if condition="$Think.get.parentid eq $key">class="select"</if>>{$parent.categoryname}</a>
+            </volist>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <if condition="$Think.get.parentid neq ''">
+        <div class="seltpye_x">
+            <div class="left"><span style="color:#999999">└ </span>子分类</div>    
+            <div class="right">
+                <a href="{:P(array('type_id'=>''))}" <if condition="$Think.get.type_id eq ''">class="select"</if>>不限</a>
+                <volist name="category[$parentid]" id="sub">
+                    <a href="{:P(array('type_id'=>$key))}" <if condition="$Think.get.type_id eq $key">class="select"</if>>{$sub.categoryname}</a>
+                </volist>
+                <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </if>
+    <form id="form1" name="form1" method="post" action="{:U('help/delete')}">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" id="list" class="link_lan">
+            <tr>
+              <td height="26" class="admin_list_tit admin_list_first" >
+              <label id="chkAll"><input type="checkbox" name=" " title="全选/反选" id="chk"/>标题</label></td>
+              <td width="100"   align="center" class="admin_list_tit">排序</td>
+              <td width="100"   align="center" class="admin_list_tit">点击</td>
+              <td width="120"   align="center" class="admin_list_tit" >添加日期</td>
+              <td width="130"   align="center" class="admin_list_tit" >操作</td>
+            </tr>
+              <volist name="list" id="list">
+              <tr>
+              <td  class="admin_list admin_list_first">
+                <input name="id[]" type="checkbox" id="id" value="{$list.id}"/>
+                <a href="{:U('help/index',array('type_id'=>$list['type_id'],'parentid'=>$list['parentid']))}" style="color: #006699">[<if condition="$list['category']['categoryname']">{$list.category.categoryname}<else/>{$list.parent.categoryname}</if>]</a>
+                {$list.title}
+                </td>
+                <td align="center"  class="admin_list">{$list.ordid}</td>
+                <td align="center"  class="admin_list">{$list.click}</td>
+                <td align="center"  class="admin_list">{:admin_date($list['addtime'])}</td>
+                <td align="center"  class="admin_list">
+                <a href="{:U('help/edit',array('id'=>$list['id']))}">修改</a> &nbsp;&nbsp;
+                <a href="{:U('help/delete',array('id'=>$list['id']))}" onclick="return confirm('你确定要删除吗？')">删除</a></td>
+              </tr>
+              </volist>
+        </table>
+    </form>
+    <empty name="list">
+        <div class="admin_list_no_info">没有任何信息！</div>
+    </empty>
+    <table width="100%" border="0" cellspacing="10"  class="admin_list_btm">
+    <tr>
+        <td>
+        <input type="button" class="admin_submit" id="ButADD" value="添加"  onclick="window.location='{:U('help/add')}'"/>
+        <input type="button" class="admin_submit" id="ButDel"  value="删除所选"/>
+        </td>
+        <td width="305" align="right">
+            <form id="formseh" name="formseh" method="get" action="">  
+                <div class="seh">
+                    <div class="keybox"><input name="key" type="text"   value="{$Think.get.key}" /></div>
+                    <div class="selbox">
+                        <input id="key_type_cn" type="text" value="{$Think.get.key_type_cn|default="标题"}" readonly="true"/>
+                        <div>
+                            <input name="key_type" id="key_type" type="hidden" value="{$Think.get.key_type|default="1"}" />
+                            <div id="sehmenu" class="seh_menu">
+                                <ul>
+                                    <li id="1" title="标题">标题</li>
+                                    <li id="2" title="资讯ID">资讯ID</li>
+                                </ul>
+                            </div>
+                        </div>              
+                    </div>
+                    <div class="sbtbox">
+                        <input type="hidden" name="m" value="{:C('admin_alias')}">
+                        <input type="hidden" name="c" value="{:CONTROLLER_NAME}">
+                        <input type="hidden" name="a" value="{:ACTION_NAME}">
+                        <input type="submit" name="" class="sbt" id="sbt" value="搜索"/>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </form>
+        </td>
+      </tr>
+    </table>
+    <div class="qspage">{$page}</div>
+</div>
+<include file="public:footer" />
+<script type="text/javascript">
+    $(document).ready(function()
+    {
+        $(document).ready(function(){
+            showmenu("#key_type_cn","#sehmenu","#key_type");
+        }); 
+        //点击批量取消    
+        $("#ButDel").click(function(){
+            if (confirm('你确定要删除吗？'))
+            {
+                $("form[name=form1]").submit()
+            }
+        });
+            
+    });
+</script>
+</body>
+</html>

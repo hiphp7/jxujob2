@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<include file="public:meta" />
+	<link href="../public/css/common.css" rel="stylesheet" type="text/css" />
+	<link href="../public/css/hrtools.css" rel="stylesheet" type="text/css" />
+	<script src="../public/js/jquery.common.js" type="text/javascript" language="javascript"></script>
+</head>
+<body>
+<include file="public:header" />
+<div class="hr_nav">
+     <div class="txt link_gray6"><a href="{:url_rewrite('QS_index')}">网站首页</a><span>></span><a href="{:url_rewrite('QS_hrtools')}">HR工具箱</a></div>
+</div>
+
+<div class="hrlistbox">
+<!-- <div class="list">  
+    <div class="l"><img src="{:attach('hr.jpg','resource/hrtools_img')}" /></div>
+	<div class="r link_blue">
+	  <div class="tit">
+  		<a href="http://www.hrcha.cn" target="_blank">职场信用查询</a>
+	  </div>
+	  <div class="clear"></div>
+	  <div class="txt"><strong>HRcha.cn</strong>提供职场信用查询致力于让职场环境更和谐，更健康。欢迎HR上传无职业道德的”极品员工“共建和谐职场环境。 <a href="http://www.hrcha.cn" target="_blank">查看>></a></div>
+	</div>
+    <div class="clear"></div>
+  </div> -->
+<qscms:hrtools_category 列表名="category" />
+<volist name="category" id="vo">
+  <div class="list">  
+    <div class="l"><img src="{$vo['img']}" /></div>
+	<div class="r link_blue">
+	  <div class="tit">
+  		<a href="{$vo['url']}">{$vo['c_name']}</a>
+	  </div>
+	  <div class="clear"></div>
+	  <div class="txt">{$vo['c_desc']}  <a href="{$vo['url']}">更多>></a></div>
+	</div>
+    <div class="clear"></div>
+  </div>
+  </volist>
+  <div class="clear"></div>
+</div>
+
+<include file="public:footer_min" />
+</body>
+</html>

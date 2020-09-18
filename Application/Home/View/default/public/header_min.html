@@ -1,0 +1,21 @@
+<div class="header_min" id="header">
+	<div class="header_min_top" style="position: relative;">
+		<div id="J_header" class="itopl font_gray6 link_gray6">
+			<span class="link_yellow">欢迎登录{:C('qscms_site_name')}！请 <a href="{:U('home/members/login')}">登录</a> 或 <a href="{:U('home/members/register')}">免费注册</a></span>
+		</div>
+		
+		<!-- <span style="color: #0764A9; position: absolute;left: 300px; font-size: 10px;">咨询电话：0791-87860586</span>				 -->
+						
+							
+						
+		
+		<div class="itopr font_gray9 link_gray6 substring">
+		<a href="__ROOT__/" class="home">网站首页</a>|
+		<a href="{:url_rewrite('QS_help')}" class="help">帮助中心</a>|<notempty name="apply['Mall']">
+		<a href="{:url_rewrite('QS_mall_index')}" class="shop">{:C("qscms_points_byname")}商城</a>|</notempty>
+		<a href="{:U('Home/Index/shortcut')}" class="last">保存到桌面</a> 
+		</div>
+		<!-- <div class="itopr font_gray9 link_gray6 substring"> <a href="__ROOT__/" class="home">网站首页</a>|<a href="{:url_rewrite('QS_m')}" class="m">手机访问</a>|<a href="{:url_rewrite('QS_help')}" class="help">帮助中心</a>|<notempty name="apply['Mall']"><a href="{:url_rewrite('QS_mall_index')}" class="shop">{:C("qscms_points_byname")}商城</a>|</notempty><a href="{:U('Home/Index/shortcut')}" class="last">保存到桌面</a> </div> -->
+	    <div class="clear"></div>
+	</div>
+</div>

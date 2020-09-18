@@ -1,0 +1,337 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<include file="public:meta" />
+		<link href="../public/css/company/common.css" rel="stylesheet" type="text/css" />
+		<link href="../public/css/company/company_jobs.css" rel="stylesheet" type="text/css" />
+		<link href="../public/css/company/company_ajax_dialog.css" rel="stylesheet" type="text/css" />
+        <link href="../public/css/jobmoney.css" rel="stylesheet" type="text/css" />
+		<script src="../public/js/company/jquery.common.js" type="text/javascript" language="javascript"></script>
+		<link rel="stylesheet" type="text/css" href="../public/zjy/css/having.css">
+<link rel="stylesheet" type="text/css" href="../public/zjy/css/job.css">
+<link rel="stylesheet" href="../public/zjy/css/sweetalert.css">
+<script type="text/javascript" src="../public/zjy/js/sweetalert.min.js"></script>
+	</head>
+	<style>
+	a{text-decoration:none;}
+	</style>
+	<body>
+		<include file="index_header" />
+		<div class="user_main">
+			<div class="mleft">
+				<include file="left_zjy_jobs" />
+			</div>
+		<div class="mright">
+			<div class="user_pagetitle">
+				<div class="pat_l" onclick="sel()">管理职位</div>
+				<if condition="$is==1">
+				<label style="color:green;">状态：您已成功报名本次招聘周匹配活动</label>
+				
+				<else /></if>
+				<div class="clear"></div>
+			</div>
+			<div class="user_tab mt15">
+				<a href="" class="tabli select">全部职位</a> 
+				<div class="clear"></div>
+				<div class="btnbox">
+					<div class="btn_yellow J_hoverbut btn_add"><a href="{:U('Company/jobs_zjy_add')}">发布职位</a></div>
+				</div>
+			</div>
+
+			<form id="form1" action="/company/jobs_perform.html"
+				class="J_allListBox" method="post">
+				<div class="jobsWrap">
+					
+					<volist name="res" id="vo">
+					<div class="jobsList">
+						<div class="jobs fl">
+							<div class="title">
+								<a onclick="update('91360103343232081420190529100433198')" class="btn">{$vo.zpzw}</a>
+							</div>
+							
+						</div>
+						<div class="edit link_blue fl">
+							 <a href="{:U('Company/jobs_zjy_edit',array('id'=>$vo['id']))}" >修改</a>
+							 <a href="{:U('Company/jobs_zjy_del',array('id'=>$vo['id']))}" onclick="return confirm('你确定要删除吗？')">删除</a>
+							 
+						</div>
+						<div class="clear"></div>
+					</div>
+					</volist>
+						
+				</div>
+				<div class="jobsWrap" style="display:none;">
+					<div class="qspage">
+						<a class="unable">上一页</a> <span class="current">1</span> <a
+							class="unable">下一页</a>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</form>
+		</div>
+		<include file="index_footer" />
+		<script type="text/javascript" src="../public/js/jquery.allselected.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$("#delete_all").click(function(){
+					var listCheckedArray = $('.J_allListBox .J_allList:checked');
+					if (!listCheckedArray.length) {
+						disapperTooltip("remind",'请选择职位');
+						return false;
+					}
+					var url = "{:U('jobs_delete')}";
+		            var qsDialog = $(this).dialog({
+		                title: '删除职位',
+		                loading: true,
+		                border: false,
+		                yes: function () {
+		                    $("#form1").attr('action',"{:U('jobs_delete')}");
+							$("#form1").submit();
+		                }
+		            });
+		            $.getJSON(url, $("#form1").serialize(),function (result) {
+		                if (result.status == 1) {
+		                    qsDialog.setContent(result.data.html);
+		                } else {
+		                    disapperTooltip('remind', result.msg);
+		                }
+		            });
+				});
+				$("#refresh_all").click(function(){
+					var listCheckedArray = $('.J_allListBox .J_allList:checked');
+					if (!listCheckedArray.length) {
+						disapperTooltip("remind",'请选择职位');
+						return false;
+					}
+					var checkedValArr = [];
+					$.each(listCheckedArray, function(index, val) {
+						checkedValArr[index] = $(this).val();
+					});
+					var url = "{:U('CompanyService/jobs_refresh')}";
+					var yid = checkedValArr.join(',');
+					var qsDialog = $(this).dialog({
+		        		title: '职位刷新',
+		        		loading:true,
+						showFooter: false,
+						yes:function(){
+							$.post(url,{yid:yid},function(result){
+								if(result.status){
+									disapperTooltip("success",result.msg);
+                					setTimeout(function () {
+				                        window.location.reload();
+				                    }, 2000);
+								}else{
+					                disapperTooltip("remind",result.msg);
+					                return false;
+					            }
+							},'json');
+						}
+					});
+					$.getJSON(url,{yid:yid},function(result){
+						if(result.status==2){
+							qsDialog.hide();
+		        			var son_qsDialog = $(this).dialog({
+				                title: '批量刷新职位',
+				                loading: true,
+				                border: false
+				            });
+				            son_qsDialog.setBtns(['单条刷新', '取消']);
+				            son_qsDialog.setContent('<div class="refresh_jobs_all_confirm">' + result.msg + '</div>');
+						}else{
+							if(result.data.show_footer==0){
+								qsDialog.showFooter(false);
+							}else{
+								qsDialog.showFooter(true);
+							}
+							if(result.status==0){
+								qsDialog.showFooter(false);
+							}
+							qsDialog.setContent(result.msg);
+						}
+					});
+				});
+				$("#close_all").click(function(){
+					var listCheckedArray = $('.J_allListBox .J_allList:checked');
+					if (!listCheckedArray.length) {
+						disapperTooltip("remind",'请选择职位');
+						return false;
+					}
+					var url = "{:U('jobs_close')}";
+		            var qsDialog = $(this).dialog({
+		                title: '关闭职位',
+		                loading: true,
+		                border: false,
+		                yes: function () {
+		                    $("#form1").attr('action',"{:U('jobs_close')}");
+							$("#form1").submit();
+		                }
+		            });
+		            $.getJSON(url, function (result) {
+		                if (result.status == 1) {
+		                    qsDialog.setContent(result.data.html);
+		                } else {
+		                    disapperTooltip('remind', result.msg);
+		                }
+		            });
+				});
+				$(".close").click(function(){
+					var url = $(this).attr('url');
+		            var qsDialog = $(this).dialog({
+		                title: '关闭职位',
+		                loading: true,
+		                border: false,
+		                yes: function () {
+		                    $.post(url, function (result) {
+				                if (result.status == 1) {
+				                	disapperTooltip("success",result.msg);
+				                	setTimeout(function () {
+				                        location.href=result.data;
+				                    }, 2000);
+				                } else {
+				                    disapperTooltip('remind', result.msg);
+				                }
+				            },'json');
+		                }
+		            });
+		            $.getJSON(url, function (result) {
+		                if (result.status == 1) {
+		                    qsDialog.setContent(result.data.html);
+		                } else {
+		                    disapperTooltip('remind', result.msg);
+		                }
+		            });
+				});
+				$(".delete").click(function(){
+					var url = $(this).attr('url');
+		            var qsDialog = $(this).dialog({
+		                title: '删除职位',
+		                loading: true,
+		                border: false,
+		                yes: function () {
+		                    $.post(url, function (result) {
+				                if (result.status == 1) {
+				                	disapperTooltip("success",result.msg);
+				                    setTimeout(function () {
+				                        location.href=result.data;
+				                    }, 2000);
+				                } else {
+				                    disapperTooltip('remind', result.msg);
+				                }
+				            },'json');
+		                }
+		            });
+		            $.getJSON(url, function (result) {
+		                if (result.status == 1) {
+		                    qsDialog.setContent(result.data.html);
+		                } else {
+		                    disapperTooltip('remind', result.msg);
+		                }
+		            });
+				});
+				// 分享到朋友圈
+				$(".friend").click(function(){
+					var qsDialog = $(this).dialog({
+		        		loading: true,
+						footer: false,
+						header: false,
+						border: false,
+						backdrop: false
+					});
+					var url = $(this).attr('url');
+					qsDialog.hide();
+					var qsDialogSon = $(this).dialog({
+		        		title: '分享到朋友圈',
+		        		content: '<img width="200" height="200" src="{:C("qscms_site_dir")}index.php?m=Home&c=Qrcode&a=index&url='+url+'" />',
+						footer: false
+					});
+				});
+				$(".jobs_refresh").click(function(){
+					var url = $(this).attr('url');
+					var footerShow = eval($(this).data('type'));
+					var qsDialog = $(this).dialog({
+		        		title: '职位刷新',
+		        		loading:true,
+						showFooter: false,
+						yes:function(){
+							$.post(url,function(result){
+								if(result.status){
+									disapperTooltip("success",result.msg);
+                					setTimeout(function () {
+				                        window.location.reload();
+				                    }, 2000);
+								}else{
+					                disapperTooltip("remind",result.msg);
+					                return false;
+					            }
+							},'json');
+						}
+					});
+					$.getJSON(url,function(result){
+						if(result.data.show_footer==0){
+							qsDialog.showFooter(false);
+						}else{
+							if (!footerShow) {
+								qsDialog.showFooter(true);
+							}
+						}
+						qsDialog.setContent(result.msg);
+					});
+				});
+				$(".stick_btn").click(function(){
+					var qsDialog = $(this).dialog({
+		        		title: '职位置顶',
+		        		loading:true,
+						showFooter: false
+					});
+					var url = "{:U('CompanyService/jobs_stick')}";
+					var jobs_id = $(this).attr('data');
+					$.getJSON(url,{jobs_id:jobs_id},function(result){
+						qsDialog.setContent(result.msg);
+					});
+				});
+				$(".emergency_btn").click(function(){
+					var qsDialog = $(this).dialog({
+		        		title: '职位紧急',
+		        		loading:true,
+						showFooter: false
+					});
+					var url = "{:U('CompanyService/jobs_emergency')}";
+					var jobs_id = $(this).attr('data');
+					$.getJSON(url,{jobs_id:jobs_id},function(result){
+						qsDialog.setContent(result.msg);
+					});
+				});
+				$('.job-money-cell').click(function(){
+					if($(this).hasClass('has')){
+						location.href="{:U('allowance')}";
+					}else{
+						var jobsid = $(this).attr('jobsid');
+						var qsDialog = $(this).dialog({
+	                        loading: true,
+	                        footer: false,
+	                        header: false,
+	                        border: false,
+	                        backdrop: false
+	                    });
+	                    var getUrl = qscms.root+"?m=Allowance&c=Ajax&a=set_allowance_job";
+	                    $.getJSON(getUrl,{jobsid:jobsid}, function(result){
+	                        if(result.status==1){
+	                            qsDialog.hide();
+	                            var jobDialog = $(this).dialog({
+	                                title: "开启职位打赏",
+	                                content: result.data,
+	                                footer: false,
+	                                innerPadding: false
+	                            });
+	                        } else {
+	                            qsDialog.hide();
+	                            disapperTooltip('remind',result.msg);
+	                        }
+	                    });
+					}
+				});
+			});
+		</script>
+		
+	</body>
+</html>

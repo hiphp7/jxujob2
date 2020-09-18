@@ -1,0 +1,207 @@
+<include file="public:header" />
+    <div class="toptip">
+        <h2>提示：</h2>
+        <p>系统将自动下架到期广告。<br />按广告位显示广告请点击右下角按钮
+        </p>
+    </div>
+    <div class="seltpye_y">
+        <div class="tit link_lan">
+            <strong>广告列表</strong>
+            <span>(共找到{$total}条)</span>
+            <a href="{:U('MembersLog/index')}">[恢复默认]</a>
+            <div class="pli link_bk">
+                <u>每页显示：</u>
+                <a href="{:P(array('pagesize'=>10))}" <if condition="$pagesize eq 10">class="select"</if>>10</a>
+                <a href="{:P(array('pagesize'=>20))}" <if condition="$pagesize eq 20">class="select"</if>>20</a>
+                <a href="{:P(array('pagesize'=>30))}" <if condition="$pagesize eq 30">class="select"</if>>30</a>
+                <a href="{:P(array('pagesize'=>60))}" <if condition="$pagesize eq 60">class="select"</if>>60</a>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <notempty name="apply['Subsite']">
+        <div class="list" >
+          <div class="t">所属分站</div>
+          <qscms:subsite 列表名="subsite_list"/>
+          <div class="txt link_lan">
+            <if condition="$visitor['role_id'] eq 1">
+              <volist name="subsite_list" id="subsite">
+                <a href="{:P(array('subsite_id'=>$subsite['s_id']))}" <if condition="$Think.get.subsite_id eq $subsite['s_id'] or ( $Think.get.subsite_id eq 0 and $key eq 0 )">class="select"</if>>{$subsite.s_sitename}</a>
+              </volist>
+            <else/>
+              <volist name="subsite_list" id="subsite">
+                <if condition="in_array($subsite['s_id'],$visitor['subsite'])">
+                  <a href="{:P(array('subsite_id'=>$subsite['s_id']))}" <if condition="$Think.get.subsite_id eq $subsite['s_id']">class="select"</if>>{$subsite.s_sitename}</a>
+                </if>
+              </volist>
+            </if>
+          </div>
+        </div>
+        </notempty>
+        <div class="list">
+            <div class="t">到期时间</div>     
+            <div class="txt link_lan">
+                <a href="{:P(array('settr'=>''))}" <if condition="$Think.get.settr eq ''">class="select"</if>>不限</a>
+                <a href="{:P(array('settr'=>0))}" <if condition="$Think.get.settr eq '0'">class="select"</if>>已经到期</a>
+                <a href="{:P(array('settr'=>3))}" <if condition="$Think.get.settr eq '3'">class="select"</if>>三天内</a>
+                <a href="{:P(array('settr'=>7))}" <if condition="$Think.get.settr eq '7'">class="select"</if>>一周内</a>
+            </div>
+        </div>
+        <div class="list">
+            <div class="t">显示状态</div>     
+            <div class="txt link_lan">
+                <a href="{:P(array('is_display'=>''))}" <if condition="$Think.get.is_display eq ''">class="select"</if>>不限</a>
+                <a href="{:P(array('is_display'=>1))}" <if condition="$Think.get.is_display eq '1'">class="select"</if>>正常</a>
+                <a href="{:P(array('is_display'=>0))}" <if condition="$Think.get.is_display eq '0'">class="select"</if>>停止</a>
+            </div>
+        </div>
+        <div class="list">
+            <div class="t">广告位</div>     
+            <div class="txt link_lan">
+                <a href="{:P(array('alias'=>''))}" <if condition="$Think.get.alias eq ''">class="select"</if>>不限</a>
+                <volist name="category_list" id="category">
+                    <a href="{:P(array('alias'=>$category['alias']))}" <if condition="$Think.get.alias eq $category['id']">class="select"</if>>{$category.categoryname}</a>
+                </volist>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <form id="form1" name="form1" method="post" action="{:U('Ad/delete')}">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0"  id="list" class="link_lan">
+        <tr>
+          <td   class="admin_list_tit admin_list_first">
+         <label id="chkAll"><input type="checkbox" name="" title="全选/反选" id="chk"/>广告标题</label>
+         </td>
+          <td width="16%"  class="admin_list_tit">所属广告位</td>
+          <td width="7%" align="center"  class="admin_list_tit">类型</td>
+          <td width="9%" align="center"  class="admin_list_tit">开始时间</td>
+          <td width="9%" align="center"  class="admin_list_tit">到期时间</td>     
+          <td width="7%" align="center"  class="admin_list_tit">状态</td>
+          <td width="6%" align="center"  class="admin_list_tit">排序</td>
+          <td width="10%" align="center"  class="admin_list_tit">操作</td>
+        </tr>
+        <volist name="list" id="list">
+             <tr>
+              <td   class="admin_list admin_list_first">
+             <input type="checkbox" name="id[]"  value="{$list.id}"/>
+            <a href="{:U('Ad/edit',array('id'=>$list['id']))}" <if condition="$list['text_color']">style="color:{$list.text_color}</if> <if condition="$list['type_id'] eq 1"> class="vtip" title="{$list.content}"</if> <if condition="$list['type_id'] eq 2"> class="vtip" title='<img src="{:attach($list['content'],'ads')}"/>'</if>>{$list.title}</a>
+              <if condition="$list['note'] neq ''">
+              <img src="__ADMINPUBLIC__/images/comment_alert.gif" border="0"  class="vtip" title="{$list.note}"/>
+              </if>   
+             </td>
+              <td  class="admin_list">
+              {$category_list[$list['alias']]['categoryname']}
+              </td>
+              <td align="center"  class="admin_list">
+                  <switch name="list['type_id']">
+                      <case value="1">
+                            文字
+                      </case>
+                      <case value="2">
+                            图片
+                      </case>
+                      <case value="3">
+                            代码
+                      </case>
+                      <case value="4">
+                            FLASH
+                      </case>
+                      <case value="5">
+                            浮动
+                      </case>
+                      <case value="6">
+                            视频
+                      </case>
+                    </switch>
+              </td>
+              <td align="center"  class="admin_list">
+                <if condition="$list['starttime'] eq 0">
+                    无限制
+                <else/>
+                    {:date('Y-m-d',$list['starttime'])}
+                </if>
+             </td>
+              <td align="center"  class="admin_list">
+                <if condition="$list['deadline'] eq 0">
+                    无限制
+                <elseif condition="$list['deadline'] elt time()"/>
+                    <span style="color:#FF6600">已经到期</span>
+                <else/>
+                    {:date('Y-m-d',$list['deadline'])}
+                </if>
+                </td>   
+              <td align="center"  class="admin_list">
+                <if condition="$list['is_display'] eq 1">
+                    正常
+                <else/>
+                    <span style="color:#999999">暂停</span>
+                </if>
+              </td>
+              <td align="center"  class="admin_list">{$list.show_order}</td>
+              <td align="center"  class="admin_list">
+              <a href="{:U('Ad/edit',array('id'=>$list['id']))}">修改</a>
+              &nbsp; &nbsp; 
+              <a href="{:U('Ad/delete',array('id'=>$list['id']))}"  onclick="return confirm('你确定要删除吗？')">删除</a></td>
+            </tr>
+        </volist>
+      </table>
+    </form>
+    <empty name="list">
+        <div class="admin_list_no_info">没有任何信息！</div>
+    </empty>
+    <table width="100%" border="0" cellspacing="10"  class="admin_list_btm">
+    <tr>
+        <td>
+        <input type="button" class="admin_submit" id="ButADD" value="添加广告"  onclick="window.location='{:U('Ad/add')}'"/>
+        <input type="button" class="admin_submit" id="ButDel"  value="删除"/>
+        </td>
+        <td width="305" align="right">
+            <form id="formseh" name="formseh" method="get" action="">  
+                <div class="seh">
+                    <div class="keybox"><input name="key" type="text"   value="{$Think.get.key}" /></div>
+                    <div class="selbox">
+                        <input id="key_type_cn" type="text" value="{$Think.get.key_type_cn|default="广告标题"}" readonly="true"/>
+                        <div>
+                            <input name="key_type" id="key_type" type="hidden" value="{$Think.get.key_type|default="1"}" />
+                            <div id="sehmenu" class="seh_menu">
+                                <ul>
+                                    <li id="1" title="广告标题">广告标题</li>
+                                </ul>
+                            </div>
+                        </div>              
+                    </div>
+                    <div class="sbtbox">
+                        <input type="hidden" name="m" value="{:C('admin_alias')}">
+                        <input type="hidden" name="c" value="{:CONTROLLER_NAME}">
+                        <input type="hidden" name="a" value="{:ACTION_NAME}">
+                        <input type="submit" name="" class="sbt" id="sbt" value="搜索"/>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </form>
+        </td>
+      </tr>
+    </table>
+    <div class="qspage">{$page}</div>
+</div>
+<include file="public:footer" />
+<script type="text/javascript">
+$(document).ready(function(){
+    showmenu("#key_type_cn","#sehmenu","#key_type");
+ //点击批量删除   
+    $("#ButDel").click(function(){
+        if (confirm('你确定要删除吗？'))
+        {
+            $("form[name=form1]").submit()
+        }
+    });
+    //纵向列表排序
+    $(".listod .txt").each(function(i){
+    var li=$(this).children(".select");
+    var htm="<a href=\""+li.attr("href")+"\" class=\""+li.attr("class")+"\">"+li.text()+"</a>";
+    li.detach();
+    $(this).prepend(htm);
+    });    
+});
+</script>
+</body>
+</html>

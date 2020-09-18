@@ -1,0 +1,32 @@
+<div class="leftnav">
+	<div class="list <if condition="$personal_nav eq 'index'">select</if>">
+		<a class="but1" href="{:U('personal/index')}">会员中心</a>
+		<div class="arrow"></div>
+	</div>
+	<div class="list <if condition="$personal_nav eq 'resume_list'">select</if>">
+		<a class="but2" href="{:U('personal/resume_list')}">我的简历</a>
+		<div class="arrow"></div>
+	</div>
+	<div class="list <if condition="$personal_nav eq 'apply'">select</if>">
+		<a class="but3" href="{:U('personal/jobs_interview')}">求职管理</a>
+		<div class="arrow"></div>
+	</div>
+	<div class="list <if condition="$personal_nav eq 'jobs_favorites'">select</if>">
+		<a class="but4" href="{:U('personal/jobs_favorites')}">收藏&关注</a>
+		<div class="arrow"></div>
+	</div>
+	<div class="list <if condition="$personal_nav eq 'service'">select</if>">
+		<a class="but5" href="{:U('personalService/index')}">会员服务</a>
+		<div class="arrow"></div>
+	</div>
+	<if condition="C('apply.Allowance')">
+	<div class="list <if condition="$personal_nav eq 'allowance'">select</if>">
+		<a class="but7" href="{:U('personal/allowance')}">我的红包</a>
+		<div class="arrow"></div>
+	</div>
+	</if>
+	<div class="list <if condition="$personal_nav eq 'user_info'">select</if>">
+		<a class="but6" href="{:U('personal/user_info')}">账号管理</a>
+		<div class="arrow"></div>
+	</div>
+</div>

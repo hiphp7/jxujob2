@@ -1,0 +1,25 @@
+<include file="Admin@default/public/header" />
+<div class="toptip">
+    <div class="toptit">提示：</div>
+    <p>职位每次被浏览，点击量会随机增加，可在下方设置增量范围。</p>
+</div>
+  <div class="toptit">点击量增量范围设置</div>
+	<form action="{:U('index')}" method="post" enctype="multipart/form-data" name="form1" id="form1">
+        <div class="form_main width120">
+            <div class="fl">范围：</div>
+            <div class="fr">
+                <input name="min" type="text"  class="input_text_default small" id="min" value="{$info['min']}" maxlength="30" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/>
+                -
+                <input name="max" type="text"  class="input_text_default small" id="max" value="{$info['max']}" maxlength="30" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/>
+            </div>
+            <div class="fl"></div>
+            <div class="fr">
+                <input name="submit" type="submit" class="admin_submit"    value="保存修改"/>
+            </div>
+            <div class="clear"></div>
+        </div>
+	</form>
+</div>
+<include file="Admin@default/public/footer" />
+</body>
+</html>

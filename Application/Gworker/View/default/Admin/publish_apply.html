@@ -1,0 +1,187 @@
+<include file="Admin@default/public/header" />
+
+<div class="seltpye_y">
+    <div class="tit">处理状态</div>
+    <div class="ct">
+        <div class="txt <neq name='Think.get.status' value=''>select</neq>">{$Think.get.status_cn|default="不限"}</div>
+    </div>
+    <div class="downlist">
+        <li url="{:P(array('status'=>'','status_cn'=>'不限'))}">不限</li>
+        <li url="{:P(array('status'=>'0','status_cn'=>'未处理'))}">未处理</li>
+        <li url="{:P(array('status'=>'1','status_cn'=>'已处理'))}">已处理</li>
+    </div>
+</div>
+<div class="seltpye_y">
+    <div class="tit">添加时间</div>
+    <div class="ct">
+        <div class="txt <notempty name='Think.get.addsettr'>select</notempty>">{$Think.get.addsettr_cn|default="不限"}</div>
+    </div>
+    <div class="downlist">
+        <li url="{:P(array('addsettr'=>'','addsettr_cn'=>'不限'))}">不限</li>
+        <li url="{:P(array('addsettr'=>'3','addsettr_cn'=>'三天内'))}">三天内</li>
+        <li url="{:P(array('addsettr'=>'7','addsettr_cn'=>'一周内'))}">一周内</li>
+        <li url="{:P(array('addsettr'=>'30','addsettr_cn'=>'一月内'))}">一月内</li>
+    </div>
+</div>
+<notempty name="apply['Subsite']">
+    <div class="seltpye_y">
+        <div class="tit">所属分站</div>
+        <div class="ct">
+            <div class="txt <neq name='Think.get.subsite_id' value=''>select</neq>">{$Think.get.subsite_cn|default="不限"}</div>
+        </div>
+        <qscms:subsite 列表名="subsite_list"/>
+        <div class="downlist">
+            <li url="{:P(array('subsite_id'=>'','subsite_cn'=>'不限'))}">不限</li>
+            <if condition="$visitor['role_id'] eq 1">
+                <volist name="subsite_list" id="subsite">
+                    <li url="{:P(array('subsite_id'=>$subsite['s_id'],'subsite_cn'=>$subsite['s_sitename']))}">{$subsite.s_sitename}</li>
+                </volist>
+                <else/>
+                <volist name="subsite_list" id="subsite">
+                    <if condition="in_array($subsite['s_id'],$visitor['subsite'])">
+                        <li url="{:P(array('subsite_id'=>$subsite['s_id'],'subsite_cn'=>$subsite['s_sitename']))}">{$subsite.s_sitename}</li>
+                    </if>
+                </volist>
+            </if>
+        </div>
+    </div>
+</notempty>
+<div class="clear"></div>
+
+<form id="form1" name="form1" method="post" action="{:U('set_publish_apply_status')}">
+    <div class="list_th">
+        <div class="td" style=" width:20%;">
+            <label id="chkAll" class="left_padding">
+                <input type="checkbox" name="chkAll" id="chk" title="全选/反选"/>招聘岗位
+            </label>
+        </div>
+        <div class="td center" style=" width:10%;">需求人数</div>
+        <div class="td center" style=" width:10%;">工作地区</div>
+        <div class="td center" style=" width:10%;">薪资待遇</div>
+        <div class="td center" style=" width:10%;">申请人</div>
+        <div class="td center" style=" width:10%;">手机号</div>
+        <div class="td center" style=" width:10%;">处理状态</div>
+        <div class="td center" style=" width:10%;">申请时间</div>
+        <div class="td" style=" width:10%;">操作</div>
+        <div class="clear"></div>
+    </div>
+
+    <volist name="list" id="vo">
+        <div class="list_tr link_black">
+            <div class="td" style=" width:20%;">
+                <div class="left_padding striking">
+                    <input name="id[]" type="checkbox" id="id" value="{$vo['id']}"/>{$vo['jobs_name']}
+                </div>
+            </div>
+            <div class="td center" style=" width:10%;"><eq name="vo['amount']" value="0">若干<else />{$vo['amount']}人</eq></div>
+            <div class="td center" style=" width:10%;">{$vo['district_cn']}</div>
+            <div class="td center" style=" width:10%;">{$vo['wage_cn']}</div>
+            <div class="td center" style=" width:10%;">{$vo['contact']}</div>
+            <div class="td center" style=" width:10%;">{$vo['mobile']}</div>
+            <div class="td center" style=" width:10%;">
+                <if condition="$vo['status'] eq 1">
+                    已处理
+                    <elseif condition="$vo['status'] eq 0"/>
+                    <span style="color:#FF6600">未处理</span>
+                </if>
+            </div>
+            <div class="td center" style=" width:10%;">{:admin_date($vo['addtime'])}</div>
+            <div class="td edit" style=" width:10%;">
+                <a href="javascript:;" pid="{$vo['id']}" class="audit">处理申请</a>
+                <a href="{:U('del_publish_apply',array('id'=>$vo['id']))}" onClick="return confirm('你确定要删除该普工吗？')" class="gray">删除</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </volist>
+</form>
+
+<empty name="list">
+    <div class="list_empty">没有任何信息！</div>
+</empty>
+
+<div class="list_foot">
+    <div class="btnbox">
+        <input type="button" class="admin_submit" id="ButAudit" value="处理申请"/>
+        <input type="button" class="admin_submit" id="ButDel" value="删除"/>
+    </div>
+
+    <div class="footso">
+        <form action="?" method="get">
+            <div class="sobox">
+                <input type="hidden" name="m" value="{:MODULE_NAME}">
+                <input type="hidden" name="c" value="{:CONTROLLER_NAME}">
+                <input type="hidden" name="a" value="{:ACTION_NAME}">
+                <input name="key" type="text" class="sinput" value="{$Think.get.key}"/>
+                <input name="key_type" id="J_key_type_id" type="hidden" value="{$Think.get.key_type|default='1'}" />
+                <input name="key_type_cn" id="J_key_type_cn" type="hidden" value="{$Think.get.key_type_cn|default='招聘岗位'}"/>
+                <input name="" type="submit" value="" class="sobtn"/>
+                <div class="sotype" id="J_key_click">{$Think.get.key_type_cn|default='招聘岗位'}</div>
+                <div class="mlist" id="J_mlist">
+                    <ul>
+                        <li id="1" title="招聘岗位">招聘岗位</li>
+                        <li id="2" title="申请人">申请人</li>
+                        <li id="3" title="手机号">手机号</li>
+                    </ul>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="pages">{$page}</div>
+
+</div>
+<include file="Admin@default/public/footer" />
+
+</body>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //审核职位
+        $("#ButAudit").click(function () {
+            var data = $("form[name=form1]").serialize();
+            if(data.length == 0){
+                disapperTooltip('remind','请选择申请记录！');
+            } else {
+                var qsDialog = $(this).dialog({
+                    title: '处理申请',
+                    loading: true,
+                    footer : false
+                });
+                var url = "{:U('set_publish_apply_status')}";
+                $.post(url, data, function (result) {
+                    if(result.status == 1){
+                        qsDialog.setContent(result.data);
+                    } else {
+                        qsDialog.hide();
+                        disapperTooltip('remind',result.msg);
+                    }
+                });
+            }
+        });
+        
+        $(".audit").click(function () {
+            var id = $(this).attr('pid');
+            var qsDialog = $(this).dialog({
+                title: '处理申请',
+                loading: true,
+                footer : false
+            });
+            var url = "{:U('set_publish_apply_status')}";
+            $.post(url, {id:id}, function (result) {
+                if(result.status == 1){
+                    qsDialog.setContent(result.data);
+                } else {
+                    qsDialog.hide();
+                    disapperTooltip('remind',result.msg);
+                }
+            });
+        });
+        //点击批量删除
+        $("#ButDel").click(function () {
+            if (confirm('你确定要删除吗？')) {
+                $("form[name=form1]").attr("action", "{:U('del_publish_apply')}");
+                $("form[name=form1]").submit();
+            }
+        });
+    });
+</script>
+</html>

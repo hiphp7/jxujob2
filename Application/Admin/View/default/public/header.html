@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=7">
+<link rel="shortcut icon" href="{:C('qscms_site_dir')}favicon.ico" />
+<meta name="author" content="骑士CMS" />
+<meta name="copyright" content="74cms.com" />
+<title> </title>
+<link href="__ADMINPUBLIC__/css/common.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__ADMINPUBLIC__/js/jquery.min.js"></script>
+<script>
+	var URL = '__URL__',
+		SELF = '__SELF__',
+		ROOT_PATH = '__MODULE__',
+		APP	 =	 '__APP__';
+</script>
+<script type="text/javascript" src="__ADMINPUBLIC__/js/jquery.QSdialog.js"></script>
+<script type="text/javascript" src="__ADMINPUBLIC__/js/jquery.vtip-min.js"></script>
+<script type="text/javascript" src="__ADMINPUBLIC__/js/jquery.grid.rowSizing.pack.js"></script>
+<script type="text/javascript" src="__ADMINPUBLIC__/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="__ADMINPUBLIC__/js/common.js"></script>
+</head>
+<body style="background-color:#E0F0FE">
+	<div class="admin_main_nr_dbox">
+	    <div class="pagetit">
+	        <div class="ptit"> <if condition="$sub_menu['pageheader']">{$sub_menu.pageheader}<else/>欢迎登录 {:C('qscms_site_name')} 管理中心！</if></div>
+	        <notempty name="sub_menu['menu']">
+				<div class="topnav">
+			        <volist name="sub_menu['menu']" id="val">
+				        <a href="{:U($val['module_name'].'/'.$val['controller_name'].'/'.$val['action_name'])}{$val.data}<if condition="$isget and $_GET">{:get_first()}</if><if condition="$_GET['_k_v']">&_k_v={$Think.get._k_v}</if>" class="{$val.class}"><u>{$val.name}</u></a>
+			        </volist>
+				    <div class="clear"></div>
+				</div>
+			</notempty>
+	        <div class="clear"></div>
+	    </div>

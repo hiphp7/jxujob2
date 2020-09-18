@@ -1,0 +1,57 @@
+<include file="public:header" />
+<div class="toptip">
+  <h2>提示：</h2>
+  <p>
+系统默认分类不能删除！<br />
+删除分类组将同时删除此组下的所有分类。
+</p>
+</div>
+  <form id="form1" name="form1" method="post" action="{:U('group_delete')}">
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" id="list" class="link_lan"  >
+    <tr>
+      <td height="26" class="admin_list_tit admin_list_first" >
+      <label id="chkAll"><input type="checkbox" name=" " title="全选/反选" id="chk"/>分类组名称</label></td>
+    <td  class="admin_list_tit">调用名</td>
+    <td   align="center"  class="admin_list_tit">类型</td>
+      <td width="20%"   class="admin_list_tit">操作</td>
+    </tr>
+  <volist name="group" id="li">
+     <tr>
+      <td   class="admin_list admin_list_first" >
+      <input type="checkbox" name="alias[]" value="{$li.g_alias}"  <if condition="$li['g_sys'] eq 1">disabled="disabled"</if> />
+    <a href="{:U('show_category',array('alias'=>$li['g_alias']))}">{$li.g_name}</a>
+    </td>
+     <td  class="admin_list">{$li.g_alias}</td>
+     <td align="center"  class="admin_list">
+     <if condition="$li['g_sys'] eq 1">
+      系统分类
+     <else />
+     自定义分类组
+     </if>
+     </td>
+      <td class="admin_list">
+    <a href="{:U('show_category',array('alias'=>$li['g_alias']))}">查看</a>&nbsp;&nbsp;
+        <if condition="$li['g_sys'] neq 1">
+         <a href="{:U('group_edit',array('alias'=>$li['g_alias']))}">修改</a>&nbsp;&nbsp;      
+       <a onclick="return confirm('删除后无法恢复，你确定要删除吗？')" href="{:U('group_delete',array('alias'=>$li['g_alias']))}">删除</a>
+     </if>
+    </td>
+    </tr>
+   </volist>
+  </table>
+  <table width="100%" border="0" cellspacing="10"  class="admin_list_btm">
+<tr>
+        <td>
+        <input name="ButADD" type="button" class="admin_submit" id="ButADD" value="添加分类组"  onclick="window.location='{:U('group_add')}'"/>
+    <input name="ButDel" type="submit" class="admin_submit" id="ButDel"  value="删除所选" onclick="return confirm('删除分类组同时也会删除此分类组下个分类，你确定要删除吗？')"/>
+    </td>
+        <td width="305" align="right">
+    
+      </td>
+      </tr>
+  </table>
+  </form>
+</div>
+<include file="public:footer" />
+</body>
+</html>

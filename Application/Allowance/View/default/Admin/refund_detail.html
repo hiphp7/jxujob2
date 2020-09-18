@@ -1,0 +1,73 @@
+<div style="max-height:400px; overflow:auto">
+<form id="form2" name="form2" method="post" action="{:U('Admin/confirm_refund')}">
+<input type="hidden" name="uid" value="{$uid}">
+<table width="500" border="0" cellpadding="0" cellspacing="0" id="list" class="link_lan">
+  <tr>
+    <td width="120" class="admin_list_tit admin_list_first"><label id="chkAll_b"><input id="chk_b" type="checkbox" name=" " title="全选/反选" id="chk"/>退款类型</label></td>
+    <td  width="80" class="admin_list_tit">退款金额</td>
+    <td  width="100" class="admin_list_tit">添加时间</td>
+    <td  width="110" class="admin_list_tit">退款状态</td>
+    <td  width="420" class="admin_list_tit">备注</td>
+  </tr>
+  <if condition="$list">
+    <volist name="list" id="vo">
+    <tr>
+      <td class="admin_list admin_list_first"><input <gt name="vo['refundtime']" value="0">disabled</gt> name="id[]" type="checkbox" id="id" value="{$vo['id']}"/> {$typelist[$vo['type']]}</td>
+      <td class="admin_list">{$vo['amount']}元</td>
+      <td class="admin_list">{:admin_date($vo['addtime'])}</td>
+      <td class="admin_list"><eq name="vo['refundtime']" value="0"><font color="red">未退款</font><else />已退款({:admin_date($vo['refundtime'])})</eq></td>
+	    <td class="admin_list">{$vo['note']}</td>
+    </tr>
+  </volist>
+  <else />
+ <tr>
+      <td colspan="5" class="admin_list admin_list_first">没有任何信息！</td>
+      </tr>
+  </if>
+</table>
+  </form>
+</div>
+<table width="100%" border="0" cellspacing="10" cellpadding="0" class="admin_list_btm">
+    <tr>
+      <td>
+        <input type="button" name="" value="确认退款" class="admin_submit" id="ButRefund"/>
+      </td>
+    </tr>
+  </table>
+<script type="text/javascript">
+  $(document).ready(function(){
+    //全选
+    $('#chkAll_b').die().live('click',function()
+    {
+      $("#form2 :checkbox").not(':disabled').prop('checked',$("#chk_b").is(':checked'));
+      setbg();
+      if ($("#chk_b").is(':checked')) {
+        $("#form2 :checkbox:checked").not('#chk_b').each(function(index, el) {
+          $(this).parent().parent().addClass('foribg');
+        });
+      } else {
+        $("#form2 :checkbox").not('#chk_b').each(function(index, el) {
+          $(this).parent().parent().removeClass('foribg');
+        });
+      }
+      
+    });
+    // 反选
+    $("#form2 :checkbox").not('#chk_b').click(function(event) {console.log();
+      if ($(this).is(':checked')) {
+        $(this).parent().parent().addClass('foribg');
+        if ($("#form2 :checkbox:checked").not('#chk_b').length == $("#form2 :checkbox").not('#chk_b').length) {
+          $("#chk_b").prop('checked', !0);
+        }
+      } else {
+        $(this).parent().parent().removeClass('foribg');
+        $("#chk_b").prop('checked', 0);
+      }
+    });
+    $('#ButRefund').die().live('click',function(){
+      if(confirm('退款操作无法回滚，确认已退款吗？')){
+        $('#form2').submit();
+      }
+    });
+  });
+</script>

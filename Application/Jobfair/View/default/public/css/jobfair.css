@@ -1,0 +1,165 @@
+/* CSS Document */
+.jobfair_index_banner{ width:100%; background-image:url(../banner/01.jpg); background-repeat:no-repeat; height:267px; background-position:bottom bottom;}
+.jobfair_index_banner .main{ width:900px; margin:0 auto; padding-top:40px; padding-left:275px; position:relative}
+.jobfair_index_banner .main .new{ position:absolute; left:60px; top:0px; width:151px; height:145px;background-image:url(../images/04.png); background-repeat:no-repeat}
+.jobfair_index_banner .main .tit{ font-size:30px;  color:#333333}
+/* .jobfair_index_banner .main .tit{ font-size:30px; height:60px; color:#333333} */
+.jobfair_index_banner .main .tit a{ color:#333333}
+.jobfair_index_banner .main .txt{ font-size:16px; height:35px; width:500px;}
+.jobfair_index_banner .main .btn{ position:absolute; top:135px; right:0px; height:50px; width:335px;}
+.jobfair_index_banner .main .btn a{ padding:10px 26px; font-size:16px; border-radius:6px; color:#FFFFFF; background-color:#FF6600; text-decoration:none; margin-right:20px;}
+.jobfair_index_banner .main .btn a:hover{ background-color:#FF9900}
+.jobfair_index_banner .main .btn a.com{ padding:10px 26px; font-size:16px; border-radius:6px; color:#FFFFFF; background-color:#009900; text-decoration:none; margin-right:20px;}
+.jobfair_index_banner .main .btn a.com:hover{ background-color:#60BE01}
+/*招聘会 列表*/
+.jobfairlist{ width:1198px; border:1px #EEEEEE solid; margin:0 auto; margin-top:25px;}
+.jobfairlist .list{ border-bottom:1px #EEEEEE solid; position:relative}
+.jobfairlist .list:hover{ background-color:#F9F9F9}
+.jobfairlist .list .state{ width:72px; height:64px; position:absolute; right:0px; top:0px; background-image:url(../images/01.png); background-repeat:no-repeat;}
+.jobfairlist .list .state.end{ background-position:0px -70px;}
+.jobfairlist .list .td1{ width:286px;}
+.jobfairlist .list .td1 .imgbox{ width:245px; height:145px; margin-left:20px; margin-top:20px; margin-bottom:20px;}
+.jobfairlist .list .td1 .imgbox img{ width:245px; }
+/* .jobfairlist .list .td1 .imgbox img{ width:245px; height:145px;} */
+.jobfairlist .list .td2{ width:700px;}
+.jobfairlist .list .td2 .tit{font-size:18px; height:37px; padding-top:30px; width:500px; color:#333333}
+.jobfairlist .list .td2 .tit a{ color:#333333}
+.jobfairlist .list .td2 .txt{ font-size:14px; height:28px; width:500px;}
+.jobfairlist .list .td3{ width:150px; padding-top:45px;}
+.jobfairlist .list .td3 a{ display:block;   font-size:14px; border-radius:6px; color:#FFFFFF; background-color:#FF6600; text-decoration:none; width:120px; height:36px; line-height:36px; text-align:center; margin-bottom:20px;}
+.jobfairlist .list .td3 a:hover{ background-color:#FF9900}
+.jobfairlist .list .td3 a.com{ display:block;   font-size:14px; border-radius:8px; color:#FFFFFF; background-color:#009900; text-decoration:none; width:120px; height:36px; line-height:36px; text-align:center; margin-bottom:20px;}
+.jobfairlist .list .td3 a.com:hover{ background-color:#60BE01}
+.jobfairlist .list .td3 a.btn_disabled{background-color:#EBEBEB;border:1px #CBCECF solid;color:#A0A0A0;cursor:default}
+.jobfairlist .list .td3 a.btn_disabled:hover{background-color:#EBEBEB;border:1px #CBCECF solid;color:#A0A0A0;cursor:default}
+.jobfairlist .more{ text-align:center; width:1120px; margin:10px auto; height:36px; line-height:36px; background-color:#FFF0E8;   cursor:pointer}
+.jobfairlist .more:hover{ background-color:#FFE4D7; color:#FF6600}
+/*招聘会 详细页框架*/
+.jobfairshow{width:1198px; border:1px #EEEEEE solid; margin:0 auto; margin-top:25px; border-top:2px #FF6600 solid; height:200px; position:relative}
+.jobfairshow .state{ width:72px; height:64px; position:absolute; right:0px; top:0px; background-image:url(../images/01.png); background-repeat:no-repeat;}
+.jobfairshow .state.end{ background-position:0px -70px;}
+.jobfairshow .td1{ width:286px;}
+.jobfairshow .td1 .imgbox{ width:245px; height:145px; margin-left:20px; margin-top:20px; margin-bottom:20px;}
+.jobfairshow .td1 .imgbox img{ width:245px; }
+/* .jobfairshow .td1 .imgbox img{ width:245px; height:145px;} */
+.jobfairshow .td2{ width:630px;}
+.jobfairshow .td2 .tit{font-size:18px; height:37px; padding-top:30px; width:500px; color:#333333}
+.jobfairshow .td2 .tit a{ color:#333333}
+.jobfairshow .td2 .txt{ font-size:14px; height:28px; width:500px;}
+.jobfairshow .td3{ width:150px; padding-top:30px;}
+/* .jobfairshow .td3{ width:150px; padding-top:70px;} */
+.jobfairshow .td3 a{display:block;   font-size:14px; border-radius:6px; color: #FF6600; background-color:#FFFFFF; text-decoration:none; width:120px; height:38px; line-height:38px; text-align:center; border:1px #FF6600 solid; margin-bottom:20px;}
+.jobfairshow .td3 a:hover{ background-color:#FF6600; color:#FFFFFF}
+.jobfairshow .td3 a.end{display:block;   font-size:14px; border-radius:6px; color: #666666; background-color:#F0F0F0; text-decoration:none; width:120px; height:38px; line-height:38px; text-align:center; border:1px #cccccc solid; margin-bottom:20px;}
+.jobfairshow .td3 a.end:hover{ background-color:#F0F0F0; color:#666666}
+.jobfairshow .share{ position:absolute; bottom:15px; right:0px; width:330px;}
+.jobfairshow .share .li{ width:28px; height:28px; margin-right:10px; float:left; background-image:url(../images/02.png); background-repeat:no-repeat; cursor:pointer; margin-top:50px;}
+.jobfairshow .share .li.s1{ background-position:0px 0px;}
+.jobfairshow .share .li.s1:hover{ background-position:0px -36px;}
+.jobfairshow .share .li.s2{ background-position:-33px 0px;}
+.jobfairshow .share .li.s2:hover{ background-position:-33px -36px;}
+.jobfairshow .share .li.s3{ background-position:-66px 0px;}
+.jobfairshow .share .li.s3:hover{ background-position:-66px -36px;}
+.jobfairshow .share .li.s4{ background-position:-99px 0px;}
+.jobfairshow .share .li.s4:hover{ background-position:-99px -36px;}
+.jobfairshow .share .li.s5{ background-position:-132px 0px;}
+.jobfairshow .share .li.s5:hover{ background-position:-132px -36px;}
+.jobfairshow .share .li.s6{ background-position:-165px 0px;}
+.jobfairshow .share .li.s6:hover{ background-position:-165px -36px;}
+.jobfairshow .share .code{ float:left; width:70px; height:70px; padding:4px; border:1px #EEEEEE solid;border-radius:6px; }
+.jobfairshow .share .code img{ width:70px; height:70px;}
+
+.jobfairshow_1{width:1198px; border:1px #EEEEEE solid; margin:0 auto; margin-top:25px;position:relative}
+.jobfairshow_1 .tittab_bg{ width:1198px; height:50px; line-height:50px; border-bottom:1px #EEEEEE solid; background-color:#F9F9F9;} 
+.jobfairshow_1 .tittab_bg .tab{ width:1198px; height:54px;  position:absolute; left:-1px; top:-3px;}
+.jobfairshow_1 .tittab_bg .tab li{ float:left;  padding-left:20px; padding-right:20px;height:53px; line-height:53px;}
+.jobfairshow_1 .tittab_bg .tab li:hover a{ color:#FF6600}
+.jobfairshow_1 .tittab_bg .tab li.select{ border:1px #EEEEEE solid; height:51px; border-top:3px #FF6600 solid; border-bottom:1px #FFFFFF solid; background-color:#FFFFFF;}
+/*参会企业*/
+.jobfairshow_1 .com{ padding-top:20px; padding-bottom:20px;}
+.jobfairshow_1 .com .tit{ width:300px; margin-left:30px; border-left:4px #FF6600 solid; height:20px; line-height:20px; padding-left:15px; font-size:18px; margin-bottom:20px;}
+.jobfairshow_1 .com .comads{ width:1158px; margin:0 auto;}
+.jobfairshow_1 .com .comads .adli{ width: 165px; float:left;}
+.jobfairshow_1 .com .comads .adli .imgbox{ width:130px; height:130px; margin-left:17px; border:1px #EEEEEE solid}
+.jobfairshow_1 .com .comads .adli .imgbox img{ width:130px; height:130px;}
+.jobfairshow_1 .com .comads .adli .txt{ text-align:center; width:130px; margin-left:7px; height:28px; padding-top:5px;}
+.jobfairshow_1 .com .titbot{ width:1120px; margin:0 auto; border-bottom:2px #FF6600 solid; margin-top:15px;}
+.jobfairshow_1 .com .titbot .lt{ float:left; height:50px; line-height:50px; width:500px;}
+.jobfairshow_1 .com .titbot .ct{ float:left; height:50px; line-height:50px; width:250px; text-align:right; padding-right:10px;}
+.jobfairshow_1 .com .titbot .rt{ float:left; height:50px;  width:360px;}
+.jobfairshow_1 .com .titbot .rt .sbg{ margin-top:6px; width:358px; height:30px; border:1px #CCCCCC solid; background-color:#FFFFFF; position:relative}
+.jobfairshow_1 .com .titbot .rt .sbg .btn{ width:60px; height:32px; position:absolute; right:-1px; top:-1px; background-color:#FF6600; color:#FFFFFF; line-height:30px; border:0px; cursor:pointer}
+.jobfairshow_1 .com .titbot .rt .sbg .keyinput{ width:280px; padding-left:10px; height:28px; border:0px ; background-color:#FFFFFF;}
+
+.jobfairshow_1 .com .clist{ width:1140px; margin:0 auto; padding-top:25px;position: relative;}
+.jobfairshow_1 .com .clist .cli{ float: left; width:570px; margin-bottom:25px;}
+.jobfairshow_1 .com .clist .cli .cinfo{ width:546px; border:1px #FF6600 dashed; margin:0 auto; background-color:#FFFAF7}
+.jobfairshow_1 .com .clist .cli .cinfo:hover{ background-color:#FFFFFF}
+.jobfairshow_1 .com .clist .cli .cinfo .comtit{ padding-left:25px; font-size:16px; padding-top:10px; padding-bottom:10px;}
+.jobfairshow_1 .com .clist .cli .cinfo .comtit span{ padding-left:20px; color:#FF6600}
+.jobfairshow_1 .com .clist .cli .cinfo .jobs{ padding-left:10px;}
+.jobfairshow_1 .com .clist .cli .cinfo .jobs a{ display:block; padding-left:15px; padding-right:15px; margin-bottom:8px; text-decoration:none; color:#333333; float:left;white-space:nowrap; }
+.jobfairshow_1 .com .clist .cli .cinfo .jobs a:hover{ color:#FF6600; text-decoration:inherit}
+.jobfairshow_1 .com .more{ text-align:center; width:1120px; margin:0 auto; height:36px; line-height:36px; background-color:#FFF0E8;   cursor:pointer}
+.jobfairshow_1 .com .more:hover{ background-color:#FFE4D7; color:#FF6600}
+/*招聘会详情*/
+.jobfairshow_2{}
+.jobfairshow_2 .imgtxt{ float: left; width:740px; padding-left:30px; padding-right:30px;line-height:200%;}
+.jobfairshow_2 .imgbox{ float: left; width:340px; height:230px;}
+.jobfairshow_2 .imgbox img{width:340px; height:230px;}
+.jobfairshow_2 .txt{ padding-left:30px; padding-right:30px; line-height:200%;margin-bottom:20px;}
+.jobfairshow_2 .stit{ padding-left:30px; color: #FF3300; height:25px;}
+/*交通线路*/
+.jobfairshow_3{}
+.jobfairshow_3 .txt{ padding-left:30px; padding-right:30px; line-height:200%;}
+.jobfairshow_3 .map{ width:1140px; margin:0 auto; margin-top:25px; border:1px #EEEEEE solid;}
+/*精彩回顾*/
+.jobfairshow_4{}
+.jobfairshow_4 .pic{ width:1100px; margin:0 auto; margin-top:30px; border:1px #EEEEEE solid;}
+.jobfairshow_4 .pic img{width:1100px;}
+/*预订*/
+.jobfairshow_5{}
+.jobfairshow_5 .pic{ width:1160px; margin:0 auto; margin-top:20px;}
+.jobfairshow_5 .pic img{width:1160px;}
+.jobfairshow_5 .ptit{ font-size:26px; text-align:center; color:#FF3300; height:60px;  border-bottom:1px #EEEEEE solid}
+.jobfairshow_5 .ptit.re{ border-top:1px #EEEEEE solid; line-height:60px; background-color:#F7F7F7}
+.jobfairshow_5 .txt{ padding-left:50px; line-height:200%; padding-top:25px;}
+.jobfairshow_5 .txt .state{ border:1px #CCCCCC solid; padding:5px 10px; margin-left:30px; margin-right:7px;border-radius:4px;}
+.jobfairshow_5 .txt .state.s1{ background-color:#FFFFFF; color:#FFFFFF;}
+.jobfairshow_5 .txt .state.s2{ background-color: #999999; color:#999999; border-color: #666666}
+.jobfairshow_5 .txt .state.s3{ background-color: #FF6600; color:#FF6600; border-color: #FF3300}
+.jobfairshow_5 .txt .state.s4{ background-color:#FFFFFF; color:#FFFFFF;border:1px  #999999 dashed; padding:5px 6px; }
+.jobfairshow_5 .txt strong{ padding-right:20px;}
+.jobfairshow_5 .txt u{ color:#FF6600; text-decoration:none; font-weight:bold}
+.jobfairshow_5 .area{ padding-top:25px; text-align:center}
+.jobfairshow_5 .area ul{display:inline-block;*display:inline;*zoom:1;font-size:16px;}
+.jobfairshow_5 .area li{ float:left; padding:4px 30px; background-color:#FFF3D9; border:1px #F5D485 solid; cursor:pointer; margin-right:30px; margin-bottom:20px;border-radius:4px;}
+.jobfairshow_5 .area li:hover{ background-color:#FF9900; color:#FFFFFF; border:1px #FF8800 solid;}
+.jobfairshow_5 .area li.select{ background-color:#FF6600; color:#FFFFFF; border:1px #FF5500 solid;}
+.jobfairshow_5 .booth{ padding-top:15px; width:1080px; padding-left:80px;}
+.jobfairshow_5 .booth .li{ width:95px; font-size:16px; height:32px; line-height:32px; text-align:center; border:1px #CCCCCC solid; color:#999999; margin-right:20px; float:left; margin-bottom:20px; cursor:pointer;border-radius:4px; position:relative}
+.jobfairshow_5 .booth .li:hover{ border:1px  #999999 solid; color:#666666; background-color:#F5F5F5}
+.jobfairshow_5 .booth .li.invalid{border:1px  #999999  dashed; color:#cccccc; background-color:#F9F9F9;  text-decoration: line-through}
+.jobfairshow_5 .booth .li.audit{border:1px  #FF3300 solid; color:#FFFFFF; background-color:#FF6600}
+.jobfairshow_5 .booth .li.succeed{border:1px  #666666 solid; color:#FFFFFF; background-color:#999999}
+
+.jobfairshow_5 .booth .li  .tip{ position:absolute; left:-1px; top:34px; width:320px; z-index:1;}
+.jobfairshow_5 .booth .li  .tip .arrow{ width:18px; height:7px; margin-left:38px; background-image:url(../images/03.png); background-repeat:no-repeat; background-position:-87px 0px;}
+.jobfairshow_5 .booth .li  .tip .box{ width:318px;  border:1px #FC4C4E solid; background-color:#FFFCF1;border-radius:4px;
+-moz-box-shadow: 0px 0px 10px #E4E4E4;/*firefox*/
+-webkit-box-shadow: 0px 0px 10px #E4E4E4;/*safari或chrome*/
+box-shadow:0px 0px 10px #E4E4E4;/*opera或ie9*/ 
+}
+.jobfairshow_5 .booth .li  .tip .box .t{ height:38px; line-height:38px; background-color:#FC4C4E; color:#FFFFFF; padding-left:20px; text-align:left;}
+.jobfairshow_5 .booth .li  .tip .box .restxt{ text-align:center; padding-top:20px; padding-bottom:20px;width:280px; margin:0 auto;overflow:hidden;white-space: nowrap;text-overflow: ellipsis; color:#666666}
+.jobfairshow_5 .booth .li  .tip .box .restxt .btn{ padding:8px 20px; font-size:14px; margin-left:20px; background-color:#FF6600; color:#FFFFFF;border-radius:20px;}
+.jobfairshow_5 .booth .li  .tip .box .restxt .btn:hover{ background-color:#FF5500;}
+
+.jobfairshow_5 .booth .li  .tip.audit{}/*审核中的样式*/ 
+.jobfairshow_5 .booth .li  .tip.audit .arrow{background-position:0px 0px;}
+.jobfairshow_5 .booth .li  .tip.audit .box{ border:1px #FF6600 solid;}
+.jobfairshow_5 .booth .li  .tip.audit .box .t{ background-color:#FF6600;}
+.jobfairshow_5 .booth .li  .tip.succeed{}/*已完成的样式*/ 
+.jobfairshow_5 .booth .li  .tip.succeed .arrow{background-position:-45px 0px;}
+.jobfairshow_5 .booth .li  .tip.succeed .box{ border:1px #4B4B4B solid;}
+.jobfairshow_5 .booth .li  .tip.succeed .box .t{ background-color:#4B4B4B;}

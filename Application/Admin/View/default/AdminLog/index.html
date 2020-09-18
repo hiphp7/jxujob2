@@ -1,0 +1,43 @@
+<include file="public:header" />
+    <div class="seltpye_x">
+        <div class="left">记录时间</div>    
+        <div class="right">
+        <a href="{:P(array('settr'=>''))}" <if condition="$Think.get.settr eq ''">class="select"</if>>不限</a>
+        <a href="{:P(array('settr'=>3))}" <if condition="$Think.get.settr eq 3">class="select"</if>>三天内</a>
+        <a href="{:P(array('settr'=>7))}" <if condition="$Think.get.settr eq 7">class="select"</if>>一周内</a>
+        <a href="{:P(array('settr'=>30))}" <if condition="$Think.get.settr eq 30">class="select"</if>>一月内</a>
+        <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+	<table width="100%" border="0" cellpadding="0" cellspacing="0" id="list" class="link_lan">
+		<tr>
+			<td class="admin_list_tit admin_list_first">用户名</td>
+			<td  class="admin_list_tit">日志详情</td>
+			<td  class="admin_list_tit">创建时间</td>
+			<td  class="admin_list_tit">IP</td>
+		</tr>
+		<volist name="list" id="list">
+			<tr>
+				<td class="admin_list admin_list_first">{$list.admin_name}</td>
+				<td class="admin_list">{$list.log_value}</td>
+				<td class="admin_list">{:date("Y-m-d H:i:s",$list['add_time'])}</td>
+				<td class="admin_list">{$list.log_ip}</td>
+			</tr>
+		</volist>
+	</table>
+	<empty name="list">
+        <div class="admin_list_no_info">没有任何信息！</div>
+    </empty>
+    <table width="100%" border="0" cellspacing="10"  class="admin_list_btm">
+		<tr id="J_run">
+			<td>
+				<input name="ButADD" type="button" class="admin_submit" id="ButADD" value="返回"  onclick="window.location='{:U('Admin/index')}'"/>
+			</td>
+		</tr>
+	</table>
+	<div class="qspage">{$page}</div>
+</div>
+<include file="public:footer" />
+</body>
+</html>

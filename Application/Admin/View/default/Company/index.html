@@ -1,0 +1,411 @@
+<include file="public:header" />
+  <notempty name="apply['Subsite']">
+  <div class="seltpye_x">
+    <div class="left">所属分站</div>
+    <qscms:subsite 列表名="subsite_list"/>
+    <div class="right">
+      <a href="{:P(array('subsite_id'=>''))}" <if condition="$Think.get.subsite_id eq ''">class="select"</if>>不限</a>
+      <if condition="$visitor['role_id'] eq 1">
+        <volist name="subsite_list" id="subsite">
+          <a href="{:P(array('subsite_id'=>$subsite['s_id']))}" <if condition="$Think.get.subsite_id eq $subsite['s_id']">class="select"</if>>{$subsite.s_sitename}</a>
+        </volist>
+      <else/>
+        <volist name="subsite_list" id="subsite">
+          <if condition="in_array($subsite['s_id'],$visitor['subsite'])">
+            <a href="{:P(array('subsite_id'=>$subsite['s_id']))}" <if condition="$Think.get.subsite_id eq $subsite['s_id']">class="select"</if>>{$subsite.s_sitename}</a>
+          </if>
+        </volist>
+      </if>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+  </notempty>
+  <div class="seltpye_x">
+    <div class="left">企业认证</div>
+    <div class="right">
+      <a href="{:P(array('audit'=>''))}" <if condition="$Think.get.audit eq ''">class="select"</if>>不限</a>
+      <a href="{:P(array('audit'=>'1'))}" <if condition="$Think.get.audit eq '1'">class="select"</if>>已通过</a>
+      <a href="{:P(array('audit'=>'2'))}" <if condition="$Think.get.audit eq '2'">class="select"</if>>待认证<if condition="$count"><span>({$count})</span></if></a>
+      <a href="{:P(array('audit'=>'3'))}" <if condition="$Think.get.audit eq '3'">class="select"</if>>未通过</a>
+      <a href="{:P(array('audit'=>'0'))}" <if condition="$Think.get.audit eq '0'">class="select"</if>>未认证</a>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+  <if condition="C('apply.Sincerity')">
+  <div class="seltpye_x">
+    <div class="left">诚聘通</div>
+    <div class="right">
+      <a href="{:P(array('famous'=>'','setmeal_id'=>''))}" <if condition="$Think.get.famous eq ''">class="select"</if>>不限</a>
+      <a href="{:P(array('famous'=>'1'))}" <if condition="$Think.get.famous eq '1'">class="select"</if>>诚聘通</a>
+      <a href="{:P(array('famous'=>'0','setmeal_id'=>''))}" <if condition="$Think.get.famous eq '0'">class="select"</if>>非诚聘通</a>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+  </if>
+  <div class="seltpye_x">
+      <div class="left">套餐分类</div>    
+      <div class="right">
+          <a href="{:P(array('setmeal_id'=>''))}" <if condition="$Think.get.setmeal_id eq ''">class="select"</if>>不限</a>
+          <volist name="setmeal" id="vo">
+              <a href="{:P(array('setmeal_id'=>$key))}" <if condition="$Think.get.setmeal_id eq $key">class="select"</if>>{$vo}</a>
+          </volist>
+          <div class="clear"></div>
+      </div>
+      <div class="clear"></div>
+  </div>
+  <div class="seltpye_x">
+    <div class="left">添加时间</div>
+    <div class="right">
+      <a href="{:P(array('settr'=>''))}" <if condition="$Think.get.settr eq ''">class="select"</if>>不限</a>
+      <a href="{:P(array('settr'=>'3'))}" <if condition="$Think.get.settr eq '3'">class="select"</if>>三天内</a>
+      <a href="{:P(array('settr'=>'7'))}" <if condition="$Think.get.settr eq '7'">class="select"</if>>一周内</a>
+      <a href="{:P(array('settr'=>'30'))}" <if condition="$Think.get.settr eq '30'">class="select"</if>>一月内</a>
+      <a href="{:P(array('settr'=>'180'))}" <if condition="$Think.get.settr eq '180'">class="select"</if>>半年内</a>
+      <a href="{:P(array('settr'=>'360'))}" <if condition="$Think.get.settr eq '360'">class="select"</if>>一年内</a>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+  <div class="seltpye_x">
+    <div class="left">套餐到期</div>
+    <div class="right">
+      <a href="{:P(array('overtime'=>''))}" <if condition="$Think.get.overtime eq ''">class="select"</if>>不限</a>
+      <a href="{:P(array('overtime'=>'3'))}" <if condition="$Think.get.overtime eq '3'">class="select"</if>>三天内</a>
+      <a href="{:P(array('overtime'=>'7'))}" <if condition="$Think.get.overtime eq '7'">class="select"</if>>一周内</a>
+      <a href="{:P(array('overtime'=>'30'))}" <if condition="$Think.get.overtime eq '30'">class="select"</if>>一月内</a>
+      <a href="{:P(array('overtime'=>'-1'))}" <if condition="$Think.get.overtime eq '-1'">class="select"</if>>已到期</a>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+  <form id="form1" name="form1" method="post" action="{:U('company/delete_company')}">
+    <table width="100%" border="0" cellpadding="0" cellspacing="0"  id="list" class="link_lan">
+      <tr>
+        <td  class="admin_list_tit admin_list_first">
+          <label id="chkAll"><input type="checkbox" name=" " title="全选/反选" id="chk"/>公司名称</label>
+        </td>
+        <td class="admin_list_tit">所属会员</td>
+		<td width="35" align="center" class="admin_list_tit"></td>
+        <td width="10%" class="admin_list_tit">企业认证</td>
+        <if condition="C('apply.Sincerity')">
+		<td width="10%" align="center" class="admin_list_tit">诚聘通</td>
+    </if>
+        <td width="10%" align="center" class="admin_list_tit">创建时间</td>
+        <td width="10%" align="center" class="admin_list_tit">刷新时间</td>
+        <td width="8%" align="center" class="admin_list_tit">套餐名称</td>
+        <td width="120" align="center" class="admin_list_tit">操作</td>
+      </tr>
+     <volist name="list" id="vo">
+      <tr >
+        <td class="admin_list admin_list_first" >
+          <input name="y_id[]" type="checkbox" value="{$vo['uid']}" />
+          <a href="{$vo['company_url']}" target="_blank">{$vo['companyname']}</a>
+		 <if condition="$vo['audit'] eq 1">&nbsp;<span style="color: #009900" title="已认证企业">[证]</span></if>
+		<if condition="$vo['famous'] eq 1">&nbsp;<span style="color: #FF9900" title=" 诚聘通企业">[诚]</span></if>
+        </td>
+        
+        <td  class="admin_list">
+          {$vo['username']}
+        <if condition="$vo['email']"> <span class="emailtip ajax_send_email" title="发送邮件" parameter="email={$vo['email']}&uid={$vo['uid']}">&nbsp;&nbsp;&nbsp;&nbsp;</span></if>
+		  
+         <if condition="$vo['mobile']"><span class="smstip ajax_send_sms" title="发送短信" parameter="mobile={$vo['mobile']}&uid={$vo['uid']}">&nbsp;&nbsp;&nbsp;&nbsp;</span></if>
+        </td>
+        
+        <td  class="admin_list">
+		 <if condition="$vo['certificate_img']">
+		 
+         <a href="{:attach($vo['certificate_img'],'certificate_img')}" target="_blank" title="点击查看">[证件]</a>&nbsp;&nbsp;
+          </if>
+		</td>
+        <td class="admin_list">
+		
+          <if condition="$vo['audit'] eq '0'">未认证</if>
+          <if condition="$vo['audit'] eq '1'"><span style="color: #009900">已通过</span></if>
+          <if condition="$vo['audit'] eq '2'"><span style="color:#FF3300">待认证</span></if>
+          <if condition="$vo['audit'] eq '3'">未通过</if>
+		  <span class="view audit_log" title="查看日志" parameter="type=company_id&id={$vo['id']}&famous=0">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+		  <a href="https://www.tianyancha.com/search?key={$vo['companyname']}" target="_blank" title="点击查看">[天眼查]</a>&nbsp;&nbsp;
+        </td>
+        <if condition="C('apply.Sincerity')">
+		  <td align="center" class="admin_list">
+		<if condition="$vo['famous'] eq 1">
+		<span style="color: #FF6600" title=" 诚聘通企业">是</span>
+		<else />
+		<span style="color: #999999">否</span>
+		</if>
+		
+		<span class="view famous_log" title="查看日志" parameter="type=company_id&id={$vo['id']}&famous=1">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        </td>
+        </if>
+        <td align="center" class="admin_list">
+          {:admin_date($vo['addtime'])}
+        </td>
+        <td align="center" class="admin_list">
+          {:admin_date($vo['refreshtime'])}
+        </td>
+        <td align="center" class="admin_list">
+          <if condition="$vo['setmeal_name']"><span  <if condition="$vo['setmeal_id'] neq '1'">style="color: #FF6600"</if>>{$vo['setmeal_name']}</span><else /><span style="color:#FF3300">无套餐</span></if>
+		  <span class="view setmeal_detail" title="套餐详情" parameter="uid={$vo['uid']}">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        </td>
+        <td width="15%" align="center" class="admin_list">
+
+          <a href="{:U('edit_company',array('id'=>$vo['id'],'_k_v'=>$vo['id']))}">编辑</a>
+          &nbsp;
+		   <a class="userinfo"  parameter="uid={$vo['uid']}" href="javascript:void(0);" hideFocus="true">管理</a>
+        </td>
+      </tr>
+      </volist>
+    </table>
+    <span id="OpAudit"></span>
+    <span id="OpAuditFamous"></span>
+    <span id="OpDel"></span>
+    <span id="Oprefresh"></span>
+  </form>
+    <if condition="!$list">
+    <div class="admin_list_no_info">没有任何信息！</div>
+    </if>
+  
+  <table width="100%" border="0" cellspacing="10" cellpadding="0" class="admin_list_btm">
+    <tr>
+      <td>
+        <input type="button" name="" value="认证企业" class="admin_submit"  id="ButAudit" />
+        <if condition="C('apply.Sincerity')">
+		<input type="button" name="" value="诚聘通" class="admin_submit"  id="ButAuditFamous" />
+    </if>
+        <input type="button" name="" value="刷新" class="admin_submit"  id="Butrefresh" />
+        <input type="button" name="" value="删除" class="admin_submit"   id="ButDel"/>
+		
+       <input type="button" name="" value="导出企业" class="admin_submit exportcompanyprofile"   id="exportcompanyprofile"/>
+      </td>
+      <td width="305" align="right">
+        <form id="formseh" name="formseh" method="get" action="?">
+              <input type="hidden" name="m" value="{:C('admin_alias')}">
+              <input type="hidden" name="c" value="{:CONTROLLER_NAME}">
+              <input type="hidden" name="a" value="{:ACTION_NAME}">
+          <div class="seh">
+            <div class="keybox"><input name="key" type="text"   value="{$Think.get.key}" /></div>
+            <div class="selbox">
+              <input name="key_type_cn"  id="key_type_cn" type="text" value="{$Think.get.key_type_cn|default="公司名"}" readonly="true"/>
+              <div>
+                <input name="key_type" id="key_type" type="hidden" value="{$Think.get.key_type|default="1"}" />
+                <div id="sehmenu" class="seh_menu">
+                  <ul>
+                    <li id="1" title="公司名">公司名</li>
+                    <li id="2" title="公司id">公司id</li>
+                    <li id="3" title="会员名">会员名</li>
+                    <li id="4" title="会员id">会员id</li>
+                    <li id="5" title="地址">地址</li>
+                    <li id="6" title="电话">电话</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="sbtbox">
+              <input type="submit" name="" class="sbt" id="sbt" value="搜索"/>
+            </div>
+            <div class="clear"></div>
+          </div>
+        </form>
+      </td>
+    </tr>
+  </table>
+  <div class="qspage">{$page}</div>
+</div>
+<div style="display:none" id="OpDelLayer">
+  <table width="400" border="0" align="center" cellpadding="0" cellspacing="6" >
+    <tr>
+      <td height="30" colspan="2"><strong  style="color:#0066CC; font-size:14px;">你确定要删除吗？</strong></td>
+    </tr>
+    <tr>
+      <td width="20" height="25">&nbsp;</td>
+      <td><label>
+        <input name="delete_company" type="checkbox" id="delete_company" value="yes" checked="checked" />
+      删除企业资料</label></td>
+    </tr>
+    <tr>
+      <td height="25">&nbsp;</td>
+      <td><label>
+        <input name="delete_jobs" type="checkbox" id="delete_jobs" value="yes" checked="checked"/>
+      删除此企业发布的招聘信息</label></td>
+    </tr>
+    <tr>
+      <td height="25">&nbsp;</td>
+      <td><input type="submit" name="delete" value="确定" class="admin_submit"    /></td>
+    </tr>
+  </table>
+</div>
+<!-- -->
+<div style="display:none" id="OprefreshLayer">
+  <table width="400" border="0" align="center" cellpadding="0" cellspacing="6" >
+    <tr>
+      <td height="30" colspan="2"><strong  style="color:#0066CC; font-size:14px;">刷新该企业的职位：</strong></td>
+    </tr>
+    <tr>
+      <td width="20" height="25">&nbsp;</td>
+      <td><label>
+        <input name="refresh_jobs" type="checkbox" id="refresh_jobs" value="yes" checked/>
+      同时刷新所选企业的职位</label></td>
+    </tr>
+    <tr>
+      <td height="25">&nbsp;</td>
+      <td><input type="button" name="set_refresh" id="set_refresh" value="确定" class="admin_submit"    /></td>
+    </tr>
+  </table>
+</div>
+<!-- -->
+<div style="display:none" id="OpAuditLayer">
+  <table width="400" border="0" align="center" cellpadding="0" cellspacing="6" >
+    <tr>
+      <td width="20" height="30">&nbsp;</td>
+      <td height="30"><strong  style="color:#0066CC; font-size:14px;">将所选企业设置为：</strong></td>
+    </tr>
+    
+    <tr>
+      <td height="25">&nbsp;</td>
+      <td>
+        <label >
+          <input name="audit" type="radio" value="1" checked="checked"  id="success" />
+        认证通过 </label>   </td>
+      </tr>
+      <tr>
+        <td height="25">&nbsp;</td>
+        <td><label >
+          <input type="radio" name="audit" value="3"  id="fail"/>
+        认证未通过</label></td>
+      </tr>
+      <tr>
+        <td height="25">&nbsp;</td>
+        <td>
+          <label >
+            <input type="radio" name="audit" value="2"  id="wait"/>
+            等待认证
+          </label>  </td>
+        </tr>
+      <tr id="reason">
+        <td width="40" height="25" >备注：</td>
+        <td>
+          <textarea name="reason" id="reason" cols="50" style="font-size:12px"></textarea>
+        </td>
+      </tr>
+      <tr>
+        <td height="25">&nbsp;</td>
+        <td><input type="button" name="set_audit" id="set_audit" value="确定" class="admin_submit"    /></td>
+      </tr>
+    </table>
+  </div>
+  <div style="display:none" id="OpAuditLayerFamous">
+  <table width="400" border="0" align="center" cellpadding="0" cellspacing="6" >
+    <tr>
+      <td width="20" height="30">&nbsp;</td>
+      <td height="30"><strong  style="color:#0066CC; font-size:14px;">将所选企业设置为：</strong></td>
+    </tr>
+    
+    <tr>
+      <td height="25">&nbsp;</td>
+      <td>
+        <label >
+          <input name="famous" type="radio" value="1" checked="checked"  id="success" />
+        是 </label>   </td>
+      </tr>
+      <tr>
+        <td height="25">&nbsp;</td>
+        <td><label >
+          <input type="radio" name="famous" value="0"  id="fail"/>
+        否</label></td>
+      </tr>
+      <tr id="reason">
+        <td width="40" height="25" >备注：</td>
+        <td>
+          <textarea name="reason" id="reason" cols="50" style="font-size:12px"></textarea>
+        </td>
+      </tr>
+      <tr>
+        <td height="25">&nbsp;</td>
+        <td><input type="button" name="set_audit_famous" id="set_audit_famous" value="确定" class="admin_submit"    /></td>
+      </tr>
+    </table>
+  </div>
+  <!-- -->
+<include file="public:footer" />
+
+<script type="text/javascript">
+$(document).ready(function()
+{
+  $(".ajax_send_sms").QSdialog({
+    DialogTitle:"发送短信",
+    DialogContentType:"url",
+    DialogContent:"{:U('Ajax/ajax_send_sms')}&"
+    });
+  $(".ajax_send_email").QSdialog({
+    DialogTitle:"发送邮件",
+    DialogContentType:"url",
+    DialogContent:"{:U('Ajax/ajax_send_email')}&"
+    });
+  showmenu("#key_type_cn","#sehmenu","#key_type");
+  $("#ButAudit").QSdialog({
+  DialogAddObj:"#OpAudit",
+  DialogTitle:"请选择",
+  DialogContent:"#OpAuditLayer",
+  DialogContentType:"id"
+  });
+  $("#ButAuditFamous").QSdialog({
+  DialogAddObj:"#OpAuditFamous",
+  DialogTitle:"请选择",
+  DialogContent:"#OpAuditLayerFamous",
+  DialogContentType:"id"
+  });
+  $("#ButDel").QSdialog({
+  DialogAddObj:"#OpDel",
+  DialogTitle:"请选择",
+  DialogContent:"#OpDelLayer",
+  DialogContentType:"id"
+  });
+  $("#Butrefresh").QSdialog({
+  DialogAddObj:"#Oprefresh",
+  DialogTitle:"请选择",
+  DialogContent:"#OprefreshLayer",
+  DialogContentType:"id"
+  });
+  $(".userinfo").QSdialog({
+  DialogTitle:"管理",
+  DialogContentType:"url",
+  DialogContent:"{:U('ajax/userinfo')}&"
+  });
+  $(".audit_log").QSdialog({
+  DialogTitle:"审核日志",
+  DialogContentType:"url",
+  DialogContent:"{:U('ajax/audit_log')}&"
+  });
+  $(".famous_log").QSdialog({
+  DialogTitle:"诚聘通",
+  DialogContentType:"url",
+  DialogContent:"{:U('ajax/famous_log')}&"
+  });
+  $(".setmeal_detail").QSdialog({
+  DialogTitle:"套餐详情",
+  DialogContentType:"url",
+  DialogContent:"{:U('ajax/setmeal_detail')}&"
+  });
+  $("#set_audit").live('click',function(){
+      $("form[name=form1]").attr("action","{:U('company/com_audit')}");
+      $("form[name=form1]").submit()
+  });
+  $("#set_audit_famous").live('click',function(){
+      $("form[name=form1]").attr("action","{:U('Sincerity/Admin/com_audit_famous')}");
+      $("form[name=form1]").submit()
+  });
+  $("#set_refresh").live('click',function(){
+      $("form[name=form1]").attr("action","{:U('company/refresh_company')}");
+      $("form[name=form1]").submit()
+  });
+  // 导出企业
+  $('#exportcompanyprofile').click(function(){
+    window.open('{:U("export")}');
+  });
+});
+</script>
+</body>
+</html>

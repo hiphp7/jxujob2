@@ -1,0 +1,97 @@
+<include file="public:header" />
+<div class="toptip">
+  <h2>提示：</h2>
+  <p>
+安装在线支付插件需申请对应在线支付服务公司的服务账户。
+<if condition="$Think.get.typename eq 'wxpay'">
+<br />
+<font color="red">微信支付回调地址要求必须支持伪静态，如需使用微信支付，请保证服务器环境开启伪静态！</font>
+</if>
+</p>
+</div>
+<div class="toptit">
+编辑支付方式
+</div>
+<form action="{:U('edit')}" method="post" name="form1" id="form1">
+<table width="100%" border="0" cellspacing="0" cellpadding="6"  >
+<tr>
+<td align="right" style="border:0px;">插件名称：</td>
+ <td style="border:0px; color: #0066CC">
+ <input name="id" type="hidden" value="{$info.id}" />
+ <input name="p_install" type="hidden" value="2" />
+ <strong>{$info.byname}</strong>
+ </td>
+ </tr>
+<if condition="$pay['p_introduction']">
+   <tr>
+<td align="right">{$pay.p_introduction}</td>
+ <td><input name="p_introduction" type="text" class="input_text_400"  value="{$info.p_introduction}"/></td>
+ </tr>
+</if>
+<if condition="$pay['notes']">
+   <tr>
+<td align="right" valign="top">{$pay.notes}</td>
+ <td>
+ <textarea name="notes" id="notes" class="input_textarea_400" style="width:700px;height: 250px; ">{$info.notes}</textarea>
+ </td>
+ </tr>
+</if>
+<if condition="$pay['partnerid']">
+   <tr>
+<td align="right">{$pay.partnerid}</td>
+ <td><input name="partnerid" type="text" class="input_text_400" value="{$info.partnerid}" /></td>
+ </tr>
+</if>
+<if condition="$pay['ytauthkey']">
+   <tr>
+<td align="right">{$pay.ytauthkey}</td>
+ <td><input name="ytauthkey" type="text" class="input_text_400" value="{$info.ytauthkey}"/></td>
+ </tr>
+</if>
+<if condition="$pay['parameter1']">
+<tr>
+<td align="right">{$pay.parameter1}</td>
+ <td><input name="parameter1" type="text" class="input_text_400"  value="{$info.parameter1}"/></td>
+ </tr>
+</if>
+<if condition="$pay['parameter2']">
+<tr>
+<td align="right">{$pay.parameter2}</td>
+ <td><input name="parameter2" type="text" class="input_text_400"  value="{$info.parameter2}"/></td>
+ </tr>
+</if>
+<if condition="$pay['parameter3']">
+<tr>
+<td align="right">{$pay.parameter3}</td>
+ <td><input name="parameter3" type="text" class="input_text_400"  value="{$info.parameter3}" /></td>
+ </tr>
+</if>
+<tr>
+<td align="right">显示顺序：</td>
+ <td><input name="listorder" type="text" class="input_text_400" value="{$info.listorder}" /></td>
+ </tr>
+ <tr>
+<td width="180" align="right"></td>
+ <td>
+ <input name="submit" type="submit" class="admin_submit"    value="提交"/>
+<input name="submit222" type="button" class="admin_submit"    value="返回列表" onclick="Javascript:window.history.go(-1)"/>
+ </td>
+ </tr>
+</table>
+</form>
+</div>
+<include file="public:footer" />
+<link rel="stylesheet" href="__ADMINPUBLIC__/js/kindeditor/themes/default/default.css" />
+<script charset="utf-8" src="__ADMINPUBLIC__/js/kindeditor/kindeditor-min.js"></script>
+<script charset="utf-8" src="__ADMINPUBLIC__/js/kindeditor/lang/zh_CN.js"></script>
+<script>
+  var editor;
+  KindEditor.ready(function(K) {
+    editor = K.create('textarea[name="notes"]', {
+      allowFileManager : true,
+      filterMode:false
+    });
+  });
+</script>
+</body>
+</html>

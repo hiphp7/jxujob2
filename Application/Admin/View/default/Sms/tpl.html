@@ -1,0 +1,41 @@
+<include file="public:header" />
+	<div class="toptip">
+		<h2>提示：</h2>
+		<p>首次使用请将您的网站域名填入下方【模板内容】中，替换掉默认网址。</p>
+		<p>【模板内容】请勿添加HTML。【模板内容】不能超过60个字符，超过将会自动删除多余字符。</p>
+		<p>【模板ID】请登录对应短信平台获取【模板ID】填写到此处。</p>
+		<p>【模板内容】中的参数必须与【参数说明】中的完全一致，否则短信将无法正常发送。如无参数可忽略。</p>
+	</div>
+	<form action="{:U('tpl')}" method="post">
+	<input type="hidden" name="type" value="{$type}">
+	<table width="100%" border="0" cellpadding="0" cellspacing="0" id="list" class="link_lan">
+		<tr>
+			<td width="80" class="admin_list_tit admin_list_first">模板名称</td>
+			<td width="220" align="center" class="admin_list_tit">模板内容</td>
+			<td width="180" align="center" class="admin_list_tit">参数说明</td>
+			<td width="160" align="center" class="admin_list_tit">模板ID</td>
+		</tr>
+		<volist name="list" id="list">
+			<input type="hidden" name="alias[]" value="{$list.alias}">
+			<tr>
+				<td class="admin_list admin_list_first">{$list.name}</td>
+				<td class="admin_list" align="center"><textarea name="value[]" rows="3" cols="50">{$list.value}</textarea></td>
+				<td class="admin_list" align="center"><textarea rows="4" cols="30" disabled>{$list.params}</textarea></td>
+				<td class="admin_list" align="center"><input class="input_text_200" type="text" name="tpl_id[]" value="{$list.tpl_id}"></td>
+			</tr>
+		</volist>
+	</table>
+	<table width="100%" border="0" cellspacing="10" cellpadding="0" class="admin_list_btm">
+		<tr>
+			<td>
+				<input type="submit" class="admin_submit" value="保存"/>
+				<input type="button" class="admin_submit" value="返回" onclick="window.location='{:U('sms/index')}'"/>
+			</td>
+			<td width="305" align="right"></td>
+		</tr>
+	</table>
+	</form>
+</div>
+<include file="public:footer" />
+</body>
+</html>

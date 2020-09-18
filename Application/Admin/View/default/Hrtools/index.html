@@ -1,0 +1,95 @@
+<include file="public:header" />
+    <div class="seltpye_x">
+        <div class="left">分类选择</div>    
+        <div class="right">
+            <a href="{:P(array('h_typeid'=>''))}" <if condition="$Think.get.h_typeid eq ''">class="select"</if>>不限</a>
+            <volist name="category" id="category">
+                <a href="{:P(array('h_typeid'=>$key))}" <if condition="$Think.get.h_typeid eq $key">class="select"</if> >{$category}</a>
+            </volist>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <form id="form1" name="form1" method="post" action="{:U('hrtools/delete')}">
+      <table width="100%" border="0" cellpadding="0" cellspacing="0" id="list" class="link_lan">
+        <tr>
+          <td  class="admin_list_tit admin_list_first">
+          <label id="chkAll"><input type="checkbox" name="chkAll"  id="chk" title="全选/反选" />文档名称</label>
+          </td>
+          <td  class="admin_list_tit admin_list_first">文档路径</td>
+          <td  align="center"  class="admin_list_tit"> 所属分类 </td>
+          <td align="center" class="admin_list_tit">排序</td>
+          <td  align="center"  class="admin_list_tit">操作</td>
+        </tr>
+        <volist name="list" id="list">
+            <tr>
+              <td  class="admin_list admin_list_first">
+                <input name="h_id[]" type="checkbox" id="id" value="{$list.h_id}"  />
+                <a href="{:U('hrtools/edit',array('h_id'=>$list['h_id']))}" <if condition="$list['h_color']">style="color:{$list.h_color}"</if>>{$list.h_filename}</a>
+              </td>
+              <td  class="admin_list">
+                <a href="{:attach($list['h_fileurl'],'hrtools')}" target="_blank">{$list.h_fileurl}</a></td>
+              <td align="center" class="admin_list">
+                <a href="{:U('hrtools/index',array('h_typeid'=>$list['category']['c_id']))}" >{$list.category.c_name}</a>&nbsp;
+              </td>
+              <td  align="center"  class="admin_list">
+              {$list.h_order}
+              </td>
+              <td  align="center"  class="admin_list">
+                <a href="{:U('hrtools/edit',array('h_id'=>$list['h_id']))}" >修改</a>
+              </td>
+            </tr>
+        </volist>
+      </table>
+       </form>
+    <empty name="list">
+    <div class="admin_list_no_info">没有任何信息！</div>
+    </empty>
+    <table width="100%" border="0" cellspacing="10" cellpadding="0" class="admin_list_btm">
+      <tr>
+        <td>
+            <input type="button" class="admin_submit" id="ButAudit" value="添加"  onclick="window.location='{:U('hrtools/add')}'"/>
+            <input type="button" class="admin_submit" id="ButDel" value="删除所选"/>
+        </td>
+        <td width="305" align="right">
+            <form id="formseh" name="formseh" method="get" action="">  
+                <div class="seh">
+                  <div class="keybox">
+                    <input type="hidden" name="m" value="{:C('admin_alias')}">
+                    <input type="hidden" name="c" value="{:CONTROLLER_NAME}">
+                    <input type="hidden" name="a" value="{:ACTION_NAME}">
+                    <input name="key" type="text"   value="{$Think.get.key}" />
+                  </div>
+                  <div class="selbox">
+                  <input name="key_type_cn"  id="key_type_cn" type="text" value="{$Think.get.key_type_cn|default="名称"}" readonly="true"/>
+                  <div>
+                    <input name="key_type" id="key_type" type="hidden" value="{$Think.get.key_type|default="1"}" />
+                  </div>
+                </div>
+                <div class="sbtbox">
+                  <input type="submit" name="" class="sbt" id="sbt" value="搜索"/>
+                </div>
+                <div class="clear"></div>
+              </div>
+            </form>
+        </td>
+      </tr>
+    </table>
+    <div class="qspage">{$page}</div>
+</div>
+<include file="public:footer" />
+<script type="text/javascript">
+    $(document).ready(function()
+    {
+      //点击批量取消  
+      $("#ButDel").click(function(){
+        if (confirm('你确定要删除吗？'))
+        {
+          $("form[name=form1]").submit()
+        }
+      });
+        
+    });
+</script>
+</body>
+</html>

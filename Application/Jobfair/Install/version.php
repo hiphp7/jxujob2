@@ -1,0 +1,1 @@
+<?php	return array ( 'module' => 'Jobfair', 'module_name' => '招聘会', 'appid' => '318', 'version' => '4.2.5', 'is_create_table' => 1, 'is_insert_data' => 1, 'is_exe' => 1, 'is_delete_data' => 1, 'update_time' => '2017-06-09 09:19:49', 'explain' => '专为有现场招聘会的用户量身打造，可实现在线展示预订，招聘会介绍回顾等功能。', ); ?>

@@ -1,0 +1,83 @@
+<!--确认面试弹窗框-->
+<div class="confirm-interview-dia">
+    <div class="c-i-t">请您对求职者做出评价 ( 满分为5分 )</div>
+    <div class="h19"></div>
+    <div class="c-i-point-box">
+        <div class="c-ib-line J-star-point">
+            <div class="c-il-1">学历是否有偏差：</div>
+            <div class="c-il-2">
+                <div class="c-star"></div>
+                <div class="w3"></div>
+                <div class="c-star"></div>
+                <div class="w3"></div>
+                <div class="c-star"></div>
+                <div class="w3"></div>
+                <div class="c-star"></div>
+                <div class="w3"></div>
+                <div class="c-star"></div>
+                <div class="clear"></div>
+            </div>
+            <div class="c-il-3"><span class="p-number">0</span> 分</div>
+            <input type="hidden" class="p-number-val" id="score_education" value="0" />
+            <div class="clear"></div>
+        </div>
+        <div class="h18"></div>
+        <div class="c-ib-line J-star-point">
+            <div class="c-il-1">工作经验是否有偏差：</div>
+            <div class="c-il-2">
+                <div class="c-star"></div>
+                <div class="w3"></div>
+                <div class="c-star"></div>
+                <div class="w3"></div>
+                <div class="c-star"></div>
+                <div class="w3"></div>
+                <div class="c-star"></div>
+                <div class="w3"></div>
+                <div class="c-star"></div>
+                <div class="clear"></div>
+            </div>
+            <div class="c-il-3"><span class="p-number">0</span> 分</div>
+            <input type="hidden" class="p-number-val" id="score_experience" value="0" />
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div class="h18"></div>
+    <div class="c-i-t"><span class="rem">注意：</span>求职者提出已面试申请后，如您在24小时内未处理，系统会自动判定已处</div>
+    <div class="h10"></div>
+    <div class="c-i-t pl-41">理并发放红包</div>
+</div>
+<script type="text/javascript">
+    // 确认面试打分
+    $(".J-star-point .c-star").hover(function() {
+        var thisIndex = $(this).closest('.J-star-point').find(".c-star").index(this);
+        for (var i = 0; i <= thisIndex; i++) {
+            $(this).closest('.J-star-point').find(".c-star").eq(i).addClass("current");
+        }
+    }, function() {
+        var thisIndex = $(this).closest('.J-star-point').find(".c-star").index(this);
+        for(var i = 5;i >= thisIndex; i--){
+            $(this).closest('.J-star-point').find(".c-star").eq(i).removeClass("current");
+        }
+    })
+    $(".J-star-point .c-star").click(function() {
+        var thisIndex = $(this).closest('.J-star-point').find(".c-star").index(this);
+        for (var i = 0; i <= thisIndex; i++) {
+            $(this).closest('.J-star-point').find(".c-star").eq(i).addClass("selected");
+        }
+        for (var i = 5; i >= thisIndex; i--) {
+            $(this).closest('.J-star-point').find(".c-star").eq(i).removeClass("selected");
+        }
+        var pointNum = $(this).closest('.J-star-point').find('.selected').length;
+        $(this).closest('.J-star-point').find('.p-number').text(pointNum);
+        $(this).closest('.J-star-point').find('.p-number-val').val(pointNum);
+    })
+    $(".J-star-point").hover(function() {
+
+    }, function() {
+        $(this).find(".c-star").each(function() {
+            if (!$(this).hasClass('selected')) {
+                $(this).removeClass("current");
+            }
+        })
+    })
+</script>

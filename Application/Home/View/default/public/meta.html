@@ -1,0 +1,37 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{$page_seo.title}</title>
+<meta name="keywords" content="{$page_seo.keywords}"/>
+<meta name="description" content="{$page_seo.description}"/>
+<meta name="author" content="骑士CMS"/>
+<meta name="copyright" content="74cms.com"/>
+<if condition="$apply['Subsite']">
+	<base href="{:C('SUBSITE_DOMAIN')}"/>
+</if>
+<link rel="shortcut icon" href="{:C('qscms_site_dir')}favicon.ico"/>
+<script src="__HOMEPUBLIC__/js/jquery.min.js"></script>
+<script src="__HOMEPUBLIC__/js/htmlspecialchars.js"></script>
+<script type="text/javascript">
+	var app_spell = "<?php echo APP_SPELL;?>";
+	var qscms = {
+		base : "{:C('SUBSITE_DOMAIN')}",
+		keyUrlencode:"{:C('qscms_key_urlencode')}",
+		domain : window.location.origin,
+		root : "__ROOT__/index.php",
+		companyRepeat:"{:C('qscms_company_repeat')}",
+		is_subsite : <if condition="$apply['Subsite'] and C('SUBSITE_VAL.s_id') gt 0">1<else/>0</if>,
+		subsite_level : "{:C('SUBSITE_VAL.s_level')}",
+		smsTatus: "{:C('qscms_sms_open')}",
+		is_login:"<if condition="$visitor">1<else/>0</if>"
+	};
+	$(function(){
+		$.getJSON("{:U('Home/AjaxCommon/get_header_min')}",function(result){
+			if(result.status == 1){
+				$('#J_header').html(result.data.html);
+			}
+		});
+	})
+</script>
+{$synlogin}

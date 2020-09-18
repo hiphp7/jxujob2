@@ -1,0 +1,58 @@
+<include file="Admin@default/public/header" />
+<link href="../public/css/admin_jobfair.css" rel="stylesheet" type="text/css" />
+<div class="toptit">展位模板设置</div>
+<form id="form1" name="form1" method="post" action="{:U('add_tpl')}">
+<table width="100%" border="0" cellpadding="3" cellspacing="3"  class="admin_table">
+<tr>
+	<td width="130" align="right"  >模板名称：</td>
+	<td align="left" >
+		<input type="text" class="input_text_200" name="title">
+	</td>
+</tr>
+</table>
+<div class="toptit">批量添加展位</div>
+<div id="html_tpl">
+<table width="100%" border="0" cellpadding="3" cellspacing="3"  class="admin_table">
+	<tr>
+		<td width="130" align="right"  >展区编号：</td>
+		<td align="left" >
+			<select name="area[]">
+				<volist name="pre" id="vo">
+				<option value="{$vo}">&nbsp;{$vo}&nbsp;</option>
+				</volist>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td width="130" align="right"  >展位号：</td>
+		<td align="left" >
+			<input name="position_start[]" type="text" id="number" class="input_text_50" /> - 
+			<input name="position_end[]" type="text" id="number" class="input_text_50" />
+		 	<span class="admin_note">如填写“1-10”,系统将自动生成10个展位,并且编号由1开始、由10结束</span>
+		</td>
+	</tr>
+</table>
+</div>
+<div id="html"></div>
+<table width="100%" border="0" cellpadding="3" cellspacing="3"  class="admin_table">
+	<tr>
+	  <td width="130" align="right"  >&nbsp;</td>
+	  <td height="50" >
+	    <input type="submit" name="Submit3" value="保存" class="admin_submit"   />
+  		<input type="button" name="add_form" id="add_form" value="继续添加" class="admin_submit" />
+	  </td>
+  </tr>
+</table>
+</form>
+<include file="Admin@default/public/footer" />
+<script type="text/javascript">
+$(document).ready(function()
+{
+  $("#add_form").click(function()
+  {
+  $("#html").append($("#html_tpl").html());
+  });
+});
+</script>
+</body>
+</html>

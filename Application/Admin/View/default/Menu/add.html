@@ -1,0 +1,125 @@
+<include file="public:header" />
+    <div class="toptip">
+        <h2>提示：</h2>
+        <p>点击“继续添加”按钮，可同时添加多个分类！</p>
+    </div>
+    <div class="toptit">新增分类</div>
+	<form id="form1" name="form1" method="post" action="{:U('menu/add')}">
+		<div id="html_tpl">
+			<table width="100%" border="0" cellspacing="6" cellpadding="0" style="border-bottom:1px #93AEDD  dashed">
+				<tr>
+					<td width="120" align="right">所属分类:</td>
+					<td>
+						<select name="pid">
+							<option value="0" <if condition="$Think.get.pid eq 0">selected="selected"</if>>顶级菜单</option>
+							<volist name="menus['parent']" id="parent">
+								<option value="{$parent.id}" <if condition="$parent['id'] eq $pid">selected="selected"</if>>{$parent.name}</option>
+								<volist name="menus['sub'][$parent['id']]" id="sub">
+									<option value="{$sub.id}" <if condition="$sub['id'] eq $pid">selected="selected"</if>>├─{$sub.name}</option>
+									<volist name="menus['sub'][$sub['id']]" id="sub1">
+										<option value="{$sub1.id}" <if condition="$sub1['id'] eq $pid">selected="selected"</if>>︱ ├─{$sub1.name}</option>
+										<foreach name="menus['sub'][$sub1['id']]" item="sub2">
+											<option value="{$sub2.id}" <if condition="$sub2['id'] eq $pid">selected="selected"</if>>︱ ︱ ├─{$sub2.name}</option>
+										</foreach>
+									</volist>
+								</volist>
+							</volist>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td width="120" align="right">菜单名称:</td>
+					<td>
+						<input name="name" type="text" class="input_text_200" value=""/>
+					</td>
+				</tr>
+				<tr>
+					<td width="120" align="right">模块名:</td>
+					<td>
+						<input name="module_name" type="text" class="input_text_200" value=""/>
+					</td>
+				</tr>
+				<tr>
+					<td width="120" align="right">控制器名:</td>
+					<td>
+						<input name="controller_name" type="text" class="input_text_200" value=""/>
+					</td>
+				</tr>
+				<tr>
+					<td width="120" align="right">方法名:</td>
+					<td>
+						<input name="action_name" type="text" class="input_text_200" value=""/>
+					</td>
+				</tr>
+				<tr>
+					<td width="120" align="right">附加参数:</td>
+					<td>
+						<input name="data" type="text" class="input_text_200" value=""/>
+					</td>
+				</tr>
+				<tr>
+					<td width="120" align="right">菜单类型 :</td>
+					<td>
+						<label><input type="radio" name="menu_type" class="radio_style" value="1" checked="checked">导航&nbsp;&nbsp;</label>
+						<label><input type="radio" name="menu_type" class="radio_style" value="0">按钮或功能</label>
+					</td>
+				</tr>
+				<tr id="J_stat">
+					<td width="120" align="right">待处理事务:</td>
+					<td>
+						<input name="stat" type="text" class="input_text_200" value=""/>
+					</td>
+				</tr>
+				<tr>
+					<td width="120" align="right">备注:</td>
+					<td>
+						<textarea name="remark" id="remark" cols="70" rows="3" style="font-size:12px;"></textarea><br/>
+						<span style="color:#666666">注：只三级分类添加范例即可</span>
+					</td>
+				</tr>
+				<tr>
+					<td width="120" align="right">排序:</td>
+					<td>
+						<input name="ordid" type="text" class="input_text_200" value="255"/>
+					</td>
+				</tr>
+				<tr>
+					<td width="120" align="right">是否显示 :</td>
+					<td>
+						<label><input type="radio" name="display" class="radio_style" value="1" checked="checked"> 是&nbsp;&nbsp;</label>
+						<label><input type="radio" name="display" class="radio_style" value="0"> 否</label>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="html"></div>
+		<table width="100%" border="0" cellspacing="6" cellpadding="0">
+			<tr>
+				<td width="120"></td>
+				<td>
+					<input type="submit" name="addsave" value="保存" class="admin_submit"/>
+					<input type="button" name="add_form" id="add_form" value="继续添加" class="admin_submit"/>
+					<input name="submit22" type="button" class="admin_submit" value="返 回" onclick="window.location='{:U('menu/index')}'"/>
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+<include file="public:footer" />
+<script type="text/javascript">
+    $(document).ready(function(){
+		$("#add_form").click(function()
+		{
+			$("#html").append($("#html_tpl").html());
+		});
+		$('input[name="menu_type"]').click(function(){
+			if($(this).val() == 1){
+				$('#J_stat').show();
+			}else{
+				$('#J_stat').hide();
+			}
+		});
+	});
+</script>
+</body>
+</html>

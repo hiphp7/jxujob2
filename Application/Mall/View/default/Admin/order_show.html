@@ -1,0 +1,82 @@
+<include file="Admin@default/public/header" />
+<div class="toptit">基本信息</div>
+  <table width="100%" border="0" cellpadding="4" cellspacing="0"   >
+    <tr>
+      <td width="120" height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">订单ID：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed">{$info.id}</td>
+    </tr>
+    <tr>
+      <td width="120" height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">商品名称：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed"> {$info.goods_title}</td>
+    </tr>
+     <tr>
+      <td width="120" height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">商品单价：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed"> {$info.goods_points} {:C('qscms_points_byname')}</td>
+    </tr>
+    <tr>
+      <td width="120" height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">兑换数量：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed"> {$info.goods_num}</td>
+    </tr>
+
+    <tr>
+      <td width="120" height="30" align="right"  >订单{:C('qscms_points_byname')}：</td>
+      <td  > {$info.order_points} {:C('qscms_points_byname')}</td>
+    </tr>
+	</table>
+	<div class="toptit">用户信息</div>
+	<table width="100%" border="0" cellpadding="4" cellspacing="0"   >
+    <tr>
+      <td width="120" height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">用户名：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed"> {$info.username} <span>UID：{$info.uid}</span></td>
+    </tr>
+    <tr>
+      <td width="120" height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">联系人：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed"> {$info.contact}</td>
+    </tr>
+    <tr>
+      <td width="120" height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">联系电话：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed"> {$info.mobile}</td>
+    </tr>
+    <tr>
+      <td width="120" height="30" align="right"  >联系地址：</td>
+      <td   > {$info.address}</td>
+    </tr>
+   
+	</table>
+		<div class="toptit">用户信息</div>
+	<table width="100%" border="0" cellpadding="4" cellspacing="0"   >
+    <if condition="$info['status'] eq 1">
+    <form action="{:U('Mall/Admin/order_set')}" method="post">
+    <tr>
+      <td width="120" height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">将订单状态修改为：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed" >
+        <label><input name="status" type="radio" value="2" checked/>审核通过</label>
+        <label><input type="radio" name="status" value="3" />审核不通过</label>
+      </td>
+    </tr>
+    <tr>
+      <input type="hidden" name="id" value="{$info.id}">
+      <td width="120" height="60" align="right"   > </td>
+      <td  ><input name="aldf" type="submit" class="admin_submit" value="修改订单"/></td>
+    </tr>
+    </form>
+    <else />
+    <tr>
+      <td width="120" height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">订单状态：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed"><if condition="$info['status'] eq 2">审核通过<else />审核未通过</if></td>
+    </tr>
+    </if>
+    
+  </table>
+</div>
+<include file="Admin@default/public/footer" />
+<script type="text/javascript">
+$(document).ready(function()
+{
+  $(".admin_submit").click(function() {
+     return confirm("是否确定要修改订单状态，此操作不可逆！");
+  });
+});
+</script>
+</body>
+</html>

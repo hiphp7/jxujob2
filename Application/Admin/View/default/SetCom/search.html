@@ -1,0 +1,109 @@
+<include file="public:header" />
+<div class="toptip">
+  <h2>提示：</h2>
+  <p>
+您可以根据网站的数据量来选择搜索方式。<br />
+全文搜索效率更高，精准搜索更加精准。<br />
+职位精准搜索只能搜索职位名称和公司名称。<br />
+全文搜索能搜索更多的内容，但搜索关键字取决于关键字的字典，字典位置：data/scws/dict.utf8.xdb， 您可以调整字典词语来优化全文搜索。
+</p>
+</div>
+<div class="toptit">基本设置</div>
+<form action="{:U('search')}" method="post"  name="form1" id="form1">
+    <table width="100%" border="0" cellspacing="5" cellpadding="5">
+	<tr>
+      <td width="140" align="right">关键字搜索首选类型：</td>
+      <td>
+       <label><input type="radio"   value="1" name="jobsearch_key_first_choice" <if condition="C('qscms_jobsearch_key_first_choice') eq '1' || C('qscms_jobsearch_key_first_choice') eq '2'">checked="checked"</if>/>搜职位名</label>
+         &nbsp;&nbsp;&nbsp;&nbsp; 
+       <label ><input type="radio"   value="0" name="jobsearch_key_first_choice" <if condition="C('qscms_jobsearch_key_first_choice') eq '0'">checked="checked"</if>/>全文搜索</label>
+	    <span class="admin_note">（全文搜索结果更多，职位名称更加精准，请根据不同的运营阶段设置不同的选项)</span>
+     </td>
+    </tr>
+   <tr>
+      <td align="right">搜索开启职位分类：</td>
+      <td>
+       <label><input type="radio"   value="1" name="jobsearch_key_open_jobcategory" <if condition="C('qscms_jobsearch_key_open_jobcategory') eq '1' || C('qscms_jobsearch_key_open_jobcategory') eq '2'">checked="checked"</if>/>开启</label>
+         &nbsp;&nbsp;&nbsp;&nbsp; 
+       <label ><input type="radio"   value="0" name="jobsearch_key_open_jobcategory" <if condition="C('qscms_jobsearch_key_open_jobcategory') eq '0'">checked="checked"</if>/>关闭</label>
+	    <span class="admin_note">（建议关闭，开启后搜索结果会变少)</span>
+     </td>
+    </tr>
+	</table>
+	 
+	 <table width="100%" border="0" cellspacing="5" cellpadding="5" >
+         <tr>
+           <td width="140" align="right">&nbsp;</td>
+           <td height="50"> 
+           
+             <input name="submit" type="submit" class="admin_submit"    value="保存"/>             
+           </td>
+      </tr>
+  </table>
+  </form>
+<div class="toptit">全文搜索</div>
+  <form action="{:U('search')}" method="post"  name="form1" id="form1">
+    <table width="100%" border="0" cellspacing="5" cellpadding="5">
+   <tr>
+      <td width="140" align="right">是否开启全文搜索：</td>
+      <td>
+       <label><input type="radio" class="j_type" name="j_type" id="job_mode_1" value="1" <if condition="C('qscms_jobsearch_type') eq '1' || C('qscms_jobsearch_type') eq '2'">checked="checked"</if>/>开启</label>
+         &nbsp;&nbsp;&nbsp;&nbsp; 
+       <label ><input type="radio" class="j_type" name="j_type" id="job_mode_2" value="0" <if condition="C('qscms_jobsearch_type') eq '0'">checked="checked"</if>/>关闭</label>
+     </td>
+    </tr>
+	</table>
+	<table width="100%" border="0" cellspacing="5" cellpadding="5" id="jobsearch_full_text_wrap" <if condition="C('qscms_jobsearch_type') eq 0">style="display:none"</if>>
+    <tr>
+      <td width="140" align="right">全文搜索类型：</td>
+      <td>
+       <label><input type="radio" class="j_type jobsearch_type" name="j_fulltext" value="1" <if condition="C('qscms_jobsearch_type') eq 1 or C('qscms_jobsearch_type') eq 0">checked="checked"</if>/>系统内置</label>
+         &nbsp;&nbsp;&nbsp;&nbsp; 
+       <label ><input type="radio" <if condition="$apply['Sphinx'] eq ''">disabled</if> class="j_type jobsearch_type" name="j_fulltext" value="2" <if condition="C('qscms_jobsearch_type') eq 2">checked="checked"</if>/>Sphinx</label>
+       <label ><input type="radio" <if condition="$apply['Xunsearch'] eq ''">disabled</if> class="j_type jobsearch_type" name="j_fulltext" value="3" <if condition="C('qscms_jobsearch_type') eq 3">checked="checked"</if>/>迅搜(xunsearch)</label>
+       <span class="admin_note">如要设为 Sphinx 或 xunsearch 系统需安装相应模块，<a style="color:#009900" href="http://www.74cms.com/app/list-3.html" target="_blank">点击获取</a></span>
+     </td>
+    </tr>
+    <tr >
+      <td align="right">开启盲查询：</td>
+      <td>
+       <label><input type="radio" class="match_type" name="match_type" value="1" <if condition="C('qscms_match_type') eq 1">checked="checked"</if>/>开启</label>
+         &nbsp;&nbsp;&nbsp;&nbsp; 
+       <label ><input type="radio" class="match_type" name="match_type" value="0" <if condition="C('qscms_match_type') eq 0">checked="checked"</if>/>关闭</label>
+     </td>
+    </tr>
+	<tr >
+      <td align="right">全文搜索默认排序：</td>
+      <td>
+       <label><input type="radio" class="fulltext_orderby" name="fulltext_orderby" value="1" <if condition="C('qscms_fulltext_orderby') eq 1">checked="checked"</if>/>相关度</label>
+         &nbsp;&nbsp;&nbsp;&nbsp; 
+       <label ><input type="radio" class="fulltext_orderby" name="fulltext_orderby" value="0" <if condition="C('qscms_fulltext_orderby') eq 0">checked="checked"</if>/>更新时间</label>
+	    <span class="admin_note">（如设为相关度排序，结果可能有早期发布的信息排在前面，如设为更新时间可能会有不太相关的信息排在前面，且忽略盲查询功能！)</span>
+     </td>
+    </tr>
+	 </table>
+	 <table width="100%" border="0" cellspacing="5" cellpadding="5" >
+         <tr>
+           <td width="140" align="right">&nbsp;</td>
+           <td height="50"> 
+           <input type="hidden" name="jobsearch_type" id="jobsearch_type" value="{:C('qscms_jobsearch_type')}">
+             <input name="submit" type="submit" class="admin_submit"    value="保存"/>             
+           </td>
+      </tr>
+  </table>
+  </form>
+   
+</div>
+<include file="public:footer" />
+<script type="text/javascript">
+  $(".j_type").click(function(){
+    if($("#job_mode_1").is(':checked')){
+      $("#jobsearch_full_text_wrap").show();
+    }else{
+      $("#jobsearch_full_text_wrap").hide();
+    }
+    $('#jobsearch_type').val($(this).val());
+  });
+</script>
+</body>
+</html>

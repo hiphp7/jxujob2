@@ -1,0 +1,19 @@
+<volist name="new_jobs" id="company" key="k">
+	<div class="jli j{$k}">
+		<div class="jcom_name_box link_gray6">
+			<a class="line_substring" href="{$company.company_url}" target="_blank">{$company.companyname}</a>
+			<if condition="$company['audit'] eq 1"><img src="{:attach('auth.png','resource')}" title="认证企业"></if>
+			<if condition="$company['setmeal_id'] gt 1"><img src="{:attach($company['setmeal_id'].'.png','setmeal_img')}" title="{$company.setmeal_name}"></if>
+			<if condition="$company['famous'] eq 1">
+				<img src="<if condition="C('qscms_famous_company_img') eq ''">{:attach('famous.png','resource')}<else/>{:attach(C('qscms_famous_company_img'),'images')}</if>" title="诚聘通企业"/>
+			</if>
+			<div class="clear"></div>
+		</div>
+		<div class="jobs_gourp link_gray6">
+			<volist name="company['jobs']" id="jobs">
+				<a href="{$jobs.jobs_url}" class="a_job">{$jobs.jobs_name}</a>
+			</volist>
+			<div class="clear"></div>
+		</div>
+	</div>
+</volist>

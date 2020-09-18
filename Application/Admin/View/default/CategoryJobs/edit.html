@@ -1,0 +1,94 @@
+<include file="public:header" />
+<div class="toptip">
+  <h2>提示：</h2>
+  <p>
+  正式使用后删除分类会导致与此分类关联的信息类别丢失，修改不会受影响。<br />
+</p>
+</div>
+<div class="toptit">修改分类</div>
+<form id="form1" name="form1" method="post" action="{:U('CategoryJobs/edit')}">
+<table width="100%" border="0" cellspacing="6" cellpadding="0" style="border-bottom:1px #93AEDD  dashed">
+ <tr>
+    <td width="120" align="right">所属分类:</td>
+    <td>
+    <select name="parentid" <if condition="$Think.get.edit_content eq 1">disabled</if>>
+      <option value="0" <if condition="$info['parentid'] eq 0">selected="selected"</if>>顶级分类</option>
+      <volist name="cate[0]" id="list">
+        <option value="{$list.id}" <if condition="$info['parentid'] eq $list['id']">selected="selected"</if>>{$list.categoryname}</option>
+        <if condition="C('qscms_category_jobs_level') eq 3">
+          <volist name="cate[$list['id']]" id="vo">
+            <option value="{$vo.id}" <if condition="$info['parentid'] eq $vo['id']">selected="selected"</if>>│─{$vo.categoryname}</option>
+          </volist>
+        </if>
+      </volist>
+    </select>
+  </td>
+ </tr>
+  <tr>
+    <td width="120" align="right">名称:</td>
+    <td><input name="categoryname" type="text" class="input_text_200"  value="{$info.categoryname}"/></td>
+  </tr>
+   <tr>
+    <td width="120" align="right">别名:</td>
+    <td><input name="spell" type="text" class="input_text_200"  value="{$info.spell}"/></td>
+  </tr>
+   <tr>
+    <td width="120" align="right">排序:</td>
+    <td><input name="category_order" type="text" class="input_text_200"  value="{$info.category_order}"/></td>
+  </tr>
+  <if condition="$Think.get.edit_content eq 1">
+   <tr>
+    <td width="120" align="right">职位描述模板:</td>
+    <td><textarea name="content" cols="50" rows="8">{$info.content}</textarea></td>
+  </tr>
+   <tr>
+    <td width="120" align="right">&nbsp;</td>
+    <td>
+    <span class="admin_note" style="color: rgb(0, 0, 0);padding:0;">你可以选择2个相近的分类模板作为当前分类的补充</span>
+    </td>
+  </tr>
+   <tr>
+    <td width="120" align="right">关联分类1:</td>
+    <td>
+      <input type="text" value="{$info['relation1_cn']|default="请选择"}" readonly="readonly" name="relation1_cn" id="category_cn" data-title="请选择" data-multiple="false" data-addjob="true" data-maxnum="0" <if condition="C('qscms_category_jobs_level') gt 2">data-width="667"<else/>data-width="520"</if> data-category="{:C('qscms_category_jobs_level')}" class="input_text_200 input_text_selsect J_resuletitle_jobs"/>
+        <input class="J_resultcode_jobs" name="relation1" id="relation1" type="hidden" value="{$info['relation1']}" />
+        <a href="javascript:;" class="clear_relation admin_note" data-code="relation1">清空</a>
+    </td>
+  </tr>
+   <tr>
+    <td width="120" align="right">关联分类2:</td>
+    <td>
+      <input type="text" value="{$info['relation2_cn']|default="请选择"}" readonly="readonly" name="relation2_cn" id="category_cn_t" data-title="请选择" data-multiple="false" data-addjob="true" data-maxnum="0" <if condition="C('qscms_category_jobs_level') gt 2">data-width="667"<else/>data-width="520"</if> data-category="{:C('qscms_category_jobs_level')}" class="input_text_200 input_text_selsect J_resuletitle_jobs_t"/>
+        <input class="J_resultcode_jobs_t" name="relation2" id="relation2" type="hidden" value="{$info['relation2']}" />
+        <a href="javascript:;" class="clear_relation admin_note" data-code="relation2">清空</a>
+    </td>
+  </tr>
+  </if>
+</table>
+<table width="100%" border="0" cellspacing="6" cellpadding="0">
+  <tr>
+    <td width="120"> </td>
+    <td>
+  <input name="id" type="hidden" value="{$info.id}" />
+  <input type="submit" name="addsave" value="保存" class="admin_submit" />
+      <input name="submit22" type="button" class="admin_submit"    value="返 回" onclick="window.location='{:U('CategoryJobs/index')}'"/>
+  
+  </td>
+  </tr>
+</table>
+ </form>
+  </div>
+<include file="public:footer" />
+<qscms:load type="category"/>
+<script type="text/javascript" src="../public/js/jquery.modal.userselectlayer.js"></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.clear_relation').click(function(){
+      var code = $(this).data('code');
+      $('input[name='+code+']').val('');
+      $('input[name='+code+'_cn]').val('请选择');
+    });
+  });
+</script>
+</body>
+</html>

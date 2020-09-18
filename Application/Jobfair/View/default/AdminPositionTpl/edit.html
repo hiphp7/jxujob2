@@ -1,0 +1,205 @@
+<include file="Admin@default/public/header" />
+<link href="../public/css/admin_jobfair.css" rel="stylesheet" type="text/css" />
+<div class="toptit">批量添加展位</div>
+<form id="form1" name="form1" method="post" action="{:U('position_add')}">
+<input type="hidden" name="id" value="{$info['id']}">
+<div id="html_tpl">
+<table width="100%" border="0" cellpadding="3" cellspacing="3"  class="admin_table">
+	<tr>
+		<td width="130" align="right"  >展区编号：</td>
+		<td align="left" >
+			<select name="area[]">
+				<volist name="pre" id="vo">
+				<option value="{$vo}">&nbsp;{$vo}&nbsp;</option>
+				</volist>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td width="130" align="right"  >展位号：</td>
+		<td align="left" >
+			<input name="position_start[]" type="text" id="number" class="input_text_50" /> - 
+			<input name="position_end[]" type="text" id="number" class="input_text_50" />
+		 	<span class="admin_note">如填写“1-10”,系统将自动生成10个展位,并且编号由1开始、由10结束</span>
+		</td>
+	</tr>
+</table>
+</div>
+<div id="html"></div>
+<table width="100%" border="0" cellpadding="3" cellspacing="3"  class="admin_table">
+	<tr>
+	  <td width="130" align="right"  >&nbsp;</td>
+	  <td height="50" >
+	    <input type="submit" name="Submit3" value="保存" class="admin_submit"   />
+  		<input type="button" name="add_form" id="add_form" value="继续添加" class="admin_submit" />
+	  </td>
+  </tr>
+</table>
+</form>
+<div class="toptit">批量删除展位</div>
+<form id="form1" name="form1" method="post" action="{:U('position_delete_batch')}">
+<input type="hidden" name="id" value="{$info['id']}">
+<table width="100%" border="0" cellpadding="3" cellspacing="3"  class="admin_table">
+	<tr>
+		<td width="130" align="right"  >展区编号：</td>
+		<td align="left" >
+			<select name="area">
+				<volist name="pre" id="vo">
+				<option value="{$vo}">&nbsp;{$vo}&nbsp;</option>
+				</volist>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td width="130" align="right"  >展位号：</td>
+		<td align="left" >
+			<input name="position_start" type="text" id="number" class="input_text_50" /> - 
+			<input name="position_end" type="text" id="number" class="input_text_50" />
+		 	<span class="admin_note">如填写“1-10”,系统将删除编号由1开始、由10结束的10个展位</span>
+		</td>
+	</tr>
+</table>
+<table width="100%" border="0" cellpadding="3" cellspacing="3"  class="admin_table">
+	<tr>
+	  <td width="130" align="right"  >&nbsp;</td>
+	  <td height="50" >
+	    <input type="submit" name="Submit3" value="删除" class="admin_submit"   />
+	  </td>
+  </tr>
+</table>
+</form>
+<if condition="$info['area']">
+<div class="toptit">删除展区</div>
+<form id="form1" name="form1" method="post" action="{:U('area_delete')}">
+<input type="hidden" name="id" value="{$info['id']}">
+<table width="100%" border="0" cellpadding="3" cellspacing="3"  class="admin_table">
+	<tr>
+		<td width="130" align="right"  >展区编号：</td>
+		<td align="left" >
+			<select name="area">
+				<volist name="info['area']" id="vo">
+				<option value="{$vo['id']}">&nbsp;{$vo['area']}&nbsp;</option>
+				</volist>
+			</select>
+		</td>
+	</tr>
+</table>
+<table width="100%" border="0" cellpadding="3" cellspacing="3"  class="admin_table">
+	<tr>
+	  <td width="130" align="right"  >&nbsp;</td>
+	  <td height="50" >
+	    <input type="submit" name="Submit3" value="删除" class="admin_submit"/>
+	  </td>
+  </tr>
+</table>
+</form>
+</if>
+<style type="text/css">
+	.img_box{width:220px;height:150px;}
+	.img_box .img{width:180px;height:130px;padding:10px;}
+	.img_box .op{width:30px;margin:5px auto 0;}
+	.img_box a{text-decoration: none;color:#666;}
+</style>
+<div class="toptit">展位图</div>
+<form id="img_form" action="{:U('upload_position_img')}" method="post" enctype="multipart/form-data">
+<table width="100%" border="0" cellpadding="3" cellspacing="3"  class="admin_table">
+	<tr>
+		<td width="130" align="right"  >已上传展位图：</td>
+		<td align="left" >
+			<notempty name="info['position_img']">
+			<volist name="info['position_img']" id="vo">
+			<div class="img_box" style="float:left;">
+				<div class="img">
+					<a target="_blank" href="{:attach($vo,'jobfair_tpl')}"><img src="{:attach($vo,'jobfair_tpl')}" width="180" height="130"/></a>
+				</div>
+				<div class="op"><a href="javascript:;" class="delete_img" url="{:U('position_img_delete',array('id'=>$info['id'],'img'=>$vo))}">删除</a></div>
+			</div>
+			</volist>
+			<div class="clear"></div>
+			<else />
+			无
+			</notempty>
+		</td>
+	</tr>
+	<tr>
+	  <td width="130" align="right"  >&nbsp;</td>
+	  <td height="50" >
+	    <input type="button" value="添加展位图" class="admin_submit img_add"/>
+	    <input type="file" class="hidden_file" id="hidden_file" name="img" style="display:none;">
+		<input type="hidden" name="id" value="{$info['id']}">
+	  </td>
+  </tr>
+</table>
+</form>
+<div class="toptip">
+    <h2>展位情况一览<span class="admin_note" style="color: rgb(153, 153, 153);">（鼠标点击可删除展区）</span></h2>
+</div>
+<div class="jobfair_position">
+	<div class="area">
+	<ul>
+	<volist name="info['area']" id="vo">
+	<li <if condition="$i eq 1">class="select"</if> area_id="{$vo}">{$vo}区</li>
+	</volist>
+	<div class="clear"></div>
+	</ul>
+	</div>
+	<!-- -->
+	<volist name="info['area']" id="vo">
+	<div class="booth" id="area_wrap_{$vo}" <if condition="$i neq 1">style="display:none;"</if>>
+		<volist name="info['position'][$vo]" id="v">
+		<div class="li delete" title="点击删除" position_id="{$v}" area="{$vo}" tpl_id="{$info['id']}">
+			{$v}
+		</div>
+		</volist>
+	<div class="clear"></div>
+	</div>
+	</volist>
+  </div>
+<include file="Admin@default/public/footer" />
+<script type="text/javascript">
+$(document).ready(function()
+{
+	$('.img_add').click(function(){
+		$("#hidden_file").click();
+	});
+	$("#hidden_file").change(function(){
+		$('#img_form').removeAttr("onsubmit");
+		$("#img_form").submit();
+	});
+  $("#add_form").click(function()
+  {
+  $("#html").append($("#html_tpl").html());
+  });
+  $(".booth .li").hover(function(){
+  	$(this).children('.tip').toggle();
+  });
+  $(".area li").click(function(){
+  	$(this).addClass('select').siblings().removeClass('select');
+  	var area_id = $(this).attr('area_id');
+  	$(".booth").hide();
+  	$("#area_wrap_"+area_id).show();
+  });
+  $(".delete").live('click',function(){
+  	if(confirm('确定删除该展位吗？')){
+  		var area = $(this).attr('area');
+  		var tpl_id = $(this).attr('tpl_id');
+  		var position = $(this).attr('position_id');
+	  	var thisObj = $(this);
+	  	$.getJSON("{:U('position_delete')}",{position:position,area:area,id:tpl_id},function(result){
+	  		if(result.status==1){
+	  			thisObj.closest('.li').remove();
+	  		}
+	  		alert(result.msg);
+	  	});
+  	}
+  });
+  $(".delete_img").click(function(){
+  	if(confirm('确定删除该展位图吗？')){
+  		var url = $(this).attr('url');
+  		location.href=url;
+  	}
+  });
+});
+</script>
+</body>
+</html>

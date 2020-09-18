@@ -1,0 +1,87 @@
+<include file="Admin@default/public/header" />
+    <div class="toptip">
+        <h2>提示：</h2>
+        <p>网站接入微信公众平台后，用户只需要使用微信扫描二维码就可登录，简化用户登录注册流程，更有效率的提高转化用户流量；<br />
+		设置微信公众平台前，网站需首先进行申请，获得对应的AppToken、AppId、AppSecret，以保证后续流程中可正确对网站与用户进行验证与授权。 
+		现在就去<a href="https://mp.weixin.qq.com/" target="_blank">申请</a><br />
+		创建自定义菜单后，由于微信客户端缓存，需要24小时微信客户端才会展现出来。建议测试时可以尝试取消关注公众账号后再次关注，则可以看到创建后的效果。
+		</p>
+    </div>
+	<div class="seltpye_x">
+		<div class="left">会员类型</div>	
+		<div class="right">
+			<a href="{:P(array('utype'=>''))}" <if condition="$Think.get.utype eq ''">class="select"</if>>不限</a>
+			<a href="{:P(array('utype'=>1))}" <if condition="$Think.get.utype eq '1'">class="select"</if>>企业会员</a>
+			<a href="{:P(array('utype'=>2))}" <if condition="$Think.get.utype eq '2'">class="select"</if>>个人会员</a>
+			<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+  </div>
+	<form action="{:U('Admin/bind_del')}" method="post" enctype="multipart/form-data" name="form1" id="form1">
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" id="list" class="link_lan"  >
+			<tr>
+				<td height="26" class="admin_list_tit admin_list_first" >
+					<label id="categorychkAll"><input type="checkbox" name="" title="全选/反选" id="chk" />用户名
+					</label>
+				</td>
+				<td width="120"   align="center"  class="admin_list_tit">用户类型</td>
+				<td width="220"   align="center"  class="admin_list_tit">微信昵称</td>
+				<td width="300"   align="center"  class="admin_list_tit">OpenId</td>
+				<td width="150"   align="center"  class="admin_list_tit">绑定时间</td>
+				<td width="120"   align="center" class="admin_list_tit">操作</td>
+			</tr>
+			<notempty name="list">
+				<volist name="list" id="vo">
+					<tr id="tr_{$vo.id}">
+					<td   class="admin_list admin_list_first" >
+					<input type="checkbox" name="id[]" value="{$vo.id}" id="{$vo.id}"  class="Bcheck"/>
+					{$vo['username']}
+					<span style="color:#CCCCCC">(uid:{$vo.uid})</span>	  </td>
+					<td align="center"  class="admin_list">
+					<if condition="$vo['utype'] eq 1">企业<else />个人</if>会员
+					</td>
+					<td align="center"  class="admin_list">
+					{$vo['info']['keyname']}
+					</td>
+					<td align="center"  class="admin_list">
+					{$vo.keyid}
+					</td>
+					<td align="center"  class="admin_list">
+					{:admin_date($vo['bindingtime'])}
+					</td>
+					<td align="center" class="admin_list">
+					<a href="{:U('Admin/msg_send',array('uid'=>$vo['uid'],'org'=>1))}">发送消息</a>&nbsp;&nbsp;
+					<a onclick="return confirm('你确定要解除此会员绑定吗？')" href="{:U('Admin/bind_del',array('id'=>$vo['id']))}">解除绑定</a>
+					</td>
+					</tr>
+				</volist>
+			<else/>
+				<tr>
+					<td class="admin_list"  style="padding-left:10px;">没有任何信息!</td>
+					<td align="center"  class="admin_list">&nbsp;</td>
+					<td class="admin_list"  >&nbsp;</td>
+					<td class="admin_list"  >&nbsp;</td>
+				</tr>
+			</notempty>
+		</table>
+		<table width="100%" border="0" cellspacing="10"  class="admin_list_btm">
+			<tr>
+				<td>
+					<input name="ButAddQueue" type="button" class="admin_submit" id="ButAddQueue" value="批量发送" onclick="javascript:location.href='{:U('Admin/msg_queue_send')}'"/>
+					<input name="ButCancel" type="submit" class="admin_submit" id="ButCancel" value="解除绑定"/>
+				</td>
+				<td width="305" align="right"></td>
+			</tr>
+		</table>
+	</form>
+	<div class="qspage">{$page}</div>
+</div>
+<include file="Admin@default/public/footer" />
+<script type="text/javascript">
+$(document).ready(function(){
+	//全选
+	$('#categorychkAll').click(function(){$("#form1 :checkbox").attr('checked',$("#chk").attr('checked'))});
+});
+</script>
+</body>
+</html>

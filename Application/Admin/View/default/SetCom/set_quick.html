@@ -1,0 +1,71 @@
+<include file="public:header"/>
+<div class="toptip">
+    <h2>提示：</h2>
+    <p>快捷消费是指企业会员没有购买套餐或者服务到期的引导消费。</p>
+</div>
+<div class="toptit">快捷消费设置</div>
+<form action="{:U('set_quick')}" method="post" enctype="multipart/form-data" name="form1" id="form1">
+    <table width="100%" border="0" cellspacing="5" cellpadding="5">
+        <tr>
+            <td width="220" align="right">是否开启下载简历快捷消费：</td>
+            <td>
+                <label><input type="radio" name="resume_download_quick" value="1" id="resume_download_quick"
+                    <if condition="C('qscms_resume_download_quick') eq 1">checked="checked"</if>
+                    />是</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label><input type="radio" name="resume_download_quick" value="0" id="resume_download_quick"
+                    <if condition="C('qscms_resume_download_quick') eq 0">checked="checked"</if>
+                    />否</label>
+                <span class="admin_note">（如选否，只允许使用套餐内剩余条数，不可使用现金和积分和购买简历下载增值包)</span>
+            </td>
+        </tr>
+        <tr>
+            <td align="right">下载简历单价：</td>
+            <td><input name="download_resume_price" type="text" class="input_text_100" id="download_resume_price"
+                       value="{:C('qscms_download_resume_price')}" maxlength="30"/> 元
+            </td>
+        </tr>
+        <tr>
+            <td width="220" align="right">下载简历时是否允许积分消费：</td>
+            <td>
+                <label><input type="radio" name="down_resume_by_points" value="1" id="down_resume_by_points"
+                    <if condition="C('qscms_down_resume_by_points') eq 1">checked="checked"</if>
+                    />是</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label><input type="radio" name="down_resume_by_points" value="0" id="down_resume_by_points"
+                    <if condition="C('qscms_down_resume_by_points') eq 0">checked="checked"</if>
+                    />否</label>
+                <span class="admin_note">（如选否，只允许使用现金，积分仅可以用于购买服务的抵扣)</span>
+            </td>
+        </tr>
+        <tr>
+            <td align="right">刷新职位单价：</td>
+            <td><input name="refresh_jobs_price" type="text" class="input_text_100" id="refresh_jobs_price"
+                       value="{:C('qscms_refresh_jobs_price')}" maxlength="30"/> 元
+            </td>
+        </tr>
+        <tr>
+            <td width="220" align="right">刷新职位时是否允许积分消费：</td>
+            <td>
+                <label><input type="radio" name="refresh_jobs_by_points" value="1" id="refresh_jobs_by_points"
+                    <if condition="C('qscms_refresh_jobs_by_points') eq 1">checked="checked"</if>
+                    />是</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label><input type="radio" name="refresh_jobs_by_points" value="0" id="refresh_jobs_by_points"
+                    <if condition="C('qscms_refresh_jobs_by_points') eq 0">checked="checked"</if>
+                    />否</label>
+                <span class="admin_note">（如选否，只允许使用现金，积分仅可以用于购买服务的抵扣)</span>
+            </td>
+        </tr>
+        <tr>
+            <td align="right">&nbsp;</td>
+            <td height="50">
+                <input name="submit" type="submit" class="admin_submit" value="保存修改"/></td>
+        </tr>
+    </table>
+</form>
+
+</div>
+<include file="public:footer"/>
+</body>
+</html>

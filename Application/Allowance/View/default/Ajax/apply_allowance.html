@@ -1,0 +1,44 @@
+<!-- 领取面试红包新弹出框 -->
+<div class="new-get-money-dia">
+    <div class="ng-md-tl">
+    <if condition="$allowance_info['type_alias'] eq 'apply'">
+    此红包为投递红包，投递简历后系统将通过微信转入你的账户。
+    <elseif condition="$allowance_info['type_alias'] eq 'interview'" />
+    此红包为面试红包，参加面试后系统将把红包发放到你的微信账户。
+    <else />
+    此红包为入职红包，成功入职后系统将把红包发放到你的微信账户。
+    </if>
+    <br />
+    您的简历必须满足此职位的要求才能领取红包，也可以直接投递不领取红包。
+    </div>
+    <div class="h20"></div>
+    <div class="ng-md-cb">
+        <div class="ngm-cb-line">
+            <div class="ncl-1">完整度：</div>
+            <div class="ncl-2"><eq name="allowance_info['complete_percent']" value="0">不限<else />简历完整度{$allowance_info['complete_percent']}%及以上</eq></div>
+            <div class="ncl-3"><eq name="tip['tip']['complete_percent']" value="0"><a target="_blank" href="{:U('Home/Personal/resume_edit',array('pid'=>$resumeid))}" class="do-more">去完善</a><else /><div class="is-aggre">满足</div></eq></div>
+            <div class="clear"></div>
+        </div>
+        <div class="h3"></div>
+        <div class="ngm-cb-line">
+            <div class="ncl-1">学历要求：</div>
+            <div class="ncl-2">{$allowance_info['education_cn']}</div>
+            <div class="ncl-3"><eq name="tip['tip']['education']" value="0"><div class="is-aggre no">不满足</div><else /><div class="is-aggre">满足</div></eq></div>
+            <div class="clear"></div>
+        </div>
+        <div class="h3"></div>
+        <div class="ngm-cb-line">
+            <div class="ncl-1">工作经验：</div>
+            <div class="ncl-2">{$allowance_info['experience_cn']}</div>
+            <div class="ncl-3"><eq name="tip['tip']['experience']" value="0"><div class="is-aggre no">不满足</div><else /><div class="is-aggre">满足</div></eq></div>
+            <div class="clear"></div>
+        </div>
+        <div class="h3"></div>
+        <div class="ngm-cb-line">
+            <div class="ncl-1">允许意向：</div>
+            <div class="ncl-2">{$allowance_info['intention_jobs_cn']}</div>
+            <div class="ncl-3"><eq name="tip['tip']['intention_jobs']" value="0"><div class="is-aggre no">不满足</div><else /><div class="is-aggre">满足</div></eq></div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>

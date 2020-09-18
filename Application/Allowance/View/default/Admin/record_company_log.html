@@ -1,0 +1,158 @@
+<table width="860" border="0" cellpadding="0" cellspacing="0" id="list" class="link_lan">
+    <tr>
+      <td height="26" class="admin_list_tit admin_list_first" width="30">
+      红包类型
+    </td>
+      <td width="300"  class="admin_list_tit">打赏进度</td>
+      <td width="30"  align="center" class="admin_list_tit">打赏状态</td>
+      <td width="80"   align="center" class="admin_list_tit"> 领取人 </td>
+    </tr>
+    <volist name="list" id="vo">
+      <tr>
+      <td  class="admin_list admin_list_first">
+      {$vo['type_cn']}
+      </td>
+    <td class="admin_list allowance_progress" >
+      <if condition="$vo['apply'] eq 1">
+        <span class="done">领取红包</span>
+        <span>>></span>
+        <span class="done">简历投递成功</span>
+        <span>>></span>
+        <eq name="vo['status']" value="1">
+        <span class="warning">等待管理员审核</span>
+        <span>>></span>
+        <span class="waiting">红包发放</span>
+        </eq>
+        <eq name="vo['status']" value="2">
+        <span class="done">审核不通过</span>
+        <span>>></span>
+        <span class="waiting">红包发放</span>
+        </eq>
+        <eq name="vo['status']" value="3">
+        <span class="done">红包已发放</span>
+        </eq>
+        <eq name="vo['status']" value="0">
+        <span class="waiting">红包发放</span>
+        </eq>
+     </if>
+     <if condition="$vo['interview'] eq 1">
+        <span class="done">领取红包</span>
+        <span>>></span>
+     <if condition="$vo['step'] eq 10">
+          <span class="ing">等待企业同意</span>
+          <span>>></span>
+          <span class="waiting">个人确认</span>
+          <span>>></span>
+          <span class="waiting">企业确认</span>
+          <span>>></span>
+          <span class="waiting">红包发放</span>
+       <elseif condition="$vo['step'] eq 20" />
+          <span class="done">企业已同意</span>
+          <span>>></span>
+          <span class="ing">等待个人确认</span>
+          <span>>></span>
+          <span class="waiting">企业确认</span>
+          <span>>></span>
+          <span class="waiting">红包发放</span>
+       <elseif condition="$vo['step'] eq 30" />
+          <span class="waiting">企业已拒绝</span>
+          <span>>></span>
+          <span class="waiting">个人确认</span>
+          <span>>></span>
+          <span class="waiting">企业确认</span>
+          <span>>></span>
+          <span class="waiting">红包发放</span>
+       <elseif condition="$vo['step'] eq 40" />
+          <span class="done">企业已同意</span>
+          <span>>></span>
+          <span class="done">个人已确认</span>
+          <span>>></span>
+          <span class="ing">等待企业确认</span>
+          <span>>></span>
+          <span class="waiting">红包发放</span>
+       <elseif condition="$vo['step'] eq 50" />
+          <span class="done">企业已同意</span>
+          <span>>></span>
+          <span class="done">个人已确认</span>
+          <span>>></span>
+          <span class="done">企业已确认</span>
+          <span>>></span>
+          <span class="done">红包已发放</span>
+       <elseif condition="$vo['step'] eq 60" />
+          <span class="done">企业已同意</span>
+          <span>>></span>
+          <span class="done">个人已确认</span>
+          <span>>></span>
+          <span class="done">企业判定缺席</span>
+          <span>>></span>
+          <eq name="vo['status']" value="4">
+          <span class="warning">等待管理员仲裁</span>
+          <span>>></span>
+          <span class="waiting">红包发放</span>
+          </eq>
+          <eq name="vo['status']" value="2">
+          <span class="done">管理员判定退款给企业</span>
+          <span>>></span>
+          <span class="waiting">红包发放</span>
+          </eq>
+          <eq name="vo['status']" value="3">
+          <span class="done">管理员判定发放红包给个人</span>
+          <span>>></span>
+          <span class="done">红包已发放</span>
+          </eq>
+     </if>
+     </if>
+     <if condition="$vo['entry'] eq 1">
+        <span class="done">领取红包</span>
+        <span>>></span>
+        <if condition="$vo['step'] eq 70">
+          <span class="ing">等待个人确认</span>
+          <span>>></span>
+          <span class="waiting">企业确认</span>
+          <span>>></span>
+          <span class="waiting">红包发放</span>
+        <elseif condition="$vo['step'] eq 71" />
+          <span class="done">个人已确认</span>
+          <span>>></span>
+          <span class="ing">等待企业确认</span>
+          <span>>></span>
+          <span class="waiting">红包发放</span>
+        <elseif condition="$vo['step'] eq 80" />
+          <span class="done">个人已确认</span>
+          <span>>></span>
+          <span class="done">企业已确认</span>
+          <span>>></span>
+          <span class="done">红包已发放</span>
+        <elseif condition="$vo['step'] eq 90" />
+          <span class="done">个人已确认</span>
+          <span>>></span>
+          <span class="done">企业判定缺席</span>
+          <span>>></span>
+          <eq name="vo['status']" value="4">
+          <span class="warning">等待管理员仲裁</span>
+          <span>>></span>
+          <span class="waiting">红包发放</span>
+          </eq>
+          <eq name="vo['status']" value="2">
+          <span class="done">管理员判定退款给企业</span>
+          <span>>></span>
+          <span class="waiting">红包发放</span>
+          </eq>
+          <eq name="vo['status']" value="3">
+          <span class="done">管理员判定发放红包给个人</span>
+          <span>>></span>
+          <span class="done">红包已发放</span>
+          </eq>
+        </if>
+     </if>
+    </td>
+    <td align="center"  class="admin_list" >{$vo['status_cn']}</td>
+    <td align="center"  class="admin_list" >
+    <a target="_blank" href="{:url_rewrite('QS_resumeshow',array('id'=>$vo['resumeid']))}">{$vo['fullname']}</a>
+    </td>
+      </tr>
+      </volist>
+    </table>
+  <if condition="!$list"> 
+  <div class="admin_list_no_info">没有任何信息！</div>
+  </if>

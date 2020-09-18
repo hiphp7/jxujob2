@@ -1,0 +1,27 @@
+<link href="../public/admin/css/Analyze.css" rel="stylesheet" type="text/css" />
+<include file="Admin@default/public/header" />
+
+    <div class="toptip">
+		<h2>提示：</h2>
+		<p>行为分析可将用户访问、用户操作等用列表的形式表现出来，从而获取用户页面停留时间，操作终止，体验受阻等信息。</p>
+	</div>
+	 
+	 
+    <div class="analyze">
+	<volist name="list" id="vo">
+	  <div class="item">
+  		<div class="analyze_l <if condition="(count($list)-1) eq $key">last</if>">
+		  	<div class="btns">{$vo['page_name']}</div>
+		</div>
+		<div class="analyze_r">
+			进入时间：{:date('m-d H:i:s',$vo['addtime'])} &nbsp;&nbsp;&nbsp;&nbsp;跳出时间：<if condition="$vo['page_during']">{:date('m-d H:i:s',$vo['addtime']+$vo['page_during'])}<else />--</if><if condition="$vo['page_during']">&nbsp;&nbsp;&nbsp;&nbsp;<span class="font_green">停留{:sub_day($vo['page_during'])}</span></if>
+		</div>
+	    <div class="clear"></div>
+	  </div>
+	</volist>
+	  </div>
+	
+</div>
+<include file="Admin@default/public/footer" />
+</body>
+</html>

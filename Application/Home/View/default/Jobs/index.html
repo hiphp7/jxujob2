@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<include file="public:meta" />
+	<link href="../public/css/common.css" rel="stylesheet" type="text/css" />
+	<link href="../public/css/jobs.css" rel="stylesheet" type="text/css" />
+	<script src="../public/js/jquery.common.js" type="text/javascript" language="javascript"></script>
+	<qscms:load type="category" search="1"/>
+	<if condition="C('SUBSITE_VAL.s_id') gt 0 and !$_GET['citycategory']">
+		<qscms:classify 列表名="city" 类型="QS_citycategory" 地区分类="$subsite_val['s_district']" 显示数目="100"/>
+	<else/>
+		<qscms:classify 列表名="city" 类型="QS_citycategory" 地区分类="$_GET['citycategory']" 显示数目="100"/>
+	</if>
+</head>
+<body>
+<include file="public:header" />
+<!--搜索 -->
+<div class="page_so indexpage">
+	<div class="sobox">
+		<div class="selecttype">
+		<if condition="C('qscms_jobsearch_key_first_choice') eq 1">
+			<div class="J_sli sli select" data-type="jobs">搜职位</div>
+			<div class="J_sli sli" data-type="company">搜企业</div>
+			<if condition="C('qscms_jobsearch_type') neq 0">
+				<div class="J_sli sli" data-type="full">全文</div>
+			</if>
+		<else />
+			<if condition="C('qscms_jobsearch_type') neq 0">
+				<div class="J_sli sli select" data-type="full">全文</div>
+				<div class="J_sli sli" data-type="jobs">搜职位</div>
+			<else />
+				<div class="J_sli sli select" data-type="jobs">搜职位</div>
+			</if>
+			<div class="J_sli sli" data-type="company">搜企业</div>
+		</if>
+			<div class="clear"></div>
+		</div>
+		<div class="inputbg">
+			<div id="showSearchModal" title="" class="selecttype J_hoverbut" data-title="请选择地区" data-multiple="false" data-maxnum="0" data-width="520">选择地区</div>
+			<form id="ajax_search_location" action="{:U('ajaxCommon/ajax_search_location',array('type'=>'QS_jobslist'))}" method="get">
+				<div class="inoputbox">
+					<input type="text" name="key" id="autoKeyInput" value="{$Think.get.key|urldecode|urldecode}" placeholder="请输入关键字" />
+					<input type="hidden" name="search_type" value="<if condition="C('qscms_jobsearch_key_first_choice') eq 1">jobs<else />full</if>" />
+					<input id="searchCityModalCode" type="hidden" name="citycategory" value="{$city['select']['citycategory']}" />
+					<input id="recoverSearchCityModalCode" type="hidden" name="" value="" />
+                    <input type="hidden" name="lng" id="lng"  value=""/>
+                    <input type="hidden" name="lat" id="lat"  value=""/>
+					<input type="hidden" name="ldLng" id="ldLng"  value=""/>
+					<input type="hidden" name="ldLat" id="ldLat"  value=""/>
+					<input type="hidden" name="ruLng" id="ruLng"  value=""/>
+					<input type="hidden" name="ruLat" id="ruLat"  value=""/>
+				</div>
+				<input type="submit" class="sobut J_hoverbut" value="搜索" />
+			</form>
+		</div>
+  		<div class="righttxt link_gray6"><a href="javascript:;" id="popupBox" class="map">地图找工作</a></div>
+		<div class="clear"></div>
+	</div>
+	<div class="hotword link_gray9 font_gray9 nowrap">
+		热门关键字：
+		<qscms:hotword 列表名="hotword_list" 显示数目="5"/>
+		<volist name="hotword_list" id="hotword">
+			<if condition="C('qscms_key_urlencode') eq 1">
+			<a href="{:url_rewrite('QS_jobslist',array('key'=>urlencode($hotword['w_word_code'])))}">{$hotword.w_word}</a>
+			<else />
+			<a href="{:url_rewrite('QS_jobslist',array('key'=>$hotword['w_word_code']))}">{$hotword.w_word}</a>
+			</if>
+		</volist>
+	</div>
+</div>
+<qscms:classify 列表名="jobsCate" 类型="QS_jobs"/>
+<div class="allclass_1 link_gray6">
+	<if condition="C('qscms_category_jobs_level') eq 3">
+		<volist name="jobsCate[0]" id="pcate">
+			<volist name="jobsCate[$key]" id="scate">
+				<div class="list">
+					<div class="ll">
+						<div class="t">
+							<a href="{:url_rewrite('QS_jobslist',array('jobcategory'=>$scate['spell']))}"><strong>{$scate.categoryname}</strong></a>
+						</div>
+					</div>
+					<div class="lr">
+						<volist name="jobsCate[$key]" id="cate">
+							<a href="{:url_rewrite('QS_jobslist',array('jobcategory'=>$cate['spell']))}" leibie="cantfwy">{$cate.categoryname}</a>
+						</volist>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</volist>
+		</volist>
+	<else/>
+		<volist name="jobsCate[0]" id="pcate">
+			<div class="list">
+				<div class="ll">
+					<div class="t">
+						<a href="{:url_rewrite('QS_jobslist',array('jobcategory'=>$pcate['spell']))}"><strong>{$pcate.categoryname}</strong></a>
+					</div>
+				</div>
+				<div class="lr">
+					<volist name="jobsCate[$key]" id="cate">
+						<a href="{:url_rewrite('QS_jobslist',array('jobcategory'=>$cate['spell']))}" leibie="cantfwy">{$cate.categoryname}</a>
+					</volist>
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</volist>
+	</if>
+</div>
+<if condition="$apply['Subsite'] and $subsite_val['s_id'] gt 0">
+    <input type="hidden" class="map-lng" value="<if condition="$Think.get.lng eq ''">{$subsite_val.s_map_center_x|default=C('qscms_map_center_x')}<else/>{$Think.get.lng}</if>">
+    <input type="hidden" class="map-lat" value="<if condition="$Think.get.lat eq ''">{$subsite_val.s_map_center_y|default=C('qscms_map_center_y')}<else/>{$Think.get.lat}</if>">
+<else/>
+    <input type="hidden" class="map-lng" value="<if condition="$Think.get.lng eq ''">{:C('qscms_map_center_x')}<else/>{$Think.get.lng}</if>">
+    <input type="hidden" class="map-lat" value="<if condition="$Think.get.lat eq ''">{:C('qscms_map_center_y')}<else/>{$Think.get.lat}</if>">
+</if>
+<include file="public:footer_min" />
+<script type="text/javascript" src="../public/js/jquery.jobslist.js"></script>
+<script type="text/javascript" src="../public/js/jquery.modal.search.js"></script>
+<script type="text/javascript" src="../public/js/jquery.modal.dialog.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=<if condition="C('SUBSITE_VAL.s_id') gt 0 and $subsite_val['s_map_ak']">{$subsite_val.s_map_ak}<else/>{:C('qscms_map_ak')}</if>"></script>
+<script type="text/javascript" src="../public/js/jquery.mapjob.js"></script>
+<script type="text/javascript" src="../public/js/jquery.autocomplete.js"></script>
+<script type="text/javascript">
+	var city_select = {:json_encode($city['select'])};
+	var city_parent = {:json_encode($city['parent'])};
+
+	if (city_parent) {
+		if (app_spell) {
+			$('#showSearchModal').text(city_parent['categoryname']);
+			$('#recoverSearchCityModalCode').val(city_parent['spell']);
+		} else {
+			$('#showSearchModal').text(city_parent['categoryname']);
+			$('#recoverSearchCityModalCode').val(city_parent['citycategory']);
+		}
+	} else if(city_select) {
+		if (app_spell) {
+			$('#showSearchModal').text(city_select['categoryname']);
+			$('#recoverSearchCityModalCode').val(city_select['spell']);
+		} else {
+			$('#showSearchModal').text(city_select['categoryname']);
+			$('#recoverSearchCityModalCode').val(city_select['citycategory']);
+		}
+	}
+	$('.J_jobIndexCategory').hover(function() {
+		$(this).addClass('select').siblings().removeClass('select');
+		var thisIndex = $('.J_jobIndexCategory').index(this);
+		$('.J_jobIndexCategoryBox').eq(thisIndex).show().siblings('.J_jobIndexCategoryBox').hide();
+	});
+    var qsMapUrl = "{:url_rewrite('QS_jobslist',array('lng'=>'lngVal','lat'=>'latVal','ldLng'=>'ldLngVal','ldLat'=>'ldLatVal','ruLng'=>'ruLngVal','ruLat'=>'ruLatVal'))}";
+    // 关键字联想
+    var hotKey = $('#autoKeyInput').autocomplete({
+        serviceUrl:"{:U('ajaxCommon/hotword')}",
+        minChars:1,
+        maxHeight:400,
+        width:276,
+        zIndex: 1,
+        deferRequestBy: 0
+    });
+</script>
+</body>
+</html>

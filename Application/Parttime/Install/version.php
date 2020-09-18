@@ -1,0 +1,1 @@
+<?php	return array ( 'module' => 'Parttime', 'module_name' => '兼职招聘', 'appid' => '', 'version' => '4.2.8', 'is_create_table' => 1, 'is_insert_data' => 1, 'is_exe' => 1, 'is_delete_data' => 1, 'update_time' => '2017-12-25 15:07:42', 'explain' => '兼职招聘。', ); ?>

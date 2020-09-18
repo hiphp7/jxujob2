@@ -1,0 +1,51 @@
+<include file="public:header" />
+    <div class="toptip">
+        <h2>提示：</h2>
+        <p>不同的运营阶段您可以选择不同的设置。</p>
+    </div>
+    
+	<div class="toptit">审核设置</div>
+	<form action="{:U('set_audit')}" method="post" enctype="multipart/form-data" name="form1" id="form1">
+		<table width="100%" border="0" cellspacing="5" cellpadding="5">
+			<tr>
+				<td width="180" align="right">修改简历后审核状态变为：</td>
+				<td>
+					<label><input name="audit_edit_resume" type="radio" id="audit_edit_resume" value="-1" <if condition="C('qscms_audit_edit_resume') eq '-1'">checked="checked"</if>/>保持不变</label>
+					&nbsp;&nbsp;&nbsp;&nbsp; 
+					<label ><input type="radio" name="audit_edit_resume" value="2" id="audit_edit_resume" <if condition="C('qscms_audit_edit_resume') eq 2">checked="checked"</if>/>审核中</label>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">&nbsp;</td>
+				<td height="50"> 
+					<input name="submit" type="submit" class="admin_submit"    value="保存修改"/>				</td>
+			</tr>
+		</table>
+	</form>
+	<div class="toptit">认证设置</div>
+	<form action="{:U('index')}" method="post" enctype="multipart/form-data" name="form1" id="form1">
+		<table width="100%" border="0" cellspacing="5" cellpadding="5">
+			<tr>
+				<td width="180" align="right">强制会员认证手机：</td>
+				<td>
+					<label><input name="login_per_audit_mobile" type="radio" id="login_per_audit_mobile" value="1" <if condition="C('qscms_login_per_audit_mobile') eq 1">checked="checked"</if>/>是</label>
+					&nbsp;&nbsp;&nbsp;&nbsp; 
+					<label><input name="login_per_audit_mobile" type="radio" id="login_per_audit_mobile" value="0" <if condition="C('qscms_login_per_audit_mobile') eq 0">checked="checked"</if>/>否</label>
+					<span class="admin_note"  >（如要设为强制认证手机需开启短信模块）</span>
+				</td>
+			</tr>
+			 
+			<tr>
+				<td align="right">&nbsp;</td>
+				<td height="50"> 
+					<input name="submit" type="submit" class="admin_submit"    value="保存修改"/>
+				</td>
+			</tr>
+		</table>
+	</form>
+	 
+	
+</div>
+<include file="public:footer" />
+</body>
+</html>

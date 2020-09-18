@@ -1,0 +1,137 @@
+<include file="public:header" />
+    <div class="seltpye_x">
+    <div class="left">审核状态</div>
+    <div class="right">
+      <a href="{:P(array('audit'=>''))}" <if condition="$Think.get.audit eq ''">class="select"</if>>不限</a>
+      <a href="{:P(array('audit'=>'1'))}" <if condition="$Think.get.audit eq '1'">class="select"</if>>审核通过</a>
+      <a href="{:P(array('audit'=>'2'))}" <if condition="$Think.get.audit eq '2'">class="select"</if>>等待审核</a>
+      <a href="{:P(array('audit'=>'3'))}" <if condition="$Think.get.audit eq '3'">class="select"</if>>审核未通过</a>
+      <a href="{:P(array('audit'=>'0'))}" <if condition="$Think.get.audit eq '0'">class="select"</if>>未审核</a>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+   
+  <form id="form1" name="form1" method="post" action="{:U('companyImg/delete')}">
+    <input name="_k_v" type="hidden" value="{$Think.get._k_v}">
+    <table width="100%" border="0" cellpadding="0" cellspacing="0"  id="list" class="link_lan">
+      <tr>
+        <td  class="admin_list_tit admin_list_first">
+          <label id="chkAll"><input type="checkbox" name=" " title="全选/反选" id="chk"/>公司图片</label>
+        </td>
+        <td width="10%" align="center" class="admin_list_tit">图片审核</td>
+        <td width="10%" align="center" class="admin_list_tit">添加时间</td>
+        <td width="15%" align="center" class="admin_list_tit">操作</td>
+      </tr>
+      <volist name="list" id="vo">
+      <tr >
+        <td class="admin_list admin_list_first" >
+          <input name="id[]" type="checkbox" value="{$vo.id}" />
+          <a href="{:attach($vo['img'],'company_img')}" class="vtip" title="<img width='300' height='200' src='{:attach($vo['img'],'company_img')}'>"  border=0  align="absmiddle"><if condition="$vo['title']">{$vo['title']}<else />{:attach($vo['img'],'company_img')}</if>
+          </td>
+          <td align="center" class="admin_list">
+           <if condition="$vo['audit'] eq '0'">未审核</if>
+           <if condition="$vo['audit'] eq '1'"><span style="color: #009900">审核通过</span></if>
+           <if condition="$vo['audit'] eq '2'"><span style="color:#FF3300">等待审核</span></if>
+           <if condition="$vo['audit'] eq '3'">审核未通过</if>
+          </td>
+          <td align="center" class="admin_list">
+            {:admin_date($vo['addtime'])}
+          </td>
+          <td width="15%" align="center" class="admin_list">
+            <a href="{:U('companyImg/delete',array('id'=>$vo['id'],'_k_v'=>$_GET['_k_v']))}" onclick="return confirm('确定删除吗？');">删除</a>
+          </td>
+        </tr>
+        </volist>
+      </table>
+      <span id="OpAudit"></span>
+      <span id="OpDel"></span>
+      <span id="Oprefresh"></span>
+    </form>
+    <if condition="!$list">
+    <div class="admin_list_no_info">没有任何信息！</div>
+    </if>
+    
+    <table width="100%" border="0" cellspacing="10" cellpadding="0" class="admin_list_btm">
+      <tr>
+        <td>
+          <input type="button" name="" value="审核图片" class="admin_submit"   id="ButAudit" />
+          <input type="button" name="" value="删除" class="admin_submit"   id="ButDel"/>
+        </td>
+      </tr>
+    </table>
+    <div class="qspage">{$page}</div>
+  </div>
+  <div style="display:none" id="OpAuditLayer">
+    <table width="400" border="0" align="center" cellpadding="0" cellspacing="6" >
+      <tr>
+        <td width="20" height="30">&nbsp;</td>
+        <td height="30"><strong  style="color:#0066CC; font-size:14px;">将所选图片设置为：</strong></td>
+      </tr>
+      <tr>
+        <td height="25">&nbsp;</td>
+        <td>
+          <label >
+            <input name="audit" type="radio" value="1" checked="checked"  id="success" />
+          审核通过 </label>   </td>
+        </tr>
+        <tr>
+          <td height="25">&nbsp;</td>
+          <td><label >
+            <input type="radio" name="audit" value="3"  id="fail"/>
+          审核未通过</label></td>
+        </tr>
+        <tr>
+          <td height="25">&nbsp;</td>
+          <td>
+            <label >
+              <input type="radio" name="audit" value="2"  id="wait"/>
+              等待审核
+            </label>  </td>
+          </tr>
+          <tr>
+            <td width="40" height="25">&nbsp;</td>
+            <td>
+              <label><input type="checkbox" name="pms_notice" value="1"  checked="checked"/>
+              站内信通知
+            </label>
+          </td>
+        </tr>
+        <tr id="reason">
+          <td width="40" height="25" >理由：</td>
+          <td>
+            <textarea name="reason" id="reason" cols="50" style="font-size:12px"></textarea>
+          </td>
+        </tr>
+        <tr>
+          <td height="25">&nbsp;</td>
+          <td>
+            <input name="_k_v" type="hidden" value="{$Think.get._k_v}">
+            <input type="button" name="set_audit" id="set_audit" value="确定" class="admin_submit"  />
+          </td>
+        </tr>
+      </table>
+    </div>
+<include file="public:footer" />
+<script type="text/javascript">
+$(document).ready(function()
+{
+  $("#ButAudit").QSdialog({
+  DialogAddObj:"#OpAudit",
+  DialogTitle:"请选择",
+  DialogContent:"#OpAuditLayer",
+  DialogContentType:"id"
+  });
+  $("#set_audit").live('click',function(){
+    $("#form1").attr("action","{:U('companyImg/set_audit')}");
+    $("#form1").submit();
+  });
+  $("#ButDel").click(function(){
+    if(confirm('确定删除吗？')){
+      $("#form1").submit();
+    }
+  });
+});
+</script>
+</body>
+</html>

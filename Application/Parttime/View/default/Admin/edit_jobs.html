@@ -1,0 +1,241 @@
+<include file="Admin@default/public/header"/>
+
+<form action="{:U('')}" method="post" name="FormData" id="FormData" >
+    <div class="toptit">
+        <empty name="info">添加兼职<else/>修改兼职 - <span style="color:#0066CC">{$info.jobs_name}</span></empty>
+    </div>
+    <div class="form_main width120">
+        <notempty name="info">
+            <div class="fl">发布时间:</div>
+            <div class="fr txt link_blue">{:date('Y-m-d H:i:s',$info['addtime'])}</div>
+            <div class="fl">刷新时间:</div>
+            <div class="fr txt link_blue">{:date('Y-m-d H:i:s',$info['refreshtime'])}</div>
+        </notempty>
+        <div class="fl"><span style="color:#FF3300; font-weight:bold">*</span> 兼职名称:</div>
+        <div class="fr">
+            <input name="jobs_name" type="text" class="input_text_default" maxlength="50" value="{$info['jobs_name']}"/>
+        </div>
+        <div class="fl"><span style="color:#FF3300; font-weight:bold">*</span> 审核状态:</div>
+        <div class="fr">
+            <div class="imgradio">
+                <input name="audit" type="hidden" value="{$info['audit']|default=0}">
+                <div class="radio <if condition="!$info OR $info['audit'] eq 0">select</if>" data="0">等待审核</div>
+                <div class="radio <eq name='info.audit' value='1'>select</eq>" data="1">审核通过</div>
+                <div class="radio <eq name='info.audit' value='2'>select</eq>" data="2">审核未通过</div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="fl"><span style="color:#FF3300; font-weight:bold">*</span> 兼职类型:</div>
+        <div class="fr txt">
+            <select name="category" id="category">
+                <option value="0">请选择兼职类型</option>
+                <volist name="category_jobs" id="vo">
+                    <option value="{$key}" <if condition="$info['category'] eq $key">selected</if>>{$vo}</option>
+                </volist>
+            </select>
+        </div>
+        <div class="fl">招聘人数:</div>
+        <div class="fr">
+            <input name="amount" type="text" class="input_text_default" maxlength="3" value="{$info['amount']|default='0'}" style="width: 50px;"
+                   onKeyUp="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');"onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/> 人
+            &nbsp;&nbsp;<span style="color: #999999;">0表示若干</span>
+        </div>
+        <div class="fl"><span style="color:#FF3300; font-weight:bold">*</span> 工作地区:</div>
+        <div class="fr">
+            <input name="district_cn" id="district_cn" type="text" class="input_text_default arrow J_resuletitle_city" value="{$info['district_cn']|default='请选择工作地区'}" readonly="readonly" data-toggle="funCityModal" data-title="请选择地区" data-multiple="false" data-maximum="0" data-width="760"/>
+            <input name="district" id="district" type="hidden" class="J_resultcode_city" value="{$info['district']}" keep="{$info['district']}" />
+        </div>
+        <div class="fl"><span style="color:#FF3300; font-weight:bold">*</span> 详细地址:</div>
+        <div class="fr">
+            <input name="address" type="text" class="input_text_default" maxlength="80" value="{$info['address']}"/>
+        </div>
+        <div class="fl"><span style="color:#FF3300; font-weight:bold">*</span> 薪资待遇:</div>
+        <div class="fr">
+            <div style="float: left;">
+                <input name="wage" type="text" class="input_text_default input_val" maxlength="10" value="{$info['wage']}" style="width: 100px;" onKeyUp="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');"onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/>
+            </div>
+            <div class="imgradio" style="float: left; margin-left: 20px;">
+                <input name="wage_type" type="hidden" value="{$info['wage_type']|default='0'}">
+                <volist name="category_wage" id="vo">
+                    <div class="radio <if condition="$info['wage_type'] eq $key or ($info['wage_type'] eq 0 and $i eq 1)">select</if>" data="{$key}" title="元/{$vo}">元/{$vo}</div>
+                </volist>
+                <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="fl"><span style="color:#FF3300; font-weight:bold">*</span> 结算方式:</div>
+        <div class="fr">
+            <div class="imgradio">
+                <input name="settlement" type="hidden" value="{$info['settlement']|default='0'}">
+                <volist name="category_settlement" id="vo">
+                    <div class="radio <if condition="$info['settlement'] eq $key or ($info['settlement'] eq 0 and $i eq 1)">select</if>" data="{$key}" title="{$vo}">{$vo}</div>
+                </volist>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="fl">薪资备注:</div>
+        <div class="fr">
+            <input name="wage_remark" type="text" class="input_text_default" maxlength="50" value="{$info.wage_remark}"/>
+        </div>
+        <div class="fl"><span style="color:#FF3300; font-weight:bold">*</span> 工作周期:</div>
+        <div class="fr modVal">
+            <span class="input_wrap">
+                <input name="cycle_starttime" type="text" class="input_text_default input_val date_input" value="{$info['cycle_starttime']}" style="width: 100px;" /> 至
+                <input name="cycle_endtime" type="text" class="input_text_default input_val date_input" value="{$info['cycle_endtime']}" style="width: 100px;" />
+            </span>
+            <label><input name="long_period" type="checkbox" id="J_long_period" value="1" <if condition="$info['long_period'] eq 1">checked</if>/>长期招聘</label>
+        </div>
+        <div class="fl"><span style="color:#FF3300; font-weight:bold">*</span> 工作时间:</div>
+        <div class="fr">
+            <table class="table font12">
+                <tbody><tr>
+                    <th>TIME</th>
+                    <th>周一</th>
+                    <th>周二</th>
+                    <th>周三</th>
+                    <th>周四</th>
+                    <th>周五</th>
+                    <th>周六</th>
+                    <th>周日</th>
+                </tr>
+                <tr>
+                    <th>上午</th>
+                    <td <if condition="in_array('0101',$info['worktime'])">class="active"</if>><input name="worktime[]" type="checkbox" value="0101" <if condition="in_array('0101',$info['worktime'])">checked</if>></td>
+                    <td <if condition="in_array('0201',$info['worktime'])">class="active"</if>><input name="worktime[]" type="checkbox" value="0201" <if condition="in_array('0201',$info['worktime'])">checked</if>></td>
+                    <td <if condition="in_array('0301',$info['worktime'])">class="active"</if>><input name="worktime[]" type="checkbox" value="0301" <if condition="in_array('0301',$info['worktime'])">checked</if>></td>
+                    <td <if condition="in_array('0401',$info['worktime'])">class="active"</if>><input name="worktime[]" type="checkbox" value="0401" <if condition="in_array('0401',$info['worktime'])">checked</if>></td>
+                    <td <if condition="in_array('0501',$info['worktime'])">class="active"</if>><input name="worktime[]" type="checkbox" value="0501" <if condition="in_array('0501',$info['worktime'])">checked</if>></td>
+                    <td <if condition="in_array('0601',$info['worktime'])">class="active"</if>><input name="worktime[]" type="checkbox" value="0601" <if condition="in_array('0601',$info['worktime'])">checked</if>></td>
+                    <td <if condition="in_array('0701',$info['worktime'])">class="active"</if>><input name="worktime[]" type="checkbox" value="0701" <if condition="in_array('0701',$info['worktime'])">checked</if>></td>
+                </tr>
+                <tr>
+                    <th>下午</th>
+                    <td <if condition="in_array('0102',$info['worktime'])">class="active"</if>><input name="worktime[]" type="checkbox" value="0102" <if condition="in_array('0102',$info['worktime'])">checked</if>></td>
+                    <td <if condition="in_array('0202',$info['worktime'])">class="active"</if>><input name="worktime[]" type="checkbox" value="0202" <if condition="in_array('0202',$info['worktime'])">checked</if>></td>
+                    <td <if condition="in_array('0302',$info['worktime'])">class="active"</if>><input name="worktime[]" type="checkbox" value="0302" <if condition="in_array('0302',$info['worktime'])">checked</if>></td>
+                    <td <if condition="in_array('0402',$info['worktime'])">class="active"</if>><input name="worktime[]" type="checkbox" value="0402" <if condition="in_array('0402',$info['worktime'])">checked</if>></td>
+                    <td <if condition="in_array('0502',$info['worktime'])">class="active"</if>><input name="worktime[]" type="checkbox" value="0502" <if condition="in_array('0502',$info['worktime'])">checked</if>></td>
+                    <td <if condition="in_array('0602',$info['worktime'])">class="active"</if>><input name="worktime[]" type="checkbox" value="0602" <if condition="in_array('0602',$info['worktime'])">checked</if>></td>
+                    <td <if condition="in_array('0702',$info['worktime'])">class="active"</if>><input name="worktime[]" type="checkbox" value="0702" <if condition="in_array('0702',$info['worktime'])">checked</if>></td>
+                </tr>
+                <tr>
+                    <th>晚上</th>
+                    <td <if condition="in_array('0103',$info['worktime'])">class="active"</if>><input name="worktime[]" type="checkbox" value="0103" <if condition="in_array('0103',$info['worktime'])">checked</if>></td>
+                    <td <if condition="in_array('0203',$info['worktime'])">class="active"</if>><input name="worktime[]" type="checkbox" value="0203" <if condition="in_array('0203',$info['worktime'])">checked</if>></td>
+                    <td <if condition="in_array('0303',$info['worktime'])">class="active"</if>><input name="worktime[]" type="checkbox" value="0303" <if condition="in_array('0303',$info['worktime'])">checked</if>></td>
+                    <td <if condition="in_array('0403',$info['worktime'])">class="active"</if>><input name="worktime[]" type="checkbox" value="0403" <if condition="in_array('0403',$info['worktime'])">checked</if>></td>
+                    <td <if condition="in_array('0503',$info['worktime'])">class="active"</if>><input name="worktime[]" type="checkbox" value="0503" <if condition="in_array('0503',$info['worktime'])">checked</if>></td>
+                    <td <if condition="in_array('0603',$info['worktime'])">class="active"</if>><input name="worktime[]" type="checkbox" value="0603" <if condition="in_array('0603',$info['worktime'])">checked</if>></td>
+                    <td <if condition="in_array('0703',$info['worktime'])">class="active"</if>><input name="worktime[]" type="checkbox" value="0703" <if condition="in_array('0703',$info['worktime'])">checked</if>></td>
+                </tr></tbody>
+            </table>
+        </div>
+        <!--<div class="fl">身份要求:</div>
+        <div class="fr">
+            <div class="imgradio J_job_experience">
+                <input name="identity" type="hidden" value="{$info['identity']|default='0'}">
+                <div class="radio <empty name='info.identity'>select</empty>" data="0" title="不限">不限</div>
+                <volist name="category_identity" id="vo">
+                    <div class="radio <eq name='info.identity' value='$key'>select</eq>" data="{$key}" title="{$vo}">{$vo}</div>
+                </volist>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="fl">身高要求:</div>
+        <div class="fr">
+            <div class="imgradio J_job_experience">
+                <input name="height" type="hidden" value="{$info['height']|default='0'}">
+                <div class="radio <empty name='info.height'>select</empty>" data="0" title="不限">不限</div>
+                <volist name="category_height" id="vo">
+                    <div class="radio <eq name='info.height' value='$key'>select</eq>" data="{$key}" title="{$vo}">{$vo}</div>
+                </volist>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="fl">性别要求:</div>
+        <div class="fr">
+            <div class="imgradio J_job_sex">
+                <input name="sex" type="hidden" value="{$info['sex']|default='0'}">
+                <div class="radio <eq name='info.sex' value='0'>select</eq>" data="0" title="不限">不限</div>
+                <div class="radio <eq name='info.sex' value='1'>select</eq>" data="1" title="男">男</div>
+                <div class="radio <eq name='info.sex' value='2'>select</eq>" data="2" title="女">女</div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="fl">年龄要求:</div>
+        <div class="fr">
+            <input name="minage" type="text" class="input_text_default" maxlength="3" value="{$info['minage']}" style="width: 50px;" onKeyUp="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');"onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/> 岁 -
+            <input name="maxage" type="text" class="input_text_default" maxlength="3" value="{$info['maxage']}" style="width: 50px;" onKeyUp="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');"onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/> 岁
+        </div>-->
+        <div class="fl"><span style="color:#FF3300; font-weight:bold">*</span> 职位描述:</div>
+        <div class="fr">
+            <textarea id="contents" name="contents" class="input_text_default" style="line-height:200%; height:150px;">{$info.contents}</textarea>
+            <div style="color: #999999; padding-top: 10px;">说明：请详细描述该职位，内容可包括：职位要求，岗位职责等。</div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="toptit">联系方式</div>
+    <div class="form_main width120">
+        <div class="fl"><span style="color:#FF3300; font-weight:bold">*</span> 联 系 人:</div>
+        <div class="fr">
+            <input name="contact" type="text" class="input_text_default middle" maxlength="15" value="{$info.contact}"/>
+        </div>
+        <div class="fl"><span style="color:#FF3300; font-weight:bold">*</span> 联系电话:</div>
+        <div class="fr">
+            <input name="mobile" type="text" class="input_text_default middle" maxlength="11" value="{$info.mobile}" onKeyUp="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');"onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/>
+        </div>
+        <div class="fl"></div>
+        <div class="fr">
+            <input type="hidden" name="id" value="{$info.id}" />
+            <input type="submit" class="admin_submit" value="保存"/>
+            <input type="button" class="admin_submit" value="返回" onClick="history.go(-1)"/>
+        </div>
+        <div class="clear"></div>
+    </div>
+</form>
+
+</div>
+<include file="Admin@default/public/footer"/>
+<qscms:load type="category" search="1"/>
+<script type="text/javascript" src="__ADMINPUBLIC__/js/jquery.user.city.js"></script>
+<script type="text/javascript" src="__ADMINPUBLIC__/js/jquery.modal.userselectlayer.js"></script>
+<link href="__ADMINPUBLIC__/css/date_input.css" rel="stylesheet" type="text/css" />
+<script src="__ADMINPUBLIC__/js/jquery.date_input.js" type='text/javascript' language="javascript"></script>
+</body>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //日期
+        $(function() {
+            $(".date_input").date_input();
+        });
+        // 工作周期
+        var long_period = $('#J_long_period');
+        if (long_period.is(':checked')) {
+            long_period.closest('.modVal').addClass('txt');
+            long_period.closest('.modVal').find('.input_val').val('').prop('disabled', !0);
+            long_period.closest('.modVal').find('.input_wrap').hide();
+        }
+        // 长期招聘选中后，开始日期和结束日期不可编辑
+        long_period.die().live('click', function(event) {
+            if ($(this).is(':checked')) {
+                $(this).closest('.modVal').addClass('txt');
+                $(this).closest('.modVal').find('.input_val').val('').prop('disabled', !0);
+                $(this).closest('.modVal').find('.input_wrap').hide();
+            } else {
+                $(this).closest('.modVal').removeClass('txt');
+                $(this).closest('.modVal').find('.input_val').each(function(index, el) {
+                    $(this).val($(this).data('title')).prop('disabled', 0);
+                });
+                $(this).closest('.modVal').find('.input_wrap').show();
+            }
+        });
+        $('.table td').on("click",function(){
+            if($(this).find('input').is(':checked')){
+                $(this).addClass('active');
+            }else{
+                $(this).removeClass('active');
+            }
+        });
+    });
+</script>
+</html>

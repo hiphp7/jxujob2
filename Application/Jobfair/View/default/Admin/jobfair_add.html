@@ -1,0 +1,294 @@
+<include file="Admin@default/public/header" />
+  <form action="{:U('jobfair_add')}" method="post"   name="FormData" id="FormData" enctype="multipart/form-data" >
+<div class="toptit">基本信息</div>
+    <table width="100%" border="0" cellpadding="3" cellspacing="3"  class="admin_table">
+      <tr>
+        <td width="130" align="right"  ><span style="color:#FF3300; font-weight:bold">*</span>标题：</td>
+        <td align="left" ><input name="title" type="text" id="title" class="input_text_400" />
+		 <span class="admin_note">如：2012年5月1日(星期六)医药行业主题招聘会</span>
+		</td>
+      </tr>
+		<tr>
+        <td   align="right"  ><span style="color:#FF3300; font-weight:bold">*</span>举办日期：</td>
+        <td align="left" >
+		<input name="holddate_start" id="holddate_start" type="text"  class="input_text_200 date_input"  value="" style="width:182px"/>&nbsp;&nbsp;至&nbsp;&nbsp;
+		<input name="holddate_end" id="holddate_end" type="text"  class="input_text_200 date_input"  value="" style="width:182px"/>
+		</td>
+      </tr>
+		 <tr>
+        <td   align="right"  ><span style="color:#FF3300; font-weight:bold">*</span>举办地址：</td>
+        <td align="left" >
+		<input name="address" type="text"  class="input_text_400" value=""/> 
+
+		</td>
+      </tr>
+	  <tr>
+        <td  align="right"  >乘车路线：</td>
+        <td align="left" >
+		<input name="bus" type="text"  class="input_text_400" value=""/>
+
+		</td>
+      </tr>
+	  <tr>
+        <td   align="right"  ><span style="color:#FF3300; font-weight:bold">*</span>联系人：</td>
+        <td align="left" >
+		<input name="contact" type="text"  class="input_text_400" value=""/>
+
+		</td>
+      </tr>
+	  <tr>
+        <td  align="right"  ><span style="color:#FF3300; font-weight:bold">*</span>联系电话：</td>
+        <td align="left" >
+		<input name="phone" type="text"  class="input_text_400" value=""/>
+		<span class="admin_note">多个号码请用英文半角逗号“,”隔开</span>
+		</td>
+      </tr>
+	  <tr>
+        <td  align="right"  >缩略图：</td>
+        <td align="left" >
+		<input name="thumb" type="file" value="{$info['thumb']}"/>
+		</td>
+      </tr>
+		 <tr>
+          <td align="right"   >显示状态：</td>
+          <td >
+	        <label>
+	        <input name="display" type="radio" value="1" checked="checked" />
+	        正常</label>
+        
+       <label>&nbsp;&nbsp;&nbsp;
+	        <input type="radio" name="display" value="2" />
+	        暂停</label>
+		   </td>
+        </tr>
+		<tr>
+        <td align="right" >排序：</td>
+        <td > 
+          <input name="ordid" type="text"  class="input_text_200" maxlength="3" value="0"/>
+		  
+		  <span class="admin_note">数字越大，排序越靠前</span>
+         </td>
+      </tr>
+      <tr>
+        <td  align="right"  >参会对象：</td>
+        <td align="left" >
+        	<textarea name="participants_object" id="participants_object" style="width:400px; height:100px; font-size:12px; line-height:180%"></textarea>
+		</td>
+      </tr>
+      <tr>
+        <td  align="right"  >摊位设置及费用：</td>
+        <td align="left" >
+        	<textarea name="price" id="price" style="width:400px; height:100px; font-size:12px; line-height:180%"></textarea>
+		</td>
+      </tr>
+      <tr>
+        <td  align="right"  >参会报名办法：</td>
+        <td align="left" >
+        	<textarea name="registration_method" id="registration_method" style="width:400px; height:100px; font-size:12px; line-height:180%"></textarea>
+		</td>
+      </tr>
+      <tr>
+        <td  align="right"  >地图标注：</td>
+        <td align="left" >
+        	<input name="x" type="hidden" id="x"><input name="y" type="hidden" id="y"><input name="zoom" type="hidden" id="zoom">
+        	<div style="width:700px;height:250px;border:3px solid  #CCCCCC; cursor:" id="container"></div>
+		</td>
+      </tr>
+	   <tr>
+        <td align="right" valign="top" ><span style="color:#FF3300; font-weight:bold">*</span>招聘会简介：</td>
+        <td > 
+           
+		     <textarea name="introduction" style="width:700px; height:300px; font-size:12px; line-height:180%"  id="introduction"> </textarea>
+		   
+         </td>
+      </tr>
+	   <tr>
+        <td  align="right"  >简介图：</td>
+        <td align="left" >
+		<input name="intro_img" type="file" value="{$info['intro_img']}"/>
+		</td>
+      </tr>
+      <notempty name="apply['Subsite']">
+        <tr>
+          <td align="right">添加在：</td>
+          <td colspan="4">
+            <qscms:subsite 列表名="subsite_list"/>
+            <if condition="$visitor['role_id'] eq 1">
+              <volist name="subsite_list" id="subsite">
+                <label style="color: rgb(102, 102, 102);">
+                  <input name="subsite_id" type="radio" value="{$subsite.s_id}" <if condition="$i eq 1">checked="checked"</if>>{$subsite.s_sitename}
+                </label>&nbsp;&nbsp;&nbsp;
+              </volist>
+            <else/>
+              <volist name="subsite_list" id="subsite">
+                <if condition="in_array($subsite['s_id'],$visitor['subsite'])">
+                  <label style="color: rgb(102, 102, 102);">
+                    <input name="subsite_id" type="radio" value="{$subsite.s_id}" <if condition="$k eq 0">checked="checked"</if>>{$subsite.s_sitename}
+                  </label>&nbsp;&nbsp;&nbsp;
+                </if>
+              </volist>
+            </if>
+         </td>
+        </tr>
+      </notempty>
+      <tr>
+          <td height="30" align="right" bgcolor="#FFFFFF" > 选择展位模板：</td>
+          <td bgcolor="#FFFFFF" >
+      <div>
+    <input type="text" value="请选择"  readonly="readonly" name="tpl_id_cn" id="tpl_id_cn" class="input_text_200 input_text_selsect"/>
+    <input name="tpl_id" id="tpl_id" type="hidden" value="0" />
+    <div id="menu3" class="menu">
+      <ul>
+      <volist name="tpl_arr" id="list">
+        <li id="{$list['id']}" title="{$list['title']}">{$list['title']}</li>
+      </volist>
+      </ul>
+    </div>
+      </div>
+       </td>
+          </tr>
+      <tr>
+		  <td align="right"   >&nbsp;</td>
+		  <td height="50" >
+		  
+		  <input type="submit" name="Submit3" value="提交" class="admin_submit"   />
+<input name="submit222" type="button" class="admin_submit"    value="返回" onclick="Javascript:window.history.go(-1)"/>
+		  </td>
+		  </tr>
+    </table>
+  </form>
+</div>
+<include file="Admin@default/public/footer" />
+<link rel="stylesheet" href="__ADMINPUBLIC__/js/kindeditor/themes/default/default.css" />
+<script charset="utf-8" src="__ADMINPUBLIC__/js/kindeditor/kindeditor-min.js"></script>
+<script charset="utf-8" src="__ADMINPUBLIC__/js/kindeditor/lang/zh_CN.js"></script>
+<link href="__ADMINPUBLIC__/css/date_input.css" rel="stylesheet" type="text/css" />
+<script src="__ADMINPUBLIC__/js/jquery.date_input.js" type='text/javascript' language="javascript"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak={:C('qscms_map_ak')}"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.js"></script>
+<link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />
+<script type="text/javascript" src="../public/js/jquery.modal.userselectlayer.js"></script>
+<script type="text/javascript">
+$(document).ready(function()
+{
+  	showmenu("#tpl_id_cn","#menu3","#tpl_id");
+	var editor;
+	KindEditor.ready(function(K) {
+	    editor = K.create('textarea[name="introduction"]', {
+	    	uploadJson : "__ROOT__/?m={:C('admin_alias')}&c=upload&a=index",
+	        allowFileManager : true,
+	        afterBlur: function(){this.sync();}
+	    });
+	});
+	//日期
+	$(function() { 
+		$(".date_input").date_input(); 
+	});
+	//预定状态
+	var status=$("#status :radio[checked]").val();
+	status=="1"?$(".status1").show():$(".status1").hide();
+	$("#status :radio").click(function(){
+		var status=$("#status  :radio[checked]").val();
+		status=="1"?$(".status1").show():$(".status1").hide();
+	});	 
+	var map = new BMap.Map("container");  
+	var overlays = [];
+	//假如有设置的，显示参数
+	var point = new BMap.Point({:C('qscms_map_center_x')},{:C('qscms_map_center_y')});
+	map.centerAndZoom(point, {:C('qscms_map_zoom')}); 
+	map.setCenter(point);
+	map.addControl(new BMap.NavigationControl());//添加鱼骨
+	map.enableScrollWheelZoom();//启用滚轮放大缩小，默认禁用。
+	var styleOptions = {
+        strokeColor:"red",    //边线颜色。
+        fillColor:"red",      //填充颜色。当参数为空时，圆形将没有填充效果。
+        strokeWeight: 3,       //边线的宽度，以像素为单位。
+        strokeOpacity: 0.8,	   //边线透明度，取值范围0 - 1。
+        fillOpacity: 0.6,      //填充的透明度，取值范围0 - 1。
+        strokeStyle: 'solid' //边线的样式，solid或dashed。
+    }
+    //实例化鼠标绘制工具
+    var drawingManager = new BMapLib.DrawingManager(map, {
+        isOpen: false, //是否开启绘制模式
+        enableDrawingTool: true, //是否显示工具栏
+        drawingToolOptions: {
+            anchor: BMAP_ANCHOR_TOP_RIGHT, //位置
+            offset: new BMap.Size(5, 5), //偏离值
+            drawingModes : [
+	            BMAP_DRAWING_MARKER
+	        ]
+        },
+        circleOptions: styleOptions, //圆的样式
+    });  
+	var overlaycomplete = function(e){
+        clearAll();
+    	overlays.push(e.overlay);
+		document.getElementById('x').value = e.overlay.point.lng;
+		document.getElementById('y').value = e.overlay.point.lat;
+		document.getElementById('zoom').value = map.getZoom();
+    };
+    drawingManager.addEventListener('overlaycomplete', overlaycomplete);
+   
+	function clearAll() {
+		for(var i = 0; i < overlays.length; i++){
+	        map.removeOverlay(overlays[i]);
+	    }
+	    overlays.length = 0   
+	}
+	$("#FormData").validate({
+		rules:
+		{
+			title:"required",
+			holddate_start:"required",
+			holddate_end:"required",
+			address:"required",
+			contact:"required",
+			phone:"required",
+			introduction:"required"
+		},
+		messages:
+		{
+			title: 
+			{
+				required: "请输入招聘会标题"
+			},
+			holddate_start: 
+			{
+				required: "请输入举办开始日期"
+			},
+			holddate_end: 
+			{
+				required: "请输入举办结束日期"
+			},
+			address: 
+			{
+				required: "请输入举办地址"
+			},
+			contact: 
+			{
+				required: "请输入联系人"
+			},
+			phone: 
+			{
+				required: "请输入联系电话"
+			},
+			introduction:
+			{
+				required: "请输入招聘会简介"
+			}
+		},
+		errorPlacement: function(error, element)
+		{
+			if ( element.is(":radio") )
+			error.appendTo( element.parent().next().next() );
+			else if ( element.is(":checkbox") )
+			error.appendTo ( element.next());
+			else
+			error.appendTo(element.parent());
+		}
+		// <span style="color:#FF3300; font-weight:bold">*</span>
+	});
+});
+</script>
+</body>
+</html>

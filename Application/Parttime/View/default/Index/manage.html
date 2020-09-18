@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <include file="Home@default/public/meta" />
+    <link href="{:C('TPL_HOME_PUBLIC_DIR')}/css/common.css" rel="stylesheet" type="text/css" />
+    <link href="{:C('TPL_PUBLIC_DIR')}/css/parttime.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<include file="Home@default/public/header_other" />
+<!--搜索 -->
+<div class="new-search-box"></div>
+<div class="main-box manage">
+    <div class="user_main">
+        <div class="mright">
+            <div class="user_pagetitle">
+                <div class="pat_l">管理兼职</div>
+                <div class="pat_r">
+                    <form id="list_search_form" action="{:U('Parttime/Index/manage')}" method="get">
+                        <input type="hidden" name="m" value="{:MODULE_NAME}">
+                        <input type="hidden" name="c" value="{:CONTROLLER_NAME}">
+                        <input type="hidden" name="a" value="{:ACTION_NAME}">
+                        <input name="key" id="key" type="text" value="{$Think.get.key}" class="input_245_34" placeholder="请输入职位名称">
+                        <div class="btn_yellow J_hoverbut btn_inline btnSearch" id="btnSearch" style="padding: 7px 15px;">搜索</div>
+                    </form>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <notempty name="joblist">
+            <form id="form1" action="{:U('refresh')}" class="J_allListBox" method="post">
+                <div class="jobsWrap">
+                    <volist name="joblist" id="vo">
+                        <div class="jobsList">
+                            <div class="selWrap">
+                                <input name="id[]" class="selStatus J_allList" type="checkbox" value="{$vo['id']}">
+                            </div>
+                            <div class="jobs fl">
+                                <div class="title">
+                                    <a target="_blank" href="{$vo.url}">{$vo['jobs_name']}</a>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$vo['district_cn']}
+                                </div>
+                                <div class="update">
+                                    {$vo['amount']}人&nbsp;|&nbsp;{$vo['wage_cn']}&nbsp;|&nbsp;
+                                    <a href="{:U('receive',array('pid'=>$vo['id']))}">收到报名：（{$vo['apply_num']}）</a>
+                                </div>
+                            </div>
+                            <div class="s-t-box fl">
+                                <if condition="$vo['audit'] eq 0">
+                                    <div class="status fl font_yellow">[审核中]</div>
+                                <elseif condition="$vo['audit'] eq 2" />
+                                    <div class="status fl font_red">[未通过]</div>
+                                <else />
+                                    <div class="status fl font_gray9">[发布中]</div>
+                                </if>
+                            </div>
+                            <div class="edit link_blue fl">
+                                <div class="refreshtime">刷新时间：{$vo['refreshtime_cn']}</div>
+                                <div>
+                                    <a href="javascript:;" data-url="{:U('refresh')}" data-id="{$vo['id']}" class="J_refresh">刷新</a>
+                                    <a href="{:U('edit',array('id'=>$vo['id']))}">修改</a>
+                                    <a href="javascript:;" data-url="{:U('delete',array('id'=>$vo['id']))}" class="J_delete">删除</a>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </volist>
+                </div>
+                <div class="jobsWrap">
+                    <div class="allSelWrap">
+                        <input name="" class="allSel J_allSelected" type="checkbox">
+                    </div>
+                    <div class="btn_yellow J_hoverbut btn_inline publish" data-checkurl="{:U('Index/check_jobs_num')}" data-url="{:U('Index/add')}">发布职位</div>
+                    <div class="btn_blue J_hoverbut btn_inline " id="refresh_all" >刷新职位</div>
+                    <div class="btn_lightgray J_hoverbut btn_inline " id="delete_all">删除职位</div>
+                    <div class="qspage">{$page}</div>
+                    <div class="clear"></div>
+                </div>
+            </form>
+            <else/>
+                <div class="jobsWrap">
+                    <div class="res_empty">
+                        您还没有发布职位，赶紧发布职位招揽人才吧
+                    </div>
+                    <div class="res_empty_addbox">
+                        <div class="btn_blue J_hoverbut btn_115_38 publish"  data-checkurl="{:U('Index/check_jobs_num')}" data-url="{:U('Index/add')}">发布职位>></div>
+                    </div>
+                </div>
+            </notempty>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<div class="clear"></div>
+<include file="Home@default/public/footer_min" />
+<script type="text/javascript" src="{:C('TPL_HOME_PUBLIC_DIR')}/js/jquery.allselected.js"></script>
+<script type="text/javascript">
+    $('.J_refresh').click(function(){
+        var url = $(this).data('url');
+        var id = $(this).data('id');
+        $.post(url,{id:id},function(result){
+            if(result.status==1){
+                disapperTooltip('success', result.msg);
+                setTimeout(function () {
+                    location.reload();
+                }, 2000);
+            }else{
+                disapperTooltip('remind', result.msg);
+            }
+        },'json');
+    });
+    $('.J_delete').click(function(){
+        var url = $(this).data('url');
+        var qsDialog = $(this).dialog({
+            title: '删除职位',
+            border: false,
+            content:'<div class="warning_dialog"><div class="tip">被删除后将无法恢复，您确定要删除选中的职位吗？</div></div>',
+            yes: function () {
+                $.getJSON(url,function(result){
+                    if(result.status==1){
+                        disapperTooltip('success', result.msg);
+                        setTimeout(function () {
+                            location.reload();
+                        }, 2000);
+                    }else{
+                        disapperTooltip('remind', result.msg);
+                    }
+                });
+            }
+        });
+    });
+    $("#delete_all").click(function(){
+        var listCheckedArray = $('.J_allListBox .J_allList:checked');
+        if (!listCheckedArray.length) {
+            disapperTooltip("remind",'请选择职位');
+            return false;
+        }
+        var url = "{:U('delete')}";
+        var qsDialog = $(this).dialog({
+            title: '删除职位',
+            border: false,
+            content:'<div class="warning_dialog"><div class="tip">被删除后将无法恢复，您确定要删除选中的职位吗？</div></div>',
+            yes: function () {
+                $("#form1").attr('action',"{:U('delete')}");
+                $("#form1").submit();
+            }
+        });
+    });
+    $("#refresh_all").click(function(){
+        var listCheckedArray = $('.J_allListBox .J_allList:checked');
+        if (!listCheckedArray.length) {
+            disapperTooltip("remind",'请选择职位');
+            return false;
+        }
+        $.post("{:U('refresh')}",$("#form1").serialize(),function(result){
+            if(result.status==1){
+                disapperTooltip('success', result.msg);
+                setTimeout(function () {
+                    location.reload();
+                }, 2000);
+            }else{
+                disapperTooltip('remind', result.msg);
+            }
+        },'json');
+    });
+    $('#btnSearch').click(function(){
+        $('#list_search_form').submit();
+    });
+    $('.publish').on('click',function(){
+        var url = $(this).data('url');
+        var checkurl = $(this).data('checkurl');
+        $.getJSON(checkurl,function(result){
+            if(result.status == 0){
+                disapperTooltip("remind", result.msg);
+                return false;
+            }else{
+                window.location.href=url;
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <qscms:subject_show 列表名="info" 专题id="$_GET['id']" />
+        <include file="Mobile@public/meta" />
+        <link rel="stylesheet" href="{$tpl_public_dir}/css/subject_new.css?v={:strtotime('today')}">
+    </head>
+    <body style="background:#fff;">
+        <div class="show_header_content">
+            <div class="show_header">
+                <div class="show_header_title substring font16">网络招聘会详情</div>
+                <div class="show_header_back js-back"></div>
+                <a href="{:U('Index/index')}" class="show_header_home"></a>
+            </div>
+        </div>
+        <div class="sub_4">
+            <div class="tx1 font18">{$info.title}</div>
+            <div class="tx3 font12">举办日期：{:date('Y-m-d',$info['holddate_start'])}-{:date('Y-m-d',$info['holddate_end'])}</div>
+        </div>
+        <div class="sub_notice" id="J_app_up">
+            <ul class="ul-upscroll font12" id="J_ajax_scroll">
+                <script type="text/javascript">
+                    var ajaxScrollHtml = '';
+                    $.getJSON('{:U("subject/ajax_scroll",array('subject_id'=>$info['id']))}',function(result){
+                        if (result.status) {
+                            var dataArr = result.data;
+                            for (var i = 0; i < dataArr.length; i++) {
+                                if (dataArr[i]['type'] == 'com') {
+                                    ajaxScrollHtml += '<li><a href="'+dataArr[i]['company_url']+'" target="_blank">'+dataArr[i]['companyname']+'</a>加入了招聘会</li>';
+                                } else if(dataArr[i]['type'] == 'apply') {
+                                    ajaxScrollHtml += '<li><a href="'+dataArr[i]['resume_url']+'" target="_blank">'+dataArr[i]['fullname']+'</a>在招聘会中投递了<a href="'+dataArr[i]['job_url']+'" target="_blank">'+dataArr[i]['jobs_name']+'</a></li>';
+                                }else if (dataArr[i]['type'] == 'resume') {
+                                        ajaxScrollHtml += '<li><a href="'+dataArr[i]['resume_url']+'" target="_blank">'+dataArr[i]['fullname']+'</a>加入了招聘会</li>';
+                                }
+                            }
+                            $('#J_ajax_scroll').html(ajaxScrollHtml);
+                        }
+                    })
+                </script>
+            </ul>
+        </div>
+        <div class="sub_5">
+            <div class="b_content font13">
+                <a href="{:U('show',array('id'=>$info['id']))}" class="b_cell">招聘大厅</a>
+                <a href="{:U('personal_show',array('id'=>$info['id']))}" class="b_cell">求职者大厅</a>
+                <a href="{:U('pms_message_log',array('id'=>$info['id']))}" class="b_cell checked">聊天室</a>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="sub_8">
+            <a href="{:U('pms_message_log',array('id'=>$info['id']))}" class="b_cell ct font14 checked">消息大厅</a>
+            <a href="{:U('message_log',array('id'=>$info['id']))}" class="b_cell font14">招聘会介绍</a>
+            <div class="clear"></div>
+            <div class="b_apy_1 font10 J_con_bm" data-id="{$info.id}">企业<br>参会</div>
+            <div class="b_apy_2 font10 J_con_bm_p" data-id="{$info.id}">求职者<br>参会</div>
+            <div class="b_apy_3 font10" id="J_con_us">联系<br>客服</div>
+        </div>
+        <div class="sub_chat_wrapper">
+            <if condition="$info['subject_note']">
+            <div class="b_status notice font13" id="J_chat_notice">
+				<marquee align="right" behavior="" direction="">{$info['subject_note']}</marquee>
+            </div>
+            <else />
+                <div class="b_status font13">本场招聘会参会人员正在热聊中</div>
+            </if>
+            <div class="cr_top" id="J_msg_wrapper">
+                <div class="crt_wrapper" id="J_msg_wrapper_content">
+
+                </div>
+            </div>
+        </div>
+        <div class="sub_11" id="J_chat_bar">
+            <div class="b_con">
+                <div class="c_file"><input type="file" id="browseFile" class="browseFile"></div>
+                <div class="c_inp_box">
+                    <input type="text" id="J_chat_input" class="c_inp font15" placeholder="输入你的发言…">
+                </div>
+                <div class="c_send_bt font15" id="J_chat_send">发送</div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <include file="Mobile@public/footer_js" />
+        <script src="{$tpl_public_dir}/js/zepto.textSlider.js"></script>
+        <script type="text/javascript" charset="utf-8" src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+        <script src="{$tpl_public_dir}/js/mobileBUGFix.mini.js"></script>
+        <script src="{$tpl_public_dir}/js/LocalResizeIMG.js"></script>
+        <script>
+            // 聊天
+            var cuSubjectId = "{$info.id}", cuUserName = "{$info.name}", cuUserAvatar = "{$info.photosrc}"
+            , cuUserId = "{$visitor.uid}";
+            if (eval(qscms.is_login)) {
+                $('#J_chat_input, #browseFile').prop('disabled', 0);
+            } else {
+                $('#J_chat_input, #browseFile').prop('disabled', !0);
+            }
+
+            function animateDown() {
+                $('html').scrollTo({
+                    toT : $('html').height(),
+                    durTime: 500
+                })
+				handlePhoneNumber();
+            }
+			
+            var lastId = 0, getUid = '';
+            // 请求数据
+            function getData() {
+                var url = "{:U('ajax_chat_log')}";
+                $.post(url, {id: cuSubjectId, last_id: lastId, uid: getUid}, function(result) {
+                    if (eval(result.status) === 1) {
+						if (result.data.html) {
+							$('#J_msg_wrapper_content').append(result.data.html);
+							animateDown();
+						}
+                    }
+                });
+                setTimeout(function() {
+                    lastId = $("#J_msg_wrapper").find('.other_msg_box').last().attr('fid');
+                    getData();
+                },60000)
+            }
+            getData();
+
+            // 获取时间
+            function getTime() {
+                function getNow(s) {
+                    return s < 10 ? '0' + s: s;
+                }
+                var myDate = new Date();
+                var year=myDate.getFullYear();
+                var month=myDate.getMonth()+1;
+                var date=myDate.getDate();
+                var h=myDate.getHours();
+                var m=myDate.getMinutes();
+                var s=myDate.getSeconds();
+                var now = year+'-'+getNow(month)+"-"+getNow(date)+" "+getNow(h)+':'+getNow(m)+":"+getNow(s);
+                return getNow(h)+':'+getNow(m);
+            }
+
+            $('#J_chat_bar').on('click', function() {
+                if (eval(qscms.is_login)) {
+
+                } else {
+                    if (eval(qscms.smsTatus)) {
+                        logDialog('','',1);
+                    } else {
+                        window.location.href = "{:url_rewrite('QS_login')}";
+                    }
+                }
+            });
+
+            $('#J_chat_send').on('click',function(event){
+                var inputKey = $('#J_chat_input').val();
+                var url = "{:U('ajax_chat')}";
+                if (inputKey) {
+                    $.post(url, {id: cuSubjectId, note: inputKey}, function(result) {
+                        if (eval(result.status) === 1) {
+                            var minHtml = '<div class="mine_msg_box"><img src="'+cuUserAvatar+'" alt="" class="m_ava"><div class="m_wra_name">'+cuUserName+'</div><div class="m_wra_i"></div><div class="m_wra_txt">'+inputKey+'</div><div class="m_wra_time">'+getTime()+'</div></div>';
+                            $('#J_chat_input').val('');
+                            $('#J_msg_wrapper_content').append(minHtml);
+                            animateDown();
+							getUid = cuUserId;
+                        } else {
+                            qsToast(result.msg, 0, '');
+                        }
+                    });
+                }
+            });
+            // 上传聊天图片
+            $('#browseFile').localResizeIMG({
+                width: 300,
+                quality: 1,
+                success: function(result) {
+                    var submitData = {
+                        base64_string: result.clearBase64,
+                        id:cuSubjectId
+                    };
+                    $.ajax({
+                        type: "POST",
+                        url: "{:U('upload/subject_message_img')}",
+                        data: submitData,
+                        dataType: "json",
+                        success: function(result) {
+                            var minHtml = '<div class="mine_msg_box"><img src="'+cuUserAvatar+'" alt="" class="m_ava"><div class="m_wra_name">'+cuUserName+'</div><div class="m_wra_i"></div><div class="m_wra_txt"><div class="m_wra_img"><img src="'+result.data.path+'" alt=""></div></div><div class="m_wra_time">'+getTime()+'</div></div>';
+							$('#J_msg_wrapper_content').append(minHtml);
+							animateDown();
+							getUid = cuUserId;
+                        },
+                        complete: function(XMLHttpRequest, textStatus) {},
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            //上传失败
+                            qsToast('图片上传失败', 0, '');
+                        }
+                    });
+                }
+            });
+            // 公告滚动
+            $(function(){
+                var _wrap=$('#J_app_up');
+                var _interval=3000;
+                setInterval(function(){
+                    var _field=_wrap.find('li').first();
+                    var _h=0.8;
+                    _field.animate({marginTop:-_h+'rem'},600,function(){
+                        _field.css('marginTop',0).appendTo(_wrap.find("ul"));
+                    })
+                },_interval);
+            });
+			// 处理聊天内容中手机号
+			function handlePhoneNumber() {
+				$('.m_wra_txt').each(function() {
+					var numberValue = $.trim($(this).text()), phoneNumber = numberValue.match(/\b1\d{10}\b/g);
+					if ($(this).html().indexOf("J_a") == -1) {
+						if(phoneNumber){
+							var replaceHtml = '<a class="J_a" href="tel:'+phoneNumber+'">'+phoneNumber+'</a>',
+							htmlArr = $(this).html().split(phoneNumber);
+							$(this).html(htmlArr[0] + replaceHtml + htmlArr[1]);
+						}
+					}
+				});
+			}
+            // 关闭底部申请
+            $('.J_close_apy').on('click', function() {
+                $('.J_apy_box').hide();
+            });
+            // 在线客服
+            $('#J_con_us').on('click', function () {
+                var $subPop = new QSpopout();
+                $subPop.setContent('<img class="left_float_img" src="{$info['wx_img']}"><p>长按二维码添加客服微信</p><p></p>');
+                $subPop.setBtn(1, ['确定']);
+                $subPop.show();
+                $subPop.getPrimaryBtn().click(function() {
+                    $subPop.hide();
+                });
+            });
+            var utype = "{:C('visitor.utype')}";
+            var isVisitor = "{:C('visitor.uid')}";
+            // 企业报名
+            $(".J_con_bm").on('click',function(){
+                var url = "{:U('Company/ajax_enroll')}";
+                var subject_id = $(this).data('id');
+                var $that = $(this);
+                if ((qscms.is_login > 0)) {
+                    if(qscms.utype != 1){
+                        $(document).dialog({
+                            titleText: '提示',
+                            type : 'confirm',
+                            buttonTextConfirm:'切换',
+                            content: '您当前为“个人帐号”，本次操作需为“企业帐号”，是否切换为“企业帐号”？',
+                            onClickConfirmBtn: function() {
+                                $.getJSON("{:U('Members/switch_utype')}",{utype:1},function(result){
+                                    if(result.status==1){
+                                        qsToast(result.msg, 1, '');
+                                        qscms.is_login = 1;
+                                        qscms.utype = 1;
+                                        setTimeout(function(){
+                                            ajDoCollectJob();
+                                        },1500);
+                                    } else {
+                                        qsToast(result.msg, 0, '');
+                                        return false;
+                                    }
+                                });
+                            }
+                        });
+                        return false;
+                    }
+                    ajDoCollectJob();
+                    function ajDoCollectJob() {
+                        var $cuLoad = qsToasting('', 0);
+                        $.post(url,{subject_id:subject_id},function(result){
+                            $cuLoad.close();
+                            if(result.status==1){
+                                if (result.data == 'company') {
+                                    // 企业资料未完善，‘立即完善’按钮，‘取消’按钮
+                                    $(document).dialog({
+                                        titleText: '提示',
+                                        type : 'confirm',
+                                        content: result.msg,
+                                        buttons: [
+                                            {
+                                                name: '取消',
+                                                callback: function() {}
+                                            },
+                                            {
+                                                name: '立即完善',
+                                                callback: function() {
+                                                    $('.dialog').removeClass('dialog-open').addClass('dialog-open');
+                                                        setTimeout(function () {
+                                                        window.location.href = "{:U('Company/com_info')}";
+                                                    }, 200);
+                                                }
+                                            }
+                                        ]
+                                    });
+                                }else if(result.data == 'setmeal'){
+                                    // 升级套餐，‘升级套餐’按钮，‘取消’按钮
+                                    $(document).dialog({
+                                        titleText: '提示',
+                                        type : 'confirm',
+                                        content: result.msg,
+                                        buttons: [
+                                            {
+                                                name: '取消',
+                                                callback: function() {}
+                                            },
+                                            {
+                                                name: '升级套餐',
+                                                callback: function() {
+                                                    $('.dialog').removeClass('dialog-open').addClass('dialog-open');
+                                                    setTimeout(function () {
+                                                        window.location.href = "{:U('CompanyService/setmeal_add')}";
+                                                    }, 200);
+                                                }
+                                            }
+                                        ]
+                                    });
+                                }else if(result.data == 'audit'){
+                                    $(document).dialog({
+                                        titleText: '提示',
+                                        type : 'confirm',
+                                        content: result.msg,
+                                        buttons: [
+                                            {
+                                                name: '取消',
+                                                callback: function() {}
+                                            },
+                                            {
+                                                name: '立即认证',
+                                                callback: function() {
+                                                    $('.dialog').removeClass('dialog-open').addClass('dialog-open');
+                                                    setTimeout(function () {
+                                                        window.location.href = "{:U('Company/com_auth')}";
+                                                    }, 200);
+                                                }
+                                            }
+                                        ]
+                                    });
+                                }else if(result.data == 'jobs'){
+                                    $(document).dialog({
+                                        titleText: '提示',
+                                        type : 'confirm',
+                                        content: result.msg,
+                                        buttons: [
+                                            {
+                                                name: '取消',
+                                                callback: function() {}
+                                            },
+                                            {
+                                                name: '立即添加',
+                                                callback: function() {
+                                                    $('.dialog').removeClass('dialog-open').addClass('dialog-open');
+                                                    setTimeout(function () {
+                                                        window.location.href = "{:U('Company/jobs_add')}";
+                                                    }, 200);
+                                                }
+                                            }
+                                        ]
+                                    });
+                                }else{
+                                    qsToast(result.msg, 1, '');
+                                }
+                            }else {
+                                qsToast(result.msg, '', '');
+                                return false;
+                            }
+                        });
+                    }
+                } else {
+                //判断有没有配置短信
+                    if (eval(qscms.smsTatus)) {
+                        logDialog('','',1);
+                    } else {
+                        window.location.href = "{:url_rewrite('QS_login')}";
+                    }
+                }
+            });
+           // 个人报名
+            $(".J_con_bm_p").on('click',function(){
+                var url = "{:U('Personal/ajax_enroll')}";
+                var subject_id = $(this).data('id');
+                var $that = $(this);
+                if ((qscms.is_login > 0)) {
+                    if(qscms.utype != 2){
+                        $(document).dialog({
+                            titleText: '提示',
+                            type : 'confirm',
+                            buttonTextConfirm:'切换',
+                            content: '您当前为“企业帐号”，本次操作需为“个人帐号”，是否切换为“个人帐号”？',
+                            onClickConfirmBtn: function() {
+                                $.getJSON("{:U('Members/switch_utype')}",{utype:2},function(result){
+                                    if(result.status==1){
+                                        qsToast(result.msg, 1, '');
+                                        qscms.is_login = 1;
+                                        qscms.utype = 2;
+                                        setTimeout(function(){
+                                            ajDoCollectJob();
+                                        },1500);
+                                    } else {
+                                        qsToast(result.msg, 0, '');
+                                        return false;
+                                    }
+                                });
+                            }
+                        });
+                        return false;
+                    }
+                    ajDoCollectJob();
+                    function ajDoCollectJob() {
+                        var $cuLoad = qsToasting('', 0);
+                        $.post(url,{subject_id:subject_id},function(result){
+                            $cuLoad.close();
+                            if(result.status==1){
+                                if (result.data.type == 'resume') {
+                                    // 企业资料未完善，‘立即完善’按钮，‘取消’按钮
+                                    $(document).dialog({
+                                        titleText: '提示',
+                                        type : 'confirm',
+                                        content: result.msg,
+                                        buttons: [
+                                            {
+                                                name: '取消',
+                                                callback: function() {}
+                                            },
+                                            {
+                                                name: '立即创建',
+                                                callback: function() {
+                                                    $('.dialog').removeClass('dialog-open').addClass('dialog-open');
+                                                        setTimeout(function () {
+                                                        window.location.href = "{:U('personal/resume_add')}";
+                                                    }, 200);
+                                                }
+                                            }
+                                        ]
+                                    });
+                                }else if(result.data.type == 'percent'){
+                                     $(document).dialog({
+                                        titleText: '提示',
+                                        type : 'confirm',
+                                        content: result.msg,
+                                        buttons: [
+                                            {
+                                                name: '取消',
+                                                callback: function() {}
+                                            },
+                                            {
+                                                name: '立即完善',
+                                                callback: function() {
+                                                    $('.dialog').removeClass('dialog-open').addClass('dialog-open');
+                                                        setTimeout(function () {
+                                                        window.location.href = result.data.url;
+                                                    }, 200);
+                                                }
+                                            }
+                                        ]
+                                    });
+                                }else{
+                                    qsToast(result.msg, 1, '');
+                                }
+                            }else {
+                                qsToast(result.msg, '', '');
+                                return false;
+                            }
+                        });
+                    }
+                } else {
+                //判断有没有配置短信
+                    if (eval(qscms.smsTatus)) {
+                        logDialog('','',1);
+                    } else {
+                        window.location.href = "{:url_rewrite('QS_login')}";
+                    }
+                }
+            });
+           // 聊天
+            $('.J_im_btn').on('click', function() {
+                if (isVisitor > 0) {
+                    var uid = $(this).data('uid');
+                    if (isVisitor == uid) {
+                        qsToast('不能和自已聊天');
+                        return false;
+                    }
+                    if (qscms.utype != 2) {
+                        $(document).dialog({
+                            titleText: '提示',
+                            type : 'confirm',
+                            buttonTextConfirm:'切换',
+                            content: '您当前为“企业帐号”，本次操作需为“个人帐号”，是否切换为“个人帐号”？',
+                            onClickConfirmBtn: function() {
+                                $.getJSON("{:U('Members/switch_utype')}",{utype:2},function(result){
+                                    if(result.status==1){
+                                        qsToast(result.msg, 1, '');
+                                        setTimeout(function(){
+                                            window.location.reload();
+                                        },2000);
+                                    } else {
+                                        qsToast(result.msg, 0, '');
+                                        return false;
+                                    }
+                                });
+                            }
+                        });
+                        return false;
+                    }
+                } else {
+                    window.location.href = "{:U('members/login')}";
+                    return false;
+                }
+            }); 
+            // 切换搜索条件
+            $('.filter_box').on('click', function () {
+                $('.choose-s-type-group').toggleClass('open');
+            });
+            $('.choose-s-type-cell .qs-center').on('click', function () {
+                var stypeCode = $(this).find('.choose-s-type-list').data('code');
+                var stypeTitle = $(this).find('.choose-s-type-list').data('title');
+                $('.for-type-code').val(stypeCode);
+                $('.for-type-txt').text(stypeTitle);
+                $('.choose-s-type-group').toggleClass('open');
+            });
+            wx.config({
+                // debug: true,
+                appId: '{$signPackage.appId}',
+                timestamp: '{$signPackage.timestamp}',
+                nonceStr: '{$signPackage.nonceStr}',
+                signature: '{$signPackage.signature}',
+                jsApiList: [
+                    // 所有要调用的 API 都要加到这个列表中
+                    "onMenuShareTimeline",
+                    "onMenuShareAppMessage",
+                    "onMenuShareQQ",
+                    "onMenuShareWeibo"
+                ]
+            });
+            wx.ready(function () {
+                var linkUrl = "{:build_mobile_url(array('c'=>'Mobile','a'=>'show','params'=>'id='.$info['id']))}";//放链接
+                var title = "{$info['seo_keywords']} - {:C('qscms_site_name')}";
+                var desc = "{$info['seo_keywords']}";
+                var imgUrl = "{$info['img']}";//图片链接
+
+                wx.onMenuShareTimeline({
+                    title: title, // 分享标题
+                    desc: desc, // 分享描述
+                    link: linkUrl, // 分享链接
+                    imgUrl: imgUrl, // 分享图标
+                    success: function () {
+                    },
+                    cancel: function () {
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+                wx.onMenuShareAppMessage({
+                    title: title, // 分享标题
+                    desc: desc, // 分享描述
+                    link: linkUrl, // 分享链接
+                    imgUrl: imgUrl, // 分享图标
+                    type: '', // 分享类型,music、video或link，不填默认为link
+                    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                    success: function () {
+                    },
+                    cancel: function () {
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+                wx.onMenuShareQQ({
+                    title: title, // 分享标题
+                    desc: desc, // 分享描述
+                    link: linkUrl, // 分享链接
+                    imgUrl: imgUrl, // 分享图标
+                    success: function () {
+                    },
+                    cancel: function () {
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+                wx.onMenuShareWeibo({
+                    title: title, // 分享标题
+                    desc: desc, // 分享描述
+                    link: linkUrl, // 分享链接
+                    imgUrl: imgUrl, // 分享图标
+                    success: function () {
+                    },
+                    cancel: function () {
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

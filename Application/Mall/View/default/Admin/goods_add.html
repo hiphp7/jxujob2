@@ -1,0 +1,158 @@
+<include file="Admin@default/public/header" />
+<div class="toptit">添加商品</div>
+  <form id="form1" name="form1" method="post" action="{:U('goods_add')}" ENCTYPE="multipart/form-data">
+  <table width="100%" border="0" cellpadding="4" cellspacing="0"   >
+    <tr>
+      <td width="120" height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">商品名称：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed"> <input name="goods_title" type="text" class="input_text_200" id="goods_title" maxlength="25" /> <label></label></td>
+    </tr>
+    <tr>
+      <td height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">品牌：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed" ><input name="goods_brand" type="text" class="input_text_200" id="goods_brand" maxlength="25" /><label></label></td>
+    </tr>
+    <tr>
+      <td width="120" height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">商品编号：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed"> <input name="goods_number" type="text" class="input_text_200" id="goods_number" maxlength="25" /> <label></label></td>
+    </tr>
+    <tr>
+      <td height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">所属分类：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed" >
+        <select id="scategory" name="scategory" style="width: 205px;height: 25px;">
+          <option value="">请选择所属分类</option>
+          <volist name="category[0]" id="v">
+              <option disabled>{$v['categoryname']}</option>
+              <volist name="category[$v['id']]" id="vo">
+                <option value="{$vo['parentid']},{$vo['id']},{$vo['categoryname']}">&nbsp;&nbsp;{$vo['categoryname']}</option>
+              </volist>
+          </volist>
+
+
+        </select>
+        <label></label>
+      </td>
+    </tr>
+	
+    <tr>
+      <td height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">库存：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed" ><input name="goods_stock" type="text" class="input_text_200" id="goods_stock" maxlength="25"/><label></label></td>
+    </tr>
+    <tr>
+      <td height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">每人限制兑换数：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed" ><input name="goods_customer" type="text" class="input_text_200" id="goods_customer" maxlength="25" /></td>
+    </tr>
+     <tr>
+      <td height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">兑换所需{:C("qscms_points_byname")}：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed" ><input name="goods_points" type="text" class="input_text_200" id="goods_points" maxlength="25"/><label></label></td>
+    </tr>
+    <tr>
+      <td height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">商品缩略图：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed" >
+        <input name="goods_img" type="file" id="goods_img"/><label></label>
+      </td>
+    </tr>
+    <tr>
+      <td height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">商品描述：</td>
+    <td ><textarea id="content" name="content" style="width:700px;height:300px;visibility:hidden;"></textarea></td>
+    </tr>
+    <tr>
+      <td height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">首页推广：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed" >
+        <label><input type="checkbox" name="recommend" value="1" />推广</label>
+        <label></label>
+      </td>
+    </tr>
+    <tr>
+      <td height="30" align="right"  >&nbsp;</td>
+      <td height="60"  ><span style="font-size:14px;">
+        <input name="submit3" type="submit" class="admin_submit"    value="添加"/>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input name="submit22" type="button" class="admin_submit"    value="返 回" onclick="window.location.href='{:U('index')}'"/>
+      </span></td>
+    </tr>
+  </table>
+  </form>
+</div>
+<include file="public:footer" />
+<link rel="stylesheet" href="__ADMINPUBLIC__/js/kindeditor/themes/default/default.css" />
+<script charset="utf-8" src="__ADMINPUBLIC__/js/kindeditor/kindeditor-min.js"></script>
+<script charset="utf-8" src="__ADMINPUBLIC__/js/kindeditor/lang/zh_CN.js"></script>
+<script type="text/javascript">
+$(document).ready(function()
+{
+  $("#form1").validate({
+    rules:{
+      goods_title:{
+        required: true
+      },
+      goods_brand:{
+        required: true
+      },
+      goods_number:{
+        required: true
+      },
+      scategory:{
+        required: true
+      },
+      goods_stock:{
+        required: true
+      },
+      goods_customer:{
+        required: true
+      },
+      goods_points:{
+        required: true
+      },
+      editor:{
+        required: true
+      }
+    },
+    messages: {
+      goods_title: {
+        required: "请输入商品标题"
+      },
+      goods_brand: {
+        required: "请输入商品品牌"
+      },
+      goods_number: {
+        required: "请输入商品编号"
+      },
+      scategory: {
+        required: "请选择所属分类"
+      },
+      goods_stock: {
+        required: "请填写库存"
+      },
+      goods_customer:{
+        required: "请填写每人限兑数"
+      },
+      goods_points:{
+        required: "请填写兑换所需{:C('qscms_points_byname')}"
+      },
+      editor:{
+        required: "请输入商品描述"
+      }
+     },
+     errorPlacement: function(error, element) {
+      if ( element.is(":radio") )
+          error.appendTo( element.parent().next().next() );
+      else if ( element.is(":checkbox") )
+          error.appendTo ( element.next());
+      else
+          error.appendTo(element.next());
+    }
+  });
+  var editor;
+  KindEditor.ready(function(K) {
+    editor = K.create('textarea[name="content"]', {
+      uploadJson : "__ROOT__/?m={:C('admin_alias')}&c=upload&a=index",
+      allowFileManager : true,
+      afterBlur: function(){this.sync();}
+    });
+    K('input[name=Submit2]').click(function(e) {
+      editor.html('');
+    });
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<include file="public:header" />
+    <div class="toptip">
+        <h2>提示：</h2>
+		<p>
+			页面关联标记与导航关联标记相同时(导航关联标记请在页面管理中查看)，与之关联的页面将高亮显示；        例如：在页面管理中，首页的导航关联标记为homepage,在自定义导航中增加网站首页栏目，页面关联标为homepage，那么打开网站首页页面，则此栏目高亮显示。
+		</p>
+    </div>
+    <div class="seltpye_x">
+		<div class="left">导航分类</div>	
+		<div class="right">
+			<volist name="categroy" id="categroy">
+				<a href="{:P(array('alias'=>$key))}" <if condition="$Think.request.alias eq $key"> class="select"</if>>{$categroy}</a>
+			</volist>
+			<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<form action="{:U('navigation/navAllSave')}" method="post" enctype="multipart/form-data"  name="FormData" id="FormData" >
+		<table width="100%" border="0" cellpadding="0" cellspacing="0"  id="list" class="link_lan">
+			<tr>
+				<td  class="admin_list_tit  admin_list_first">
+					<label id="chkAll"><input type="checkbox" id="chk" title="全选/反选" />名称</label>
+				</td>
+				<td width="8%"  class="admin_list_tit" >显示</td>
+				<td width="15%" align="center" class="admin_list_tit">页面关联标记</td>
+				<td width="8%" align="center" class="admin_list_tit">位置</td>
+				<td width="15%" align="center" class="admin_list_tit">打开方式</td>
+				<td width="8%" align="center" class="admin_list_tit">排序</td>
+				<td width="12%" align="center" class="admin_list_tit">编辑</td>
+			</tr>
+			<notempty name="list">
+				<volist name="list" id="li">
+					<tr>
+						<td class="admin_list admin_list_first">
+							<input type="checkbox" name="id[]" value="{$li.id}"/>
+							<input name="save_id[]" type="hidden" value="{$li.id}"/>
+							<input name="title[]" type="text"  class="input_text_200" id="title" value="{$li.title}"   />
+						</td>
+						<td  class="admin_list">
+							<if condition="$li['display'] eq 1">
+								<span style="color: #FF3300">显示</span>
+							<else/>
+								<span style="color:#999999">不显示</span>
+							</if>
+						</td>
+						<td align="center"    class="admin_list">{$li.tag}&nbsp;</td>
+						<td align="center"   class="admin_list">{$li.categoryname}</td>
+						<td align="center"   class="admin_list">
+							<if condition="$li['target'] eq '_blank'">
+								新窗口
+							</if>
+							<if condition="$li['target'] eq '_self'">
+								<span style="color:#666666">原窗口</span>
+							</if>	
+						</td>
+						<td align="center"  class="admin_list" >
+							<input name="navigationorder[]" type="text"  class="input_text_50" value="{$li.navigationorder}"   />
+						</td>
+						<td align="center"  class="admin_list" >
+							<a href="{:U('navigation/edit',array('id'=>$li['id'],'url'=>"__SELF__"))}">修改</a>
+							<if condition="$li['systemclass'] neq 1">
+								<a href="{:U('navigation/delete',array('id'=>$li['id']))}"  onclick="return confirm('你确定要删除吗？')">删除</a>
+							</if>
+						</td>
+					</tr>
+				</volist>
+			<else/>
+				<tr>
+					<td colspan = " 7 " class="admin_list admin_list_first">
+						没有任何信息！
+					</td>
+				</tr>
+			</notempty>
+		</table>
+		<table width="100%" border="0" cellspacing="10" cellpadding="0" class="admin_list_btm">
+			<tr>
+				<td>
+					<input type="submit" value="保存修改" class="admin_submit"   />
+					<input type="button" class="admin_submit" id="add"    value="添加栏目"  onclick="window.location='{:U('navigation/add')}'"/>
+					<input id="ButDel" type="submit" value="删除栏目" class="admin_submit"   />
+				</td>
+				<td width="305" align="right">		
+				</td>
+			</tr>
+		</table>
+	</form>
+	<div class="qspage">{$page}</div>
+</div>
+<include file="public:footer" />
+<script type="text/javascript">
+	$("#chk").live('click',function(){
+	     $("#list").find("input[type=checkbox]").attr("checked",this.checked);
+	});
+	$("#ButDel").click(function(){
+	    if(confirm('确定删除选中的分类吗？')){
+	      $("#FormData").attr("action","{:U('navigation/delete')}");
+	      $("#FormData").submit();
+	    }
+	});
+</script>
+</body>
+</html>

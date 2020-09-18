@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<qscms:explain_show 列表名="info" 说明页id="$_GET['id']" />
+	<include file="public:meta" />
+	<link href="../public/css/common.css" rel="stylesheet" type="text/css" />
+	<link href="../public/css/explain.css" rel="stylesheet" type="text/css" />
+	<script src="../public/js/jquery.common.js" type="text/javascript" language="javascript"></script>
+</head>
+<body>
+<include file="public:header" />
+<div class="explain_topimg">
+<img src="../public/banner/about.jpg" border="0"/>
+</div>
+
+<div class="explain">
+  <div class="el">
+		<div class="enav link_gray6">
+		  <div class="tli">关于我们</div>
+		  <qscms:explain_list 列表名="list" 分类id="1"/>
+		  <volist name="list" id="vo">
+		  <div class="eli <if condition="$vo['id'] eq $info['id']">select</if>"><a href="{$vo['url']}">{$vo['title_']}</a></div>
+		  </volist>
+    </div>
+  </div>
+  
+  <div class="er">
+  
+	<div class="main">
+	  <div class="tit">{$info['title']}</div>
+	  <div class="txt">
+	  {$info['content']}
+	  </div>
+	</div>
+  </div>
+  
+  <div class="clear"></div>
+</div>
+
+<include file="public:footer_min" />
+</body>
+</html>

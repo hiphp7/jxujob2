@@ -1,0 +1,617 @@
+<style type="text/css">
+/* ajax登录 */
+.ajax_login{width:760px;background:#FFF;}
+.ajax_login .title{width:760px;height:100px;background-image:url(../public/images/268.jpg);background-repeat:no-repeat;position:relative;}
+.ajax_login .title .logo{width:400px;margin:0 auto;padding-top:28px;color:#ccc;font-size:28px;text-align:center;font-family:"微软雅黑";}
+.ajax_login .title .close{position:absolute;right:30px;width:36px;height:36px;top:30px;background-image:url(../public/images/270.png);cursor:pointer}
+.ajax_login .title .close:hover{background-position:0px -40px;}
+.ajax_login .lmain{width:465px;float:left;padding-bottom:30px;}
+.ajax_login .lmain .frombox{padding-left:80px;}
+.ajax_login .lmain .frombox .tab{width:312px;margin-top:25px;margin-bottom:30px;}
+.ajax_login .lmain .frombox .tab .li{float:left;width:156px;height:45px;line-height:45px;border-bottom:2px #FFFFFF solid;text-align:center;color:#333333;cursor:pointer;font-size:16px;}
+.ajax_login .lmain .frombox .tab .li:hover{color:#FF6600}
+.ajax_login .lmain .frombox .tab .li.select{color:#FF6600;border-bottom:2px #FF6600 solid;}
+.ajax_login .lmain .frombox .login_type{display:none}
+.ajax_login .lmain .frombox .ce{width:320px;height:60px;position:relative;margin-top:8px;}
+.ajax_login .lmain .frombox .ce .imgbg{background-image:url(../public/images/269.gif);background-repeat:no-repeat;background-position:0px -6px;width:42px;height:40px;left:1px;top:1px;position:absolute;border-radius:3px 0px 0px 3px;}
+.ajax_login .lmain .frombox .ce .imgbg.pwd{background-position:0px -76px;}
+.ajax_login .lmain .frombox .ce .linput{width:260px;height:40px;line-height:40px;font-size:14px;background-color:#FFFFFF;border:1px #CCCCCC solid;border-radius:4px;padding-left:50px;}
+.ajax_login .lmain .frombox .ce .linput:hover{border:1px  #33BEF2 solid;-moz-box-shadow:0px 0px 10px #33BEF2;/*firefox*/-webkit-box-shadow:0px 0px 10px #33BEF2;/*safari»òchrome*/box-shadow:0px 0px 10px #33BEF2;/*opera»òie9*/}
+.ajax_login .lmain .frombox .ce .linput.pwd{color:#999999}
+.ajax_login .lmain .frombox .ce .linput:focus{outline:none;}
+.ajax_login .lmain .frombox .ce .send_code{width:110px;position:absolute;height:40px;line-height:40px;right:8px;top:0px;background-color:#F6F6F6;border:1px #CCCCCC solid;border-radius:0px 4px 4px 0px;text-align:center;cursor:pointer}
+.ajax_login .lmain .frombox .ce .send_code:hover{background-color:#FFFFFF}
+.ajax_login .lmain .frombox .ce .send_code.btn_disabled{background-color:#EFEFEF;color:#999999}
+.ajax_login .lmain .frombox .ce .btn{width:312px;height:42px;background-color:#FF6600;border:0px;border-radius:4px;font-size:16px;color:#FFFFFF;cursor:pointer}
+.ajax_login .lmain .frombox .ce .btn:hover{background-color:#E85C00;}
+.ajax_login .lmain .frombox .ce .btn[disabled]{background-color:#EFEFEF;border:1px #CCCCCC solid;color:#999999}
+.ajax_login .lmain .frombox .err{width:295px;height:38px;line-height:38px;font-size:14px;background-color:#FDECE1;border-radius:4px;padding-left:15px;margin-bottom:15px;color:#FF0000;display:none}
+.ajax_login .lmain .frombox .ce .auto{position:absolute;}
+.ajax_login .lmain .frombox .ce .getpwd{position:absolute;right:8px;top:0px;text-align:right;}
+.ajax_login .rmain{width:265px;float:left;border-left:1px #DFDFDF solid;margin-top:40px;margin-bottom:50px;height:280px;}
+.ajax_login .rmain.sub{height: 244px;}
+.ajax_login .rmain .tit{padding-left:50px;font-size:18px;}
+.ajax_login .rmain .api_login{padding-left:50px;padding-top:30px;padding-bottom:30px;}
+.ajax_login .rmain .btnbox{padding-left:50px;padding-top:5px;}
+</style>
+
+<div class="ajax_login">
+    <div class="title">
+        <div class="logo">{:C('qscms_site_name')}&nbsp;&middot;&nbsp;登录</div>
+        <div class="close J_btncancel"></div>
+    </div>
+    <div class="lmain">
+        <div class="frombox">
+            <div class="tab">
+                
+            </div>
+            <div class="login_type J_type2" style="display:block">
+                <form action="" id="topLoginForm" method="get">
+                    <div class="ce">
+                        <div class="imgbg"></div>
+                        <input name="username" type="text" maxlength="16" id="username" class="linput" placeholder="请输入用户名/手机号"  autocomplete="off"/>
+                    </div>
+
+                    <div class="ce">
+                        <div class="imgbg pwd"></div>
+                        <input name="password" type="password" id="password" value="" class="linput pwd" placeholder="请输入密码"  autocomplete="off"/>
+                    </div>
+                    <div class="err"><!--错误提示 --></div>
+                    <div class="ce">
+                        <input class="btn" type="button" name="submit" id="topLoginBtn" value="登录" />
+                    </div>
+                    <div class="ce">
+                        <div class="imgchecked_txt expLoginBtn"><input name="expire" type="hidden" value="0" />自动登录</div>
+                        <div class="getpwd link_gray3"><a href="{:U('members/user_getpass')}">忘记密码?</a></div>
+                    </div>
+                </form>
+            </div>
+            <div class="login_type J_type2">
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="clear"></div>
+    <input type="button" id="btnTopCheck" style="display:none;">
+    <input type="button" id="btnTopLoginMobile" style="display:none;">
+    <input type="button" id="btnTopLoginName" style="display:none;">
+    <div id="topCaptchaBox"></div>
+    <div id="topCaptchaBoxLog"></div>
+    <div id="topCaptchaBoxLogMobile"></div>
+</div>
+​
+<script type="text/javascript">
+    $('.J_btncancel').die().live('click', function() {
+        $(".modal,.modal_backdrop").remove();
+    });
+//切换登录类型
+$(".J_switch").die().live('click', function() {
+    $('.frombox .tab .li').removeClass("select");
+    $(this).addClass("select");
+    $('.login_type').hide();
+    data = $(this).attr('data');
+    $('.' + data).show();
+});
+//用户名和密码登录
+$("#topLoginBtn").die().live('click', function() {
+    var usernameValue = $.trim($('#topLoginForm #username').val());
+    var passwordValue = $.trim($('#topLoginForm #password').val());
+    var expireValue = $.trim($('#topLoginForm input[name=expire]').val());
+    $("#topLoginForm .err").hide();
+    if (usernameValue == '' || passwordValue == '') {
+        $("#topLoginForm .err").html('用户名和密码不能为空！').show();
+    } else {
+        // 判断是否需要出现验证
+        if (eval(qscms.varify_user_login) && eval(qscms.captcha_open)) {
+            $.ajax({
+                url: qscms.root + '?m=Home&c=captcha&t=' + (new Date()).getTime(),
+                type: "get",
+                dataType: "json",
+                success: function(data) {
+                    if (data.verify_type == "vaptcha") {
+                        vaptcha({
+                            vid: data.vid,
+                            type: 'invisible',
+                            scene: 1,
+                            https: data.https,
+                            offline_server:qscms.root+'?m=Home&c=captcha&a=vaptcha_outage',
+                        }).then(function (vaptchaObj) {
+                            obj = vaptchaObj;
+                            vaptchaObj.listen('pass', function() {
+                                var usernameValue = $.trim($('#topLoginForm #username').val());
+                                var passwordValue = $.trim($('#topLoginForm #password').val());
+                                var expireValue = $.trim($('#topLoginForm input[name=expire]').val());
+                                // 提交表单
+                                $.ajax({
+                                    url: qscms.root + '?m=Home&c=Members&a=login',
+                                    type: "post",
+                                    dataType: "json",
+                                    data: { username: usernameValue, password: passwordValue, expire: expireValue, token: vaptchaObj.getToken() },
+                                    success: function(result) {
+                                        if (parseInt(result.status)) {
+                                            window.location.reload();
+                                        } else {
+                                            disapperTooltip("remind", result.msg);
+                                            qscms.varify_user_login = result.data;
+                                            $("#topLoginFormMobile .err").html(result.msg).show();
+                                            $("#topLoginBtnMobile").val('登录').prop("disabled", 0);
+                                        }
+                                    }
+                                });
+                            });
+                            vaptchaObj.listen('close', function() {
+                                
+                            });
+                            vaptchaObj.validate();
+                        });
+                    } else {
+						$('.geetest_panel').remove();
+                        initGeetest({
+                            gt: data.gt,
+                            challenge: data.challenge,
+                            offline: !data.success,
+                            new_captcha: data.new_captcha,
+                            product: 'bind'
+                        }, function(captchaObj) {
+                            captchaObj.appendTo("#topCaptchaBoxLog");
+                            captchaObj.onSuccess(function() {
+                                var captChaResult = captchaObj.getValidate();
+                                var usernameValue = $.trim($('#topLoginForm #username').val());
+                                var passwordValue = $.trim($('#topLoginForm #password').val());
+                                var expireValue = $.trim($('#topLoginForm input[name=expire]').val());
+                                $("#topLoginBtn").val('登录中...').prop("disabled", !0);
+                                // 提交表单
+                                $.ajax({
+                                    url: qscms.root + '?m=Home&c=Members&a=login',
+                                    type: "post",
+                                    dataType: "json",
+                                    data: {
+                                        username: usernameValue,
+                                        password: passwordValue,
+                                        expire: expireValue,
+                                        geetest_challenge: captChaResult.geetest_challenge,
+                                        geetest_validate: captChaResult.geetest_validate,
+                                        geetest_seccode: captChaResult.geetest_seccode
+                                    },
+                                    success: function(result) {
+                                        if (parseInt(result.status)) {
+                                            window.location.reload();
+                                        } else {
+                                            qscms.varify_user_login = result.data;
+                                            $("#topLoginForm .err").html(result.msg).show();
+                                            $("#topLoginBtn").val('登录').prop("disabled", 0);
+                                        }
+                                    }
+                                });
+                            });
+                            captchaObj.onReady(function() {
+                                $("#btnTopLoginName").click();
+                            });
+                            $('#btnTopLoginName').click(function() {
+                                captchaObj.verify();
+                            })
+                        });
+                    }
+                },
+                error: function(data) {
+                    disapperTooltip("remind", data['responseText']);
+                }
+            });
+        } else {
+            doLoginByAccount();
+        }
+    }
+    return false;
+});
+
+function doLoginByAccount() {
+    var usernameValue = $.trim($('#topLoginForm #username').val());
+    var passwordValue = $.trim($('#topLoginForm #password').val());
+    var expireValue = $.trim($('#topLoginForm input[name=expire]').val());
+    $("#topLoginBtn").val('登录中...').prop("disabled", !0);
+    // 提交表单
+    $.ajax({
+        url: qscms.root + '?m=Home&c=Members&a=login',
+        type: "post",
+        dataType: "json",
+        data: {
+            username: usernameValue,
+            password: passwordValue,
+            expire: expireValue
+        },
+        success: function(result) {
+            if (parseInt(result.status)) {
+                window.location.reload();
+            } else {
+                qscms.varify_user_login = result.data; //原来是result.data
+                $("#topLoginForm .err").html(result.msg).show();
+                $("#topLoginBtn").val('登录').prop("disabled", 0);
+            }
+        }
+    });
+}
+//手机动态码登录
+var regularMobile = qscms.regularMobile;
+$("#topLoginBtnMobile").die().live('click', function() {
+    var mobileValue = $.trim($('#topLoginFormMobile input[name=mobile]').val());
+    var verfyCodeValue = $.trim($('#topLoginFormMobile input[name=verfy_code]').val());
+    if (mobileValue == "") {
+        disapperTooltip("remind", "请输入手机号");
+        $('#topLoginFormMobile input[name=mobile]').focus();
+        return false;
+    }
+    if (mobileValue != "" && !regularMobile.test(mobileValue)) {
+        disapperTooltip("remind", "手机号码格式不正确");
+        $('#topLoginFormMobile input[name=mobile]').focus();
+        return false;
+    }
+    if (verfyCodeValue == "") {
+        disapperTooltip("remind", "请填写验证码");
+        $('#topLoginFormMobile input[name=verfy_code]').focus();
+        return false;
+    }
+
+    if (eval(qscms.varify_user_login) & eval(qscms.captcha_open)) {
+        $.ajax({
+            url: qscms.root + '?m=Home&c=captcha&t=' + (new Date()).getTime(),
+            type: "get",
+            dataType: "json",
+            success: function(data) {
+                if (data.verify_type == "vaptcha") {
+                    //如果验证码的验证没有完成，点击登录也不会出现验证
+                    if($("#vaptchaContainer").css("display") == "block"){
+                        disapperTooltip('remind', "请先完成短信验证码验证");
+                        return false;
+                    }
+                    $("#topLoginFormMobile .err").hide();
+                    vaptcha({
+                        vid: data.vid,
+                        type: 'invisible',
+                        scene: 1,
+                        https: data.https,
+                        offline_server:qscms.root+'?m=Home&c=captcha&a=vaptcha_outage',
+                    }).then(function (vaptchaObj) {
+                        obj = vaptchaObj;
+                        vaptchaObj.listen('pass', function() {
+                            var mobileValue = $.trim($('#topLoginFormMobile input[name=mobile]').val());
+                            var verfyCodeValue = $.trim($('#topLoginFormMobile input[name=verfy_code]').val());
+                            var expireValue = $.trim($('#topLoginFormMobile input[name=expire]').val());
+                            $("#topLoginBtnMobile").val('登录中...').prop("disabled", !0);
+                            // 提交表单
+                            $.ajax({
+                                url: qscms.root + '?m=Home&c=Members&a=login',
+                                type: "post",
+                                dataType: "json",
+                                data: { mobile: mobileValue, mobile_vcode: verfyCodeValue, expire: expireValue, token: vaptchaObj.getToken() },
+                                success: function(result) {
+                                    if (parseInt(result.status)) {
+                                        window.location.reload();
+                                    } else {
+                                        qscms.varify_user_login = result.data;
+                                        disapperTooltip("remind", "验证码错误");
+                                        $("#topLoginBtnMobile").val('登录').prop("disabled", 0);
+                                    }
+                                }
+                            });
+                        });
+                        vaptchaObj.listen('close', function() {
+                            
+                        });
+                        vaptchaObj.validate();
+                    });
+                } else {
+                    $('.geetest_panel').remove();
+                    $.ajax({
+                        url: qscms.root + '?m=Home&c=captcha&t=' + (new Date()).getTime(),
+                        type: "get",
+                        dataType: "json",
+                        success: function(data) {
+                            initGeetest({
+                                gt: data.gt,
+                                challenge: data.challenge,
+                                offline: !data.success,
+                                new_captcha: data.new_captcha,
+                                product: 'bind'
+                            }, function(captchaObj) {
+                                captchaObj.appendTo("#topCaptchaBoxLogMobile");
+                                captchaObj.onSuccess(function() {
+                                    var captChaResult = captchaObj.getValidate();
+                                    var mobileValue = $.trim($('#topLoginFormMobile input[name=mobile]').val());
+                                    var verfyCodeValue = $.trim($('#topLoginFormMobile input[name=verfy_code]').val());
+                                    var expireValue = $.trim($('#topLoginFormMobile input[name=expire]').val());
+                                    $("#topLoginBtnMobile").val('登录中...').prop("disabled", !0);
+                                    // 提交表单
+                                    $.ajax({
+                                        url: qscms.root + '?m=Home&c=Members&a=login',
+                                        type: "post",
+                                        dataType: "json",
+                                        data: {
+                                            mobile: mobileValue,
+                                            mobile_vcode: verfyCodeValue,
+                                            expire: expireValue,
+                                            geetest_challenge: captChaResult.geetest_challenge,
+                                            geetest_validate: captChaResult.geetest_validate,
+                                            geetest_seccode: captChaResult.geetest_seccode
+                                        },
+                                        success: function(result) {
+                                            if (parseInt(result.status)) {
+                                                window.location.reload();
+                                            } else {
+                                                qscms.varify_user_login = result.data;
+                                                $("#topLoginFormMobile .err").html("验证码错误").show();
+                                                $("#topLoginBtnMobile").val('登录').prop("disabled", 0);
+                                            }
+                                        }
+                                    });
+                                });
+                                captchaObj.onReady(function() {
+                                    $("#btnTopLoginMobile").click();
+                                });
+                                $('#btnTopLoginMobile').click(function() {
+                                    captchaObj.verify();
+                                })
+                            });
+                        },
+                        error: function(data) {
+                            disapperTooltip("remind", data['responseText']);
+                        }
+                    });
+                }
+            },
+        })
+    } else {
+        doLoginByMobile();
+    }
+});
+
+function doLoginByMobile() {
+    var mobileValue = $.trim($('#topLoginFormMobile input[name=mobile]').val());
+    var verfyCodeValue = $.trim($('#topLoginFormMobile input[name=verfy_code]').val());
+    var expireValue = $.trim($('#topLoginFormMobile input[name=expire]').val());
+    $("#topLoginBtnMobile").val('登录中...').prop("disabled", !0);
+    // 提交表单
+    $.ajax({
+        url: qscms.root + '?m=Home&c=Members&a=login',
+        type: "post",
+        dataType: "json",
+        data: {
+            mobile: mobileValue,
+            mobile_vcode: verfyCodeValue,
+            expire: expireValue
+        },
+        success: function(result) {
+            if (parseInt(result.status)) {
+                window.location.reload();
+            } else {
+                console.log(result.data);
+                qscms.varify_user_login = 3//3原本是 result.data
+                $("#topLoginFormMobile .err").html("验证码错误").show();
+                $("#topLoginBtnMobile").val('登录').prop("disabled", 0);
+            }
+        }
+    });
+}
+//发送验证码
+$("#topGetCodeBtn").die().live('click', function() {
+    if ($(this).hasClass('btn_disabled')) {
+        return false;
+    }
+    var mobileValue = $('#topLoginFormMobile input[name="mobile"]').val();
+    if (!mobileValue.length) {
+        disapperTooltip("remind", "请输入手机号");
+        $('#topLoginFormMobile input[name=mobile]').focus();
+        return false;
+    }
+    if (mobileValue != "" && !regularMobile.test(mobileValue)) {
+        disapperTooltip("remind", "手机号码格式不正确");
+        $('#topLoginFormMobile input[name=mobile]').focus();
+        return false;
+    }
+    $.ajax({
+        url: qscms.root + '?m=Home&c=Members&a=ajax_check',
+        cache: false,
+        async: false,
+        type: 'post',
+        dataType: 'json',
+        data: {
+            type: 'mobile',
+            param: mobileValue
+        },
+        success: function(result) {
+            if (!result.status) {
+                if (eval(qscms.smsTatus)) {
+                    if (eval(qscms.varify_mobile) && eval(qscms.captcha_open)) {
+                        $.ajax({
+                            url: qscms.root + '?m=Home&c=captcha&t=' + (new Date()).getTime(),
+                            type: "get",
+                            dataType: "json",
+                            success: function(data) {
+                                if (data.verify_type == "vaptcha") {
+                                    vaptcha({
+                                        vid: data.vid,
+                                        type: 'invisible',
+                                        scene: 1,
+                                        https: data.https,
+                                        offline_server:qscms.root+'?m=Home&c=captcha&a=vaptcha_outage',
+                                    }).then(function (vaptchaObj) {
+                                        obj = vaptchaObj;
+                                        vaptchaObj.listen('pass', function() {
+                                            $('#topGetCodeBtn').text('发送中...').addClass('btn_disabled');
+                                            var mobileValue = $.trim($('#topLoginFormMobile input[name=mobile]').val());
+                                            $.ajax({
+                                                url: qscms.root + '?m=Home&c=Members&a=reg_send_sms',
+                                                cache: false,
+                                                async: false,
+                                                type: 'post',
+                                                dataType: 'json',
+                                                data: { sms_type: 'login', mobile: mobileValue, token: vaptchaObj.getToken() },
+                                                success: function(result) {
+                                                    if (result.status) {
+                                                        disapperTooltip("success", "验证码已发送，请注意查收");
+                                                        // 开始倒计时
+                                                        var countdown = 60;
+                                                        function settime() {
+                                                            if (countdown == 0) {
+                                                                $('#topGetCodeBtn').text('获取验证码').removeClass('btn_disabled');
+                                                                countdown = 60;
+                                                                return;
+                                                            } else {
+                                                                $('#topGetCodeBtn').text('重发' + countdown + '秒').addClass('btn_disabled');
+                                                                countdown--;
+                                                            }
+                                                            setTimeout(function() {
+                                                                settime()
+                                                            }, 1000)
+                                                        }
+                                                        settime();
+                                                    } else {
+                                                        $('#topGetCodeBtn').text('获取验证码').removeClass('btn_disabled');
+                                                        disapperTooltip("remind", result.msg);
+                                                    }
+                                                },
+                                                error: function(result) {
+                                                    console.log(result);
+                                                }
+                                            });
+                                        });
+                                        vaptchaObj.listen('close', function() {
+                                            
+                                        });
+                                        vaptchaObj.validate();
+                                    });
+                                } else {
+                                    initGeetest({
+                                        gt: data.gt,
+                                        challenge: data.challenge,
+                                        offline: !data.success,
+                                        new_captcha: data.new_captcha,
+                                        product: 'bind'
+                                    }, function(captchaObj) {
+                                        captchaObj.appendTo("#topCaptchaBox");
+                                        captchaObj.onSuccess(function() {
+                                            var captChaResult = captchaObj.getValidate();
+                                            $('#topGetCodeBtn').text('发送中...').addClass('btn_disabled');
+                                            var mobileValue = $.trim($('#topLoginFormMobile input[name=mobile]').val());
+                                            $.ajax({
+                                                url: qscms.root + '?m=Home&c=Members&a=reg_send_sms',
+                                                cache: false,
+                                                async: false,
+                                                type: 'post',
+                                                dataType: 'json',
+                                                data: {
+                                                    sms_type: 'login',
+                                                    mobile: mobileValue,
+                                                    geetest_challenge: captChaResult.geetest_challenge,
+                                                    geetest_validate: captChaResult.geetest_validate,
+                                                    geetest_seccode: captChaResult.geetest_seccode
+                                                },
+                                                success: function(result) {
+                                                    if (result.status) {
+                                                        disapperTooltip("success", "验证码已发送，请注意查收");
+                                                        // 开始倒计时
+                                                        var countdown = 60;
+                                                        function settime() {
+                                                            if (countdown == 0) {
+                                                                $('#topGetCodeBtn').text('获取验证码').removeClass('btn_disabled');
+                                                                countdown = 60;
+                                                                return;
+                                                            } else {
+                                                                $('#topGetCodeBtn').text('重发' + countdown + '秒').addClass('btn_disabled');
+                                                                countdown--;
+                                                            }
+                                                            setTimeout(function() {
+                                                                settime()
+                                                            }, 1000)
+                                                        }
+                                                        settime();
+                                                    } else {
+                                                        $('#topGetCodeBtn').text('获取验证码').removeClass('btn_disabled');
+                                                        disapperTooltip("remind", result.msg);
+                                                    }
+                                                }
+                                            });
+                                        });
+                                        captchaObj.onReady(function() {
+                                            $("#btnTopCheck").click();
+                                        });
+                                        $('#btnTopCheck').click(function() {
+                                            captchaObj.verify();
+                                        })
+                                    });
+                                }
+                            },
+                            error: function(data) {
+                                disapperTooltip("remind", data['responseText']);
+                            }
+                        });
+                    } else {
+                        topSendSms();
+                    }
+                } else {
+                    disapperTooltip("remind", "短信未开启");
+                }
+            } else {
+                disapperTooltip("remind", "账号不存在！");
+            }
+        }
+    });
+});
+// 发送验证码
+function topSendSms() {
+    $('#topGetCodeBtn').text('发送中...').addClass('btn_disabled');
+    var mobileValue = $.trim($('#topLoginFormMobile input[name=mobile]').val());
+    $.ajax({
+        url: qscms.root + '?m=Home&c=Members&a=reg_send_sms',
+        cache: false,
+        async: false,
+        type: 'post',
+        dataType: 'json',
+        data: {
+            sms_type: 'login',
+            mobile: mobileValue
+        },
+        success: function(result) {
+            if (result.status) {
+                disapperTooltip("success", "验证码已发送，请注意查收");
+                // 开始倒计时
+                var countdown = 60;
+                function settime() {
+                    if (countdown == 0) {
+                        $('#topGetCodeBtn').text('获取验证码').removeClass('btn_disabled');
+                        countdown = 60;
+                        return;
+                    } else {
+                        $('#topGetCodeBtn').text('重发' + countdown + '秒').addClass('btn_disabled');
+                        countdown--;
+                    }
+                    setTimeout(function() {
+                        settime()
+                    }, 1000)
+                }
+                settime();
+            } else {
+                $('#topGetCodeBtn').text('获取验证码').removeClass('btn_disabled');
+                disapperTooltip("remind", result.msg);
+            }
+        }
+    });
+}
+// 自动登录
+$('.expLoginBtn').die().live('click', function() {
+    var $chkInp = $(this).find("input");
+    var chkInpVal = $chkInp.val();
+    if (chkInpVal == '1') {
+        $chkInp.val('0');
+        $(this).removeClass('select');
+    } else {
+        $chkInp.val('1');
+        $(this).addClass('select');
+    }
+});
+// 注册账号
+$('.J_top_loging_user_reg').die().live('click', function() {
+        $(".modal,.modal_backdrop").remove();
+        siteRegModelShow();
+    })
+</script>

@@ -1,0 +1,1 @@
+<?php	return array ( 'module' => 'Recommend', 'module_name' => '智能推荐', 'appid' => '834', 'version' => '4.2.3', 'is_create_table' => 0, 'is_insert_data' => 0, 'is_exe' => 1, 'is_delete_data' => 0, 'update_time' => '2017-08-29 09:57:55', 'explain' => '智能推荐', ); ?>

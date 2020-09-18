@@ -1,0 +1,90 @@
+<include file="public:header" />
+    <div class="toptip">
+        <h2>提示：</h2>
+        <p>通过管理员设置，您可以进行编辑管理员资料、角色、密码以及删除管理员等操作；</p>
+    </div>
+    <div class="toptit">修改管理员</div>
+	<form id="form1" name="form1" method="post" action="{:U('admin/edit')}">
+		<table width="100%" border="0" cellpadding="4" cellspacing="0" class="admin_table" >
+			<tr>
+				<td width="120" height="30" align="right" style="border:0px;">用户名：</td>
+				<td tyle="border:0px;" >
+					<input name="username" type="text" class="input_text_200" id="admin_name" maxlength="25" value="{$info.username}"/>
+				</td>
+			</tr>
+			<tr>
+				<td height="30" align="right">电子邮件：</td>
+				<td>
+					<input name="email" type="text" class="input_text_200" id="email" maxlength="50" value="{$info.email}"/>
+				</td>
+			</tr>
+			<tr>
+				<td height="30" align="right"  style="border-bottom:1px #CCCCCC dashed">所属角色：</td>
+				<td  style="border-bottom:1px #CCCCCC dashed">
+					<select name="role_id">
+						<volist name="roles" id="role">
+							<option value="{$key}" <if condition="$info['role_id'] eq $key">selected="selected"</if>>{$role}</option>
+						</volist>
+					</select>
+					<a onclick="link(this);" href="javascript:;" url="{:U('AdminRole/auth',array('id'=>'qscms','url'=>"__SELF__"))}" style="color:#003399">查看权限</a>
+				</td>
+			</tr>
+			<tr>
+				<td height="30" align="right">创建时间：</td>
+				<td>{:date("Y-m-d H:i",$info['add_time'])}</td>
+			</tr>
+			<tr>
+				<td height="30" align="right">最后登录ip：</td>
+				<td>{$info.last_login_ip}</td>
+			</tr>
+			<tr>
+				<td height="30" align="right">最后登录时间：</td>
+				<td>{:date("Y-m-d H:i",$info['last_login_time'])}</td>
+			</tr>
+			<tr>
+				<td height="30" align="right">&nbsp;</td>
+				<td height="50">
+					<input name="id" type="hidden" value="{$info.id}" />
+					<input name="submit3" type="submit" class="admin_submit" value="修改"/>
+					<input name="submit22" type="button" class="admin_submit" value="返回" onclick="window.location='{:U('admin/index')}'"/>
+				</td>
+			</tr>
+		</table>
+	</form>
+	<div class="toptit">修改密码</div>
+	<form id="form1" name="form1" method="post" action="{:U('admin/edit')}">
+		<table width="100%" border="0" cellpadding="4" cellspacing="0" class="admin_table" >
+			<tr>
+				<td width="120" height="30" align="right">密码：</td>
+				<td>
+					<input name="password" type="password" class="input_text_200" id="password" maxlength="25" value=""/>
+				</td>
+			</tr>
+			<tr>
+				<td width="120" height="30" align="right">再次输入密码：</td>
+				<td>
+					<input name="repassword" type="password" class="input_text_200" id="password1" maxlength="25" value=""/>
+				</td>
+			</tr>
+			<tr>
+				<td height="30" align="right">&nbsp;</td>
+				<td height="50">
+					<input name="id" type="hidden" value="{$info.id}" />
+					<input name="submit3" type="submit" class="admin_submit" value="修改"/>
+					<input name="submit22" type="button" class="admin_submit" value="返回" onclick="window.location='{:U('admin/index')}'"/>
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+<include file="public:footer" />
+<script type="text/javascript">
+	function link(a){
+		var id = $('select[name="role_id"]').val(),
+			a = $(a).attr('url');
+		a = a.replace('qscms',id);
+		window.location=a;
+	}
+</script>
+</body>
+</html>

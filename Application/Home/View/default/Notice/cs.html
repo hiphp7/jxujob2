@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<include file="public:meta" />
+	<link href="../public/css/common.css" rel="stylesheet" type="text/css" />
+	<link href="../public/css/index.css" rel="stylesheet" type="text/css" />
+	<link href="../public/css/slider/themes/default/default.css" rel="stylesheet" type="text/css" />
+	<link href="../public/css/slider/nivo-slider.css" rel="stylesheet" type="text/css" />
+	<link href="../public/css/index_new.css" rel="stylesheet" type="text/css" />
+	<script src="../public/js/jquery.common.js" type="text/javascript" language="javascript"></script>
+</head>
+<style type="text/css">
+.index_notice_list_2 .list_content li {line-height:33px;}
+/*职位分类*/
+.cat_nav{float:left;width:220px;height:392px;padding:9px 0;z-index:2;position:relative;cursor:default;background:#fff;}
+
+.jno_item_pop_container{animation:fadeInLeftBig .3s ease-in-out;-webkit-animation:fadeInLeftBig .3s ease-in-out;}
+.jno_item{position:relative;height:44px;font-size:14px;}
+.jno_item .jno_item_text{position:relative;width:150px;padding:0 24px;height:42px;line-height:42px;border-right:none;z-index:999;color:#333;font-weight:600;border-top:1px solid #fff;background-color:#fff;-webkit-transition:color .3s ease-in-out;-o-transition:color .3s ease-in-out;transition:color .3s ease-in-out;}
+.jno_item .jno_item_text:after{content:"";width:16px;height:16px;position:absolute;top:50%;right:24px;transform:translate(0,-50%);-webkit-transform:translate(0,-50%);background:url("../images/index/jna_arr.png") no-repeat;}
+.jno_item_text2{position:relative;padding:0 24px;height:44px;line-height:44px;border-right:none;color:#333;border-top:1px solid #fff;background-color:#fff;display:block;font-weight:600;}
+.jno_item_text2:hover{color:#ec4e0f;text-decoration:none;}
+.jno_item:hover{border-top:1px solid #e6e8ec;border-bottom:1px solid #e6e8ec}
+.jno_item:hover .jno_item_text{position:absolute;top:0;left:0;color:#ec4e0f}
+.jno_item:hover .jno_item_text:after{display:none}
+.jno_item:hover .jno_item_text:before{content:"";position:absolute;top:0;width:10px;right:-5px;height:100%;background-color:#fff}
+.jno_item_pop{position:absolute;top:-10px;left:220px;width:715px;height:395px;display:none;background-color:#fff;padding:0 0 5px;border:1px solid #e6e8ec;z-index:99;overflow-y:auto;}
+.jno_item_pop::-webkit-scrollbar{width:0}
+.jno_item_pop_list{margin-bottom:15px;padding:15px 24px;line-height:32px;}
+.jno_item_pop_href{display:inline-block;width:25%;cursor:pointer;color:#666}
+.jno_item_pop_href:hover{color:#ec4e0f}
+.jno_item_pop_title{padding-bottom:10px;margin:10px 20px 0;font-size:16px;font-weight:700;border-bottom:1px solid #e6e8ec}
+.jno_item:hover .jno_item_pop{display:block;height:410px}
+</style>
+<body>
+		<div class="cat_nav">
+		<qscms:classify 列表名="jobsCate" 类型="QS_jobs"/>
+			<div class="job_nav_ol">
+			<if condition="C('qscms_category_jobs_level') eq 3">
+				<volist name="jobsCate[0]" id="pcate" offset="0" length='12'> <!-- length='8'是指调取多少种职位分类 总共12种，怕放不下，用了8种，可以根据需要 -->
+
+					<li class="jno_item">
+						<div class="jno_item_text">{$pcate.categoryname}</div>
+						<div class="jno_item_pop">
+						<volist name="jobsCate[$key]" id="scate">
+							<div class="jno_item_pop_container">
+								<div class="jno_item_pop_title">{$scate.categoryname}</div>
+								<div class="jno_item_pop_list">
+									<volist name="jobsCate[$key]" id="cate">
+										<a href="{:url_rewrite(\'QS_jobslist\',array(\'jobcategory\'=>$cate[\'spell\']))}" target="_blank" class="jno_item_pop_href">{$cate.categoryname}</a>
+									</volist>
+								</div>
+							</div>
+						</volist>	
+						</div>
+					</li>
+				</volist>
+			<else/>	
+				<volist name="jobsCate[0]" id="pcate" offset="0" length='8'>
+					<li class="jno_item">
+						<div class="jno_item_text">{$pcate.categoryname}</div>
+						<div class="jno_item_pop">
+							<div class="jno_item_pop_container">
+								<div class="jno_item_pop_title">{$pcate.categoryname}</div>
+								<div class="jno_item_pop_list">
+									<volist name="jobsCate[$key]" id="cate">
+										<a href="{:url_rewrite(\'QS_jobslist\',array(\'jobcategory\'=>$cate[\'spell\']))}" target="_blank" class="jno_item_pop_href">{$cate.categoryname}</a>
+									</volist>
+								</div>
+							</div>
+						</div>
+					</li>
+				</volist>
+			</if>	
+				<li class="jno_item">
+					<a href="{:url_rewrite('QS_jobs')}" target="_blank" class="jno_item_text2">全部职类</a>
+				</li>
+			</div>
+		</div>
+
+		<!-- <ul class="menu-map">
+			<qscms:classify 列表名="jobsCate" 类型="QS_jobs"/>
+			<volist name="jobsCate[0]" id="pcate" offset="0" length='12'>
+			<li class="map-item substring J_hoverbut">
+				
+				<div class="sub">
+					<div class="sub-l">
+						<div class="sub-group">
+							<div class="sub-content t">
+									<volist name="jobsCate[$key]" id="cate">
+										<a href="{:url_rewrite(\'QS_jobslist\',array(\'jobcategory\'=>$cate[\'spell\']))}" target="_blank" class="jno_item_pop_href">{$cate.categoryname}</a>
+									</volist>
+							
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+				</div>
+				<i class="i-menu i1"></i>
+				<a target="_blank" class="txt" href="javascript:;">{$pcate.categoryname}</a>
+				<div class="clear"></div>
+			</li>
+		</volist>
+		
+		</ul> -->
+
+
+
+								
+</body>
+</html>

@@ -1,0 +1,55 @@
+<include file="public:header"/>
+<div class="toptip">
+    <h2>提示：</h2>
+    <p>短信包只有在网站设置短信费用承担方为企业时才能生效，费用承担方为运营者则短信包不会被显示<br/>
+        修改短信费用承担方请在“企业 > 企业设置 > 基本 > 其他设置”中修改。<br/>
+        不同的运营阶段您可以选择不同的设置。</p>
+</div>
+<form action="{:U('save_sort')}" method="post">
+<table width="100%" border="0" cellpadding="0" cellspacing="0" id="list" class="link_lan">
+    <tr>
+        <td height="26" class="admin_list_tit admin_list_first">名称</td>
+        <td class="admin_list_tit">类型</td>
+        <td class="admin_list_tit">服务价</td>
+        <td class="admin_list_tit">排序<span class="admin_note">(数字越大越靠前) </span></td>
+        <td width="10%" align="center" class="admin_list_tit">操作</td>
+    </tr>
+    <volist name="list" id="vo">
+        <tr>
+            <td class="admin_list admin_list_first">
+                <a href="{:U('setmealIncrement/edit',array('id'=>$vo['id']))}">{$vo['name']}</a>
+            </td>
+            <td class="admin_list">
+                {$service_type[$vo['cat']]}
+            </td>
+            <td class="admin_list"><strong style="color:#FF6600">{$vo['price']}</strong>元</td>
+            <td class="admin_list">
+                <input type="hidden" name="id[]" value="{$vo['id']}">
+                <input type="text" class="input_text_50" name="sort[]" value="{$vo['sort']}">
+            </td>
+            <td align="center" class="admin_list">
+                <a href="{:U('setmealIncrement/edit',array('id'=>$vo['id']))}">修改</a>
+                &nbsp;&nbsp;&nbsp;
+                <a href="{:U('setmealIncrement/delete',array('id'=>$vo['id']))}"
+                   onclick="return confirm('你确定要删除吗？')">删除</a>
+            </td>
+        </tr>
+    </volist>
+</table>
+<table width="100%" border="0" cellspacing="10" cellpadding="0" class="admin_list_btm">
+    <tr>
+        <td>
+            <input name="add" type="button" class="admin_submit" id="add" value="新增"
+                   onclick="window.location='{:U('setmealIncrement/add')}'"/>
+            <input name="save_sort" type="submit" class="admin_submit" id="save_sort" value="保存排序"/>
+        </td>
+        <td width="305" align="right">
+
+        </td>
+    </tr>
+</table>
+</form>
+</div>
+<include file="public:footer"/>
+</body>
+</html>

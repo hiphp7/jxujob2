@@ -1,0 +1,91 @@
+<include file="public:header" />
+    <div class="seltpye_x">
+    <div class="left">推广类型</div>
+    <div class="right">
+      <a href="{:P(array('type'=>'stick'))}" <if condition="$Think.get.type eq 'stick' or $Think.get.type eq ''">class="select"</if>>置顶</a>
+      <a href="{:P(array('type'=>'tag'))}" <if condition="$Think.get.type eq 'tag'">class="select"</if>>标签</a>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+<form action="{:U('increment_tag_save_sort')}" method="post">
+    <table width="100%" border="0" cellpadding="0" cellspacing="0"  id="list" class="link_lan">
+        <tr>
+          <td height="26" class="admin_list_tit admin_list_first">名称</td>
+          <td  class="admin_list_tit">类型</td>
+          <td  class="admin_list_tit">积分</td>
+          <td class="admin_list_tit">排序<span class="admin_note">(数字越大越靠前) </span></td>
+          <td width="10%" align="center"  class="admin_list_tit">操作</td>
+        </tr>
+		<volist name="list" id="vo">
+        <tr>
+          <td class="admin_list admin_list_first" >
+          	醒目标签（{$vo.days}）天
+          </td>
+          <td  class="admin_list" >
+          标签
+	      </td>
+          <td class="admin_list"  >{$vo['points']}{:C('qscms_points_byname')}</td>
+          <td class="admin_list">
+                <input type="hidden" name="id[]" value="{$vo['id']}">
+                <input type="text" class="input_text_50" name="sort[]" value="{$vo['sort']}">
+            </td>
+          <td align="center"  class="admin_list" ><a href="{:U('Personal/increment_tag_edit',array('uid'=>$_GET['uid'],'id'=>$vo['id']))}">修改</a>
+          &nbsp;&nbsp;&nbsp;
+          <a href="{:U('Personal/increment_tag_del',array('id'=>$vo['id']))}" onclick="return confirm('你确定要删除吗？')">删除</a>
+          </td>
+        </tr>
+		</volist>
+  </table>
+  <table width="100%" border="0" cellspacing="10" cellpadding="0" class="admin_list_btm">
+      <tr>
+        <td>
+<input name="add" type="button" class="admin_submit" id="add"    value="新增"  onclick="window.location='{:U('Personal/increment_tag_add')}'"/>
+            <input name="save_sort" type="submit" class="admin_submit" id="save_sort" value="保存排序"/>
+		</td>
+        <td width="305" align="right">
+		
+	    </td>
+      </tr>
+  </table>
+  </form>
+<form action="{:U('increment_tag_cat_save_sort')}" method="post">
+   <div class="toptit">醒目标签</div>
+   <table width="100%" border="0" cellpadding="0" cellspacing="0"  id="list" class="link_lan">
+        <tr>
+          <td height="26" class="admin_list_tit admin_list_first">名称</td>
+          <td class="admin_list_tit">排序<span class="admin_note">(数字越大越靠前) </span></td>
+          <td width="10%" align="center"  class="admin_list_tit">操作</td>
+        </tr>
+    <volist name="tag_list" id="vo">
+        <tr>
+          <td class="admin_list admin_list_first" >
+            {$vo['name']}（{$vo['id']}）
+          </td>
+          <td class="admin_list">
+                <input type="hidden" name="id[]" value="{$vo['id']}">
+                <input type="text" class="input_text_50" name="sort[]" value="{$vo['sort']}">
+            </td>
+          <td align="center"  class="admin_list" ><a href="{:U('Personal/tag_category_edit',array('id'=>$vo['id']))}">修改</a>
+          &nbsp;&nbsp;&nbsp;
+          <a href="{:U('Personal/tag_category_del',array('id'=>$vo['id']))}" onclick="return confirm('你确定要删除吗？')">删除</a>
+          </td>
+        </tr>
+    </volist>
+  </table>
+  <table width="100%" border="0" cellspacing="10" cellpadding="0" class="admin_list_btm">
+      <tr>
+        <td>
+<input name="add" type="button" class="admin_submit" id="add"    value="新增"  onclick="window.location='{:U('Personal/tag_category_add')}'"/>
+            <input name="save_sort" type="submit" class="admin_submit" id="save_sort" value="保存排序"/>
+    </td>
+        <td width="305" align="right">
+    
+      </td>
+      </tr>
+  </table>
+  </form>
+</div>
+<include file="public:footer" />
+</body>
+</html>

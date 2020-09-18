@@ -1,0 +1,19 @@
+<include file="public:header_min" />
+<div class="user_head">
+  <div class="insidebox">
+	<div class="logobox">
+		<a href="__ROOT__/"><img src="<if condition="C('qscms_logo_user')">{:attach(C('qscms_logo_user'),'resource')}<else/>__HOMEPUBLIC__/images/logo_user.png</if>" border="0"/></a>
+	</div>
+	<div class="nav link_white">
+			<div class="list <if condition="$company_nav eq 'index'">select</if>" onclick="window.location='{:U('company/index')}'"><a href="{:U('company/index')}">企业中心</a></div>
+			<div class="list <if condition="$company_nav eq 'jobs_list'">select</if>" onclick="window.location='{:U('company/jobs_list')}'"><a href="{:U('company/jobs_list')}">职位管理</a></div>
+			<div class="list <if condition="$company_nav eq 'jobs_apply'">select</if>" onclick="window.location='{:U('company/jobs_apply')}'"><a href="{:U('company/jobs_apply')}">简历管理</a></div>
+			<div class="list <if condition="CONTROLLER_NAME eq 'CompanyService' || $company_nav  eq 'service'">select</if>" onclick="window.location='{:U('companyService/index')}'"><a href="{:U('companyService/index')}">会员服务</a></div>
+			<notempty name="apply['Jobfair']">
+				<div class="list <if condition="$company_nav eq 'jobfair_list'">select</if>" onclick="window.location='{:U('company/jobfair_list')}'"><a href="{:U('company/jobfair_list')}">招聘会</a></div>
+			</notempty>
+			<div class="list <if condition="$company_nav eq 'com_info'">select</if>" onclick="window.location='{:U('company/com_info')}'"><a href="{:U('company/com_info')}">账号管理</a></div>
+	        <div class="clear"></div>
+	</div>
+  </div>
+</div>

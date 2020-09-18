@@ -1,0 +1,27 @@
+<qscms:jobfair_list 列表名="list" 显示数目="5" 分页显示="1" 标题长度="30"/>
+<notempty name="list['list']">
+<volist name="list['list']" id="vo">
+  <div class="list">
+    <div class="state <if condition="$vo['predetermined_ok'] eq 0">end</if>"></div>
+    <div class="td1">
+	  <div class="imgbox"><img src="{$vo['thumb']}" border="0"/></div>
+	</div>
+	<div class="td2">
+	 	<div class="tit substring link_gray6"><a href="{$vo['url']}">{$vo['title']}</a></div>
+		<div class="txt substring">举办时间：{:date('Y年m月d日',$vo['holddate_start'])}</div>
+		<div class="txt substring">举办地点：{$vo['address']}</div>
+      	<div class="txt substring">联系电话：{$vo['phone']}</div>
+	</div>
+	<div class="td3">
+		<if condition="$vo['predetermined_ok'] eq 0">
+			<a href="javascript:;" class="btn_disabled">停止预订</a>
+		<else/>
+			<a target="_blank" href="{$vo['zph_url']}">申请参会</a>
+			<!-- <a href="{$vo.booth_url}#reserve">在线预订</a> -->
+		</if>
+<!--  		<a href="{$vo.exhibitorsurl}" class="com">参会企业</a>
+ -->	</div>
+	<div class="clear"></div>
+  </div>
+</volist>
+</notempty>

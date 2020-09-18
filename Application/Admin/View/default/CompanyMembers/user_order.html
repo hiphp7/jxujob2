@@ -1,0 +1,111 @@
+<include file="public:header" />
+  <div class="seltpye_x">
+		<div class="left">完成状态</div>	
+		<div class="right">
+			<a href="{:P(array('is_paid'=>0))}" <if condition="!$Think.get.is_paid || $Think.get.is_paid eq '0'">class="select"</if>>不限</a>
+			<a href="{:P(array('is_paid'=>2))}" <if condition="$Think.get.is_paid eq '2'">class="select"</if>>已完成</a>
+			<a href="{:P(array('is_paid'=>1))}" <if condition="$Think.get.is_paid eq '1'">class="select"</if>>待付款</a>
+			<a href="{:P(array('is_paid'=>3))}" <if condition="$Think.get.is_paid eq '3'">class="select"</if>>已取消</a>
+			<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+  </div>
+    <div class="seltpye_x">
+		<div class="left">付款方式</div>	
+		<div class="right">
+			<a href="{:P(array('typename'=>''))}" <if condition="!$Think.get.typename || $Think.get.typename eq ''">class="select"</if>>不限</a>
+			<a href="{:P(array('typename'=>'points'))}" <if condition="$Think.get.typename eq 'points'">class="select"</if>>{:C('qscms_points_byname')}支付</a>
+			<volist name="payment_list" id="vo">
+			<a href="{:P(array('typename'=>$vo['typename']))}" <if condition="$Think.get.typename eq $vo['typename']">class="select"</if>>{$vo['byname']}</a>
+			</volist>
+			<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+  </div>
+  <div class="seltpye_x">
+		<div class="left">添加时间</div>	
+		<div class="right">
+		<a href="{:P(array('settr'=>0))}" <if condition="!$Think.get.settr || $Think.get.settr eq 0">class="select"</if>>不限</a>
+		<a href="{:P(array('settr'=>3))}" <if condition="$Think.get.settr eq 3">class="select"</if>>三天内</a>
+		<a href="{:P(array('settr'=>7))}" <if condition="$Think.get.settr eq 7">class="select"</if>>一周内</a>
+		<a href="{:P(array('settr'=>30))}" <if condition="$Think.get.settr eq 30">class="select"</if>>一月内</a>
+		<a href="{:P(array('settr'=>180))}" <if condition="$Think.get.settr eq 180">class="select"</if>>半年内</a>
+		<a href="{:P(array('settr'=>360))}" <if condition="$Think.get.settr eq 360">class="select"</if>>一年内</a>
+		<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+  </div>
+  <form id="form1" name="form1" method="post" action="{:U('order/order_cancel')}">
+  <input name="_k_v" type="hidden" value="{$Think.get._k_v}">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0"  id="list" class="link_lan">
+    <tr>
+      <td  width="10%" class="admin_list_tit admin_list_first">
+	   <label id="chkAll"><input type="checkbox" name=" " title="全选/反选" id="chk"/>全选</label></td>
+      <td class="admin_list_tit" width="10%">金额</td>   
+	  <td class="admin_list_tit">说明</td> 
+	  <td align="center" class="admin_list_tit" width="190">单号</td>
+	  <td width="8%" align="center" class="admin_list_tit">申请时间</td>
+      <td width="8%" align="center" class="admin_list_tit">支付方式</td>      
+      <td width="15%" align="center"  class="admin_list_tit">操作</td>
+    </tr>
+	<volist name="list" id="vo">
+      <tr>
+      <td class="admin_list admin_list_first">	 
+	  <if condition="$vo['is_paid'] eq 1">
+	   <input name="id[]" type="checkbox" id="y_id" value="{$vo['id']}"  />
+	  <span style="color: #FF6600">待付款...</span>
+	  <elseif condition="$vo['is_paid'] eq 2" />
+	  <input name="id[]" type="checkbox" id="y_id" value="{$vo['id']}" disabled="disabled"/>
+		<span style="color: #009900;">已完成</span>
+	  <else />
+	  	<input name="id[]" type="checkbox" id="y_id" value="{$vo['id']}" disabled="disabled"/>
+		<span style="color: #999;">已取消</span>
+	  </if>
+	   </td>
+        <td class="admin_list">￥<strong>{$vo['amount']}</strong>元</td>        
+		<td class="admin_list">{$vo['description']}</td>     
+		<td align="center" class="admin_list">{$vo['oid']}</td>
+		<td align="center" class="admin_list">{:admin_date($vo['addtime'])}</td>    
+        <td align="center" class="admin_list">{$vo['payment_cn']}</td>        
+        <td align="center" class="admin_list">
+        <if condition="$vo['is_paid'] eq 2 || $vo['is_paid'] eq 3">
+		<a href="{:U('order/order_show',array('uid'=>$vo['uid'],'id'=>$vo['id'],'_k_v'=>$_GET['_k_v']))}">查看</a>
+		&nbsp;设置</if>
+		<if condition="$vo['is_paid'] eq 1">
+		&nbsp;<a href="{:U('order/order_set',array('uid'=>$vo['uid'],'id'=>$vo['id'],'_k_v'=>$_GET['_k_v']))}">设置</a>&nbsp;
+		<a href="{:U('order/order_cancel',array('uid'=>$vo['uid'],'id'=>$vo['id'],'_k_v'=>$_GET['_k_v']))}" onclick="return confirm('你确定要取消吗？')">取消</a>
+		</if>
+		</td>
+      </tr>
+      </volist>
+  </table>
+	<if condition="!$list">
+	<div class="admin_list_no_info">没有任何信息！</div>
+	</if>
+  </form>
+	<table width="100%" border="0" cellspacing="10" cellpadding="0" class="admin_list_btm">
+      <tr>
+        <td>
+          <input name="ButAudit" type="button" class="admin_submit" id="ButDelOrder"  value="取消订单"  />
+		</td>
+      </tr>
+  </table>
+<div class="qspage">{$page}</div>
+</div>
+<include file="public:footer" />
+
+<script type="text/javascript">
+$(document).ready(function()
+{
+	//点击批量取消	
+	$("#ButDelOrder").click(function(){
+		if (confirm('你确定要取消吗？'))
+		{
+			$("form[name=form1]").submit()
+		}
+	});
+		
+});
+</script>
+</body>
+</html>

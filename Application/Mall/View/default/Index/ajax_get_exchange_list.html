@@ -1,0 +1,12 @@
+<div class="th1">兑换人</div>
+  <div class="th2">兑换数量</div>
+  <div class="th3">兑换时间</div>
+  <div class="clear"></div>
+	<qscms:goods_exchange_list 列表名="ex_list" 商品id="$_GET['id']" 分页显示="1"/>
+	<volist name="ex_list['list']" id="vo">
+   <div class="td1">{$vo['username']}</div>
+   <div class="td2">{$vo['num']}</div>
+   <div class="td3">{:date('Y-m-d H:i',$vo['addtime'])}</div>
+   <div class="clear"></div>
+ </volist>
+ <div class="goods_page">{$ex_list['page']}</div>

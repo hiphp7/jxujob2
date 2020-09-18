@@ -1,0 +1,152 @@
+<include file="Admin@default/public/header" />
+<script type="text/javascript" src="../public/js/fusioncharts/fusioncharts.js"></script>
+<script type="text/javascript" src="../public/js/fusioncharts/fusioncharts.theme.fint.js"></script>
+<link href="../public/css/showyear.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+$(document).ready(function()
+{
+  showyearbox(".date_input","#start_year");
+  showyearbox(".date_input1","#end_year");
+  function showyearbox(divname,inputname)
+  {
+    $(divname).click(function(){
+      var inputdiv=$(this);
+      $(inputdiv).parent("div").before("<div class=\"menu_bg_layer\"></div>");
+      $(".menu_bg_layer").height($(document).height());
+      $(".menu_bg_layer").css({ width: $(document).width(), position: "absolute", left: "0", top: "0" , "z-index": "0"});
+      $(inputdiv).parent("div").css("position","relative");
+      
+      var myDate = new Date();
+      var y=myDate.getFullYear();
+         // y=y-18;
+      var ymin=y-20;
+      htm="<div class=\"showyearbox yearlist\">";   
+      htm+="<ul>";
+      for (i=y;i>=ymin;i--)
+      {
+      htm+="<li title=\""+i+"\">"+i+"年</li>";
+      }
+      htm+="<div class=\"clear\"></div>";
+      htm+="</ul>";
+      htm+="</div>";
+      $(inputdiv).blur();
+      if ($(inputdiv).parent("div").find(".showyearbox").html())
+      {
+        $(inputdiv).parent("div").children(".showyearbox.yearlist").slideToggle("fast");
+      }
+      else
+      {
+        $(inputdiv).parent("div").append(htm);
+        $(inputdiv).parent("div").children(".showyearbox.yearlist").slideToggle("fast");
+      }
+      //
+      $(inputdiv).parent("div").children(".yearlist").find("li").unbind("click").click(function()
+      {
+        $(inputname).val($(this).attr("title"));
+        $(inputdiv).html($(this).attr("title"));
+        $(inputdiv).parent("div").children(".yearlist").hide();
+        $(".menu_bg_layer").remove();
+      }); 
+      //
+      $(".showyearbox>ul>li").hover(
+      function()
+      {
+      $(this).css("background-color","#DAECF5");
+      $(this).css("color","#ff0000");
+      },
+      function()
+      {
+      $(this).css("background-color","");
+      $(this).css("color","");
+      }
+      );
+      //
+      $(".menu_bg_layer").click(function(){
+            $(".menu_bg_layer").hide();
+            $(inputdiv).parent("div").css("position","");
+            $(inputdiv).parent("div").find(".showyearbox").hide();
+            
+      });
+    });
+  }
+});
+</script>
+<form method="get" name="date_from" id="date_form">
+<input type="hidden" name="m" value="{:MODULE_NAME}">
+<input type="hidden" name="c" value="{:CONTROLLER_NAME}">
+<input type="hidden" name="a" value="{:ACTION_NAME}">
+<div class="seltpye_x">
+  <table>
+    <tr>
+      <td>月份范围</td>
+      <td>
+        <select name="start_month">
+          <for start="1" end="13">
+            <option value="{$i}" <if condition="$Think.get.start_month eq $i">selected</if>>{$i}月</option>
+          </for>
+        </select>
+      </td>
+      <td>
+        -
+      </td>
+      <td>
+        <select name="end_month">
+          <for start="1" end="13">
+            <option value="{$i}" <if condition="$end_month eq $i">selected</if>>{$i}月</option>
+          </for>
+        </select>
+      </td>
+      <td></td>
+    </tr>
+  </table>
+  <table>
+    <tr>
+      <td>年份对比</td>
+      <td>
+        <div style="z-index:10">
+                  <input name="start_year" id="start_year" class="input_text_100 date_input" type="text" value="<if condition="$Think.get.start_year neq ''">{$Think.get.start_year}<else />{:date('Y')}</if>" />
+              </div>
+      </td>
+      <td>
+        -
+      </td>
+      <td>
+        <div style="z-index:10">
+                  <input name="end_year" id="end_year" class="input_text_100 date_input1" type="text" value="<if condition="$Think.get.end_year neq ''">{$Think.get.end_year}<else />{:date('Y')}</if>" />
+              </div>
+      </td>
+      <td><input name="" type="submit"  class="admin_submit search_submit"  value="搜索"/></td>
+    </tr>
+  </table>
+</div>
+</form>
+  <div id="chartContainer">FusionCharts XT will load here!</div>
+  <script type="text/javascript">
+    FusionCharts.ready(function(){
+      var revenueChart = new FusionCharts({
+          "type": "msline",//
+          "renderAt": "chartContainer",
+          "width": "900",
+          "height": "400",
+          "dataFormat": "json",
+          "dataSource":  {
+            "chart": {
+              "caption": "{$caption}",
+              "xAxisName": "{$xAxisName}",
+              "yAxisName": "{$yAxisName}",
+            "numbersuffix":"{$unit}",
+              "theme": "fint"
+           },
+           "categories": {$categories},
+           "dataset": {$dataset}
+        }
+
+    });
+  revenueChart.render();
+  });
+
+</script>
+</div>
+<include file="Admin@default/public/footer" />
+</body>
+</html>

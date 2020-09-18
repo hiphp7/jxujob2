@@ -1,0 +1,51 @@
+<!--确认面试弹出框-->
+<div class="full-year-dia">
+    <div class="f-y-tl co-or">请如实填写，若虚假填写则会被加入黑名单，永久失去本平台领取红包特权！</div>
+    <div class="h20"></div>
+    <form id="J_interviewWrap">
+    <div class="m-dia-inp-group">
+    <input type="hidden" name="company_uid" value="{$company_uid}">
+    <input type="hidden" name="record_id" value="{$record_id}">
+        <div class="m-i-g-line">
+            <div class="mig-l-1"><span> </span>面试官称呼：</div>
+            <div class="mig-l-2"><input name="interviewer_name" id="" type="text" class="input_245_34" value=""></div>
+            <div class="clear"></div>
+        </div>
+        <div class="h16"></div>
+        <div class="m-i-g-line">
+            <div class="mig-l-1"><span> </span>面试官年龄：</div>
+            <div class="mig-l-2"><input name="interviewer_age" id="" type="text" class="input_245_34" value=""></div>
+            <div class="clear"></div>
+        </div>
+        <div class="h16"></div>
+        <div class="m-i-g-line">
+            <div class="mig-l-1"><span> </span>是否佩带眼镜：</div>
+            <div class="mig-l-2">
+                <div class="radio_list J_radioitme_parent">
+                    <div class="rli checked J_radioitme" data-code="1">是</div>
+                    <div class="rli  J_radioitme" data-code="0">否</div>
+                    <div class="clear"></div>
+                    <input class="J_radioitme_code" name="interviewer_glasses" id="" type="hidden" value="1">
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="h16"></div>
+        <div class="m-i-g-line">
+            <div class="mig-l-1"><span> </span>面试时间：</div>
+            <div class="mig-l-2">
+            <input class="J_listitme_code input_245_34 select_input_date" name="interview_time" id="interview_time" value="" />
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="h16"></div>
+        <div class="m-i-g-line m-i-g-line-ara">
+            <div class="mig-l-1">其他辅助描述：</div>
+            <div class="mig-l-2"><textarea name="other" id="other" cols="" rows="" class="textarea_300_34"></textarea></div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    </form>
+    <div class="h16"></div>
+    <div class="f-y-tl"><span class="co-or">注意：</span>入职后请备份好劳动合同，如果发生红包纠纷我们将协助维护您的权益！</div>
+</div>

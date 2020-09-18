@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<qscms:jobfair_list 列表名="list" 显示数目="5" 标题长度="25"/>
+	<include file="Home@default/public/meta" />
+	<link href="__HOMEPUBLIC__/css/common.css" rel="stylesheet" type="text/css" />
+	<link href="../public/css/jobfair.css" rel="stylesheet" type="text/css" />
+	<script src="__HOMEPUBLIC__/js/jquery.common.js" type="text/javascript" language="javascript"></script>
+</head>
+<body>
+<include file="Home@default/public/header" />
+<div class="jobfair_index_banner">
+	<volist name="list['list']" id="vo" offset="0" length="1">
+	  <div class="main">
+	  		<div class="new"></div>
+			<div class="tit link_gray6"><a href="{$vo['url']}">{$vo['title']}</a></div>
+			<div class="txt substring">举办时间：{:date('Y年m月d日',$vo['holddate_start'])}</div>
+			<div class="txt substring">举办地点：{$vo['address']}</div>
+			<!-- <div class="txt substring">联系电话：{$vo['phone']}</div> -->
+	        <div class="btn">
+	        <if condition="$vo['predetermined_ok'] eq 1">
+			<!-- <a href="{$vo.booth_url}#reserve">在线预订</a> -->
+			<a href="{$vo['zph_url']}">在线预订</a>
+			<else />
+			<a class="end">已停止预订</a>
+			</if>
+			<a href="{$vo.exhibitorsurl}" class="com">参会企业</a>
+			</div>
+	  </div>
+    </volist>
+</div>
+<div class="jobfairlist">
+	<div id="j_list">
+		<volist name="list['list']" id="vo" offset="1" length="4">
+		  <div class="list">
+		    <div class="state <if condition="$vo['predetermined_ok'] eq 0">end</if>"></div>
+		    <div class="td1">
+			  <div class="imgbox"><img src="{$vo['thumb']}" border="0"/></div>
+			</div>
+			<div class="td2">
+			 	<div class="tit substring link_gray6"><a href="{$vo['url']}">{$vo['title']}</a></div>
+				<div class="txt substring">举办时间：{:date('Y年m月d日',$vo['holddate_start'])}</div>
+				<div class="txt substring">举办地点：{$vo['address']}</div>
+		      	<!-- <div class="txt substring">联系电话：{$vo['phone']}</div> -->
+			</div>
+			<div class="td3">
+				<if condition="$vo['predetermined_ok'] eq 0">
+					<a href="javascript:;" class="btn_disabled">停止预订</a>
+				<else/>
+					<a href="{$vo.booth_url}#reserve">在线预订</a>
+				</if>
+		 		<a href="{$vo.exhibitorsurl}" class="com">参会企业</a>
+			</div>
+			<div class="clear"></div>
+		  </div>
+		</volist>
+	</div>
+	<div class="more" page="2">更多</div>
+</div>
+<include file="Home@default/public/footer_min" />
+<script type="text/javascript">
+	$(document).ready(function(){
+		$(".more").click(function(){
+			$(".more").html('加载中...');
+			var page = $(this).attr('page');
+			$.getJSON("{:U('ajax_jobfair_list')}",{page:page},function(result){
+				if(result.status==1){
+					$("#j_list").append(result.data);
+					$(".more").attr('page',parseInt(page)+1);
+				}else{
+					$(".more").html('没有更多招聘会了');
+				}
+			});
+		});
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<qscms:jobfair_show  列表名="info" 招聘会id="$_GET['id']" 标题长度="30"/>
+	<include file="Home@default/public/meta" />
+	<link href="__HOMEPUBLIC__/css/common.css" rel="stylesheet" type="text/css" />
+	<link href="../public/css/jobfair.css" rel="stylesheet" type="text/css" />
+	<script src="__HOMEPUBLIC__/js/jquery.common.js" type="text/javascript" language="javascript"></script>
+</head>
+<body>
+<include file="Home@default/public/header" />
+
+<div class="jobfairshow">
+
+ <div class="state <if condition="$info['predetermined_ok'] eq 0">end</if>"></div>
+    <div class="td1">
+    <div class="imgbox"><img src="{$info['thumb']}" border="0"/></div>
+	</div>
+	<div class="td2">
+	 	 <div class="tit substring link_gray6"><a href="javascript:;">{$info['title']}</a></div>
+		  <div class="txt substring">举办时间：{:date('Y年m月d日',$info['holddate_start'])} - {:date('Y年m月d日',$info['holddate_end'])}</div>
+		   <div class="txt substring">举办地点：{$info['address']}</div>
+      <div class="txt substring">联系方式：{$info['phone']}（{$info['contact']}）</div>
+	</div>
+	<div class="td3">
+	<if condition="$info['predetermined_ok'] eq 1">
+	<a href="#reserve">在线预订</a>
+	<else />
+	<a class="end">已停止预订</a>
+	</if>
+	</div>
+	<div class="clear"></div>
+	
+    <div class="share bdsharebuttonbox" data-tag="share_1">
+		<a class="li s1 bds_tsina" data-cmd="tsina"></a>
+		<a class="li s2 bds_renren" data-cmd="renren"></a>
+		<a class="li s3 bds_qzone" data-cmd="qzone"></a>
+		<a class="li s5 bds_sqq" data-cmd="sqq"></a>
+		<a class="li s6 bds_weixin" data-cmd="weixin"></a>
+		<li class="code"><img src="{:C('qscms_site_dir')}index.php?m=Home&c=Qrcode&a=index&url={:urlencode($info['url'])}" border="0"/></li>
+		<div class="clear"></div>
+	</div>
+</div>
+
+
+
+
+<div class="jobfairshow_1">
+  <div class="tittab_bg">
+	<div class="tab">
+		<ul class="link_gray6">
+		<li><a href="{:U('jobfair_show',array('id'=>$info['id']))}">招聘会详情</a></li>
+		<li ><a href="{:U('jobfair_com',array('id'=>$info['id']))}">参会企业</a></li>
+		<if condition="$info['predetermined_ok'] eq 1">
+		<li class="select"><a href="{:U('jobfair_reserve',array('id'=>$info['id']))}">在线预订</a></li>
+		</if>
+		<li><a href="{:U('jobfair_traffic',array('id'=>$info['id']))}">交通线路</a></li>
+		<if condition="$info['holddate_end'] lt strtotime($Think.now)">
+		<li><a href="{:U('jobfair_retrospect',array('id'=>$info['id']))}">精彩回顾</a></li>
+		<!--已经结束的招聘会才有精彩回顾 -->
+		</if>
+		</ul>
+		<div class="clear"></div>
+	</div>
+  </div>
+  
+  <div class="com">
+  
+  
+  <div class="jobfairshow_5">
+  <!--在线预订 -->
+  <div class="ptit">招聘会展位图</div>
+  
+  <!--招聘会展示图，。可创建多张图片 -->
+  	<volist name="info['position_img']" id="vo">
+    <div class="pic"><a href="javascript:;"><img src="{:attach($vo['img'],'jobfair')}" border="0"/></a></div>
+    </volist>
+	
+	<div class="ptit re" id="reserve">在线预订</div>
+	<div class="txt">展会预订状态说明：<span class="state s1">可预订</span>可预订  <span class="state s2">已预订</span>已预订  <span class="state s3">审核中</span>审核中<span class="state s4">暂停预订</span>暂停预订</div>
+	
+	<div class="txt"><strong> {$info['title']}</strong> 线上预订企业数：<u>{$info['booth_count']}</u></div>
+	
+	
+	<div class="area">
+	<ul>
+	<volist name="info['area']" id="vo">
+	<li <if condition="$key eq 0">class="select"</if> area_id="{$vo['id']}">{$vo['area']}区</li>
+	</volist>
+	<div class="clear"></div>
+	</ul>
+	</div>
+	<volist name="info['area']" id="vo">
+	<div class="booth" id="area_wrap_{$vo['id']}" <if condition="$key neq 0">style="display:none;"</if>>
+		<volist name="info['position'][$vo['id']]" id="v">
+		<if condition="$v['status'] eq 0">
+		<div class="li">
+			<div class="tip" style="display:none;">
+			  <div class="arrow"></div>
+			  <div class="box">
+			    <div class="t">状态：可预订</div>
+				<div class="restxt link_gray6">展位号：{$v['position']} <span class="btn reserve_it" position_id="{$v['id']}">立即预订</span></div> </div>
+			</div>
+			{$v['position']}
+		</div>
+		<elseif condition="$v['status'] eq 1"/>
+		<div class="li succeed">
+			<div class="tip succeed" style="display:none;">
+				<div class="arrow"></div>
+				<div class="box">
+			    	<div class="t">状态：已预订</div>
+					<div class="restxt link_gray6"><a href="{:url_rewrite('QS_companyshow',array('id'=>$v['company_id']))}" target="_blank">{$v['company_name']}</a></div>
+			    </div>
+			</div>
+			{$v['position']}
+		</div>
+		<elseif condition="$v['status'] eq 2"/>
+		<div class="li audit">
+			<div class="tip audit" style="display:none;">
+				<div class="arrow"></div>
+				<div class="box">
+			    	<div class="t">状态：审核中</div>
+					<div class="restxt link_gray6"><a href="{:url_rewrite('QS_companyshow',array('id'=>$v['company_id']))}" target="_blank">{$v['company_name']}</a></div>
+			  	</div>
+			</div>
+			{$v['position']}
+		</div>
+		<else />
+		<div class="li invalid">{$v['position']}</div>
+		</if>
+		</volist>
+	<div class="clear"></div>
+	</div>
+	</volist>
+  </div>
+  </div>
+</div>
+<include file="Home@default/public/footer_min" />
+<script type="text/javascript" src="__HOMEPUBLIC__/js/jquery.disappear.tooltip.js"></script>
+<script type="text/javascript">
+    // 锚点
+    $('.pic a').click(function() {
+        var targetOffset = $('#reserve').offset().top;
+        $('html,body').animate({
+            scrollTop: targetOffset
+        }, 1000);
+    });
+    window._bd_share_config = {
+	common : {
+		bdText : "{$info['title']}-{:C('qscms_site_name')} 举办时间：{:date('m月d日',$info['holddate_start'])} - {:date('m月d日',$info['holddate_end'])}  举办地址：{$info['address']}",	
+		bdDesc : "{$info['title']}-{:C('qscms_site_name')} 举办时间：{:date('m月d日',$info['holddate_start'])} - {:date('m月d日',$info['holddate_end'])}  举办地址：{$info['address']}",	
+		bdUrl : "<if condition="!$apply['Subsite']">{:C('qscms_site_domain')}</if>{$info['url']}", 	
+		bdPic : "{:C('qscms_site_domain')}{$info['thumb']}"
+	},
+	share : [{
+		"tag" : "share_1",
+		"bdCustomStyle":"../public/css/jobfair.css"
+	}]
+}
+with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+$(document).ready(function()
+{
+  $(".booth .li").hover(function(){
+  	$(this).children('.tip').toggle();
+  });
+  $(".area li").click(function(){
+  	$(this).addClass('select').siblings().removeClass('select');
+  	var area_id = $(this).attr('area_id');
+  	$(".booth").hide();
+  	$("#area_wrap_"+area_id).show();
+  });
+  $(".reserve_it").live('click',function(){
+  	var thisObj = $(this);
+  	var position_id = thisObj.attr('position_id');
+  	var jobfair_id = "{$info['id']}";
+  	$.getJSON("{:U('reserve')}",{position_id:position_id,jobfair_id:jobfair_id},function(result){
+  		if(result.status==1){
+  			disapperTooltip("success", result.msg);	
+  			setTimeout(function() { 
+		    	location.reload();
+			},2000);
+  		}else{
+  			disapperTooltip("remind", result.msg);	
+  		}
+  	});
+  });
+});
+</script>
+</body>
+</html>

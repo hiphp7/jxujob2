@@ -1,0 +1,161 @@
+<include file="public:header" />
+    <div class="toptip">
+		<h2>提示：</h2>
+		<p>系统将会自动清除一个月前的会员日志。</p>
+	</div>
+	<div class="seltpye_y">
+		<div class="tit link_lan">
+			<strong>{$sub_menu.pageheader}</strong>
+			<span>(共找到{$total}条)</span>
+			<a href="{:U('MembersLog/index')}">[恢复默认]</a>
+			<div class="pli link_bk">
+				<u>每页显示：</u>
+				<a href="{:P(array('pagesize'=>10))}" <if condition="$pagesize eq 10">class="select"</if>>10</a>
+				<a href="{:P(array('pagesize'=>20))}" <if condition="$pagesize eq 20">class="select"</if>>20</a>
+				<a href="{:P(array('pagesize'=>30))}" <if condition="$pagesize eq 30">class="select"</if>>30</a>
+				<a href="{:P(array('pagesize'=>60))}" <if condition="$pagesize eq 60">class="select"</if>>60</a>
+				<div class="clear"></div>
+			</div>
+		</div>	
+		<notempty name="apply['Subsite']">
+		<div class="list" >
+	      <div class="t">所属分站</div>
+	      <qscms:subsite 列表名="subsite_list"/>
+	      <div class="txt link_lan">
+	        <a href="{:P(array('subsite_id'=>''))}" <if condition="$Think.get.subsite_id eq ''">class="select"</if>>不限</a>
+	        <if condition="$visitor['role_id'] eq 1">
+	          <volist name="subsite_list" id="subsite">
+	            <a href="{:P(array('subsite_id'=>$subsite['s_id']))}" <if condition="$Think.get.subsite_id eq $subsite['s_id']">class="select"</if>>{$subsite.s_sitename}</a>
+	          </volist>
+	        <else/>
+	          <volist name="subsite_list" id="subsite">
+	            <if condition="in_array($subsite['s_id'],$visitor['subsite'])">
+	              <a href="{:P(array('subsite_id'=>$subsite['s_id']))}" <if condition="$Think.get.subsite_id eq $subsite['s_id']">class="select"</if>>{$subsite.s_sitename}</a>
+	            </if>
+	          </volist>
+	        </if>
+	      </div>
+	    </div>
+	    </notempty>
+		<div class="list">
+			<div class="t">日志类型</div>	  
+			<div class="txt link_lan">
+				<a href="{:P(array('log_utype'=>''))}" <if condition="$Think.get.log_utype eq ''">class="select"</if>>不限</a>
+				<a href="{:P(array('log_utype'=>1))}" <if condition="$Think.get.log_utype eq 1">class="select"</if>>企业会员</a>
+				<a href="{:P(array('log_utype'=>2))}" <if condition="$Think.get.log_utype eq 2">class="select"</if>>个人会员</a>
+			</div>
+		</div>
+		<div class="list">
+			<div class="t">创建时间</div>	  
+			<div class="txt link_lan">
+				<a href="{:P(array('settr'=>''))}" <if condition="$Think.get.settr eq ''">class="select"</if>>不限</a>
+				<a href="{:P(array('settr'=>3))}" <if condition="$Think.get.settr eq 3">class="select"</if>>三天内</a>
+				<a href="{:P(array('settr'=>7))}" <if condition="$Think.get.settr eq 7">class="select"</if>>一周内</a>
+				<a href="{:P(array('settr'=>30))}" <if condition="$Think.get.settr eq 30">class="select"</if>>一月内</a>
+				<a href="{:P(array('settr'=>180))}" <if condition="$Think.get.settr eq 180">class="select"</if>>半年内</a>
+				<a href="{:P(array('settr'=>360))}" <if condition="$Think.get.settr eq 360">class="select"</if>>一年内</a>
+			</div>
+		</div>
+		<div class="list">
+			<div class="t">日志类型</div>	  
+			<div class="txt link_lan">
+				<a href="{:P(array('log_type'=>''))}" <if condition="$Think.get.log_type eq ''">class="select"</if>>不限</a>
+				<volist name="type_arr" id="vo">
+					<a href="{:P(array('log_type'=>$key))}" <if condition="$Think.get.log_type eq $key">class="select"</if>>{$vo['type']}</a>
+				</volist>
+			</div>
+    	</div>
+		<div class="clear"></div>
+	</div>
+	<form id="form1" name="form1" method="post" action="{:U('MembersLog/delete')}">
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" id="list" class="link_lan">
+			<tr>
+			<td height="26"  class="admin_list_tit admin_list_first"  width="200">
+			<label id="chkAll"><input type="checkbox" name=" " title="全选/反选" id="chk"/>会员名</label></td>
+			<td width="100" align="center" class="admin_list_tit">类型</td>
+			<td width="13%" align="center" class="admin_list_tit">创建时间</td>
+			<td width="10%" align="center" class="admin_list_tit"> IP </td>
+			<td width="10%" align="center" class="admin_list_tit"> 地址 </td>
+			<td class="admin_list_tit" >描述</td>
+			</tr>
+			<volist name="list" id="vo">
+				<tr>
+				<td  class="admin_list admin_list_first">
+				<input name="log_id[]" type="checkbox" id="id" value="{$vo.log_id}"/>
+				{$vo.log_username}<span style="color: #CCCCCC">[uid:{$vo.log_uid}]</span>
+				</td>
+				<td  class="admin_list" align="center">
+				<switch name="vo['log_utype']">
+					<case value="1" break="1">企业会员</case>
+					<case value="2" break="1">个人会员</case>
+				</switch>
+				</td>
+				<td class="admin_list" align="center">{:admin_date($vo['log_addtime'])}</td>
+				<td class="admin_list" align="center">{$vo.log_ip|default='&nbsp;'}</td>
+				<td class="admin_list" align="center">{$vo.log_address|default='&nbsp;'}</td>
+				<td class="admin_list vtip" title="{$vo.log_value}">{$vo.log_value}</td>
+				</tr>
+			</volist>
+		</table>
+		<empty name="list">
+			<div class="admin_list_no_info">没有任何信息！</div>
+		</empty>
+		<span id="OpPi"></span>
+	</form>
+	<table width="100%" border="0" cellspacing="10"  class="admin_list_btm">
+		<tr>
+	        <td>
+			</td>
+	        <td width="305" align="right">
+				<form id="formseh" name="formseh" method="get" action="">	
+					<div class="seh">
+					    <div class="keybox">
+					    	<input name="key" type="text"   value="{$Think.get.key}" />
+					    </div>
+					    <div class="selbox">
+							<input id="key_type_cn" type="text" value="{$Think.get.key_type_cn|default="会员名"}" readonly="true"/>
+							<div>
+								<input name="key_type" id="key_type" type="hidden" value="{$Think.get.key_type|default=1}" />
+								<div id="sehmenu" class="seh_menu">
+									<ul>
+										<li id="1" title="会员名">会员名</li>
+										<li id="2" title="UID">UID</li>
+									</ul>
+								</div>
+							</div>				
+						</div>
+						<div class="sbtbox">
+							<input type="hidden" name="m" value="{:C('admin_alias')}">
+	                        <input type="hidden" name="c" value="{:CONTROLLER_NAME}">
+	                        <input type="hidden" name="a" value="{:ACTION_NAME}">
+							<input type="submit" class="sbt" id="sbt" value="搜索"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</form>
+		    </td>
+	    </tr>
+	</table>
+	<div class="qspage">{$page}</div>
+</div>
+<include file="public:footer" />
+<script type="text/javascript">
+	$(document).ready(function(){
+		//点击批量取消	
+		$("#ButDel").click(function(){
+			if (confirm('你确定要删除吗？')){
+				$("form[name=form1]").submit()
+			}
+		});
+		//纵向列表排序
+		$(".list .txt").each(function(i){
+			var li=$(this).children(".select");
+			var htm="<a href=\""+li.attr("href")+"\" class=\""+li.attr("class")+"\">"+li.text()+"</a>";
+			li.detach();
+			$(this).prepend(htm);
+		});
+		showmenu("#key_type_cn","#sehmenu","#key_type");
+	});
+</script>
+</body>
+</html>

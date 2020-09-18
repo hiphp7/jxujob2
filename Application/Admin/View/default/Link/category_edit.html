@@ -1,0 +1,32 @@
+<include file="public:header" />
+<div class="toptip">
+  <h2>提示：</h2>
+  <p>
+自定义广告位调用名不可以以 “QS_”开头
+</p>
+</div>
+<div class="toptit">修改分类</div>
+<form id="form1" name="form1" method="post" action="{:U('category_edit')}">
+          <table width="100%" border="0" cellpadding="5" cellspacing="2" style="margin-top:10px;">
+
+            <tr> 
+              <td width="80" align="right">名称：</td>
+              <td><input name="categoryname" type="text" class="input_text_200"   value="{$info.categoryname}"  /></td>
+            </tr>
+            <tr>
+              <td align="right">调用名：</td>
+              <td><input name="c_alias" type="text" class="input_text_200" value="{$info.c_alias}"/></td>
+            </tr>
+            <tr>
+              <td align="right">&nbsp;</td>
+              <td>
+        <input name="id" type="hidden" value="{$info.id}" />
+        <input type="submit" name="Submit" value="保存" class="admin_submit">
+        </td>
+            </tr>
+          </table>
+  </form>
+</div>
+<include file="public:footer" />
+</body>
+</html>

@@ -1,0 +1,47 @@
+<include file="Admin@default/public/header" />
+ 
+   
+ 
+    <div class="toptip">
+	<h2>提示：</h2>
+	<p>火车头采集规则请到论坛下载！</p>
+	</div>
+	
+   <form action="{:U('basic_mod')}" method="post"  name="form1" id="form1">
+   
+  <div class="toptit">资讯采集设置</div>
+    <table width="700" border="0" cellspacing="5" cellpadding="1" style=" margin-bottom:3px; margin-top:10px;">
+      <tr>
+        <td width="180" align="right">默认显示状态：</td>
+        <td ><label >
+          <input name="article_display" type="radio" id="article_display" value="1"  <if condition="$show.article_display eq 1">checked="checked"</if>/>
+          显示</label>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <label  >
+            <input type="radio" name="article_display" value="0" id="article_display"  <if condition="$show.article_display eq 0">checked="checked"</if>/>
+            不显示 </label></td>
+      </tr>
+      <tr>
+        <td align="right">默认属性：</td>
+        <td>
+		<volist name="article_property" id="vo">
+		 <label>
+          <input name="article_focos" type="radio" value="{$key}" <if condition="$key==$show[article_focos]">checked="checked"</if>/>
+		{$vo}
+		 </label>
+		 </volist>
+		</td>
+      </tr>
+      <tr>
+        <td align="right">&nbsp;</td>
+        <td height="50"><span style="font-size:14px;">
+          <input name="submit222" type="submit" class="admin_submit"    value="保存修改"/>
+        </span></td>
+      </tr>
+    </table>
+	</form>
+
+<include file="Admin@default/public/footer" />
+
+</body>
+</html>

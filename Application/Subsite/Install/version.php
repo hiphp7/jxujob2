@@ -1,0 +1,1 @@
+<?php	return array ( 'module' => 'Subsite', 'module_name' => '分站', 'appid' => '318', 'version' => '4.2.1', 'is_create_table' => 1, 'is_insert_data' => 1, 'is_exe' => 1, 'is_delete_data' => 1, 'update_time' => '2017-05-15 09:17:01', 'explain' => '分站说明。', ); ?>

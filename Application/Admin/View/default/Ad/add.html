@@ -1,0 +1,297 @@
+<include file="public:header" />
+    <div class="toptip">
+        <h2>提示：</h2>
+        <p>上传大文件建议通过FTP上传在填写远程地址的时候，建议使用“/”或“http:// ”  开头的绝对路径。</p>
+    </div>
+    <div class="toptit">新增广告</div>
+	<form action="{:U('Ad/add')}" method="post" enctype="multipart/form-data"  name="FormData" id="FormData" >
+		<table width="100%" border="0" cellpadding="3" cellspacing="3">
+			<tr>
+				<td width="100" align="right">广告标题(必填)：</td>
+				<td>
+					<input name="title" type="text" class="input_text_400" id="title" maxlength="100"/>
+					<span class="admin_note">广告标题只为识别辨认不同广告条目之用，并不在广告中显示</span>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">显示状态：</td>
+				<td>
+					<label>
+					<input name="is_display" type="radio" value="1" checked="checked" />
+					正常</label>&nbsp;&nbsp;&nbsp;&nbsp;<label>
+					<input type="radio" name="is_display" value="0" />
+					停止 </label>
+				</td>
+			</tr>
+			<notempty name="apply['Subsite']">
+	        <tr>
+	          <td align="right">选择站点：</td>
+	          <td colspan="4">
+	            <qscms:subsite 列表名="subsite_list"/>
+	            <if condition="$visitor['role_id'] eq 1">
+	              <volist name="subsite_list" id="subsite">
+	                <label style="color: rgb(102, 102, 102);">
+	                  <input name="subsite_id" type="radio" value="{$subsite.s_id}" <if condition="$i eq 1">checked="checked"</if>>{$subsite.s_sitename}
+	                </label>&nbsp;&nbsp;&nbsp;
+	              </volist>
+	            <else/>
+	              <volist name="subsite_list" id="subsite">
+	                <if condition="in_array($subsite['s_id'],$visitor['subsite'])">
+	                  <label style="color: rgb(102, 102, 102);">
+	                    <input name="subsite_id" type="radio" value="{$subsite.s_id}" <if condition="$k eq 0">checked="checked"</if>>{$subsite.s_sitename}
+	                  </label>&nbsp;&nbsp;&nbsp;
+	                </if>
+	              </volist>
+	            </if>
+	         </td>
+	        </tr>
+	        <tr>
+				<tr>
+					<td align="right">选择分类：</td>
+					<td>
+						<select name="category" id="category">   
+							<volist name="category_list[0]" id="category">
+								<option value="{$category.id},{$category.type_id},{$category.alias}">{$category.categoryname}</option>
+							</volist>
+						</select>
+						<input name="category_id" id="category_id" type="hidden" value="" />
+						<input name="type_id" id="type_id" type="hidden" value="" />
+						<input name="alias" id="alias" type="hidden" value="" />
+					</td>
+				</tr>
+			</tr>
+	        <else/>
+	        	<tr>
+					<td align="right">选择分类：</td>
+					<td>
+						<select name="category" id="category">   
+							<volist name="category_list" id="category">
+								<option value="{$category.id},{$category.type_id},{$category.alias}" <if condition="$Think.get.alias==$category.alias">selected="selected"</if>>{$category.categoryname}</option>
+							</volist>
+						</select>
+						<input name="category_id" id="category_id" type="hidden" value="" />
+						<input name="type_id" id="type_id" type="hidden" value="" />
+						<input name="alias" id="alias" type="hidden" value="" />
+					</td>
+				</tr>
+	    	</notempty>
+			<tr>
+				<td align="right">显示顺序：</td>
+				<td>
+					<input name="show_order" type="text" class="input_text_200" id="show_order" value="50" maxlength="3" />
+					<span class="admin_note">数字越大越靠前</span>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">开始时间：</td>
+				<td>
+					<input name="starttime" type="text" class="input_text_200 date_input" maxlength="10" value="{:date('Y-m-d',time())}"  />
+					<span class="admin_note">设置广告起始生效的时间，格式 yyyy-mm-dd，留空为不限制起始时间</span>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">结束时间：</td>
+				<td>
+					<input name="deadline" type="text" class="input_text_200 date_input" id="deadline" maxlength="10"  />
+					<span class="admin_note">设置广告广告结束的时间，格式 yyyy-mm-dd，留空为不限制结束时间</span>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">备注：</td>
+				<td>
+					<textarea name="note" id="note" style="width:300px; height:50px; font-size:12px; line-height:180%"></textarea>
+				</td>
+			</tr>
+		</table>
+		<div class="adshow" id="show"></div>
+		<div style="padding-left:110px; padding-top:10px;">
+			<input type="button"  id="sub" value="确定提交" class="admin_submit"   />
+			<input name="submit22" type="button" class="admin_submit" value="返 回" onclick="window.location='{:U('Ad/index')}'"/>
+		</div>
+	</form>
+</div>
+<include file="public:footer" />
+<link href="__ADMINPUBLIC__/css/date_input.css" rel="stylesheet" type="text/css" />
+<notempty name="apply['Subsite']">
+	<volist name="category_list" id="category">
+		<script id="J_ads_{$key}" type="text/html">
+			<volist name="category" id="ad">
+				<option value="{$ad.id},{$ad.type_id},{$ad.alias}">{$ad.categoryname}</option>
+			</volist>
+		</script>
+	</volist>
+</notempty>
+<script id="adType1" type="text/html">
+	<div class="toptit">文字广告</div>
+	<table width="100%" border="0" cellpadding="3" cellspacing="3" >
+		<tr>
+			<td width="100" align="right">文字内容(必填)：</td>
+			<td><input name="content" type="text" class="input_text_400" id="text_content"  />  <span class="admin_note">文字广告的显示内容</span></td>
+		</tr>
+		<tr>
+			<td align="right">文字链接：</td>
+			<td><input name="url" type="text" class="input_text_400" id="text_url"  />  <span class="admin_note">如:http://www.74cms.com</span></td>
+		</tr>
+		<tr>
+			<td align="right">文字颜色：</td>
+			<td>
+				<div class="color_layer">	
+				<div id="color_box" onclick="color_box_display()" ></div>
+					<input type="hidden" name="text_color" id="tit_color" >
+					<include file="public:select_color" />
+				</div>
+			</td>
+		</tr>
+	</table>
+</script>
+<script id="adType2" type="text/html">
+	<div class="toptit">图片广告</div>
+	<table width="100%" border="0" cellpadding="3" cellspacing="3">
+		<tr>
+			<td width="100" align="right">本地上传：</td>
+			<td >
+			<input name="attach_file" type="file"   id="img_file" style="font-size:12px; height:24px; width:273px;" />
+			<span class="admin_note">(允许格式为：gif/jpg/bmp/png，文件大小：1000KB)</span>				  </td>
+		</tr>
+		<tr>
+			<td width="100" align="right">或图片地址：</td>
+			<td ><input name="attach_path" type="text" class="input_text_200" id="img_path" maxlength="250"/> <span class="admin_note">如：/images/logo.gif 或 http://www.baidu.com/img/baidu_logo.gif</span></td>
+		</tr>
+		<tr>
+			<td align="right">图片链接：</td>
+			<td><input name="url" type="text" class="input_text_200" id="img_url" maxlength="250"/>
+			<span class="admin_note">如:http://www.74cms.com</span>
+			</td>
+		</tr>
+		<tr>
+			<td align="right">图片说明文字：</td>
+			<td><input name="explain" type="text" class="input_text_200" id="img_explain" maxlength="250"/></td>
+		</tr>
+		<tr>
+			<td align="right">会员UID：</td>
+			<td>
+			<input name="uid" type="text" class="input_text_200" id="img_uid" maxlength="10"/>
+			<span class="admin_note">设置会员UID后，当鼠标移动到图片上将会显示相关的职位和企业信息</span>
+			</td>
+		</tr>
+	</table>
+</script>
+<script id="adType3" type="text/html">
+	<div class="toptit">代码广告</div>
+	<table width="100%" border="0" cellpadding="3" cellspacing="3">
+        <tr>
+          <td width="100" align="right" valign="top"> 代码(必填):</td>
+          <td>
+          	<textarea name="content" id="code_content" style="width:300px; height:50px; font-size:12px; line-height:180%"></textarea>
+          	<span class="admin_note">请直接输入需要展现的广告代码</span>
+          </td>
+        </tr>
+	</table>
+</script>
+<script id="adType4" type="text/html">
+	<div class="toptit">Flash广告</div>
+	<table width="100%" border="0" cellpadding="3" cellspacing="3">
+		<tr>
+		<td width="100" align="right">本地上传：</td>
+		<td >
+		<input name="attach_file" type="file"   id="flash_file" style="font-size:12px; height:24px; width:273px;" />
+		<span style="color: #666666">(允许格式为：swf，文件大小：1000KB)</span></td>
+		</tr>
+		<tr>
+		<td width="100" align="right">或者Flash地址：</td>
+		<td><input name="attach_path" type="text" class="input_text_200" id="flash_path" maxlength="250"/>  <span class="admin_note">如：/images/123.swf 或 http://www.74cms.com/123.swf</span></td>
+		</tr>
+	</table>
+</script>
+<script id="adType5" type="text/html">
+	<div class="toptit">视频广告</div>
+	<table width="100%" border="0" cellpadding="3" cellspacing="3">
+		<tr>
+		<td width="100" align="right">本地上传：</td>
+		<td >
+		<input name="attach_file" type="file"   id="video_file" style="font-size:12px; height:24px; width:273px;" />
+		<span class="admin_note">(允许格式为：swf/flv/f4v，文件大小：5000KB,大文件请从FTP上传)</span></td>
+		</tr>
+		<tr>
+		<td width="100" align="right">或填写路径：</td>
+		<td ><input name="attach_path" type="text" class="input_text_200" id="video_path" /> <span class="admin_note">如：/images/logo.swf 或 http://www.baidu.com/img/baidu_logo.swf</span></td>
+		</tr>
+	</table>
+</script>
+<script src="__ADMINPUBLIC__/js/jquery.date_input.js" type='text/javascript' language="javascript"></script>
+<script type="text/javascript" >
+$(document).ready(function(){
+	var add_alias="{$Think.get.alias}";
+	//判断是不是添加后继续添加 的，如果是，则恢复广告分类
+	if (add_alias==""){
+		selChange($("#category option:first").attr('value'));
+	}else{
+		selChange("{$Think.get.category_id},{$Think.get.type_id},{$Think.get.alias}");
+	}	
+	$("#category").change(function(){
+	 selChange($(this).val());
+	});
+	function selChange(obj){
+		var str=obj.split(",");
+		$("#category_id").val(str[0]);
+		$("#type_id").val(str[1]);
+		$("#alias").val(str[2]);
+		if(str[1] != $('#show').attr('type_id')){
+			$('#show').append($('#adType'+str[1]).html()).attr('type_id',str[1]);
+		}
+	}
+	$(":radio[name=floating_type]").live('click',function(){
+		if ($(":radio[name=floating_type][checked]").val()=="1"){
+			$("#show_url").show();
+		}else{
+			$("#show_url").hide();
+		}
+	});
+	$(".date_input").date_input();
+	$('#sub').click(function(){
+		if($("#title").val()==""){
+			alert ("请填写广告标题");
+			return false;
+		}
+		var id = parseInt($('#show').attr('type_id'));
+		switch(id){
+			case 1://验证文字广告
+				if ($("#text_content").val()==""){alert ("请填写文字");return false;}
+				break;
+			case 2://图片
+				if ($("#img_file").val()=="" && $("#img_path").val()==""){alert ("请上传图片或填写图片路径");return false;}
+				break;
+			case 3://代码
+				if ($("#code_content").val()==""){alert ("请填写输入广告代码"); return false;}
+				break;
+			case 4://FLASH
+				if ($("#flash_file").val()=="" && $("#flash_path").val()==""){alert ("请上传FLASH或填写FLASH路径");return false;}
+				if ($("#flash_width").val()=="" || $("#flash_height").val()==""){alert ("请填写宽和高");return false;}
+				break;
+			case 5://浮动
+				if ($("#floating_file").val()=="" && $("#floating_path").val()==""){alert ("请上传或填写路径");return false;}
+				if ($("#floating_width").val()=="" || $("#floating_height").val()==""){alert ("请填写宽和高");return false;}
+				if ($("#floating_left").val()=="" && $("#floating_right").val()==""){alert ("请填写左距或者右距");return false;}
+				if ($("#floating_top").val()==""){alert ("请填写顶距");return false;}
+				if ($("#floating_top").val()>800){alert ("顶距超过了800，多数情况下无法正确显示，推荐设置在300内");return false;}
+				break;
+			case 6://视频
+				if ($("#video_file").val()=="" && $("#video_path").val()==""){alert ("请上传或填写路径");return false;}
+				if ($("#video_width").val()=="" || $("#video_height").val()==""){alert ("请填写宽和高");return false;}
+				break;
+			default:
+				alert('请正确选择广告位！');
+				return false;
+				break;
+		}
+		$("#FormData").submit();
+	});
+	<notempty name="apply['Subsite']">
+		$('input[name="subsite_id"]').click(function(){
+			$('#category').html($('#J_ads_'+$(this).val()).html());
+		});
+	</notempty>
+}); 
+</script>
+</body>
+</html>

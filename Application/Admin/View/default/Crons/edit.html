@@ -1,0 +1,119 @@
+<include file="public:header" />
+ <div class="toptip">
+  <h2>提示：</h2>
+  <p>
+计划任务是一项使系统在规定时间自动执行某些特定任务的功能，在需要的情况下，您也可以方便的将其用于功能的扩展。<br />
+计划任务是与系统核心紧密关联的功能特性，不当的设置可能造成功能的隐患，严重时可能导致网站无法正常运行。
+</p>
+</div>
+<div class="toptit">修改计划任务</div>
+
+  <div class="admintable">
+  
+  <form action="{:U('crons/edit')}" method="post"  name="FormData" id="FormData" >
+    <table width="100%" border="0" cellpadding="3" cellspacing="0">
+   <tr>
+        <td  class="tit">名称：</td>
+      </tr>
+      <tr>
+        <td>
+    <input name="name" type="text"  class="input_text_200" maxlength="20"  value="{$info.name}"/>
+    <span class="admin_note">设置本任务的任务类名称</span>    </td>
+      </tr>
+     <tr>
+        <td  class="tit">任务脚本类名称：</td>
+      </tr>
+      <tr>
+        
+        <td>
+    <input name="filename" type="text"  class="input_text_200" maxlength="30"  value="{$info.filename}"/>
+    
+    <span class="admin_note">设置本任务的执行程序类名称，请勿包含路径，程序脚本统一存放于 ./app/Lib/Cron/ 目录中</span>   </td>
+      </tr>
+    
+     <tr>
+      <tr>
+        <td  class="tit">每周：</td>
+      </tr>
+        <td>
+    <select name="weekday"  class="input_text_200_select">
+        <option value="-1"  <if condition="$info['weekday'] eq '-1'">selected="selected"</if>>*</option>
+        <option value="0" <if condition="$info['weekday'] eq '0'">selected="selected"</if>>日</option>
+        <option value="1" <if condition="$info['weekday'] eq '1'">selected="selected"</if>>一</option>
+        <option value="2" <if condition="$info['weekday'] eq '2'">selected="selected"</if>>二</option>
+        <option value="3" <if condition="$info['weekday'] eq '3'">selected="selected"</if>>三</option>
+        <option value="4" <if condition="$info['weekday'] eq '4'">selected="selected"</if>>四</option>
+        <option value="5" <if condition="$info['weekday'] eq '5'">selected="selected"</if>>五</option>
+        <option value="6" <if condition="$info['weekday'] eq '6'">selected="selected"</if>>六</option>
+      </select>
+    <span class="admin_note">设置星期几执行本任务，“*”为不限制，本设置会覆盖下面的“日”设定</span>   </td>
+      </tr>
+     <tr>
+        <td  class="tit">每月：</td>
+      </tr>
+     <tr>
+ 
+        <td >
+     <select name="day" class="input_text_200_select">
+          <option value="-1" <if condition="$info['day'] eq '-1'">selected="selected"</if>>*</option>
+          <for start="1" end="28">
+          <option value="{$i}"  <if condition="$info['day'] eq $i">selected="selected"</if>>{$i} 日</option>
+          </for>
+        </select>
+     <span class="admin_note">设置哪一日执行本任务，“*”为不限制</span>   </td>
+      </tr>
+ <tr>
+        <td  class="tit">小时：</td>
+      </tr>
+   <tr>
+        <td >
+  <select name="hour" class="input_text_200_select">
+          <option value="-1" <if condition="$info['hour'] eq '-1'">selected="selected"</if>>*</option>
+          <for start="1" end="23">
+          <option value="{$i}"  <if condition="$info['hour'] eq $i">selected="selected"</if>>{$i} 时</option>
+          </for>
+        </select>
+     <span class="admin_note">设置哪一小时执行本任务，“*”为不限制</span>    </td>
+      </tr>
+   <tr>
+     <td  class="tit">分钟：</td>
+   </tr>
+   <tr>
+     <td ><input name="minute" type="text"  class="input_text_200" value="{$info.minute}" />
+   
+    <span class="admin_note">设置哪一分钟执行本任务，留空为不限制</span>    
+   </td>
+   </tr>
+     <tr>
+        <td  class="tit">可用：</td>
+      </tr>
+      <tr>
+        
+        <td>
+    <label><input name="available" type="radio" value="1"  <if condition="$info['available'] eq '1'">checked="checked"</if>/>可用</label>
+<label><input type="radio" name="available" value="0"  <if condition="$info['available'] eq '0'">checked="checked"</if>/> 不可用</label>
+    <span class="admin_note">设置不可用则任务不会执行</span>    </td>
+      </tr>
+   <tr>
+     <td >
+   <br />
+<br />
+<input name="cronid" type="hidden" value="{$info.cronid}" />
+<input type="submit" name="Submit" value="确定提交" class="admin_submit"   />
+         
+      <input name="submit22" type="button" class="admin_submit"    value="返 回" onclick="window.location='{:U('crons/index')}'"/>
+     </td>
+   </tr>
+   <tr>
+     <td >&nbsp;</td>
+   </tr>
+    <tr>
+     <td >&nbsp;</td>
+   </tr>
+    </table>
+  </form></div>
+  
+</div>
+<include file="public:footer" />
+</body>
+</html>

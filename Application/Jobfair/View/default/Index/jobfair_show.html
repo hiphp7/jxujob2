@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<qscms:jobfair_show  列表名="info" 招聘会id="$_GET['id']" 标题长度="30"/>
+	<include file="Home@default/public/meta" />
+	<link href="__HOMEPUBLIC__/css/common.css" rel="stylesheet" type="text/css" />
+	<link href="../public/css/jobfair.css" rel="stylesheet" type="text/css" />
+	<script src="__HOMEPUBLIC__/js/jquery.common.js" type="text/javascript" language="javascript"></script>
+</head>
+<body>
+<include file="Home@default/public/header" />
+
+<div class="jobfairshow">
+
+ <div class="state <if condition="$info['predetermined_ok'] eq 0">end</if>"></div>
+    <div class="td1">
+    <div class="imgbox"><img src="{$info['thumb']}" border="0"/></div>
+	</div>
+	<div class="td2">
+	 	 <div class="tit substring link_gray6"><a href="javascript:;">{$info['title']}</a></div>
+		  <div class="txt substring">举办时间：{:date('Y年m月d日',$info['holddate_start'])} - {:date('Y年m月d日',$info['holddate_end'])}</div>
+		   <div class="txt substring">举办地点：{$info['address']}</div>
+      <div class="txt substring">联系方式：{$info['phone']}（{$info['contact']}）</div>
+	</div>
+	<div class="td3">
+	<if condition="$info['predetermined_ok'] eq 1">
+	<!-- <a target="_blank" href="{$info['zph_url']}">申请参会</a>-->
+	<!-- <a href="{:U('jobfair_reserve',array('id'=>$info['id']))}#reserve">我要预订</a> -->
+	<else />
+	<a class="end">已停止预订</a>
+	</if>
+	</div>
+	<div class="clear"></div>
+	
+    <div class="share bdsharebuttonbox" data-tag="share_1">
+		<a class="li s1 bds_tsina" data-cmd="tsina"></a>
+		<a class="li s2 bds_renren" data-cmd="renren"></a>
+		<a class="li s3 bds_qzone" data-cmd="qzone"></a>
+		<a class="li s5 bds_sqq" data-cmd="sqq"></a>
+		<a class="li s6 bds_weixin" data-cmd="weixin"></a>
+		<li class="code"><img src="{:C('qscms_site_dir')}index.php?m=Home&c=Qrcode&a=index&url={:urlencode($info['url'])}" border="0"/></li>
+		<div class="clear"></div>
+	</div>
+</div>
+<div class="jobfairshow_1">
+  <div class="tittab_bg">
+	<div class="tab">
+		<ul class="link_gray6">
+		<li class="select"><a href="{:U('jobfair_show',array('id'=>$info['id']))}">招聘会详情</a></li>
+		<!-- <li ><a href="{:U('jobfair_com',array('id'=>$info['id']))}">参会企业</a></li> -->
+		<if condition="$info['predetermined_ok'] eq 1">
+		<!-- <li><a href="{:U('jobfair_reserve',array('id'=>$info['id']))}">在线预订</a></li> -->
+		</if>
+		<li><a href="{:U('jobfair_traffic',array('id'=>$info['id']))}">交通线路</a></li>
+		<if condition="$info['holddate_end'] lt strtotime($Think.now)">
+		<li><a href="{:U('jobfair_retrospect',array('id'=>$info['id']))}">精彩回顾</a></li>
+		<!--已经结束的招聘会才有精彩回顾 -->
+		</if>
+		</ul>
+		<div class="clear"></div>
+	</div>
+  </div>
+  
+  <div class="com">
+  <div class="jobfairshow_2">
+ 	<if condition="$info['intro_img']">
+	 	<!--如果有图片显示下方 -->
+		<div class="imgtxt">{$info['introduction']}</div>	  
+	    <div class="imgbox"><img src="{:attach($info['intro_img'],'jobfair')}" border="0"/></div>
+		<div class="clear"></div>
+	<else />   
+	    <!--如果没有图片显示下方通栏文字 -->
+	  	<div class="txt">{$info['introduction']}</div>
+	</if>  
+	<div class="stit">招聘会时间，地点</div>
+	<div class="txt"> 
+	举办时间：{:date('Y年m月d日',$info['holddate_start'])} - {:date('Y年m月d日',$info['holddate_end'])}<br />
+	举办地点：{$info['address']}
+	</div>
+	<if condition="$info['registration_method']">
+	<div class="stit">参会对象</div>
+	<div class="txt">{$info['participants_object']}</div>
+	</if>
+	<if condition="$info['number'] || $info['price']">
+	<div class="stit">摊位设置及费用</div>
+	<div class="txt">
+	<notempty name="info['number']">
+	展位数量：{$info['position_count']}<br />
+	</notempty>
+	<notempty name="info['price']">
+	摊位设置及费用:	{$info['price']}
+	</notempty>
+	</div>
+	</if>
+	<if condition="$info['registration_method']">
+	<div class="stit">参会报名办法</div>
+	<div class="txt">{$info['registration_method']}</div>
+	</if>
+  </div>
+  </div>
+</div>
+<include file="Home@default/public/footer_min" />
+<script>
+	window._bd_share_config = {
+		common : {
+			bdText : "{$info['title']}-{:C('qscms_site_name')} 举办时间：{:date('m月d日',$info['holddate_start'])} - {:date('m月d日',$info['holddate_end'])}  举办地址：{$info['address']}",	
+			bdDesc : "{$info['title']}-{:C('qscms_site_name')} 举办时间：{:date('m月d日',$info['holddate_start'])} - {:date('m月d日',$info['holddate_end'])}  举办地址：{$info['address']}",	
+			bdUrl : "<if condition="!$apply['Subsite']">{:C('qscms_site_domain')}</if>{$info['url']}", 	
+			bdPic : "{:C('qscms_site_domain')}{$info['thumb']}"
+		},
+		share : [{
+			"tag" : "share_1",
+			"bdCustomStyle":"../public/css/jobfair.css"
+		}]
+	}
+	with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+</body>
+</html>

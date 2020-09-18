@@ -1,0 +1,54 @@
+<include file="public:header" />
+  <div class="seltpye_x">
+		<div class="left">添加时间</div>	
+		<div class="right">
+		<a href="{:P(array('settr'=>0))}" <if condition="!$Think.get.settr || $Think.get.settr eq 0">class="select"</if>>不限</a>
+		<a href="{:P(array('settr'=>3))}" <if condition="$Think.get.settr eq 3">class="select"</if>>三天内</a>
+		<a href="{:P(array('settr'=>7))}" <if condition="$Think.get.settr eq 7">class="select"</if>>一周内</a>
+		<a href="{:P(array('settr'=>30))}" <if condition="$Think.get.settr eq 30">class="select"</if>>一月内</a>
+		<a href="{:P(array('settr'=>180))}" <if condition="$Think.get.settr eq 180">class="select"</if>>半年内</a>
+		<a href="{:P(array('settr'=>360))}" <if condition="$Think.get.settr eq 360">class="select"</if>>一年内</a>
+		<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+  </div>
+  <table width="100%" border="0" cellpadding="0" cellspacing="0"  id="list" class="link_lan">
+    <tr>
+      <td  width="10%" class="admin_list_tit admin_list_first">姓名</td>
+      <td class="admin_list_tit">年龄</td>   
+      <td class="admin_list_tit">性别</td>   
+      <td class="admin_list_tit">学历</td>   
+      <td class="admin_list_tit">工作经验</td>   
+	  <td class="admin_list_tit">应聘职位</td> 
+	  <td align="center" class="admin_list_tit" width="190">应聘时间</td>
+    </tr>
+	<volist name="apply_list['list']" id="vo">
+	<if condition="$vo['fullname']">
+      <tr>
+      <td class="admin_list admin_list_first">	 
+	  <a target="_blank" href="{:url_rewrite('QS_resumeshow',array('id'=>$vo['resume_id'],'jobs_id'=>$vo['jobs_id']))}">{$vo['fullname']}</a>
+	   </td>
+        <td class="admin_list">{$vo['age']}岁</td> 
+        <td class="admin_list">{$vo['sex_cn']}</td>  
+        <td class="admin_list">{$vo['education_cn']}</td> 
+        <td class="admin_list">{$vo['experience_cn']}</td>        
+		<td class="admin_list"><a target="_blank" href="{$vo['jobs_url']}">{$vo['jobs_name']}</a></td>     
+		<td align="center" class="admin_list">{:admin_date($vo['apply_addtime'])}</td>    
+      </tr>
+      <else />
+		<tr>
+		<td class="admin_list" colspan="7">	
+		&nbsp;&nbsp;&nbsp;该简历不存在或已被删除
+		</td>
+		</tr>
+      </if>
+      </volist>
+  </table>
+	<if condition="!$apply_list['list']">
+	<div class="admin_list_no_info">没有任何信息！</div>
+	</if>
+<div class="qspage">{$apply_list['page']}</div>
+</div>
+<include file="public:footer" />
+</body>
+</html>

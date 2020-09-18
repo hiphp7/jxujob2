@@ -1,0 +1,277 @@
+<div class="interview_dialog">
+	<form id="J_interviewWrap">
+		<div class="content">
+			<div class="td1">
+				<span class="asterisk"></span>&nbsp;姓名：
+			</div>
+			<div class="td2">
+				<input type="text" value="" class="input_180_34" name="realname" id="realname">
+			</div>
+			<div class="clear"></div>
+			<div class="td1">
+				<span class="asterisk"></span>&nbsp;性别：
+			</div>
+			<div class="td2 J_dropdown J_listitme_parent">
+				<div class="J_listitme_text select_input select_180_34">
+					请选择
+				</div>
+				<div class="dropdowboxview J_dropdown_menu">
+		            <div class="dropdow_store_jobs_apply">
+		                <ul class="nav_box">
+		                	<li><a class="J_listitme" href="javascript:;" data-code="1">男</a></li>
+		                	<li><a class="J_listitme" href="javascript:;" data-code="2">女</a></li>
+		                </ul>
+		            </div>
+		        </div>
+				<input class="J_listitme_code" name="sex" id="sex" type="hidden"/>
+			</div>
+			<div class="clear"></div>
+			<div class="td1">
+				<span class="asterisk"></span>&nbsp;出生年份：
+			</div>
+			<div class="td2 J_dropdown J_listitme_parent">
+				<div class="J_listitme_text select_input select_180_34">
+					请选择
+				</div>
+				<div class="dropdowboxview J_dropdown_menu">
+		            <div class="dropdow_store_jobs_apply">
+		                <ul class="nav_box">
+		                	<volist name="birthdate_arr" id="vo">
+		                		<li><a class="J_listitme" href="javascript:;" data-code="{$vo}">{$vo}年</a></li>
+							</volist>
+		                </ul>
+		            </div>
+		        </div>
+				<input class="J_listitme_code" name="birthdate" id="birthdate" type="hidden"/>
+			</div>
+            <div class="clear"></div>
+            <div class="td1">
+                <span class="asterisk"></span>&nbsp;身份类型：
+            </div>
+            <div class="td2 J_dropdown J_listitme_parent">
+                <div class="J_listitme_text select_input select_180_34">
+                    请选择
+                </div>
+                <div class="dropdowboxview J_dropdown_menu">
+                    <div class="dropdow_store_jobs_apply">
+                        <ul class="nav_box">
+                            <volist name="identity_arr" id="vo">
+                                <li><a class="J_listitme" href="javascript:;" data-code="{$key}">{$vo}</a></li>
+                            </volist>
+                        </ul>
+                    </div>
+                </div>
+                <input class="J_listitme_code" name="identity" id="identity" type="hidden"/>
+            </div>
+			<div class="clear"></div>
+			<div class="td1">
+				<span class="asterisk"></span>&nbsp;联系手机：
+			</div>
+			<div class="td2 apply_get_code">
+				<eq name="need_audit" value="1">
+				<input type="text" class="input_180_34" name="mobile" id="mobile" style="float:left;">
+				<div class="btn_yellow J_hoverbut btn_115_38" id="getVerfyCode">获取验证码</div>
+				<else />
+				<input type="text" class="input_180_34" name="mobile" id='mobile' value="{$authentication_user['mobile']}" disabled>
+				</eq>
+			</div>
+            <eq name="need_audit" value="1">
+			<div class="clear"></div>
+			<div class="td1">
+				<span class="asterisk"></span>&nbsp;验证码：
+			</div>
+			<div class="td2">
+				<input type="text" value="" class="input_180_34" name="verify_code" id="verify_code">
+			</div>
+            </eq>
+			<div class="clear"></div>
+			<div class="td1">
+				&nbsp;
+			</div>
+			<div class="td2">
+				<input type="hidden" id="J_captcha_open" value="<if condition="C('qscms_captcha_open') eq 1 && C('qscms_captcha_config.varify_mobile') eq 1">1<else/>0</if>" />
+				<div class="btn_blue J_hoverbut btn_115_38" id="J_apply" data-title="立即报名">立即报名</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</form>
+</div>
+<div style="display:none" id="pop"></div>
+<input type="hidden" id="btnCheck" />
+<script type="text/javascript" src="{:C('TPL_HOME_PUBLIC_DIR')}/js/jquery.listitem.js"></script>
+<script type="text/javascript" src="{:C('TPL_HOME_PUBLIC_DIR')}/js/jquery.dropdown.js"></script>
+<script type="text/javascript">
+	// 验证手机号
+    var regularMobile = /^13[0-9]{9}$|14[0-9]{9}$|15[0-9]{9}$|18[0-9]{9}$|17[0-9]{9}$|16[0-9]{9}$|19[0-9]{9}$/;
+    
+    // 删除隐藏极验表单
+    function clearHideGee() {
+        if ($('.geetest_challenge').length) {
+            $('.geetest_challenge').remove();
+            $('.geetest_validate').remove();
+            $('.geetest_seccode').remove();
+        }
+    }
+    /**
+     * 发送手机验证码
+     */
+    $('#getVerfyCode').on('click', function() {
+        if ($(this).hasClass('btn_gray9')) return false;
+        var mobileValue = $.trim($('input[name=mobile]').val());
+        var captcha_open = eval($('#J_captcha_open').val());
+        if (mobileValue == '') {
+            disapperTooltip('remind','请输入手机号码');
+            return false;
+        }
+        if (mobileValue != "" && !regularMobile.test(mobileValue)) {
+            disapperTooltip('remind','手机号码格式不正确');
+            return false;
+        }
+        if (captcha_open) {
+            $('.geetest_panel').remove();
+            clearHideGee();
+            $.ajax({
+                // 获取id，challenge，success（是否启用failback）
+                url: qscms.root+'?m=Home&c=captcha&t=' + (new Date()).getTime(), // 加随机数防止缓存
+                type: "get",
+                dataType: "json",
+                success: function (data) {
+                    // 使用initGeetest接口
+                    // 参数1：配置参数
+                    // 参数2：回调，回调的第一个参数验证码对象，之后可以使用它做appendTo之类的事件
+                    initGeetest({
+                        gt: data.gt,
+                        challenge: data.challenge,
+                        offline: !data.success, // 表示用户后台检测极验服务器是否宕机
+                        new_captcha: data.new_captcha, // 用于宕机时表示是新验证码的宕机
+                        product: 'bind'
+                    }, handler);
+                }
+            });
+            var handler = function(captchaObj) {
+                captchaObj.appendTo("#pop");
+                captchaObj.onSuccess(function() {
+                    sendVerfy();
+                });
+                captchaObj.onReady(function () {
+                    $("#btnCheck").click();
+                });
+                $('#btnCheck').click(function () {
+                    captchaObj.verify();
+                })
+                captchaObj.getValidate();
+            }
+        } else {
+            sendVerfy();
+        }
+    })
+    /**
+     * 发送手机验证码
+     */
+    function sendVerfy() {
+        $('#getVerfyCode').addClass('btn_gray9');
+        $('#getVerfyCode').removeClass('btn_yellow');
+        $('#getVerfyCode').text('发送中...');
+        var mobileValue = $.trim($('input[name=mobile]').val());
+        $.ajax({
+            url: "{:U('Parttime/Index/send_sms')}",
+            cache: false,
+            async: false,
+            type: 'post',
+            dataType: 'json',
+            data: { sms_type: 'login', mobile: mobileValue,geetest_challenge: $("input[name='geetest_challenge']").val(),geetest_validate: $("input[name='geetest_validate']").val(),geetest_seccode: $("input[name='geetest_seccode']").val()},
+            success: function(result) {
+                $('#pop').hide();
+            	disapperTooltip('remind',result.msg);
+                if (result.status) {
+                    // 开始倒计时
+                    var countdown = 180;
+                    function settime() {
+                        if (countdown == 0) {
+					        $('#getVerfyCode').removeClass('btn_gray9');
+					        $('#getVerfyCode').addClass('btn_yellow');
+                            $('#getVerfyCode').text('获取验证码');
+                            countdown = 180;
+                            return;
+                        } else {
+					        $('#getVerfyCode').addClass('btn_gray9');
+					        $('#getVerfyCode').removeClass('btn_yellow');
+                            $('#getVerfyCode').text('重新发送' + countdown + '秒');
+                            countdown--;
+                        }
+                        setTimeout(function() {
+                            settime()
+                        },1000)
+                    }
+                    settime();
+                } else {
+			        $('#getVerfyCode').removeClass('btn_gray9');
+			        $('#getVerfyCode').addClass('btn_yellow');
+                    $('#getVerfyCode').text('获取验证码');
+                    $('#pop').hide();
+            		disapperTooltip('remind',result.msg);
+                }
+            }
+        });
+    }
+    // 立即报名
+    $('#J_apply').click(function(){
+        var pid = "{:I('request.id')}";
+        var realnameValue = $.trim($('#realname').val());
+        var sexValue = $.trim($('#sex').val());
+        var birthdateValue = $.trim($('#birthdate').val());
+        var identityValue = $.trim($('#identity').val());
+        var mobileValue = eval("{$need_audit}")==1?$.trim($('#mobile').val()):"{$authentication_user['mobile']}";
+        var verifyCode = eval("{$need_audit}")==1?$.trim($('#verify_code').val()):'';
+        if (realnameValue == "") {
+            disapperTooltip('remind','请填写真实名称');
+            return false;
+        }
+        if (sexValue == "") {
+            disapperTooltip('remind','请选择性别');
+            return false;
+        }
+        if (birthdateValue == "") {
+            disapperTooltip('remind','请选择出生年份');
+            return false;
+        }
+        if (identityValue == "") {
+            disapperTooltip('remind','请选择身份类型');
+            return false;
+        }
+        if (mobileValue != "" && !regularMobile.test(mobileValue)) {
+            disapperTooltip('remind','手机号格式不正确');
+            return false;
+        }
+        if (verifyCode == "" && eval("{$need_audit}")==1) {
+            disapperTooltip('remind','请填写验证码');
+            return false;
+        }
+        $(this).html('正在保存...');
+        $(this).addClass('qs-btn-border-disabled');
+        $.ajax({
+            url: "{:U('Parttime/Index/apply')}",
+            type: 'POST',
+            dataType: 'json',
+            data: {pid: pid, realname: realnameValue, sex: sexValue, birthdate: birthdateValue,identity: identityValue,mobile: mobileValue, mobile_vcode: verifyCode},
+            success:function(result){
+                if (result.status == 1) {
+            		disapperTooltip('success',result.msg);
+                    setTimeout(function () {
+                        $('.modal').remove();
+                        $('.modal_backdrop').remove();
+                    }, 2000);
+                } else {
+                    $("#J_apply").html($('#J_apply').data('title'));
+                    $("#J_apply").removeClass('qs-btn-border-disabled');
+            		disapperTooltip('remind',result.msg);
+                }
+            },
+            error:function(){
+                $("#J_apply").html($('#J_apply').data('title'));
+                $("#J_apply").removeClass('qs-btn-border-disabled');
+            	disapperTooltip('remind',result.msg);
+            }
+        });
+    });
+</script>

@@ -1,0 +1,26 @@
+<div style="max-height:400px; overflow:auto">
+<div class="note" style="padding:10px;background-color:#FFF8DC;color:#ff9300;">
+    剩余红包将会生成退款记录<br />申请退款之后请线下处理退款给企业，然后到“待处理退款”中修改退款状态
+  </div>
+  <form id="form1" name="form1" method="post" action="{:U('set_refund_save')}">
+  <input type="hidden" name="id" value="{$id}">
+<table width="100%" border="0" cellspacing="10" cellpadding="0">
+    <tr>
+      <td width="40">
+        备注：
+      </td>
+      <td>
+        <textarea cols="60" rows="4" name="note"></textarea>
+      </td>
+    </tr>
+    <tr>
+      <td width="40">
+        &nbsp;
+      </td>
+      <td>
+        <input type="button" name="" value="提交申请" class="admin_submit set_refund_save" id="set_refund_save"/>
+      </td>
+    </tr>
+  </table>
+  </form>
+</div>

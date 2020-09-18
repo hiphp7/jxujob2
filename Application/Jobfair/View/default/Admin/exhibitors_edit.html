@@ -1,0 +1,102 @@
+<include file="Admin@default/public/header" />
+<form action="{:U('exhibitors_edit')}" method="post"   name="FormData" id="FormData" >
+<div class="toptit">修改参会企业</div>
+    <table width="100%" border="0" cellpadding="3" cellspacing="3"  class="admin_table">
+	   <tr>
+          <td width="150" align="right">企业全称：</td>
+          <td  class="link_lan">
+      <input name="companyname" id="companyname" type="hidden"  value="{$info.companyname}" class="input_text_400" />
+      <a href="{$info.company_url}" target="_blank"> {$info.companyname}</a>
+   		 </td>
+      </tr>
+
+	   <tr>
+          <td align="right">预定方式：</td>
+          <td >
+	        <label>
+	        <input name="etype" type="radio" value="1" <if condition="$info['etype'] eq 1">checked="checked"</if>/>
+	        在线预定</label>
+        
+       <label>&nbsp;&nbsp;&nbsp;
+	        <input type="radio" name="etype" value="2" <if condition="$info['etype'] eq 2">checked="checked"</if>/>
+	        电话预定</label>
+			 <label>&nbsp;&nbsp;&nbsp;
+	        <input type="radio" name="etype" value="3" <if condition="$info['etype'] eq 3">checked="checked"</if>/>
+	        其他方式</label>		   </td>
+        </tr>
+		
+		 <tr>
+          <td align="right">预定状态：</td>
+          <td >
+		  
+		  <label>
+	        <input type="radio" name="audit" value="1"  <if condition="$info['audit'] eq 1">checked="checked"</if>/>
+	        成功预定</label>&nbsp;&nbsp;&nbsp;
+	        <label>
+	        <input name="audit" type="radio" value="2"   <if condition="$info['audit'] eq 2">checked="checked"</if>/>
+	        等待确认</label>
+        
+       	   </td>
+        </tr>
+		
+		<tr>
+          <td align="right">预定招聘会：</td>
+          <td >{$info['jobfair_title']}</td>
+        </tr>
+		<tr>
+          <td align="right">预定展位：</td>
+          <td >{$info['position']}  </td>
+        </tr>
+        <tr>
+          <td align="right">推荐名企：</td>
+          <td >
+		  
+		  <label>
+	        <input type="radio" name="recommend" value="1" <if condition="$info['recommend'] eq 1">checked="checked"</if>/>
+	        推荐</label>&nbsp;&nbsp;&nbsp;
+	        <label>
+	        <input name="recommend" type="radio" value="0" <if condition="$info['recommend'] eq 0">checked="checked"</if>/>
+	        不推荐</label>
+        
+       	   </td>
+        </tr>
+	   <tr>
+        <td align="right" valign="top" >备注：</td>
+        <td > 
+           <textarea name="note" id="note" style="width:300px; height:50px; font-size:12px; line-height:180%; ">{$info.note}</textarea></td>
+      </tr>
+	  <tr>
+        <td align="right" valign="top" > </td>
+        <td height="55" > 
+          <input type="hidden" name="id" value="{$info.id}">
+		   <input type="button"  id="save" value="提交" class="admin_submit"   />
+		  <input name="submit22" type="button" class="admin_submit"    value="返回" onclick="Javascript:window.history.go(-1)"/>	    </td>
+      </tr>
+    </table>
+		
+		</form>
+</div>
+<include file="Admin@default/public/footer" />
+<script type="text/javascript">
+$(document).ready(function()
+{	
+	$("#save").click(function()
+	{
+	  if ($("#jobfair_id").val()==""){
+	  alert ("请选择要预定的招聘会");
+	  $("#jobfair_id").focus();
+	   return false;
+	   }
+	   
+		if ($("#companyname").val()==""){
+	  alert ("请填写企业名称");
+	  $("#companyname").focus();
+	   return false;
+	   }
+				    
+	 $("#FormData").submit();
+	});	 
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<include file="Admin@default/public/header"/>
+<div class="toptit">{$info['title']}--聊天室设置</div>
+<form id="form1" action="{:U('subject_message')}" method="post">
+    <div class="form_main width250">
+        <div class="fl">招聘会聊天室功能:</div>
+        <div class="fr">
+            <div data-code="0,1" class="imgchecked_small <eq name='info.subject_open' value='1'>select</eq>"><input name="subject_open" type="hidden" value="{$info['subject_open']}" /></div>
+            <div class="clear"></div>
+        </div>
+        <div class="fl">允许发言时间:</div>
+        <div class="fr">
+            <input name="holddate" type="text" class="input_text_default small " id="holddate" maxlength="20" value="{:date('H:i:s',$info['subject_time_start'])} ~ {:date('H:i:s',$info['subject_time_end'])}" style="width: 300px;" autocomplete="off">
+			<input type="hidden" name="holddate_" id="J_holddate" value="{:date('H:i:s',$info['subject_time_start'])} ~ {:date('H:i:s',$info['subject_time_end'])}">
+		</div>
+        <div class="fl">聊天室公告:</div>
+        <div class="fr">
+            <textarea name="subject_note" class="input_text_default" style="height: 100px; line-height: 180%;">{$info['subject_note']}</textarea>
+        </div>
+        <div class="fl"></div>
+        <div class="fr">
+            <input name="id" type="hidden" value="{$info.id}" />
+            <input type="button" class="admin_submit" value="保存修改" id="J_submit"/>
+        </div>
+        <div class="clear"></div>
+    </div>
+</form>
+<div class="toptit">发言记录</div>
+<div class="list_th">
+    <div class="td" style=" width:10%;"><div class="left_padding">会员类型</div></div>
+    <div class="td center" style=" width:10%;">企业名称/姓名</div>
+    <div class="td center" style=" width:55%;">发言记录</div>
+    <div class="td center" style=" width:15%;">发言时间</div>
+    <div class="td" style=" width:10%;">操作</div>
+    <div class="clear"></div>
+</div>
+
+<volist name="list" id="vo">
+    <div class="list_tr link_black">
+        <div class="td" style=" width:10%;">
+            <div class="left_padding striking"><if condition="$vo['utype'] eq 1">企业<else />个人</if></div>
+        </div>
+        <div class="td center" style=" width:10%;">
+            {$vo.name}
+        </div>
+        <div class="td center" style=" width: 55%;">
+            <if condition="$vo['note']">{$vo.note}</if>
+            <if condition="$vo['note_img']"><a href="{:attach($vo['note_img'],'subject_message_img')}" target="_blank"  style="color: #999999" title="点击查看">图片[预览]</a></if>
+        </div>
+        <div class="td center" style=" width:15%;">
+           {:date('Y-m-d',$vo['addtime'])}
+        </div>
+        <div class="td edit" style=" width:10%;">
+                <a href="{:U('subject_message_delete',array('id'=>$vo['id']))}" onclick="return confirm('你确定要删除吗？')" class="gray">删除</a>
+        </div>
+        <div class="clear"></div>
+    </div>
+</volist>
+<empty name="list">
+    <div class="list_empty">没有任何信息！</div>
+</empty>
+<div class="list_foot">
+    <div class="footso"></div>
+</div>
+<div class="pages">{$page}</div>
+</div>
+<input type="hidden" id="J_date_hours" value="">
+<input type="hidden" id="J_date_minutes" value="">
+<input type="hidden" id="J_date_seconds" value="">
+<input type="hidden" id="J_end_date_hours" value="">
+<input type="hidden" id="J_end_date_minutes" value="">
+<input type="hidden" id="J_end_date_seconds" value="">
+<include file="Admin@default/public/footer"/>
+</body>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //日期
+		var intDate = '', beDate = "{$info['subject_time_start']}";
+		if(eval(beDate)) {
+			intDate = "{:date('H:i:s',$info['subject_time_start'])} ~ {:date('H:i:s',$info['subject_time_end'])}";
+		} else {
+			intDate = '00:00:00 ~ 00:00:00';
+		}
+        laydate.render({
+            elem: '#holddate' //指定元素
+            ,type: 'time'
+            ,range: '~'
+			,value: intDate
+			,done: function(value, date, endDate){
+				$('#J_date_hours').val(date.hours);
+				$('#J_date_minutes').val(date.minutes);
+				$('#J_date_seconds').val(date.seconds);
+				$('#J_end_date_hours').val(endDate.hours);
+				$('#J_end_date_minutes').val(endDate.minutes);
+				$('#J_end_date_seconds').val(endDate.seconds);
+				if (eval(endDate.hours) === 0 && eval(endDate.minutes) === 0 && eval(endDate.seconds) === 0) {
+					$('#J_holddate').val('');
+				} else {
+					$('#J_holddate').val(value);
+				}
+			}
+        });
+		$('#holddate').trigger('click');
+        $('#J_submit').click(function(){
+            var that = $(this), starHours = eval($('#J_date_hours').val())
+			, endHours = eval($('#J_end_date_hours').val());
+            if(that.hasClass('disabled')){
+                return false;
+            }
+			if (!licitTime()) {
+				disapperTooltip("remind", '结束时间不能早于开始时间');
+				return false;
+			}
+            that.val('正在保存...').addClass('disabled');
+            $.post("{:U('subject_message')}",$('#form1').serialize(),function(result){
+                if(result.status==1){
+                    disapperTooltip("success", result.msg,function(){
+                        location.reload();
+                    });
+                }else{
+                    disapperTooltip("remind", result.msg,function(){
+                        that.val('保存').removeClass('disabled');
+                    });
+                    return false;
+                }
+            },'json');
+        });
+		function licitTime() {
+			var starHours = eval($('#J_date_hours').val()), starMinutes = eval($('#J_date_minutes').val())
+			, starSeconds = eval($('#J_date_seconds').val()), endHours = eval($('#J_end_date_hours').val())
+			, endMinutes = eval($('#J_end_date_minutes').val()), endSeconds = eval($('#J_end_date_seconds').val())
+			, licitValue = false;
+			if (starHours === 0 && starMinutes === 0 && starSeconds === 0 && endHours === 0 && endMinutes === 0
+			 && endSeconds === 0) {
+				licitValue = true;
+			} else {
+				if (starHours > endHours) {
+					licitValue = false;
+				} else {
+					if (starHours === endHours) {
+						if (starMinutes > endMinutes) {
+							licitValue = false;
+						} else {
+							if (starMinutes === endMinutes) {
+								if (starSeconds >= endSeconds) {
+									licitValue = false;
+								} else {
+									licitValue = true;
+								}
+							} else {
+								licitValue = true;
+							}
+						}
+					} else {
+						licitValue = true;
+					}
+				}
+			}
+			return licitValue;
+		}
+    });
+</script>
+</html>

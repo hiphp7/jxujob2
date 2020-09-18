@@ -1,0 +1,47 @@
+<include file="public:header" />
+    <div class="toptip">
+		<h2>提示：</h2>
+		<p>您可以通过此日志查看系统运行过程中MySQL低效查询信息。</p>
+	</div>
+	<table width="100%" border="0" cellpadding="0" cellspacing="0"  id="list" class="link_lan">
+		<tr>
+			<td  class="admin_list_tit  admin_list_first">请求链接</td>
+			<td width="46%"  class="admin_list_tit" >SQL语句</td>
+			<td width="8%" align="center" class="admin_list_tit">运行时间</td>
+			<td width="8%" align="center" class="admin_list_tit">操作IP</td>
+			<td width="12%" align="center" class="admin_list_tit">记录时间</td>
+		</tr>
+		<notempty name="list">
+			<volist name="list" id="list">
+				<tr>
+					<td class="admin_list admin_list_first" title="{$list.url|nl2br}">
+						{$list.url}
+					</td>
+					<td  class="admin_list" title="{$list.sql|nl2br}">
+						{$list.sql}
+					</td>
+					<td align="center" class="admin_list">{$list.runtime}</td>
+					<td align="center" class="admin_list">{$list.ip}</td>
+					<td align="center" class="admin_list">{:date('Y-m-d H:i:s',$list['addtime'])}</td>
+				</tr>
+			</volist>
+		<else/>
+			<tr>
+				<td colspan = " 7 " class="admin_list admin_list_first">
+					没有任何信息！
+				</td>
+			</tr>
+		</notempty>
+	</table>
+	<table width="100%" border="0" cellspacing="10"  class="admin_list_btm">
+		<tr id="J_run">
+			<td>
+				<input name="ButADD" type="button" class="admin_submit" id="ButADD" value="返回"  onclick="window.location='{:U('LowEffiSql/index')}'"/>
+			</td>
+		</tr>
+	</table>
+	<div class="qspage">{$page}</div>
+</div>
+<include file="public:footer" />
+</body>
+</html>

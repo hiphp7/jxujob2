@@ -1,0 +1,126 @@
+<include file="public:header" />
+  <notempty name="apply['Subsite']">
+  <div class="seltpye_x">
+    <div class="left">所属分站</div>
+    <qscms:subsite 列表名="subsite_list"/>
+    <div class="right">
+      <a href="{:P(array('subsite_id'=>''))}" <if condition="$Think.get.subsite_id eq ''">class="select"</if>>不限</a>
+      <if condition="$visitor['role_id'] eq 1">
+        <volist name="subsite_list" id="subsite">
+          <a href="{:P(array('subsite_id'=>$subsite['s_id']))}" <if condition="$Think.get.subsite_id eq $subsite['s_id']">class="select"</if>>{$subsite.s_sitename}</a>
+        </volist>
+      <else/>
+        <volist name="subsite_list" id="subsite">
+          <if condition="in_array($subsite['s_id'],$visitor['subsite'])">
+            <a href="{:P(array('subsite_id'=>$subsite['s_id']))}" <if condition="$Think.get.subsite_id eq $subsite['s_id']">class="select"</if>>{$subsite.s_sitename}</a>
+          </if>
+        </volist>
+      </if>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+  </notempty>
+  <div class="seltpye_x">
+		<div class="left">类型</div>	
+		<div class="right">
+			<a href="{:P(array('order_type'=>''))}" <if condition="$Think.get.order_type eq ''">class="select"</if>>不限</a>
+			<volist name="increment_type" id="vo">
+			<a href="{:P(array('order_type'=>$key))}" <if condition="$Think.get.order_type eq $key">class="select"</if>>{$vo}</a>
+			</volist>
+			<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+  </div>
+  <div class="seltpye_x">
+		<div class="left">添加时间</div>	
+		<div class="right">
+		<a href="{:P(array('settr'=>''))}" <if condition="$Think.get.settr eq ''">class="select"</if>>不限</a>
+		<a href="{:P(array('settr'=>3))}" <if condition="$Think.get.settr eq 3">class="select"</if>>三天内</a>
+		<a href="{:P(array('settr'=>7))}" <if condition="$Think.get.settr eq 7">class="select"</if>>一周内</a>
+		<a href="{:P(array('settr'=>30))}" <if condition="$Think.get.settr eq 30">class="select"</if>>一月内</a>
+		<a href="{:P(array('settr'=>180))}" <if condition="$Think.get.settr eq 180">class="select"</if>>半年内</a>
+		<a href="{:P(array('settr'=>360))}" <if condition="$Think.get.settr eq 360">class="select"</if>>一年内</a>
+		<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+  </div>
+  <table width="100%" border="0" cellpadding="0" cellspacing="0"  id="list" class="link_lan">
+    <tr>
+      <td  class="admin_list_tit admin_list_first">服务内容</td>
+	  <td class="admin_list_tit">公司名称</td>
+	  <td align="center" class="admin_list_tit">申请会员</td>
+	  <td class="admin_list_tit">金额</td> 
+	  <td width="8%" align="center" class="admin_list_tit">时间</td>    
+      <td width="15%" align="center"  class="admin_list_tit">操作</td>
+    </tr>
+	<volist name="list" id="vo">
+      <tr>
+        <td class="admin_list admin_list_first">{$vo['service_name']}</td>        
+		<td class="admin_list">
+		<if condition="$vo['companyname']">
+		{:cut_str($vo['companyname'],15,0,'..')}
+		<else />
+		未填写企业资料
+		</if>
+		</td>    
+		<td align="center" class="admin_list">{$vo['username']}</td>
+		<td class="admin_list">￥<strong>{$vo['amount']}</strong>元</td>  
+		<td align="center" class="admin_list">{:admin_date($vo['addtime'])}</td>      
+        <td align="center" class="admin_list">
+		<a class="userinfo"  parameter="uid={$vo['uid']}" href="javascript:void(0);" hideFocus="true">管理</a>
+		</td>
+      </tr>
+      </volist>
+  </table>
+	<if condition="!$list">
+	<div class="admin_list_no_info">没有任何信息！</div>
+	</if>
+	<table width="100%" border="0" cellspacing="10" cellpadding="0" class="admin_list_btm">
+      <tr>
+        <td width="305" align="right">
+		<form id="formseh" name="formseh" method="get" action="?">	
+              <input type="hidden" name="m" value="{:C('admin_alias')}">
+              <input type="hidden" name="c" value="{:CONTROLLER_NAME}">
+              <input type="hidden" name="a" value="{:ACTION_NAME}">
+			<div class="seh">
+			    <div class="keybox"><input name="key" type="text"   value="{$Think.get.key}" /></div>
+			    <div class="selbox">
+					<input name="key_type_cn"  id="key_type_cn" type="text" value="{$Think.get.key_type_cn|default="公司名"}" readonly="true"/>
+						<div>
+								<input name="key_type" id="key_type" type="hidden" value="{$Think.get.key_type|default="1"}" />
+												<div id="sehmenu" class="seh_menu">
+														<ul>
+														<li id="1" title="公司名">公司名</li>
+														<li id="2" title="会员名">会员名</li>
+														</ul>
+												</div>
+						</div>				
+				</div>
+				<div class="sbtbox">
+				<input type="submit" name="" class="sbt" id="sbt" value="搜索"/>
+				</div>
+				<div class="clear"></div>
+		  </div>
+		  </form>
+	    </td>
+      </tr>
+  </table>
+<div class="qspage">{$page}</div>
+</div>
+<include file="public:footer" />
+
+<script type="text/javascript">
+$(document).ready(function()
+{
+	showmenu("#key_type_cn","#sehmenu","#key_type");
+$(".userinfo").QSdialog({
+  DialogTitle:"管理",
+  DialogContentType:"url",
+  DialogContent:"{:U('ajax/userinfo')}&"
+  });
+		
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<link rel="stylesheet" href="https://heerey525.github.io/layui-v2.4.3/layui/css/layui.css" />
+<script type="text/javascript" src="https://heerey525.github.io/layui-v2.4.3/layui/layui.js" ></script>
+<form method="post" action="{:U('Personal/export')}">
+<div class="layui-form-item" style="border:1px solid #ccc;width:500px;text-align: center;">
+	<h2>导出简历</h2>
+    <div class="layui-inline">
+           <label class="layui-form-label">开始时间：</label>
+           <div class="layui-input-inline" style="margin-right: 0px;width: 194px;">
+           <input type="text" name="laodongStartDate" id="laodongStartDate" class="layui-input" lay-verify="required" placeholder="yyyy-MM-dd">
+           </div>
+    </div>
+    <div class="layui-inline">
+         <label class="layui-form-label">截止时间：</label>
+         <div class="layui-input-inline" style="margin-right: 0px;width: 194px;">
+         <input type="text" name="laodongEndDate" id="laodongEndDate" class="layui-input" lay-verify="required" placeholder="yyyy-MM-dd">
+         </div>
+    </div><br>
+<input type="submit" style="margin:50px;" class="layui-btn" id="J_top_submit_btn" lay-submit="" lay-filter="demo1" >
+</div>
+</form>
+<script>
+	
+layui.use('laydate', function(){
+  var laydate = layui.laydate;
+var laodongendDate= laydate.render({
+
+elem: '#laodongEndDate',//选择器结束时间
+
+type: 'date',
+
+done: function(value,date){
+
+laodongstartDate.config.max={
+
+year:date.year,
+
+month:date.month-1,//注意是month-1，写在date上的话你后边的日期选择不了
+
+date: date.date,
+
+hours: 0,
+
+minutes: 0,
+
+seconds : 0
+
+}
+
+}
+
+});
+
+//劳动合同开始日期
+
+ var laodongstartDate=laydate.render({
+
+elem: '#laodongStartDate',
+
+type: 'date',
+
+done: function(value, date){
+
+laodongendDate.config.min ={
+
+year:date.year,
+
+month:date.month-1,
+
+date: date.date,
+
+hours: 0,
+
+minutes: 0,
+
+seconds : 0
+
+};
+
+}
+
+});
+
+  
+
+});
+</script>

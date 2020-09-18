@@ -1,0 +1,59 @@
+<include file="Admin@default/public/header" />
+<link href="../public/css/jobfair.css" rel="stylesheet" type="text/css" />
+<div class="toptit">精彩回顾</div>
+<style type="text/css">
+	.img_box{width:220px;height:150px;}
+	.img_box .img{width:180px;height:130px;padding:10px;}
+	.img_box .op{width:30px;margin:5px auto 0;}
+	.img_box a{text-decoration: none;color:#666;}
+</style>
+<form id="img_form" action="{:U('upload_retrospect')}" method="post" enctype="multipart/form-data">
+<table width="100%" border="0" cellpadding="3" cellspacing="3"  class="admin_table">
+	<tr>
+		<td width="130" align="right"  >已上传：</td>
+		<td align="left" >
+			<notempty name="retrospect">
+			<volist name="retrospect" id="vo">
+			<div class="img_box" style="float:left;">
+				<div class="img">
+					<a target="_blank" href="{:attach($vo['img'],'jobfair')}"><img src="{:attach($vo['img'],'jobfair')}" width="180" height="130"/></a>
+				</div>
+				<div class="op"><a href="javascript:;" class="delete_img" img_id="{$vo['id']}">删除</a></div>
+			</div>
+			</volist>
+			<div class="clear"></div>
+			<else />
+			无
+			</notempty>
+		</td>
+	</tr>
+	<tr>
+	  <td width="130" align="right"  >&nbsp;</td>
+	  <td height="50" >
+	    <input type="button" value="添加" class="admin_submit img_add"/>
+	    <input type="file" class="hidden_file" id="hidden_file" name="img" style="display:none;">
+	    <input type="hidden" name="jobfair_id" value="{$jobfair_id}">
+	  </td>
+  </tr>
+</table>
+</form>
+<include file="Admin@default/public/footer" />
+<script type="text/javascript">
+$(document).ready(function()
+{
+	$('.img_add').click(function(){
+		$("#hidden_file").click();
+	});
+	$("#hidden_file").change(function(){
+		$("#img_form").submit();
+	});
+  $(".delete_img").click(function(){
+  	if(confirm('确定删除该图片吗？')){
+  		var id = $(this).attr('img_id');
+  		location.href="{:U('retrospect_delete')}&id="+id;
+  	}
+  });
+});
+</script>
+</body>
+</html>

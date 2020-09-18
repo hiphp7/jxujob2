@@ -1,0 +1,91 @@
+<include file="Admin@default/public/header" />
+<script type="text/javascript" src="__ADMINPUBLIC__/js/fusioncharts/fusioncharts.js"></script>
+<script type="text/javascript" src="__ADMINPUBLIC__/js/fusioncharts/fusioncharts.theme.fint.js"></script>
+<link href="__ADMINPUBLIC__/css/date_input.css" rel="stylesheet" type="text/css" />
+<script src="__ADMINPUBLIC__/js/jquery.date_input.js" type='text/javascript' language="javascript"></script>
+<form action="?" method="get">
+<input type="hidden" name="m" value="Allowance">
+<input type="hidden" name="c" value="Admin">
+<input type="hidden" name="a" value="income">
+<input type="hidden" name="show_type" value="{$show_type}">
+ <div class="seltpye_x">
+		<div class="left">日期范围</div>	
+		<div class="right">
+        <input name="starttime" id="starttime" type="text"  class="input_text_200 date_input"  value="{$starttime}" style="width:182px"/> - 
+        <input name="endtime" id="endtime" type="text"  class="input_text_200 date_input"  value="{$endtime}" style="width:182px"/>
+        <input type="submit" name="" value="确定">
+		<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+  </div>
+  </form>
+ <div class="seltpye_x">
+		<div class="left">显示方式</div>	
+		<div class="right">
+        <a href="{:P(array('show_type'=>'chart'))}" <if condition="$Think.get.show_type eq '' || $Think.get.show_type eq 'chart'">class="select"</if>>图表</a>
+        <a href="{:P(array('show_type'=>'list'))}" <if condition="$Think.get.show_type eq 'list'">class="select"</if>>列表</a>
+		<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+  </div>
+  <div id="service_charge_pie" style="width:30%;float:left;">加载中...</div>
+  <script type="text/javascript">
+    FusionCharts.ready(function(){
+      var revenueChart = new FusionCharts({
+          "type": "pie3d",//
+          "renderAt": "service_charge_pie",
+          "width": "400",
+          "height": "300",
+          "dataFormat": "json",
+          "dataSource":  {
+            "chart": {
+              "caption": "收入类型分布",
+              "numbersuffix":"元",
+              "theme": "fint"
+           },
+           "data": {$service_charge_pie}
+        }
+
+    });
+  revenueChart.render();
+  });
+  </script>
+  <div id="service_charge_line" style="width:65%;float:left;margin-left:30px;">加载中...</div>
+	<script type="text/javascript">
+	    FusionCharts.ready(function(){
+	      var revenueChart = new FusionCharts({
+	          "type": "line",//
+	          "renderAt": "service_charge_line",
+	          "width": "100%",
+	          "height": "400",
+	          "dataFormat": "json",
+	          "dataSource":  {
+	            "chart": {
+	              "slantLabels":"1",
+	              "caption": "收入统计曲线图",
+	              "xAxisName": "日期",
+	              "yAxisName": "金额",
+	             "numbersuffix":"元",
+	              "theme": "fint"
+	           },
+	           "data": {$service_charge_line}
+	        }
+
+	    });
+	  revenueChart.render();
+	  });
+
+	</script>
+	<div class="clear"></div>
+</div>
+<include file="Admin@default/public/footer" />
+<script type="text/javascript">
+	$(document).ready(function(){
+		//日期
+		$(function() { 
+			$(".date_input").date_input(); 
+		});
+	});
+</script>
+</body>
+</html>

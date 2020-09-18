@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <qscms:gworker_jobs_show 列表名="info" 职位id="$_GET['id']"/>
+    <include file="Home@default/public/meta" />
+    <link href="{:C('TPL_HOME_PUBLIC_DIR')}/css/common.css" rel="stylesheet" type="text/css" />
+    <link href="{:C('TPL_HOME_PUBLIC_DIR')}/css/common_ajax_dialog.css" rel="stylesheet" type="text/css" />
+    <link href="{:C('TPL_PUBLIC_DIR')}/css/gworker.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<include file="Home@default/public/header_other" />
+<div class="new-se-group show">
+    <div class="new-se-main">
+        <div class="jobstit">
+            <div class="time">
+                <div class="timebg">{$info['refreshtime_cn']}</div>
+                <div id="J_jobs_click" class="timebg viewbg">{$info.click|default=0}次</div>
+                <div class="clear"></div>
+            </div>
+            <div class="jobname">
+                <div class="j-n-txt">{$info.jobs_name}</div>
+                <div class="clear"></div>
+            </div>
+            <div class="wage">{$info.wage_cn}</div>
+            <div class="lab">
+                <volist name="info['tag']" id="tag">
+                    <div class="li">{$tag}</div>
+                </volist>
+                <div class="clear"></div>
+            </div>
+            <div class="btns">
+                <div class="app apply_jobs">立即报名</div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="jobsshow">
+    <div class="l">
+        <div class="main">
+            <div class="item">
+                <div class="tit">基本信息</div>
+                <div class="itemli"><span>性别要求</span><if condition="$info.sex eq 0">不限<else />{$info.sex_cn}</if></div>
+                <div class="itemli"><span>学历要求</span><if condition="$info.education eq 0">不限<else />{$info.education_cn}</if></div>
+                <div class="clear"></div>
+                <div class="itemli"><span>年龄要求</span><if condition="$info['minage'] && $info['maxage']">{$info['minage']}-{$info['maxage']}<else />不限</if></div>
+                <div class="itemli"><span>招聘人数</span>{$info.amount}人</div>
+                <div class="clear"></div>
+                <div class="itemli"><span>工作地区</span>{$info.district_cn}</div>
+                <div class="clear"></div>
+            </div>
+            <div class="describe">
+                <div class="tit">吃住福利</div>
+                <div class="txt">{:nl2br($info['welfare'])}</div>
+            </div>
+            <div class="describe">
+                <div class="tit">工作简介</div>
+                <div class="txt">{:nl2br($info['intro'])}</div>
+            </div>
+            <div class="describe">
+                <div class="tit">招聘要求</div>
+                <div class="txt">{:nl2br($info['demand'])}</div>
+                <div class="appjob">
+                    <div class="appbtn apply_jobs">立即报名</div>
+                    职位常有，机会不常有，愿你能把握好每一次机会。
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="r">
+        <div class="comqrcode">
+            <div class="code"><img src="{:C('qscms_site_dir')}index.php?m=Home&c=Qrcode&a=index&url={:urlencode(build_mobile_url(array('c'=>'Gworker','a'=>'show','params'=>'id='.$info['id'])))}" /></div>
+            <div class="codetxt">扫描二维码即可在手机端精彩呈现“普工招聘”，一键分享到朋友圈为招聘助力！</div>
+            <div class="clear"></div>
+        </div>
+    
+        <qscms:gworker_jobs_list 列表名="otherjobs" 显示数目="10" 去除id="$_GET['id']" 描述长度="76" 填补字符="..."/>
+        <div class="comjobs">
+            <div class="tit">
+                <div class="t">更多相似职位</div>
+                <div class="more link_gray6"><a href="{:url_rewrite('QS_gworker')}">更多</a></div>
+                <div class="clear"></div>
+            </div>
+            <notempty name="otherjobs['list']">
+            <volist name="otherjobs['list']" id="jobs">
+                <div class="list">
+                    <div class="jobname link_blue"><a href="{$jobs.url}">{$jobs.jobs_name}</a></div>
+                    <div class="wage">{$jobs.wage_cn}</div>
+                    <div class="clear"></div>
+                    <div class="txt">
+                        <div class="line_substring" title="{$jobs.district_cn}">{$jobs.district_cn}</div><span>|</span>{$jobs.category_cn}<span>|</span>{$jobs.amount}人
+                    </div>
+                </div>
+            </volist>
+            <else />
+            <div class="list">
+                暂无其他相似职位
+            </div>
+            </notempty>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+<include file="Home@default/public/footer_min" />
+<script src="https://static.geetest.com/static/tools/gt.js"></script>
+<script type="text/javascript">
+    $('.apply_jobs').click(function(){
+        var id = "{$info['id']}";
+        $.getJSON("{:U('Gworker/Index/check_apply_cache')}",{pid:id},function(r){
+            if(r.status==1){
+                disapperTooltip('success',r.msg);
+            }else{
+                var qsDialog = $(this).dialog({
+                    title: '报名',
+                    loading: true,
+                    footer: false,
+                    header: false,
+                    border: false,
+                    backdrop: false
+                });
+                $.getJSON("{:U('Gworker/Index/apply')}",{id:id},function(result){
+                    if(result.status == 1){
+                        qsDialog.hide();
+                        var qsDialogSon = $(this).dialog({
+                            title: '报名',
+                            content: result.data,
+                            footer:false
+                        });
+                    } else {
+                        qsDialog.hide();
+                        disapperTooltip('remind',result.msg);
+                    }
+                });
+            }
+        });
+        
+    });
+</script>
+</body>
+</html>

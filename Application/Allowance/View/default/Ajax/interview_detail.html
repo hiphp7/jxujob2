@@ -1,0 +1,31 @@
+<!-- 面试详情弹出框 -->
+<div class="int-detail-dia">
+    <div class="id-tl">
+        <div class="id-tl-1 link_blue"><span class="co-9">简历姓名：</span>{$info['fullname']} <a href="{:url_rewrite('QS_resumeshow',array('id'=>$info['resume_id']))}" target="_blank">[查看简历]</a></div>
+        <div class="id-tl-2"><span class="co-9">同意时间：</span>{:date('Y-m-d H:i',$info['addtime'])}</div>
+        <div class="clear"></div>
+    </div>
+    <div class="h20"></div>
+    <div class="id-tl">
+        <div class="id-tl-1"><span class="co-9">面试职位：</span>{$info['jobs_name']}</div>
+        <div class="id-tl-2"><span class="co-9"> &nbsp;&nbsp;&nbsp;联系人：</span>{$info['contact']}  {$info['telephone']}</div>
+        <div class="clear"></div>
+    </div>
+    <div class="h20"></div>
+    <div class="id-tl">
+        <div class="id-tl-1"><span class="co-9">面试时间：</span>{:PA(date('Y/m/d A h:i',$info['interview_time']))}</div>
+        <div class="clear"></div>
+    </div>
+    <div class="h14"></div>
+    <div class="id-tl-long">
+        <div class="id-tl-lt"><span class="co-9">面试地点：</span></div>
+        <div class="id-tl-ltx">{$info['address']}</div>
+        <div class="clear"></div>
+    </div>
+    <div class="h8"></div>
+    <div class="id-tl-long">
+        <div class="id-tl-lt"><span class="co-9">备注信息：</span></div>
+        <div class="id-tl-ltx"><if condition="$info['notes']">{$info['notes']}<else />无</if></div>
+        <div class="clear"></div>
+    </div>
+</div>

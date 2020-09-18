@@ -1,0 +1,5 @@
+.allowance_progress span{padding: 0 1px;color:#C0C0C0;}
+.allowance_progress .done{color:#339966;}
+.allowance_progress .ing{color:#3399FF;}
+.allowance_progress .waiting{color:#C0C0C0;}
+.allowance_progress .warning{color:#FF3300;}

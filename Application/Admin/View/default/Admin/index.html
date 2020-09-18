@@ -1,0 +1,69 @@
+<include file="public:header" />
+    <div class="toptip">
+        <h2>提示：</h2>
+        <p>通过管理员设置，您可以进行编辑管理员资料、角色、密码以及删除管理员等操作；</p>
+    </div>
+	<table width="100%" border="0" cellpadding="0" cellspacing="0" id="list" class="link_lan">
+		<tr>
+			<td class="admin_list_tit admin_list_first">用户名</td>
+			<td  class="admin_list_tit">头衔</td>
+			<td  class="admin_list_tit">创建时间</td>
+			<td  class="admin_list_tit">最后登录时间</td>
+			<td  class="admin_list_tit">最后登录ip</td>
+			<td width="230" align="center" class="admin_list_tit">操作</td>
+		</tr>
+		<volist name="list" id="list">
+			<tr>
+				<td class="admin_list admin_list_first">{$list.username}</td>
+				<td class="admin_list">{$list.role.name}</td>
+				<td class="admin_list">{:admin_date($list['add_time'])}</td>
+				<td class="admin_list">
+					<if condition="$list['last_login_time'] eq 0">
+						从未
+					<else/>
+						{:admin_date($list['last_login_time'])}
+					</if>
+				</td>
+				<td class="admin_list">
+					{$list.last_login_ip}
+				</td>
+				<td class="admin_list" align="center">
+					<a href="{:U('adminLog/index',array('admin_name'=>$list['username']))}" >日志</a>
+					&nbsp;&nbsp;
+					<if condition="$list['role']['id'] neq 1">
+						<if condition="$apply['Subsite']">
+							<a class="J_subsite" href="javascript:;" parameter="id={$list['id']}">分站</a>
+						<else/>
+							<a href="{:U('admin/details',array('id'=>$list['id']))}" >详情</a>
+						</if>
+						&nbsp;&nbsp;
+					</if>
+					<a href="{:U('admin/edit',array('id'=>$list['id']))}" >编辑</a>
+					<if condition="$list['id'] neq 1">
+						&nbsp;&nbsp;
+						<a href="{:U('admin/delete',array('id'=>$list['id']))}" onclick="return confirm('确定要删除吗？')">删除</a>
+					</if>
+				</td>
+			</tr>
+		</volist>
+	</table>
+	<table width="100%" border="0" cellspacing="10" cellpadding="0" class="admin_list_btm">
+		<tr>
+			<td>
+				<input name="ButADD" type="button" class="admin_submit" id="ButADD" value="添加管理员"  onclick="window.location='{:U('admin/add')}'"/>
+			</td>
+			<td width="305" align="right"></td>
+		</tr>
+	</table>
+	<div class="qspage">{$page}</div>
+</div>
+<include file="public:footer" />
+<script type="text/javascript">
+	$(".J_subsite").QSdialog({
+        DialogTitle:"分站选择",
+        DialogContentType:"url",
+        DialogContent:"{:U('ajax/ajax_subsite')}&"
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<include file="public:header" />
+<div class="toptip link_lan"  >
+  <h2>提示：</h2>
+  <p>
+数据清理可有效提升数据读写效率，从而提升网站的用户体验。站长可根据自身情况，选择定期删除老旧数据</p>
+</div>
+
+<div class="toptit">清理内容</div>
+ 
+    <form action="{:U('index')}" method="post" name="form1" id="form1">
+    <table width="800" border="0" cellspacing="6" cellpadding="5" style=" margin-bottom:3px;">
+    <tr>
+      <td width="120" align="right">清理项目：</td>
+        <td>
+        <label><input type="checkbox" checked="checked" value="PersonalJobsApply|apply_addtime" name="type[]"/> 职位申请记录</label>
+		&nbsp;&nbsp;&nbsp;&nbsp;
+        <label><input type="checkbox" value="CompanyInterview|interview_addtime" name="type[]" checked="checked"/> 面试邀请记录</label>&nbsp;&nbsp;&nbsp;&nbsp;
+        <label><input type="checkbox" value="CompanyDownResume|down_addtime" name="type[]" checked="checked"/> 下载简历记录</label>&nbsp;&nbsp;&nbsp;&nbsp;
+        <label><input type="checkbox" value="CompanyFavorites|favorites_addtime" name="type[]" checked="checked"/> 收藏简历记录</label>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+      </tr>
+      <tr>
+      <td align="right">&nbsp;</td>
+        <td>
+        <label><input type="checkbox" value="ViewResume|addtime" name="type[]" checked="checked"/> 浏览简历记录</label>&nbsp;&nbsp;&nbsp;&nbsp;
+        <label><input type="checkbox" value="ViewJobs|addtime" name="type[]" checked="checked"/> 浏览职位记录</label>&nbsp;&nbsp;&nbsp;&nbsp;
+        <label><input type="checkbox" value="MembersLog|log_addtime" name="type[]" checked="checked"/> 会员日志</label>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+      </tr>
+    <tr>
+      <td align="right">选择时间：</td>
+      <td  >
+        <label><input name="settr" type="radio"  value="360" checked=checked/>一年前</label>&nbsp;&nbsp;&nbsp;&nbsp;
+        <label><input name="settr" type="radio"  value="180"/>半年前</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label><input name="settr" type="radio"  value="90"/>三个月前</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label><input name="settr" type="radio"  value="60"/>两个月前</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label><input name="settr" type="radio"  value="30"/>一个月前</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </td>
+    </tr>
+  <tr>
+    <td align="right" valign="top">&nbsp;</td>
+    <td> 
+      <input name="submit" type="submit" class="admin_submit" value="清除"/>
+    </td>
+    </tr>
+  </table>
+    </form>
+</div>
+<include file="public:footer" />
+</body>
+</html>

@@ -1,0 +1,59 @@
+<include file="public:header" />
+  <div class="toptip">
+    <h2>提示：</h2>
+    <p>
+      系统将自动取消到期的简历推广。<br />
+    </p>
+  </div>
+  <div class="toptit">修改简历置顶推广</div>
+  <form id="form1" name="form1" method="post" action="{:U('Personal/promotion_stick_edit')}">
+    <table width="100%" border="0" cellpadding="4" cellspacing="0"  class="link_lan" >
+      <tr>
+        <td width="120" height="30" align="right"  style="border:0px;">推广简历：</td>
+        <td    >
+          <a href="{:url_rewrite('QS_resumeshow',array('id'=>$info['resume_id']))}" target="_blank">{$info['title']}</a>
+        </td>
+      </tr>
+      <tr>
+        <td height="30" align="right"  >姓名：</td>
+        <td   ><a href="{:url_rewrite('QS_resumeshow',array('id'=>$info['resume_id']))}" target="_blank">{$info['fullname']}</a></td>
+      </tr>
+      <tr>
+        <td height="30" align="right"  >会员ID：</td>
+        <td   >{$info['resume_uid']}</td>
+      </tr>
+      <tr>
+        <td height="30" align="right"   width="120" style="border:0px;" >推广方案：</td>
+        <td><span style="color:#FF0000">置顶</span></td>
+      </tr>
+      <tr>
+        <td height="30" align="right"   width="120" style="border:0px;" >推广期限：</td>
+        <td  >
+          <if condition="$info['endtime'] lt time()">
+            <span style="color:#FF6600">已经到期</span>
+          <else />
+            {$info.addtime|date="Y年m月d日",###} ≈ {$info.endtime|date="Y年m月d日",###}
+         </if>
+        </td>
+      </tr>
+      <tr>
+        <td height="30" align="right">延长推广时间：</td>
+        <td>
+          <input name="days"  id="days" type="text" class="input_text_200" maxlength="3" value=""/>
+          天
+        </td>
+      </tr>
+      <tr>
+        <td height="30" align="right"  >&nbsp;</td>
+        <td height="50"  >
+          <input name="id" type="hidden" value="{$info.id}" />
+          <input type="submit" class="admin_submit" value="修改"/>
+          <input name="submit22" type="button" class="admin_submit" value="返回" onclick="Javascript:window.history.go(-1)"/>
+        </td>
+      </tr>
+    </table>
+  </form>
+</div>
+<include file="public:footer" />
+</body>
+</html>

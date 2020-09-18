@@ -1,0 +1,10 @@
+/*行为分析样式*/
+.analyze{ padding-left:20px; padding-top:15px; padding-bottom:30px;}
+.analyze .item{ width:900px; overflow:hidden;}
+.analyze .item .analyze_l{float:left; width:145px; height:80px;background-image:url(../images/Analyze.png); background-repeat:no-repeat; background-position:65px 45px;}
+.analyze .item .analyze_l.last{height:38px;}
+.analyze .item .analyze_l .btns{ width:145px; height:38px; line-height:38px; color:#006699; background-color:#DBEFFB; text-align:center;border-radius:38px;}
+.analyze .item .analyze_r{ float:left; width:400px; padding-top:10px; padding-left:103px;background-image:url(../images/Analyze.png); background-repeat:no-repeat; background-position:-170px 5px;}
+.analyze .item:hover{}
+.analyze .item:hover .btns{ background-color:#CAE9F9; color:#003366}
+.analyze .item:hover .analyze_r{background-position:-170px -75px;}

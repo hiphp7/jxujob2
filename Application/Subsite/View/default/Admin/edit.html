@@ -1,0 +1,184 @@
+<include file="Admin@default/public/header" />
+	<div class="toptip">
+        <h2>提示：</h2>
+        <p>增分站后，需要将分站域名解析至主站；</br>
+如需使用触屏版域名，需要将触屏版域名解析至主站。
+		</p>
+    </div>
+    <div class="toptit">编辑分站</div>
+	<form action="{:U('admin/edit')}" method="post" enctype="multipart/form-data" name="form1" id="form1">
+		<table width="100%" border="0" cellpadding="4" cellspacing="0"   >
+	    <tr>
+	      <td width="120" height="30" align="right"  ><span style="color:#FF3300; font-weight:bold">*</span> 分站名称：</td>
+	      <td  ><input name="s_sitename" type="text" class="input_text_200"   maxlength="100" value="{$info.s_sitename}"/>
+	      <span class="admin_note">如：太原站</span></td>
+	    </tr>
+		    <tr>
+	      <td height="30" align="right"  >分站状态：</td>
+	      <td   >
+		   <label><input name="s_effective" type="radio"   value="1" <if condition="$info['s_effective'] eq 1">checked="checked"</if>/>可用</label>
+	       &nbsp;&nbsp;&nbsp;&nbsp; 
+		   <label ><input type="radio" name="s_effective" value="0"  <if condition="$info['s_effective'] eq 0">checked="checked"</if>/>禁用</label>
+		  </td>
+	    </tr>
+	    <tr>
+	        <td height="30" align="right" ><span style="color:#FF3300; font-weight:bold">*</span> 分站地区：</td>
+	        <td >
+	      <div>
+	      	<input type="text" readonly="readonly" name="s_districtname" id="s_districtname" class="J_resuletitle_city input_text_200 input_text_selsect" data-title="请选择分站地区" data-multiple="false" data-maxnum="0" data-width="520" value="{$info.s_districtname|default="请选择"}"/>
+	    	<input name="s_district" id="s_district" class="J_resultcode_city" type="hidden" value="{$info.s_district}" />
+	      </div>
+	      </td>
+	        </tr>
+	    <tr>
+	      <td height="30" align="right"  ><span style="color:#FF3300; font-weight:bold">*</span> 域名绑定：</td>
+	      <td   ><input name="s_domain" type="text" class="input_text_200"    value="{$info.s_domain}"/>
+	      <span class="admin_note">输入二级域名，不带http://，如：0351.rencai.com</span></td>
+	    </tr>
+	    <tr>
+	      <td height="30" align="right"  ><span style="color:#FF3300; font-weight:bold">*</span> 触屏版域名绑定：</td>
+	      <td   ><input name="s_m_domain" type="text" class="input_text_200"    value="{$info.s_m_domain}"/>
+	      <span class="admin_note">输入二级域名，不带http://，如：m0351.rencai.com</span></td>
+	    </tr>
+		<tr>
+	      <td height="30" align="right"  ><span style="color:#FF3300; font-weight:bold">*</span> PC端风格模版：</td>
+	      <td >
+	            <div>
+	                  <input type="text" value="{$info.s_tpl|default="请选择"}"  readonly="readonly" name="tpl_category" id="tpl_category" class="input_text_200 input_text_selsect"/>
+	                  <input name="s_tpl" id="s_tpl" type="hidden" value="{$info.s_tpl}" />
+	                  <div id="menu4" class="menu">
+	                    <ul>
+		                    <volist name="dirs" id="dir">
+								<li id="{$dir}" title="{$dir}">{$dir}</li>
+		                    </volist>
+	                    </ul>
+	                  </div>
+	            </div>
+		  </td>
+	    </tr>
+		<tr>
+	      <td height="30" align="right"  ><span style="color:#FF3300; font-weight:bold">*</span> 触屏端风格模版：</td>
+	      <td >
+	            <div>
+	                  <input type="text" value="{$info.s_m_tpl|default="请选择"}"  readonly="readonly" name="m_tpl_category" id="m_tpl_category" class="input_text_200 input_text_selsect"/>
+	                  <input name="s_m_tpl" id="s_m_tpl" type="hidden" value="" />
+	                  <div id="menu5" class="menu">
+	                    <ul>
+		                    <volist name="dirss" id="dir">
+								<li id="{$dir}" title="{$dir}">{$dir}</li>
+		                    </volist>
+	                    </ul>
+	                  </div>
+	            </div>
+		  </td>
+	    </tr>
+	    <tr>
+	        <td width="120" align="right" >分站排序：</td>
+	        <td ><input name="s_order" type="text"  class="input_text_150" id="s_order" value="{$info.s_order|default=0}" style="width:50px;" maxlength="8" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');"onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/>
+	        <span>&nbsp;&nbsp;&nbsp;&nbsp;数字越大越靠前</span></td>
+	    </tr>
+	    <tr>
+				<td align="right">分站首页Logo： </td>
+				<td>
+					<input name="s_logo_home" type="file" id="web_logo" style="width:300px; font-size:12px; padding:3px;" onKeyDown="alert('请点击右侧“浏览”选择您电脑上的图片！');return false"/>&nbsp;&nbsp;&nbsp;
+					<input type="button" name="Submit" value="查看Logo" class="vtip" title="<img src=<if condition="$info['s_logo_home']">{:attach($info['s_logo_home'],'resource')}<else/>__HOMEPUBLIC__/images/logo.gif</if>  border=0  align=absmiddle>" style="font-size:12px;"/>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">分站会员中心Logo： </td>
+				<td>
+					<input name="s_logo_user" type="file" id="web_logo" style="width:300px; font-size:12px; padding:3px;" onKeyDown="alert('请点击右侧“浏览”选择您电脑上的图片！');return false"/>&nbsp;&nbsp;&nbsp;
+					<input type="button" name="Submit" value="查看Logo" class="vtip" title="<img src=<if condition="$info['s_logo_user']">{:attach($info['s_logo_user'],'resource')}<else/>__HOMEPUBLIC__/images/logo_user.png</if>  border=0  align=absmiddle>" style="font-size:12px;"/>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">分站其它页Logo： </td>
+				<td>
+					<input name="s_logo_other" type="file" id="web_logo" style="width:300px; font-size:12px; padding:3px;" onKeyDown="alert('请点击右侧“浏览”选择您电脑上的图片！');return false"/>&nbsp;&nbsp;&nbsp;
+					<input type="button" name="Submit" value="查看Logo" class="vtip" title="<img src=<if condition="$info['s_logo_other']">{:attach($info['s_logo_other'],'resource')}<else/>__HOMEPUBLIC__/images/logo_other.png</if>  border=0  align=absmiddle>" style="font-size:12px;"/>
+				</td>
+			</tr>
+		  <tr>
+	      <td height="30" align="right"  >title：</td>
+	      <td   ><input name="s_title" type="text" class="input_text_200"    value="{$info.s_title}"/>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td height="30" align="right"  >Keywords：</td>
+	      <td   ><input name="s_keywords" type="text" class="input_text_400"    value="{$info.s_keywords}"/></td>
+	    </tr>
+	    <tr>
+	      <td height="30" align="right"  >Description：</td>
+	      <td   >
+	        <textarea name="s_description" class="company_mb_textarea" id="s_description" style="width:500px; height:100px;" >{$info.s_description}</textarea></td>
+	    </tr>
+	    <tr>
+	      <td height="30" align="right"  >&nbsp;</td>
+	      <td height="50"  > 
+	      	<input name="s_id" type="hidden" value="{$info.s_id}">
+	            <input name="submit3" type="submit" class="admin_submit"    value="保存"/>
+	        <input name="submit22" type="button" class="admin_submit"    value="返回" onclick="Javascript:window.history.go(-1)"/>
+	       </td>
+	    </tr>
+	  </table>
+	  <table width="100%" border="0" cellspacing="5" cellpadding="0">
+			<tr>
+			<td valign="top">
+				<table width="100%" border="0" cellpadding="1" cellspacing="5"  class="link_lan" style=" margin-bottom:3px;">
+					<!-- -->
+					<tr>
+						<td width="120" align="right">百度地图AK:</td>
+						<td width="200" height="25"><input name="s_map_ak" type="text" value="{$info.s_map_ak|default=C('qscms_map_ak')}"  id="map_ak"  class="input_text_200"  style="color:#009900; font-weight:bold"/></td>
+					</tr>
+					<tr>
+						<td width="120" align="right">默认中心点X坐标：</td>
+						<td width="200" height="25"><input name="s_map_center_x" type="text" value="{$info.s_map_center_x|default=C('qscms_map_center_x')}"  id="map_center_x"  class="input_text_200"  style="color:#009900; font-weight:bold"/>
+						推动电子地图，系统将自动获取坐标
+						</td>
+					</tr>
+					<tr>
+						<td align="right">默认中心点Y坐标：</td>
+						<td height="25"><input name="s_map_center_y" type="text" value="{$info.s_map_center_y|default=C('qscms_map_center_y')}"  id="map_center_y"  class="input_text_200" style="color:#009900; font-weight:bold"/></td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td align="right">默认缩放级别：</td>
+						<td height="25"><input name="s_map_zoom" type="text" value="{$info.s_map_zoom|default=C('qscms_map_zoom')}" id="map_zoom"   class="input_text_200" style="color: #009900; font-weight:bold"/></td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td align="right">&nbsp;&nbsp;</td>
+						<td height="25">
+							<div style="width:600px;height:400px; border:1px #CCCCCC solid" id="container"></div>
+						</td>
+						<td>&nbsp;</td>
+					</tr>
+				</table>
+			</td>
+			</tr>
+		</table>
+	</form>
+	<input type="hidden" id="existSub" value="{$subsites}">
+</div>
+<include file="Admin@default/public/footer" />
+<qscms:load type="category"/>
+<script type="text/javascript" src="__ADMINPUBLIC__/js/jquery.subsite.city.js"></script>
+<script src="http://api.map.baidu.com/api?v=1.2" type="text/javascript"></script>
+<script type="text/javascript">
+	var map = new BMap.Map("container");       // 创建地图实例   
+	var point = new BMap.Point({$info.s_map_center_x|default=C('qscms_map_center_x')},{$info.s_map_center_y|default=C('qscms_map_center_y')});  // 创建点坐标   
+	map.centerAndZoom(point, {$info.s_map_zoom|default=C('qscms_map_zoom')}); 
+	map.addControl(new BMap.NavigationControl());   
+	map.addEventListener("moveend", function(){   
+	var center = map.getCenter();
+	document.getElementById("map_center_x").value=center.lng; 
+	document.getElementById("map_center_y").value= center.lat; 
+	document.getElementById("map_zoom").value=map.getZoom();
+});   
+</script>
+<script type="text/javascript">
+	showmenu("#tpl_category","#menu4","#s_tpl","","");
+	showmenu("#m_tpl_category","#menu5","#s_m_tpl","","");
+</script>
+</body>
+</html>

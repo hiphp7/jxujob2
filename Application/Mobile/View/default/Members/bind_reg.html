@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+	<head>
+        <include file="public:meta" />
+        <link rel="stylesheet" href="../public/css/members.css">
+	</head>
+	<body>
+        <include file="public:header" />
+        <div class="split-block"></div>
+        <div class="bind-top-box qs-center">
+            <img src="<if condition="$user_bind_info['keyavatar_big']">{$user_bind_info.keyavatar_big}<else/>{:attach('no_photo_male.png','resource')}</if>" alt="{$user_bind_info.username}" class="b-img">
+            <div class="b-nickname">{$user_bind_info.username}</div>
+            <div class="font12 txt-color-9">您已登录{$third_name}账号</div>
+        </div>
+        <div class="split-block"></div>
+        <form action="" method="post" id="registerForm">
+            <div class="b-list-group-tip">
+                <div class="txt-color-3">注册并绑定新账号</div>
+                <div class="link_blue font12 txt-color-9">如果您已有{:C('qscms_site_name')}账号，请<a href="{:U('members/apilogin_binding',array('openid'=>$openid),true,false,true)}">立即绑定</a></div>
+            </div>
+            <div class="list-group b-list-group">
+                <div class="list_height plist-txt notarrow">
+                    <div class="pic"></div>
+                    <div class="tit font14">选择身份</div>
+                    <div class="describe font12">
+                        <input class="p-radio" name="utype" type="radio" value="2" title="个人会员" checked="checked"/>&nbsp;&nbsp;个人会员&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input class="p-radio" name="utype" type="radio" value="1" title="企业会员" onclick="window.location='{:U('members/bind_reg_com',array('openid'=>$openid),true,false,true)}'"/>&nbsp;&nbsp;企业会员
+                    </div>
+                    <div class="arrow"></div>
+                    <div class="clear"></div>
+                </div>
+                <div class="list_height plist-txt notarrow">
+                    <div class="pic"></div>
+                    <div class="tit font14">账户名</div>
+                    <div class="describe font12"><input type="text" name="username" id="username" placeholder="请输入用户名"></div>
+                    <div class="arrow"></div>
+                    <div class="clear"></div>
+                </div>
+                <div class="list_height plist-txt notarrow">
+                    <div class="pic"></div>
+                    <div class="tit font14">邮箱</div>
+                    <div class="describe font12"><input type="text" name="email" id="email" placeholder="请输入常用邮箱"></div>
+                    <div class="arrow"></div>
+                    <div class="clear"></div>
+                </div>
+                <div class="list_height plist-txt notarrow">
+                    <div class="pic"></div>
+                    <div class="tit font14">设置密码</div>
+                    <div class="describe font12"><input type="password" name="emailpassword" id="emailpassword" placeholder="请输入6-16位密码"></div>
+                    <div class="arrow"></div>
+                    <div class="clear"></div>
+                </div>
+                <div class="list_height plist-txt notarrow last">
+                    <div class="pic"></div>
+                    <div class="tit font14">确认密码</div>
+                    <div class="describe font12"><input type="password" name="emailpasswordVerify" id="emailpasswordVerify" placeholder="重新输入密码"></div>
+                    <div class="arrow"></div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <input type="hidden" name="reg_type" value="2" />
+            <input type="hidden" name="utype" value="2">
+            <input name="org" type="hidden" value="bind">
+            <input type="hidden" name="openid" value="{$openid}">
+            <div id="pop" style="display:none"></div>
+            <div class="btn-spacing mt4"><a id="bindRegBtn" href="javascript:;" class="qs-btn qs-btn-blue font18">注册并绑定</a></div>
+        </form>
+        <include file="public:footer" />
+        <include file="public:footer_min" />
+        <script src="http://static.geetest.com/static/tools/gt.js"></script>
+	</body>
+    <script>
+        /**
+         * 配置极验
+         */
+        $.ajax({
+            url: qscms.root+'?m=Mobile&c=Captcha&type=mobile&t=' + (new Date()).getTime(),
+            type: 'get',
+            dataType: 'json',
+            success: function(config) {
+                initGeetest({
+                    gt: config.gt,
+                    challenge: config.challenge,
+                    offline: !config.success
+                }, function(captchaObj) {
+                    captchaObj.appendTo("#pop");
+                    captchaObj.onSuccess(function() {
+                        doAjax();
+                    });
+                    window.captchaObj = captchaObj
+                });
+            }
+        });
+
+        /**
+         * ajax 提交注册信息
+         */
+        function doAjax() {
+            var url = "{:U('mobile/members/register','',true,false,true)}";
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: $('#registerForm').serialize(),
+                success: function (data) {
+                    if(data.status==1){
+                        window.location.href = data.data.url;
+                    }else{
+                        qsToast({type:2,context: data.msg});
+                    }
+                }
+            });
+        }
+
+        var regularEmail = /^[_\.0-9a-zA-Z-]+[_0-9a-zA-Z-]@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,3}$/;
+
+        /**
+         * 注册验证
+         */
+        $('#bindRegBtn').on('click', function() {
+            var configVarifyReg = <if condition="C('qscms_mobile_captcha_open') eq 1 and C('qscms_wap_captcha_config.varify_reg') eq 1">1<else/>0</if>;// 后台是否开启注册验证
+            var usernameValue = $.trim($('input[name=username]').val());
+            var emailValue = $.trim($('input[name=email]').val());
+            var emailpasswordValue = $.trim($('input[name=emailpassword]').val());
+            var emailpasswordVerifyValue = $.trim($('input[name=emailpasswordVerify]').val());
+            if (usernameValue == '') {
+                qsToast({type:2,context: '请输入用户名'});
+                return false;
+            }
+            if (!inputRegValiUsername(usernameValue)) {
+                qsToast({type:2,context: '用户名中英文开头6-18位，无特殊符号'});
+                return false;
+            }
+            if(!remoteValid('username',usernameValue)){
+                qsToast({type:2,context: '该用户名已被注册'});
+                return false;
+            }
+            if (emailValue == '') {
+                qsToast({type:2,context: '请输入常用邮箱'});
+                return false;
+            }
+            if(!inputRegValiEmail(emailValue)){
+                qsToast({type:2,context: '邮箱格式错误'});
+                return false;
+            }
+            if(!remoteValid('email',emailValue)){
+                qsToast({type:2,context: '该邮箱已被注册'});
+                return false;
+            }
+            if (emailpasswordValue == '') {
+                qsToast({type:2,context: '请输入密码'});
+                return false;
+            }
+            if(!inputRegValiPassword(emailpasswordValue)){
+                qsToast({type:2,context: '密码长度要求为6-16个字符'});
+                return false;
+            }
+            if (emailpasswordVerifyValue == '') {
+                qsToast({type:2,context: '请确认账户密码'});
+                return false;
+            }
+            if(!inputRegValiPassword(emailpasswordVerifyValue)){
+                qsToast({type:2,context: '密码长度要求为6-16个字符'});
+                return false;
+            }
+            if(!inputRegValiPasswordRepeat(emailpasswordValue,emailpasswordVerifyValue)){
+                qsToast({type:2,context: '两次输入的密码不一致'});
+                return false;
+            }
+            if (eval(configVarifyReg)) {
+                window.captchaObj.refresh();
+                $('#pop').show();
+            } else {
+                doAjax();
+            }
+        })
+
+        /**
+         * 验证用户名
+         * @param value 用户名
+         * @returns {boolean}
+         */
+        function inputRegValiUsername(value){
+            var regularUsername = /^(?=[\u4e00-\u9fa5a-zA-Z])(?!\d+)[\u4e00-\u9fa5\w.]{6,18}$/;
+            var achoice = true;
+            if (!regularUsername.test(value)) {
+                achoice = false;
+            }
+            return achoice;
+        }
+
+        /**
+         * 验证邮箱
+         * @param value 邮箱
+         * @returns {boolean}
+         */
+        function inputRegValiEmail(value){
+            var regularEmail = /^[_\.0-9a-zA-Z-]+[_0-9a-zA-Z-]@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,3}$/;
+            var achoice = true;
+            if (!regularEmail.test(value)) {
+                achoice = false;
+            }
+            return achoice;
+        }
+
+        /**
+         * 验证用户名等是否重复
+         * @param validType 验证类型
+         * @param validValue 值
+         * @returns {boolean|*}
+         */
+        function remoteValid(validType, validValue){
+            var result = false;
+            $.ajax({
+                url: "{:U('mobile/members/ajax_check','',true,false,true)}",
+                cache: false,
+                async: false,
+                type: 'post',
+                dataType: 'json',
+                data: { type: validType, param: validValue },
+                success: function(json) {
+                    if (json && json.status) {
+                        result = true;
+                    } else {
+                        result = false;
+                    }
+                }
+            });
+            return result;
+        }
+
+        /**
+         * 验证密码长度
+         * @param value 密码
+         * @returns {boolean}
+         */
+        function inputRegValiPassword(value){
+            achoice = true;
+            if(value.length>16 || value.length<6){
+                achoice = false;
+            }
+            return achoice;
+        }
+
+        /**
+         * 验证密码两次输入是否一致
+         * @param password 第一次密码
+         * @param passwordRepeat 第二次密码
+         * @returns {boolean}
+         */
+        function inputRegValiPasswordRepeat(password,passwordRepeat){
+            achoice = true;
+            if(password!=passwordRepeat){
+                achoice = false;
+            }
+            return achoice;
+        }
+    </script>
+</html>

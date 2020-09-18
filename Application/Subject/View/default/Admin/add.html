@@ -1,0 +1,275 @@
+<include file="./public/header_subject"/>
+<div class="toptit">新增网络专题招聘会</div>
+<form id="form1" action="{:U('add')}" method="post" name="FormData" enctype="multipart/form-data">
+    <div class="form_main width150">
+        <div class="fl"><span style="color:#FF3300; font-weight:bold">*</span>专题标题:</div>
+        <div class="fr">
+            <div style="float: left"><input name="title" type="text" class="input_text_default middle" maxlength="45" value=""/></div>
+            <div class="n-form" style="padding-left:10px;float: left">
+                <div class="color_layer" style="display: inline-block;">
+                    <div id="color_box" onclick="color_box_display()"></div>
+                    <input type="hidden" name="tit_color" id="tit_color" value="">
+                    <include file="Admin@default/public:select_color" />
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="fl"><span style="color:#FF3300; font-weight:bold">*</span>举办日期:</div>
+        <div class="fr">
+            <input name="holddate" type="text" class="input_text_default small" id="holddate" maxlength="20" value="" style="width: 300px;" autocomplete="off">
+        </div>
+		<if condition="C('qscms_subsite_open') eq 1">
+           <div class="fl"><span style="color:#FF3300; font-weight:bold">*</span>分站:</div>
+		   <div class="fr">
+			   <div class="imgradio">
+				   <input name="subsite_id" type="hidden" value="0">
+				   <volist name="subsite_list" id="subsite">
+					<div class="radio <if condition="$i eq 1">select</if>" data="{$subsite.s_id}">{$subsite.s_sitename}</div>
+					</volist>
+				   <div class="clear"></div>
+			   </div>
+		   </div>
+		</if>
+        <div class="fl"><span style="color:#FF3300; font-weight:bold">*</span>缩略图:</div>
+        <div class="fr J-file-input-box">
+            <div class="file-input-src hid">
+                <div class="img"></div>
+                <div class="del file-input-del" id="" name="small_img">点击更换</div>
+            </div>
+            <div class="file-input-block" id="J_upload_article_img" name="small_img"><span class="o-txt">上传</span>缩略图</div>
+            <input type="hidden" class="file-input-save-name" name="small_img" value="">
+        </div>
+		<div class="fl">广告位:</div>
+        <div class="fr J-file-input-box">
+            <div class="file-input-src hid">
+                <div class="img"></div>
+                <div class="del file-input-del" id="" name="subject_ad_img">点击更换</div>
+            </div>
+            <div class="file-input-block" id="J_upload_subject_ad_img" name="subject_ad_img"><span class="o-txt">上传</span>广告位图片（建议尺寸1920*300）</div>
+            <input type="hidden" class="file-input-save-name" name="subject_ad_img" value="">
+        </div>
+        <div class="fl"><span style="color:#FF3300; font-weight:bold">*</span>招聘会介绍:</div>
+        <div class="fr">
+            <textarea name="content" class="input_text_default middle" style="width:600px;height: 150px; line-height: 25px;"></textarea>
+            <div style="color: #999999;margin-top: 10px; font-size: 12px;">(请将字数控制在200字以内。)</div>
+        </div>
+        <div class="fl"><span style="color:#FF3300; font-weight:bold">*</span>允许报名套餐:</div>
+        <div class="fr txt J_allListBox">
+            <label><input type="checkbox" class="J_allSelected" checked="checked" value=""/>
+            全部</label>&nbsp;&nbsp;&nbsp;&nbsp;
+            <volist name="setmeal_show" id="vo">
+                <label><input type="checkbox" class="J_allList" value="{$vo.id}" checked="checked" name="setmeal_id[]"/>
+            {$vo['setmeal_name']}</label>&nbsp;&nbsp;&nbsp;&nbsp;
+            </volist>
+        </div>
+        <div class="fl">仅认证企业报名:</div>
+        <div class="fr">
+            <div data-code="0,1" class="imgchecked_small"><input name="is_audit" type="hidden" value="0" /></div>
+            <div class="clear"></div>
+        </div>
+        <div class="fl">要求简历完整度:</div>
+        <div class="fr">
+            <input name="resume_percent" type="text" class="input_text_default middle" maxlength="10" value="0" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/> %
+            <label class="no-fl-note">(0表示不限,个人简历达到设置值才可报名参会)</label>
+        </div>
+        <div class="fl"><span style="color:#FF3300; font-weight:bold">*</span>联系客服:</div>
+        <div class="fr J-file-input-box">
+            <div class="file-input-src hid">
+                <div class="img"></div>
+                <div class="del file-input-del" id="" name="customer_img">点击更换</div>
+            </div>
+            <div class="file-input-block" id="J_upload_customer_img" name="customer_img"><span class="o-txt">上传</span>二维码图片(建议尺寸114*114)</div>
+            <input type="hidden" class="file-input-save-name" name="customer_img" value="">
+        </div>
+        <div class="fl"></div>
+        <div class="fr">
+            <div class="admin_submit small gray" id="J_moreform">更多选项</div>
+        </div>
+        <div class="clear"></div>
+        <div class="moreform">
+            <div class="fl">是否显示:</div>
+            <div class="fr">
+                <div data-code="0,1" class="imgchecked_small select"><input name="is_display" type="hidden" value="1" /></div>
+                <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+            <div class="fl">标题加粗:</div>
+            <div class="fr">
+                <div data-code="0,1" class="imgchecked_small"><input name="tit_b" type="hidden" value="0" /></div>
+                <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+            <div class="fl">显示排序:</div>
+            <div class="fr">
+                <input name="article_order" type="text" class="input_text_default middle" maxlength="3" value="0" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');"onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))" placeholder="数字越大越靠前，默认是0"/>
+                <label class="no-fl-note">(数字越大越靠前)</label>
+            </div>
+            <div class="clear"></div>
+            <div class="fl">外部链接:</div>
+            <div class="fr">
+                <input name="is_url" type="text" class="input_text_default" maxlength="80" value="http://" placeholder="请输入完整的链接地址,如http://www.74cms.com"/>
+            </div>
+            <div class="clear"></div>
+            <div class="fl">Keywords:</div>
+            <div class="fr">
+                <input name="seo_keywords" type="text" class="input_text_default" maxlength="150" value="" placeholder="合理设置Keywords有利于搜索引擎排名"/>
+            </div>
+            <div class="clear"></div>
+            <div class="fl">Description:</div>
+            <div class="fr">
+                <textarea name="seo_description" type="text" class="input_text_default" style="height: 100px; line-height: 180%" maxlength="150" placeholder="合理设置Description有利于搜索引擎排名"/></textarea>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="fl"></div>
+        <div class="fr">
+            <input type="button" class="admin_submit" value="保存" id="J_submit"/>
+            <input type="button" class="admin_submit" value="返回" onClick="window.location='{:U('index')}'"/>
+        </div>
+        <div class="clear"></div>
+    </div>
+</form>
+
+</div>
+<include file="Admin@default/public/footer"/>
+</body>
+<script type="text/javascript">
+  var uploadUrl = "{:U('Admin/Upload/form_upload')}";
+</script>
+<script src="__SUBJECT__/js/ajaxfileupload1.js"></script>
+<script src="__SUBJECT__/js/fileupload.js"></script>
+<script type="text/javascript" src="__ADMINPUBLIC__/js/jquery.listitem.js"></script>
+<script type="text/javascript" src="__ADMINPUBLIC__/js/jquery.dropdown.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //日期
+        laydate.render({
+            elem: '#holddate' //指定元素
+            ,range: '~'
+        });
+        // 全选反选
+        $('.J_allSelected').click(function() {
+            var isChecked = $(this).is(':checked');
+            var listArray = $('.J_allListBox .J_allList');
+            $.each(listArray, function(index, val) {
+                $(this).prop('checked', isChecked);
+            });
+        });
+        $('.J_allList').click(function() {
+            var isChecked = $(this).is(':checked');
+            if (isChecked) {
+                var listArray = $('.J_allListBox .J_allList');
+                var listCheckedArray = $('.J_allListBox .J_allList:checked');
+                if (listArray.length == listCheckedArray.length) {
+                    $('.J_allSelected').prop('checked', isChecked);
+                }
+            } else {
+                $('.J_allSelected').prop('checked', isChecked);
+            }
+        });
+        if ($('.J_listitme.list_sel').length) {
+            var listSelCn = $.trim($('.J_listitme.list_sel').text());
+            var listSelCode = $('.J_listitme.list_sel').data('code');
+            $('.J_listitme.list_sel').closest('.J_listitme_parent').find('.J_listitme_text').text(listSelCn);
+            $('.J_listitme.list_sel').closest('.J_listitme_parent').find('.J_listitme_code').val(listSelCode);
+        }
+        $('#J_submit').click(function(){
+            var that = $(this);
+            if(that.hasClass('disabled')){
+                return false;
+            }
+            that.val('正在保存...').addClass('disabled');
+            $.post("{:U('add')}",$('#form1').serialize(),function(result){
+                if(result.status==1){
+                    disapperTooltip("success", result.msg,function(){
+                        location.href='{:U("index")}';
+                    });
+                }else{
+                    disapperTooltip("remind", result.msg,function(){
+                        that.val('保存').removeClass('disabled');
+                    });
+                    return false;
+                }
+            },'json');
+        });
+      // 上传网站首页Logo
+      $.upload('#J_upload_article_img',{name:'small_img',dir:'images'},function(result){
+        if(result.error == 1){
+          var htmlResult = '<img src="'+ result.url.src +'" align=absmiddle>';
+          $('#J_upload_article_img').closest('.J-file-input-box').find('.file-input-src .img').html(htmlResult);
+          $('#J_upload_article_img').closest('.J-file-input-box').find('.file-input-save-name').val(result.url.savename);
+          if ($('#J_upload_article_img').hasClass('file-input-block')) {
+            $('#J_upload_article_img').closest('.J-file-input-box').find('.file-input-src').removeClass('hid');
+            var $delObj = $('#J_upload_article_img').closest('.J-file-input-box').find('.file-input-del');
+            $('#J_upload_article_img').remove();
+            $delObj.attr('id', "J_upload_article_img_change_btn");
+            $.upload('#J_upload_article_img_change_btn',{name:'small_img',dir:'images'},function(result){
+              if(result.error == 1){
+                var htmlResult = '<img src="'+ result.url.src +'" align=absmiddle>';
+                $('#J_upload_article_img_change_btn').closest('.J-file-input-box').find('.file-input-src .img').html(htmlResult);
+                $('#J_upload_article_img_change_btn').closest('.J-file-input-box').find('.file-input-save-name').val(result.url.savename);
+              } else {
+                disapperTooltip("remind", "上传失败："+result.message);
+              }
+            })
+          }
+        } else {
+          disapperTooltip("remind", "上传失败："+result.message);
+        }
+      });
+	   // 上传广告位
+      $.upload('#J_upload_subject_ad_img',{name:'subject_ad_img',dir:'images'},function(result){
+        if(result.error == 1){
+          var htmlResult = '<img src="'+ result.url.src +'" align=absmiddle>';
+          $('#J_upload_subject_ad_img').closest('.J-file-input-box').find('.file-input-src .img').html(htmlResult);
+          $('#J_upload_subject_ad_img').closest('.J-file-input-box').find('.file-input-save-name').val(result.url.savename);
+          if ($('#J_upload_subject_ad_img').hasClass('file-input-block')) {
+            $('#J_upload_subject_ad_img').closest('.J-file-input-box').find('.file-input-src').removeClass('hid');
+            var $delObj = $('#J_upload_subject_ad_img').closest('.J-file-input-box').find('.file-input-del');
+            $('#J_upload_subject_ad_img').remove();
+            $delObj.attr('id', "J_upload_change_subject_ad_img");
+            $.upload('#J_upload_change_subject_ad_img',{name:'small_img',dir:'images'},function(result){
+              if(result.error == 1){
+                var htmlResult = '<img src="'+ result.url.src +'" align=absmiddle>';
+                $('#J_upload_change_subject_ad_img').closest('.J-file-input-box').find('.file-input-src .img').html(htmlResult);
+                $('#J_upload_change_subject_ad_img').closest('.J-file-input-box').find('.file-input-save-name').val(result.url.savename);
+              } else {
+                disapperTooltip("remind", "上传失败："+result.message);
+              }
+            })
+          }
+        } else {
+          disapperTooltip("remind", "上传失败："+result.message);
+        }
+      });
+      // 上传客服img
+      $.upload('#J_upload_customer_img',{name:'customer_img',dir:'images'},function(result){
+        if(result.error == 1){
+          var htmlResult = '<img src="'+ result.url.src +'" align=absmiddle>';
+          $('#J_upload_customer_img').closest('.J-file-input-box').find('.file-input-src .img').html(htmlResult);
+          $('#J_upload_customer_img').closest('.J-file-input-box').find('.file-input-save-name').val(result.url.savename);
+          if ($('#J_upload_customer_img').hasClass('file-input-block')) {
+            $('#J_upload_customer_img').closest('.J-file-input-box').find('.file-input-src').removeClass('hid');
+            var $delObj = $('#J_upload_customer_img').closest('.J-file-input-box').find('.file-input-del');
+            $('#J_upload_customer_img').remove();
+            $delObj.attr('id', "J_upload_customer_img_change_btn");
+            $.upload('#JJ_upload_customer_img_change_btn',{name:'customer_img',dir:'images'},function(result){
+              if(result.error == 1){
+                var htmlResult = '<img src="'+ result.url.src +'" align=absmiddle>';
+                $('#J_upload_customer_img_change_btn').closest('.J-file-input-box').find('.file-input-src .img').html(htmlResult);
+                $('#J_upload_customer_img_change_btn').closest('.J-file-input-box').find('.file-input-save-name').val(result.url.savename);
+              } else {
+                disapperTooltip("remind", "上传失败："+result.message);
+              }
+            })
+          }
+        } else {
+          disapperTooltip("remind", "上传失败："+result.message);
+        }
+      });
+        $(".J_company_nature .radio").live('click',function(){
+            $("#nature_cn").val($(this).attr("title"));
+        });
+    });
+</script>
+</html>

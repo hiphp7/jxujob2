@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=7">
+<link rel="shortcut icon" href="{:C('qscms_site_dir')}favicon.ico" />
+<meta name="author" content="骑士CMS" />
+<meta name="copyright" content="74cms.com" />
+<title> Powered by 74CMS</title>
+<link href="__SUBJECT__/css/common.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="__ADMINPUBLIC__/js/jquery.min.js"></script>
+<script>
+	var URL = '__URL__',
+		SELF = '__SELF__',
+		ROOT_PATH = '__MODULE__',
+		APP	 =	 '__APP__';
+	var qscms = {
+		base : "",
+		keyUrlencode:"{:C('qscms_key_urlencode')}",
+		domain : "http://{$_SERVER['HTTP_HOST']}",
+		root : "__ROOT__/index.php",
+		companyRepeat:"{:C('qscms_company_repeat')}",
+		regularMobile: /^13[0-9]{9}$|14[0-9]{9}$|15[0-9]{9}$|18[0-9]{9}$|17[0-9]{9}$|16[0-9]{9}$|19[0-9]{9}$/,
+		district_level : "{:C('qscms_category_district_level')}",
+		smsTatus: "1",
+		captcha_open:"{:C('qscms_captcha_open')}",
+		varify_mobile:"{:C('qscms_captcha_config.varify_mobile')}",
+		varify_suggest:"{:C('qscms_captcha_config.varify_suggest')}",
+        varify_user_login:"{$verify_userlogin}",
+		is_login:"<if condition="$visitor">1<else/>0</if>",
+		default_district : "{:C('qscms_default_district')}",
+		default_district_spell : "{:C('qscms_default_district_spell')}",
+        subsite: "{:C('qscms_subsite_open')}"
+	};
+</script>
+<script type="text/javascript" src="__ADMINPUBLIC__/js/jquery.QSdialog.js"></script>
+<script type="text/javascript" src="__ADMINPUBLIC__/js/jquery.vtip-min.js"></script>
+<script type="text/javascript" src="__ADMINPUBLIC__/js/jquery.grid.rowSizing.pack.js"></script>
+<script src="__SUBJECT__/js/ajaxfileupload1.js"></script>
+<script src="__SUBJECT__/js/jquery.highlight-3.js"></script>
+<script src="__SUBJECT__/js/jquery.disappear.tooltip.js"></script>
+<script src="__SUBJECT__/js/common.js"></script>
+<script src="__SUBJECT__/js/common1.js"></script>
+
+
+<script src="__SUBJECT__/js/jquery.modal.dialog.js"></script>
+<script type="text/javascript" src="__SUBJECT__/js/laydate/laydate.js"></script>
+<script type="text/javascript" src="__ADMINPUBLIC__/js/jquery.validate.min.js"></script>
+</head>
+<body style="background-color:#E0F0FE">
+	<div class="admin_main_nr_dbox">
+	    <div class="pagetit">
+	        <div class="ptit"> <if condition="$sub_menu['pageheader']">{$sub_menu.pageheader}<else/>欢迎登录 {:C('qscms_site_name')} 管理中心！</if></div>
+	        <notempty name="sub_menu['menu']">
+				<div class="topnav">
+			        <volist name="sub_menu['menu']" id="val">
+				        <a href="{:U($val['module_name'].'/'.$val['controller_name'].'/'.$val['action_name'])}{$val.data}<if condition="$isget and $_GET">{:get_first()}</if><if condition="$_GET['_k_v']">&_k_v={$Think.get._k_v}</if>" class="{$val.class}"><u>{$val.name}</u></a>
+			        </volist>
+				    <div class="clear"></div>
+				</div>
+			</notempty>
+	        <div class="clear"></div>
+	    </div>

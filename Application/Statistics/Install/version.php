@@ -1,0 +1,1 @@
+<?php	return array ( 'module' => 'Statistics', 'module_name' => '统计报表', 'appid' => '563', 'version' => '4.2.2', 'is_create_table' => 1, 'is_insert_data' => 1, 'is_exe' => 0, 'is_delete_data' => 1, 'update_time' => '2018-02-07 16:06:19', 'explain' => '将系统中简历、职位、企业等数据形成专业图形数据分析统计，完成网站趋势监测分析', ); ?>

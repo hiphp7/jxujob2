@@ -1,0 +1,57 @@
+<include file="public:header" />
+  <div class="toptit">添加个人会员</div>
+  <form id="form1" name="form1" method="post" action="{:U('member_add')}">
+    <table width="100%" border="0" cellpadding="4" cellspacing="0"  >
+      <tr>
+        <td width="120" height="30" align="right" style=" border-bottom:1px #CCCCCC dashed">用户名：</td>
+        <td style=" border-bottom:1px #CCCCCC dashed"> <input name="username" type="text" class="input_text_200" id="username" maxlength="25" value=""/> <label></label></td>
+      </tr>
+      <tr>
+        <td height="30" align="right" style=" border-bottom:1px #CCCCCC dashed">邮箱地址：</td>
+        <td style=" border-bottom:1px #CCCCCC dashed" ><input name="email" type="text" class="input_text_200" id="email" maxlength="25" value=""/><label></label></td>
+      </tr>
+      <tr>
+        <td height="30" align="right" >登录密码：</td>
+        <td style=" border-bottom:1px #CCCCCC dashed" ><input name="password" type="password" class="input_text_200" id="password" maxlength="25" value=""/><label></label></td>
+      </tr>
+      <tr>
+        <td height="30" align="right" >再次输入密码：</td>
+        <td  ><input name="repassword" type="password" class="input_text_200" id="repassword" maxlength="25" value=""/><label></label></td>
+      </tr>
+      <notempty name="apply['Subsite']">
+        <tr>
+          <td align="right">添加在：</td>
+          <td colspan="4">
+            <qscms:subsite 列表名="subsite_list"/>
+            <if condition="$visitor['role_id'] eq 1">
+              <volist name="subsite_list" id="subsite">
+                <label style="color: rgb(102, 102, 102);">
+                  <input name="subsite_id" type="radio" value="{$subsite.s_id}" <if condition="$i eq 1">checked="checked"</if>>{$subsite.s_sitename}
+                </label>&nbsp;&nbsp;&nbsp;
+              </volist>
+            <else/>
+              <volist name="subsite_list" id="subsite">
+                <if condition="in_array($subsite['s_id'],$visitor['subsite'])">
+                  <label style="color: rgb(102, 102, 102);">
+                    <input name="subsite_id" type="radio" value="{$subsite.s_id}" <if condition="$k eq 0">checked="checked"</if>>{$subsite.s_sitename}
+                  </label>&nbsp;&nbsp;&nbsp;
+                </if>
+              </volist>
+            </if>
+         </td>
+        </tr>
+      </notempty>
+      <tr>
+        <td height="30" align="right" >&nbsp;</td>
+        <td   >
+          <input type="hidden" name="utype"  value="2" />
+          <input name="submit3" type="submit" class="admin_submit"    value="添加"/>
+          <input name="submit22" type="button" class="admin_submit" value="返 回" onclick="window.location.href='{:U('member_list')}'"/>
+        </td>
+      </tr>
+    </table>
+  </form>
+</div>
+    <include file="public:footer" />
+  </body>
+</html>

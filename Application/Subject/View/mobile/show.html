@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <qscms:subject_show 列表名="info" 专题id="$_GET['id']" />
+        <include file="Mobile@public/meta" />
+        <link rel="stylesheet" href="{$tpl_public_dir}/css/subject_new.css?v={:strtotime('today')}">
+    </head>
+    <body>
+        <div class="show_header_content">
+            <div class="show_header">
+                <div class="show_header_title substring font16">网络招聘会详情</div>
+                <div class="show_header_back js-back"></div>
+                <a href="{:U('Index/index')}" class="show_header_home"></a>
+            </div>
+        </div>
+        <div class="sub_4">
+            <div class="tx1 font18">{$info.title}</div>
+            <div class="tx3 font12">举办日期：{:date('Y-m-d',$info['holddate_start'])}-{:date('Y-m-d',$info['holddate_end'])}</div>
+        </div>
+        <div class="sub_notice" id="J_app_up">
+            <ul class="ul-upscroll font12" id="J_ajax_scroll">
+                <script type="text/javascript">
+                        var ajaxScrollHtml = '';
+                        $.getJSON('{:U("subject/ajax_scroll",array('subject_id'=>$info['id']))}',function(result){
+                            if (result.status) {
+                                var dataArr = result.data;
+                                for (var i = 0; i < dataArr.length; i++) {
+                                    if (dataArr[i]['type'] == 'com') {
+                                        ajaxScrollHtml += '<li><a href="'+dataArr[i]['company_url']+'" target="_blank">'+dataArr[i]['companyname']+'</a>加入了招聘会</li>';
+                                    } else if(dataArr[i]['type'] == 'apply') {
+                                        ajaxScrollHtml += '<li><a href="'+dataArr[i]['resume_url']+'" target="_blank">'+dataArr[i]['fullname']+'</a>在招聘会中投递了<a href="'+dataArr[i]['job_url']+'" target="_blank">'+dataArr[i]['jobs_name']+'</a></li>';
+                                    }else if (dataArr[i]['type'] == 'resume') {
+                                        ajaxScrollHtml += '<li><a href="'+dataArr[i]['resume_url']+'" target="_blank">'+dataArr[i]['fullname']+'</a>加入了招聘会</li>';
+                                    }
+                                }
+                                $('#J_ajax_scroll').html(ajaxScrollHtml);
+                            }
+                        })
+                    </script>
+            </ul>
+        </div>
+        <div class="sub_5">
+            <div class="b_content font13">
+                <a href="{:U('show',array('id'=>$info['id']))}" class="b_cell checked">招聘大厅</a>
+                <a href="{:U('personal_show',array('id'=>$info['id']))}" class="b_cell">求职者大厅</a>
+                <if condition="$info['subject_open'] eq 1">
+                    <a href="{:U('pms_message_log',array('id'=>$info['id']))}" class="b_cell">聊天室</a>
+                 <else /> 
+                    <a href="{:U('message_log',array('id'=>$info['id']))}" class="b_cell">招聘会介绍</a>  
+                </if>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="sub_6">
+            <div class="sub_filter">
+                <div class="filter_box">
+                    <div class="filter_content font12 for-type-txt">搜职位</div>
+                </div>
+                <div class="filter_input">
+                    <div class="input_box">
+                        <form action="{:U('show')}">
+                            <input class="font12" name="key" type="search" value="{$Think.get.key}" placeholder="请输入关键字">
+                            <input type="hidden" name="act" class="for-type-code" value="job">
+                            <input type="hidden" name="id" value="{$info.id}">
+                        </form>
+                    </div>
+                </div>
+                <div class="clear"></div>
+                <div class="choose-s-type-group">
+                    <div class="choose-s-type-cell qs-relative">
+                        <div class="qs-center"><div class="choose-s-type-list font14" data-code="com" data-title="搜企业">企业</div></div>
+                        <div class="qs-center"><div class="choose-s-type-list font14" data-code="job" data-title="搜职位">职位</div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="b_info font13">
+                <ul class="J_tip_up">
+                    <li>当前参会企业共<span>{$info.com_count}</span>个，职位数共<span>{$info.job_count}</span>个</li>
+                    <li>点击微信直面，添加微信与企业直聊</li>
+                </ul>
+
+            </div>
+        </div>
+        <qscms:subject_company 列表名="list" 专题公司id="$_GET['id']" 关键字="$_GET['key']" 关键字类型="$_GET['act']" 分页显示="1" 显示数目="15"/>
+        <if condition="$Think.get.act eq 'com' || $Think.get.act eq ''">
+            <notempty name="list['list']">
+            <volist name="list['list']" id="vo">
+                <div class="sub_company">
+                    <div class="com_item">
+                        <div class="it_t1">
+                            <img class="logo" src="{$vo.logo}" alt="">
+                            <a href="{$vo.company_url}" class="com_name substring font15">{$vo.companyname}</a>
+                            <if condition="$vo['wx_photo']">
+                                    <a href="javascript:;" qrg="{:attach($vo['wx_photo'],'images')}" qrc="{$vo.companyname}" class="zm J_to_face font10">微信直面</a>
+                            <else />
+                                <if condition="$vo['add_status'] eq 1">
+                                <a href="javascript:;" qrg="{$info.wx_img}" qrc="{$vo.companyname}" class="zm J_to_face font10">微信直面</a>
+                                </if>
+                            </if>
+                        </div>
+                        <volist name="vo['jobs']" id="job" >
+                            <div class="it_t2 font13">
+                                <a href="{$job.jobs_url}">{$job.jobs_name}</a><span class="font12">{$job.wage_cn}</span>
+                            </div>
+                        </volist>
+                        <a href="{$vo.company_url}" class="it_t3 font12">查看该公司全部职位>></a>
+                    </div>
+                </div>
+            </volist>
+            <div class="qspage">{$list['page']}</div>
+            <else />
+                <div class="list-empty link_blue">暂无符合条件的信息</div>
+            </notempty>
+        <elseif condition="$Think.get.act eq 'job'"/>
+            <notempty name="list['list']['jobs']">
+                <volist name="list['list']['jobs']" id="job" >
+                    <div class="sub_jobs">
+                        <div class="job_item">
+                            <div class="it_t1">
+                                <img class="logo" src="{$job.logo}" alt="">
+                                <a href="{$job.jobs_url}" class="job_name substring font15">{$job.jobs_name} <span class="font12">{$job.wage_cn}</span></a>
+                                <div class="job_other font13 substring">{$job.district_cn}  |  {$job.education_cn}  | {$job.experience_cn}</div>
+                            </div>
+                            <div class="it_t2">
+                                <a href="{$job.company_url}" class="it_t2_link substring">
+                                    {$job.companyname}
+                                </a>
+                                <if condition="$job['wx_photo']">
+                                    <a href="javascript:;" qrg="{:attach($job['wx_photo'],'images')}" qrc="{$job.companyname}" class="zm J_to_face font10">微信直面</a>
+                                <else />
+                                    <if condition="$job['add_status'] eq 1">
+                                       <a href="javascript:;" qrg="{$info.wx_img}" qrc="{$job.companyname}" class="zm J_to_face font10">微信直面</a>
+                                </if>
+                            </div>
+                        </div>
+                    </div>
+                </volist>
+                <div class="qspage">{$list['page']}</div>
+            <else />
+                <div class="list-empty link_blue">暂无符合条件的信息</div>
+            </notempty> 
+        </if>
+        <div class="sub_7 J_apy_box">
+            <div class="b_con">
+                <div class="b_close J_close_apy"></div>
+                <div class="g_btn font12">
+                    <div class="b_left" id="J_con_bm" data-id="{$info.id}">企业申请参会</div>
+                    <div class="b_right" id="J_con_bm_p" data-id="{$info.id}">个人申请参会</div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+        <div id="J_pop_box" style="display: none">
+            <div class="sub_12">
+                <div class="b_qr"><img class="J_pop_img" src="" alt=""></div>
+                <div class="b_qr_txt font12">微信内长按二维码<br>远程面试，快速入职</div>
+                <div class="b_qr_tip font13">
+                    保存微信二维码到手机，微信扫描该二维码也可参与微信直聊
+                </div>
+            </div>
+        </div>
+        <include file="Mobile@public/footer_js" />
+        <script src="{$tpl_public_dir}/js/zepto.textSlider.js"></script>
+        <script type="text/javascript" charset="utf-8" src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+        <script>
+            // 关闭底部申请
+            $('.J_close_apy').on('click', function() {
+                $('.J_apy_box').hide();
+            });
+            // 微信直面弹窗
+            $('.J_to_face').off().on('click', function() {
+                var cuQrg = $(this).attr('qrg'), cuQrc = $(this).attr('qrc');
+                $('.J_pop_img').attr('src', cuQrg);
+                var $subPop = new QSpopout(cuQrc);
+                $subPop.setContent($('#J_pop_box').html());
+                $subPop.setBtn(1, ['知道了']);
+                $subPop.show();
+                $subPop.getPrimaryBtn().click(function() {
+                    $subPop.hide();
+                });
+            });
+
+            // 提示滚动
+            $('.J_tip_up').textSlider({line:1,speed:0,timer:7000});
+            // 公告滚动
+            $(function(){
+                var _wrap=$('#J_app_up');
+                var _interval=3000;
+                setInterval(function(){
+                    var _field=_wrap.find('li').first();
+                    var _h=0.8;
+                    _field.animate({marginTop:-_h+'rem'},600,function(){
+                        _field.css('marginTop',0).appendTo(_wrap.find("ul"));
+                    })
+                },_interval);
+            });
+            // 在线客服
+            $('#J_con_us').on('click', function () {
+                var $subPop = new QSpopout();
+                $subPop.setContent('<img class="left_float_img" src="{$info['wx_img']}"><p>长按二维码添加客服微信</p><p></p>');
+                $subPop.setBtn(1, ['确定']);
+                $subPop.show();
+                $subPop.getPrimaryBtn().click(function() {
+                    $subPop.hide();
+                });
+            });
+            var utype = "{:C('visitor.utype')}";
+            var isVisitor = "{:C('visitor.uid')}";
+            // 企业报名
+            $("#J_con_bm").on('click',function(){
+                var url = "{:U('Company/ajax_enroll')}";
+                var subject_id = $(this).data('id');
+                var $that = $(this);
+                if ((qscms.is_login > 0)) {
+                    if(qscms.utype != 1){
+                        $(document).dialog({
+                            titleText: '提示',
+                            type : 'confirm',
+                            buttonTextConfirm:'切换',
+                            content: '您当前为“个人帐号”，本次操作需为“企业帐号”，是否切换为“企业帐号”？',
+                            onClickConfirmBtn: function() {
+                                $.getJSON("{:U('Members/switch_utype')}",{utype:1},function(result){
+                                    if(result.status==1){
+                                        qsToast(result.msg, 1, '');
+                                        qscms.is_login = 1;
+                                        qscms.utype = 1;
+                                        setTimeout(function(){
+                                            ajDoCollectJob();
+                                        },1500);
+                                    } else {
+                                        qsToast(result.msg, 0, '');
+                                        return false;
+                                    }
+                                });
+                            }
+                        });
+                        return false;
+                    }
+                    ajDoCollectJob();
+                    function ajDoCollectJob() {
+                        var $cuLoad = qsToasting('', 0);
+                        $.post(url,{subject_id:subject_id},function(result){
+                            $cuLoad.close();
+                            if(result.status==1){
+                                if (result.data == 'company') {
+                                    // 企业资料未完善，‘立即完善’按钮，‘取消’按钮
+                                    $(document).dialog({
+                                        titleText: '提示',
+                                        type : 'confirm',
+                                        content: result.msg,
+                                        buttons: [
+                                            {
+                                                name: '取消',
+                                                callback: function() {}
+                                            },
+                                            {
+                                                name: '立即完善',
+                                                callback: function() {
+                                                    $('.dialog').removeClass('dialog-open').addClass('dialog-open');
+                                                        setTimeout(function () {
+                                                        window.location.href = "{:U('Company/com_info')}";
+                                                    }, 200);
+                                                }
+                                            }
+                                        ]
+                                    });
+                                }else if(result.data == 'setmeal'){
+                                    // 升级套餐，‘升级套餐’按钮，‘取消’按钮
+                                    $(document).dialog({
+                                        titleText: '提示',
+                                        type : 'confirm',
+                                        content: result.msg,
+                                        buttons: [
+                                            {
+                                                name: '取消',
+                                                callback: function() {}
+                                            },
+                                            {
+                                                name: '升级套餐',
+                                                callback: function() {
+                                                    $('.dialog').removeClass('dialog-open').addClass('dialog-open');
+                                                    setTimeout(function () {
+                                                        window.location.href = "{:U('CompanyService/setmeal_add')}";
+                                                    }, 200);
+                                                }
+                                            }
+                                        ]
+                                    });
+                                }else if(result.data == 'audit'){
+                                    $(document).dialog({
+                                        titleText: '提示',
+                                        type : 'confirm',
+                                        content: result.msg,
+                                        buttons: [
+                                            {
+                                                name: '取消',
+                                                callback: function() {}
+                                            },
+                                            {
+                                                name: '立即认证',
+                                                callback: function() {
+                                                    $('.dialog').removeClass('dialog-open').addClass('dialog-open');
+                                                    setTimeout(function () {
+                                                        window.location.href = "{:U('Company/com_auth')}";
+                                                    }, 200);
+                                                }
+                                            }
+                                        ]
+                                    });
+                                }else if(result.data == 'jobs'){
+                                    $(document).dialog({
+                                        titleText: '提示',
+                                        type : 'confirm',
+                                        content: result.msg,
+                                        buttons: [
+                                            {
+                                                name: '取消',
+                                                callback: function() {}
+                                            },
+                                            {
+                                                name: '立即添加',
+                                                callback: function() {
+                                                    $('.dialog').removeClass('dialog-open').addClass('dialog-open');
+                                                    setTimeout(function () {
+                                                        window.location.href = "{:U('Company/jobs_add')}";
+                                                    }, 200);
+                                                }
+                                            }
+                                        ]
+                                    });
+                                }else{
+                                    qsToast(result.msg, 1, '');
+                                }
+                            }else {
+                                qsToast(result.msg, '', '');
+                                return false;
+                            }
+                        });
+                    }
+                } else {
+                //判断有没有配置短信
+                    if (eval(qscms.smsTatus)) {
+                        logDialog('','',1);
+                    } else {
+                        window.location.href = "{:url_rewrite('QS_login')}";
+                    }
+                }
+            });
+           // 个人报名
+            $("#J_con_bm_p").on('click',function(){
+                var url = "{:U('Personal/ajax_enroll')}";
+                var subject_id = $(this).data('id');
+                var $that = $(this);
+                if ((qscms.is_login > 0)) {
+                    if(qscms.utype != 2){
+                        $(document).dialog({
+                            titleText: '提示',
+                            type : 'confirm',
+                            buttonTextConfirm:'切换',
+                            content: '您当前为“企业帐号”，本次操作需为“个人帐号”，是否切换为“个人帐号”？',
+                            onClickConfirmBtn: function() {
+                                $.getJSON("{:U('Members/switch_utype')}",{utype:2},function(result){
+                                    if(result.status==1){
+                                        qsToast(result.msg, 1, '');
+                                        qscms.is_login = 1;
+                                        qscms.utype = 2;
+                                        setTimeout(function(){
+                                            ajDoCollectJob();
+                                        },1500);
+                                    } else {
+                                        qsToast(result.msg, 0, '');
+                                        return false;
+                                    }
+                                });
+                            }
+                        });
+                        return false;
+                    }
+                    ajDoCollectJob();
+                    function ajDoCollectJob() {
+                        var $cuLoad = qsToasting('', 0);
+                        $.post(url,{subject_id:subject_id},function(result){
+                            $cuLoad.close();
+                            if(result.status==1){
+                                if (result.data.type == 'resume') {
+                                    // 企业资料未完善，‘立即完善’按钮，‘取消’按钮
+                                    $(document).dialog({
+                                        titleText: '提示',
+                                        type : 'confirm',
+                                        content: result.msg,
+                                        buttons: [
+                                            {
+                                                name: '取消',
+                                                callback: function() {}
+                                            },
+                                            {
+                                                name: '立即创建',
+                                                callback: function() {
+                                                    $('.dialog').removeClass('dialog-open').addClass('dialog-open');
+                                                        setTimeout(function () {
+                                                        window.location.href = "{:U('personal/resume_add')}";
+                                                    }, 200);
+                                                }
+                                            }
+                                        ]
+                                    });
+                                }else if(result.data.type == 'percent'){
+                                     $(document).dialog({
+                                        titleText: '提示',
+                                        type : 'confirm',
+                                        content: result.msg,
+                                        buttons: [
+                                            {
+                                                name: '取消',
+                                                callback: function() {}
+                                            },
+                                            {
+                                                name: '立即完善',
+                                                callback: function() {
+                                                    $('.dialog').removeClass('dialog-open').addClass('dialog-open');
+                                                        setTimeout(function () {
+                                                        window.location.href = result.data.url;
+                                                    }, 200);
+                                                }
+                                            }
+                                        ]
+                                    });
+                                }else{
+                                    qsToast(result.msg, 1, '');
+                                }
+                            }else {
+                                qsToast(result.msg, '', '');
+                                return false;
+                            }
+                        });
+                    }
+                } else {
+                //判断有没有配置短信
+                    if (eval(qscms.smsTatus)) {
+                        logDialog('','',1);
+                    } else {
+                        window.location.href = "{:url_rewrite('QS_login')}";
+                    }
+                }
+            });
+           // 聊天
+            $('.J_im_btn').on('click', function() {
+                if (isVisitor > 0) {
+                    var uid = $(this).data('uid');
+                    if (isVisitor == uid) {
+                        qsToast('不能和自已聊天');
+                        return false;
+                    }
+                    if (qscms.utype != 2) {
+                        $(document).dialog({
+                            titleText: '提示',
+                            type : 'confirm',
+                            buttonTextConfirm:'切换',
+                            content: '您当前为“企业帐号”，本次操作需为“个人帐号”，是否切换为“个人帐号”？',
+                            onClickConfirmBtn: function() {
+                                $.getJSON("{:U('Members/switch_utype')}",{utype:2},function(result){
+                                    if(result.status==1){
+                                        qsToast(result.msg, 1, '');
+                                        setTimeout(function(){
+                                            window.location.reload();
+                                        },2000);
+                                    } else {
+                                        qsToast(result.msg, 0, '');
+                                        return false;
+                                    }
+                                });
+                            }
+                        });
+                        return false;
+                    }
+                } else {
+                    window.location.href = "{:U('members/login')}";
+                    return false;
+                }
+            }); 
+            // 切换搜索条件
+            $('.filter_box').on('click', function () {
+                $('.choose-s-type-group').toggleClass('open');
+            });
+            $('.choose-s-type-cell .qs-center').on('click', function () {
+                var stypeCode = $(this).find('.choose-s-type-list').data('code');
+                var stypeTitle = $(this).find('.choose-s-type-list').data('title');
+                $('.for-type-code').val(stypeCode);
+                $('.for-type-txt').text(stypeTitle);
+                $('.choose-s-type-group').toggleClass('open');
+            });
+            wx.config({
+                // debug: true,
+                appId: '{$signPackage.appId}',
+                timestamp: '{$signPackage.timestamp}',
+                nonceStr: '{$signPackage.nonceStr}',
+                signature: '{$signPackage.signature}',
+                jsApiList: [
+                    // 所有要调用的 API 都要加到这个列表中
+                    "onMenuShareTimeline",
+                    "onMenuShareAppMessage",
+                    "onMenuShareQQ",
+                    "onMenuShareWeibo"
+                ]
+            });
+            wx.ready(function () {
+                var linkUrl = "{:build_mobile_url(array('c'=>'subject','a'=>'show','params'=>'id='.$info['id']))}";//放链接
+                var title = "{$info['seo_keywords']} - {:C('qscms_site_name')}";
+                var desc = "{$info['seo_keywords']}";
+                var imgUrl = "{$info['img']}";//图片链接
+
+                wx.onMenuShareTimeline({
+                    title: title, // 分享标题
+                    desc: desc, // 分享描述
+                    link: linkUrl, // 分享链接
+                    imgUrl: imgUrl, // 分享图标
+                    success: function () {
+                    },
+                    cancel: function () {
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+                wx.onMenuShareAppMessage({
+                    title: title, // 分享标题
+                    desc: desc, // 分享描述
+                    link: linkUrl, // 分享链接
+                    imgUrl: imgUrl, // 分享图标
+                    type: '', // 分享类型,music、video或link，不填默认为link
+                    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                    success: function () {
+                    },
+                    cancel: function () {
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+                wx.onMenuShareQQ({
+                    title: title, // 分享标题
+                    desc: desc, // 分享描述
+                    link: linkUrl, // 分享链接
+                    imgUrl: imgUrl, // 分享图标
+                    success: function () {
+                    },
+                    cancel: function () {
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+                wx.onMenuShareWeibo({
+                    title: title, // 分享标题
+                    desc: desc, // 分享描述
+                    link: linkUrl, // 分享链接
+                    imgUrl: imgUrl, // 分享图标
+                    success: function () {
+                    },
+                    cancel: function () {
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

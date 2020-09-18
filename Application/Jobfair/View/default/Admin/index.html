@@ -1,0 +1,153 @@
+<include file="Admin@default/public/header" />
+<notempty name="apply['Subsite']">
+<div class="seltpye_x">
+    <div class="left">所属分站</div>
+    <qscms:subsite 列表名="subsite_list"/>
+    <div class="right">
+      <a href="{:P(array('subsite_id'=>''))}" <if condition="$Think.get.subsite_id eq ''">class="select"</if>>不限</a>
+      <if condition="$visitor['role_id'] eq 1">
+        <volist name="subsite_list" id="subsite">
+          <a href="{:P(array('subsite_id'=>$subsite['s_id']))}" <if condition="$Think.get.subsite_id eq $subsite['s_id']">class="select"</if>>{$subsite.s_sitename}</a>
+        </volist>
+      <else/>
+        <volist name="subsite_list" id="subsite">
+          <if condition="in_array($subsite['s_id'],$visitor['subsite'])">
+            <a href="{:P(array('subsite_id'=>$subsite['s_id']))}" <if condition="$Think.get.subsite_id eq $subsite['s_id']">class="select"</if>>{$subsite.s_sitename}</a>
+          </if>
+        </volist>
+      </if>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+</div>
+</notempty>
+ <div class="seltpye_x">
+		<div class="left">添加时间</div>	
+		<div class="right">
+        <a href="{:P(array('settr'=>''))}" <if condition="$Think.get.settr eq ''">class="select"</if>>不限</a>
+        <a href="{:P(array('settr'=>'3'))}" <if condition="$Think.get.settr eq '3'">class="select"</if>>三天内</a>
+        <a href="{:P(array('settr'=>'7'))}" <if condition="$Think.get.settr eq '7'">class="select"</if>>一周内</a>
+        <a href="{:P(array('settr'=>'30'))}" <if condition="$Think.get.settr eq '30'">class="select"</if>>一月内</a>
+        <a href="{:P(array('settr'=>'180'))}" <if condition="$Think.get.settr eq '180'">class="select"</if>>半年内</a>
+        <a href="{:P(array('settr'=>'360'))}" <if condition="$Think.get.settr eq '360'">class="select"</if>>一年内</a>
+		<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+  </div>
+  
+  
+   <div class="seltpye_x">
+		<div class="left">预定状态</div>	
+		<div class="right">
+        <a href="{:P(array('status'=>''))}" <if condition="$Think.get.status eq ''">class="select"</if>>不限</a>
+        <a href="{:P(array('status'=>1))}" <if condition="$Think.get.status eq 1">class="select"</if>>允许预定</a>
+        <a href="{:P(array('status'=>2))}" <if condition="$Think.get.status eq 2">class="select"</if>>停止预定</a>
+		<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+  </div>
+  
+  <form id="form1" name="form1" method="post" action="{:U('jobfair_delete')}">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" id="list" class="link_bk">
+    <tr>
+      <td height="26" class="admin_list_tit admin_list_first" width="220">
+      <label id="chkAll"><input type="checkbox" name=" " title="全选/反选" id="chk"/>举办时间</label>
+	  </td>
+      <td  class="admin_list_tit">招聘会标题</td>
+      <td width="80"   align="center" class="admin_list_tit"> 预定状态 </td>
+      <td width="100"   align="center" class="admin_list_tit" >添加日期</td>
+      <td width="300"   align="center" class="admin_list_tit" >操作</td>
+    </tr>
+	  <volist name="list" id="vo">
+      <tr>
+      <td  class="admin_list admin_list_first">
+        <input name="id[]" type="checkbox" id="id" value="{$vo['id']}"/>   
+        <if condition="$vo['holddate_start'] gt $time"> 
+		<span style="color:#009900">{$vo['holddate_start']|date="Y-m-d",###}&nbsp;至&nbsp;{$vo['holddate_end']|date="Y-m-d",###}</span>
+		<else />
+		<span style="color: #999999">{$vo['holddate_start']|date="Y-m-d",###}&nbsp;至&nbsp;{$vo['holddate_end']|date="Y-m-d",###}</span>
+		</if>
+	    </td>
+		 <td  class="admin_list" >
+		<a target="_blank" href="{:url_rewrite('QS_jobfairshow',array('id'=>$vo['id']),$vo['subsite_id'])}">{$vo['title']}</a>
+		 </td>
+        <td align="center"  class="admin_list">
+		<if condition="$vo['holddate_start'] gt $time"> 
+		允许预定
+		<else />
+		<span style="color: #999999">禁止预定</span>
+		</if>
+		
+		</td>
+        <td align="center"  class="admin_list">
+		{:admin_date($vo['addtime'])}
+		</td>
+        <td align="center"  class="admin_list">
+        <a href="{:U('admin/Company/index',array('source'=>'sign','faire_id'=>$vo['id']))}">签到企业</a> &nbsp;&nbsp;
+        <a href="{:U('admin/Personal/member_list',array('source'=>'sign','faire_id'=>$vo['id']))}">签到人才</a> &nbsp;&nbsp;
+        <if condition="$vo['holddate_end'] lt $time">
+		<a href="{:U('retrospect',array('jobfair_id'=>$vo['id']))}">精彩回顾</a> &nbsp;&nbsp;
+		</if>
+		<a href="{:U('AdminPosition/index',array('jobfair_id'=>$vo['id']))}">展位设置</a> &nbsp;&nbsp;
+		<a href="{:U('exhibitors_list',array('jobfair_id'=>$vo['id']))}">参会企业</a> &nbsp;&nbsp;
+		<a href="{:U('jobfair_edit',array('id'=>$vo['id']))}">修改</a> &nbsp;&nbsp;
+		<a href="{:U('jobfair_delete',array('id'=>$vo['id']))}" onclick="return confirm('你确定要删除吗？')">删除</a></td>
+      </tr>
+      </volist>
+    </table>
+  </form>
+	<if condition="!$list"> 
+	<div class="admin_list_no_info">没有任何信息！</div>
+	</if>
+<table width="100%" border="0" cellspacing="10"  class="admin_list_btm">
+<tr>
+        <td>
+        <input name="ButADD" type="button" class="admin_submit" id="ButADD" value="新增"  onclick="window.location='{:U('jobfair_add')}'"/>
+		<input name="ButDel" type="button" class="admin_submit" id="ButDel"  value="删除所选"/>
+		</td>
+        <td width="305" align="right">
+		<form id="formseh" name="formseh" method="get" action="?">	
+              <input type="hidden" name="m" value="{:MODULE_NAME}">
+              <input type="hidden" name="c" value="{:CONTROLLER_NAME}">
+              <input type="hidden" name="a" value="{:ACTION_NAME}">
+			<div class="seh">
+			    <div class="keybox"><input name="key" type="text"   value="{$Think.get.key}" /></div>
+			    <div class="selbox">
+					<input name="key_type_cn"  id="key_type_cn" type="text" value="{$Think.get.key_type_cn|default="标题"}" readonly="true"/>
+						<div>
+								<input name="key_type" id="key_type" type="hidden" value="{$Think.get.key_type|default="1"}" />
+												<div id="sehmenu" class="seh_menu">
+														<ul>
+														<li id="1" title="标题">标题</li>
+														</ul>
+												</div>
+						</div>				
+				</div>
+				<div class="sbtbox">
+				<input type="submit" name="" class="sbt" id="sbt" value="搜索"/>
+				</div>
+				<div class="clear"></div>
+		  </div>
+		  </form>
+	    </td>
+      </tr>
+  </table>
+<div class="qspage">{$page}</div>
+</div>
+<include file="Admin@default/public/footer" />
+<script type="text/javascript">
+$(document).ready(function()
+{
+	showmenu("#key_type_cn","#sehmenu","#key_type");
+	//点击批量取消	
+	$("#ButDel").click(function(){
+		if (confirm('你确定要删除吗？'))
+		{
+			$("form[name=form1]").submit()
+		}
+	});
+		
+});
+</script>
+</body>
+</html>

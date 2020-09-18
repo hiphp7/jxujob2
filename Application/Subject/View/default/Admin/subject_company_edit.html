@@ -1,0 +1,57 @@
+<include file="./public/header_subject"/>
+<div class="toptit">修改参会企业</div>
+<form action="{:U('subject_company_edit')}" method="post" name="FormData">
+    <div class="form_main width150">
+        <div class="fl">企业全称:</div>
+        <div class="fr txt link_blue">
+            <a href="javascript:;"> {$info.companyname}</a>
+        </div>
+        <div class="fl">认证状态:</div>
+        <div class="fr txt">
+            <if condition="$info['audit'] eq 0">未认证</if>
+            <if condition="$info['audit'] eq 1"><span style="color: #009900">已通过</span></if>
+            <if condition="$info['audit'] eq 2"><span style="color:#FF3300">待认证</span></if>
+            <if condition="$info['audit'] eq 3">未通过</if>
+        </div>
+        <div class="fl">会员套餐:</div>
+        <div class="fr txt">{$info['setmeal_name']}</div>
+        <div class="fl">数据来源:</div>
+        <div class="fr txt">
+            <if condition="$info['robot'] eq 0">自主申请</if>
+            <if condition="$info['robot'] eq 1">后台添加</if>
+        </div>
+        <div class="fl">联系方式:</div>
+        <div class="fr txt">{$info.telephone}({$info.contact})</div>
+        <div class="fl">审核状态:</div>
+        <div class="fr">
+            <div class="imgradio">
+                <input name="s_audit" type="hidden" value="{$info['s_audit']}">
+                <div class="radio <eq name='info.s_audit' value='1'>select</eq>" data="1" title="审核通过">审核通过</div>
+                <div class="radio <eq name='info.s_audit' value='2'>select</eq>" data="2" title="等待审核">等待审核</div>
+                <div class="radio <eq name='info.s_audit' value='3'>select</eq>" data="3" title="审核未通过">审核未通过</div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="fl">备注:</div>
+        <div class="fr">
+            <textarea name="note" class="input_text_default" style="height:100px; line-height:180%">{$info.note}</textarea>
+        </div>
+        <div class="fl"></div>
+        <div class="fr">
+            <input type="hidden" name="id" value="{$info['id']}">
+            <input type="submit" class="admin_submit" value="保存"/>
+            <input type="button" class="admin_submit" value="返回" onClick="Javascript:window.history.go(-1)"/>
+        </div>
+        <div class="clear"></div>
+    </div>
+</form>
+
+</div>
+<include file="Admin@default/public/footer"/>
+</body>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+    });
+</script>
+</html>

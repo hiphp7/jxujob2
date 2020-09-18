@@ -1,0 +1,32 @@
+<include file="public:header" />
+<div class="toptit">修改分类</div>
+<form id="form1" name="form1" method="post" action="{:U('edit')}">
+<table width="100%" border="0" cellspacing="6" cellpadding="0" style="border-bottom:1px #96B7E2 dashed">
+  <tr>
+    <td width="120" align="right">名称:</td>
+    <td><input name="c_name" type="text" class="input_text_200"  value="{$info.c_name}" /></td>
+  </tr>
+    <tr>
+    <td width="120" align="right">排序:</td>
+    <td>  
+  <input name="c_order" type="text" class="input_text_200"  value="{$info.c_order}" />
+  <input name="c_alias" type="hidden" value="{$info.c_alias}" />
+  </td>
+  </tr>
+</table>
+<table width="100%" border="0" cellspacing="6" cellpadding="0">
+  <tr>
+    <td width="120"> </td>
+    <td>
+  <input name="c_id" type="hidden" value="{$info.c_id}" />
+  <input type="submit" name="save" value="保存" class="admin_submit" />
+      <input name="submit22" type="button" class="admin_submit"    value="返 回" onclick="window.location='{:U('show_category',array('alias'=>$info['c_alias']))}'"/>
+  
+  </td>
+  </tr>
+</table>
+ </form>
+</div>
+<include file="public:footer" />
+</body>
+</html>

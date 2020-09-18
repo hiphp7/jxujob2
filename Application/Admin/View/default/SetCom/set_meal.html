@@ -1,0 +1,123 @@
+<include file="public:header" />
+    <div class="toptip">
+        <h2>提示：</h2>
+        <p>不同的运营阶段您可以选择不同的设置。</p>
+    </div>
+  
+	<div class="toptit">会员默认套餐设置</div>
+	<form action="{:U('set_meal')}" method="post" enctype="multipart/form-data" name="form1" id="form1">
+		<table width="100%" border="0" cellspacing="5" cellpadding="5">
+			
+			<tr>
+				<td width="260" align="right">新注册会员赠送服务：</td>
+				<td>
+					<volist name="setmeal_show" id="vo">
+					<label ><input type="radio" name="reg_service" value="{$vo['id']}" id="reg_service" <if condition="C('qscms_reg_service') eq $vo['id']">checked="checked"</if>/>{$vo['setmeal_name']}</label>
+					&nbsp;&nbsp;&nbsp;&nbsp; 
+					</volist>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">重新开通服务时是否叠加服务项目：</td>
+				<td>
+					<label ><input type="radio" name="is_superposition" value="1" id="is_superposition" <if condition="C('qscms_is_superposition') eq 1">checked="checked"</if>/>是</label>
+					&nbsp;&nbsp;&nbsp;&nbsp; 
+					<label ><input type="radio" name="is_superposition" value="0" id="is_superposition" <if condition="C('qscms_is_superposition') eq 0">checked="checked"</if>/>否</label>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">重新开通服务时是否叠加服务时间：</td>
+				<td>
+					<label ><input type="radio" name="is_superposition_time" value="1" id="is_superposition_time" <if condition="C('qscms_is_superposition_time') eq 1">checked="checked"</if>/>是</label>
+					&nbsp;&nbsp;&nbsp;&nbsp; 
+					<label ><input type="radio" name="is_superposition_time" value="0" id="is_superposition_time" <if condition="C('qscms_is_superposition_time') eq 0">checked="checked"</if>/>否</label>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">重新开通服务时是否保留超出限额的在招职位：</td>
+				<td>
+					<label ><input type="radio" name="hold_beyond_jobs" value="1" id="hold_beyond_jobs" <if condition="C('qscms_hold_beyond_jobs') eq 1">checked="checked"</if>/>是</label>
+					&nbsp;&nbsp;&nbsp;&nbsp; 
+					<label ><input type="radio" name="hold_beyond_jobs" value="0" id="hold_beyond_jobs" <if condition="C('qscms_hold_beyond_jobs') eq 0">checked="checked"</if>/>否</label>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">套餐到期时间提前几天提醒：</td>
+				<td><input name="meal_min_remind" type="text"  class="input_text_50" id="meal_min_remind" value="{:C('qscms_meal_min_remind')}" maxlength="30" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/> <span class="admin_note" >（提醒方式为进入会员中心后弹窗提醒套餐即将到期，0为不提醒）</span></td>
+			</tr>
+			<tr>
+				<td align="right">购买套餐是否允许使用积分抵现：</td>
+				<td>
+					<label ><input type="radio" name="setmeal_by_points" value="1" id="setmeal_by_points" <if condition="C('qscms_setmeal_by_points') eq 1">checked="checked"</if>/>是</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<label ><input type="radio" name="setmeal_by_points" value="0" id="setmeal_by_points" <if condition="C('qscms_setmeal_by_points') eq 0">checked="checked"</if>/>否</label>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">&nbsp;</td>
+				<td height="50"> 
+					<input name="submit" type="submit" class="admin_submit"    value="保存修改"/>
+				</td>
+			</tr>
+		</table>
+	</form>
+	<div class="toptit">服务套餐列表</div>
+    <table width="100%" border="0" cellpadding="0" cellspacing="0"  id="list" class="link_lan">
+        <tr>
+          <td width="6%" height="26" class="admin_list_tit admin_list_first">显示</td>
+          <td  class="admin_list_tit ">名称</td>
+          <td width="10%"  class="admin_list_tit">会员申请</td>
+          <td width="10%"  class="admin_list_tit">服务价</td>
+          <td width="10%" class="admin_list_tit">期限</td>
+          <td width="8%" align="center"  class="admin_list_tit">排序</td>
+          <td width="15%" align="center"  class="admin_list_tit">操作</td>
+        </tr>
+		<volist name="setmeal" id="vo">
+        <tr>
+          <td class="admin_list admin_list_first" >
+          	<if condition="$vo['display'] eq 1">显示<else /><span style="color: #999999">屏蔽</span></else></if>		  
+          </td>
+          <td  class="admin_list" >
+          {$vo['setmeal_name']}
+		 <span style="color:#999999">(id:{$vo.id})</span>
+	      </td>
+          <td class="admin_list"  > <if condition="$vo['apply'] eq 1">允许<else /><span style="color: #999999">不允许</span></if></td>
+          <td  class="admin_list" >
+          <if condition="$vo['expense'] eq 0">
+		  免费
+		  <else />
+		   {$vo.expense}元
+		  </if>		  </td>
+          <td class="admin_list" >
+          <if condition="$vo['days'] eq 0">
+		  不限制
+		  <else />
+		   {$vo.days}天
+		 </if>			  </td>
+          <td align="center" class="admin_list" >{$vo.show_order}</td>
+          <td align="center"  class="admin_list" ><a href="{:U('setmeal/edit',array('id'=>$vo['id']))}">设置</a>
+          &nbsp;&nbsp;&nbsp;
+          <if condition="$vo['is_free'] eq 1">
+          <a href="javascript:;" style="color:#d3d3d3">删除</a>
+          <else />
+          <a href="{:U('setmeal/delete',array('id'=>$vo['id']))}" onclick="return confirm('你确定要删除吗？')">删除</a>
+          </if>
+          </td>
+        </tr>
+		</volist>
+  </table>
+  <table width="100%" border="0" cellspacing="10" cellpadding="0" class="admin_list_btm">
+      <tr>
+        <td>
+<input name="add" type="button" class="admin_submit" id="add"    value="新增"  onclick="window.location='{:U('setmeal/add')}'"/>
+		</td>
+        <td width="305" align="right">
+		
+	    </td>
+      </tr>
+  </table>
+	 
+</div>
+<include file="public:footer" />
+</body>
+</html>

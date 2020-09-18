@@ -1,0 +1,66 @@
+<include file="public:header" />
+  <div class="toptit">修改帮助</div>
+  <form action="{:U('help/edit')}" method="post"   name="FormData" id="FormData" >
+    <table width="100%" border="0" cellpadding="3" cellspacing="0"  class="admin_table">
+      <tr>
+        <td width="50" align="right" >标题：</td>
+        <td ><input name="title" type="text"  class="input_text_400"  value="{$info.title}" /></td>
+      </tr>
+    <tr>
+        <td align="right"  >排序：</td>
+        <td><input name="ordid" type="text"  class="input_text_200"  onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" value="{$info.ordid}" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/> 
+        <span class="admin_note">数字越大越靠前</span>       </td>
+      </tr>
+      <tr>
+        <td align="right" >分类：</td>
+        <td >   
+    <div>   
+    <input type="text"  readonly="readonly" name="type_id_cn" id="type_id_cn" class="input_text_200 input_text_selsect" value=""/>
+    <input name="type_id" id="type_id" type="hidden" value="{$info.type_id}" />
+    <div id="menu1" class="menu" style="height:300px;overflow:auto">
+      <ul>  
+      <volist name="category[0]" id="parent">
+                    <li id="{$key}" title="{$parent.categoryname}" <if condition="$key eq $info['parentid']">cid="1"</if>>{$parent.categoryname}</li>
+                    <foreach name="category[$key]" item="category_sub" key="k">
+                        <li id="{$k}" title="{$category_sub.categoryname}" <if condition="$k eq $info['type_id']">cid="1"</if>>├─{$category_sub.categoryname}</li>
+                    </foreach>
+                </volist>
+      </ul>
+    </div>
+      </div>      </td>
+      </tr>
+      <tr>
+        <td align="right" valign="top" >内容：</td>
+        <td ><textarea id="content" name="content" style="width:700px;height:300px;visibility:hidden;">{$info.content}</textarea>
+        </td>
+      </tr>
+      <tr>
+        <td align="right" ><input name="id" type="hidden" value="{$info.id}" /></td>
+        <td height="100" ><input type="submit" value="修改" class="admin_submit"   /></td>
+      </tr>
+    </table>
+  </form>
+</div>
+<include file="public:footer" />
+<link rel="stylesheet" href="__ADMINPUBLIC__/js/kindeditor/themes/default/default.css" />
+<script charset="utf-8" src="__ADMINPUBLIC__/js/kindeditor/kindeditor-min.js"></script>
+<script charset="utf-8" src="__ADMINPUBLIC__/js/kindeditor/lang/zh_CN.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('#type_id_cn').val($('#menu1 li[id="'+$('#type_id').val()+'"]').attr('title'));
+    var editor;
+    KindEditor.ready(function(K) {
+        editor = K.create('textarea[name="content"]', {
+          uploadJson : "?m={:C('admin_alias')}&c=upload&a=index",
+          allowFileManager : true,
+          afterBlur: function(){this.sync();}
+        });
+        K('input[name=Submit2]').click(function(e) {
+          editor.html('');
+        });
+    });
+    showmenu("#type_id_cn","#menu1","#type_id");
+});
+</script>
+</body>
+</html>

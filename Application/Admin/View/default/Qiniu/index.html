@@ -1,0 +1,49 @@
+<include file="public:header" />
+    <div class="toptip">
+        <h2>提示：</h2>
+        <p>七牛云对象存储服务，是高可靠、强安全、低成本、可扩展的分布式对象存储服务。<br/>成功集成七牛云后，可将系统中的图片、文档等自动上传至您的七牛云空间服务器，节省您的服务器资源。<br/>
+        <font color="red">目前只支持公有空间，暂不支持私有空间。</font><br/>
+        如需使用，请先登录七牛云获取相应的参数。<a href="https://www.qiniu.com" target="_blank">马上申请</a></p>
+    </div>
+    <div class="toptit">基本配置</div>
+	<form action="{:U('config/edit')}" method="post" enctype="multipart/form-data" name="form1" id="form1">
+		<table width="100%" border="0" cellspacing="5" cellpadding="5">
+			<tr>
+				<td width="120" align="right">是否开启：</td>
+				<td>
+					<label ><input type="radio" name="qiniu_open" value="1" <if condition="C('qscms_qiniu_open') eq 1">checked="checked"</if>/>是</label>
+					&nbsp;&nbsp;&nbsp;&nbsp; 
+					<label><input name="qiniu_open" type="radio" value="0" <if condition="C('qscms_qiniu_open') eq 0">checked="checked"</if>/>否</label>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">存储空间名：</td>
+				<td><input name="qiniu_bucket" type="text"  class="input_text_200" id="qiniu_bucket" value="{:C('qscms_qiniu_bucket')}" maxlength="80"/><span class="admin_note" style="color: rgb(153, 153, 153);">创建空间时设置的名称</span></td>
+			</tr>
+			<tr>
+				<td align="right">accessKey：</td>
+				<td><input name="qiniu_accessKey" type="text"  class="input_text_300" id="qiniu_accessKey" value="{:C('qscms_qiniu_accessKey')}" maxlength="50"/><span class="admin_note" style="color: rgb(153, 153, 153);">在七牛云管理平台【个人面板-密钥管理】获取</span></td>
+			</tr>
+			<tr>
+				<td align="right">secretKey：</td>
+				<td><input name="qiniu_secretKey" type="password"  class="input_text_300" id="qiniu_secretKey" value="{:C('qscms_qiniu_secretKey')}" maxlength="50"/><span class="admin_note" style="color: rgb(153, 153, 153);">在七牛云管理平台【个人面板-密钥管理】获取</span></td>
+			</tr>
+			 
+			<tr>
+				<td align="right">外链域名：</td>
+				<td><input name="qiniu_domain" type="text"  class="input_text_300" id="qiniu_domain" value="{:C('qscms_qiniu_domain')}" maxlength="40"/><span class="admin_note" style="color: rgb(153, 153, 153);">资源访问域名，请到七牛云管理平台设置</span>
+				</td>
+			</tr>
+	 
+			<tr>
+				<td align="right">&nbsp;</td>
+				<td height="50"> 
+					<input name="submit" type="submit" class="admin_submit"    value="保存修改"/>
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+<include file="public:footer" />
+</body>
+</html>

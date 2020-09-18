@@ -1,0 +1,124 @@
+<include file="public:header" />
+    <div class="toptip">
+        <h2>提示：</h2>
+        <p>系统内置广告位不能编辑<br />自定义广告位调用名不可以以 “QS_”开头</p>
+    </div>
+    <div class="toptit">新增广告位</div>
+    <form action="{:U('Ad/category_add')}" method="post"  name="form1" id="form1">
+        <table width="100%" border="0" cellspacing="3" cellpadding="3">
+          <tr>
+            <td width="100" align="right">广告位名称：</td>
+            <td ><input name="categoryname" type="text" class="input_text_200" id="categoryname" maxlength="50"/></td>
+          </tr>
+		  <tr>
+            <td align="right">调用名称：</td>
+            <td><input name="alias" type="text" class="input_text_200" id="alias" maxlength="50"/>
+           <span style="color: #999999"> 调用名称用于在模板中调用此广告位</span>
+			</td>
+          </tr>
+          <tr>
+            <td align="right">所属类型：</td>
+            <td>
+				 <label><input type="radio" name="type_id" value="1" />文字</label>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				 <label><input name="type_id" type="radio" value="2" checked="checked" />
+				 图片</label>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				 <label><input type="radio" name="type_id" value="3" />代码</label>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				 <label><input type="radio" name="type_id" value="4" />FLASH</label>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				 <label><input type="radio" name="type_id" value="6" />视频</label>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+			</td>
+          </tr>
+          <tr>
+            <td align="right">是否浮动：</td>
+            <td>
+				 <label><input type="radio" name="float" value="1" />浮动</label>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				 <label><input name="float" type="radio" value="0" checked="checked" />
+				 不浮动</label>
+			</td>
+          </tr>
+          <tr class="J_float" style="display:none">
+            <td align="right">左距(选填)：</td>
+            <td><input name="floating_left" type="text" class="input_text_200" id="alias" value="0"/>
+            <span style="color: #999999"> px(左距与右距选填一个，如左距设置为0，则此浮动将在左侧浮动，如设置为100，则此浮动将在距离浏览器左侧100像素处浮动。)</span>
+			</td>
+          </tr>
+          <tr class="J_float" style="display:none">
+            <td align="right">右距(选填)：</td>
+            <td><input name="floating_right" type="text" class="input_text_200" id="alias" value="0"/>
+           <span style="color: #999999"> px(左距与右距选填一个，如右距设置为0，则此浮动将在右侧浮动，如设置为100，则此浮动将在距离浏览器右侧100像素处浮动。)</span>
+			</td>
+          </tr>
+          <tr class="J_float" style="display:none">
+            <td align="right">顶距(必填)：</td>
+            <td><input name="floating_top" type="text" class="input_text_200" id="alias" value="0"/>
+           <span style="color: #999999"> px(此浮动距离浏览器顶端的距离，如有多个浮动，请设置不同的顶距，以免被遮盖)</span>
+			</td>
+          </tr>
+          <tr>
+            <td align="right">宽度：</td>
+            <td><input name="width" type="text" class="input_text_200" id="alias" value="0"/>
+           <span style="color: #999999"> px</span>
+			</td>
+          </tr>
+          <tr>
+            <td align="right">高度：</td>
+            <td><input name="height" type="text" class="input_text_200" id="alias" value="0"/>
+           <span style="color: #999999"> px</span>
+			</td>
+          </tr>
+          <tr>
+            <td align="right">广告数量：</td>
+            <td><input name="ad_num" type="text" class="input_text_200" value="0"/>
+      </td>
+          </tr>
+          <if condition="$apply['Subsite']">
+        <tr>
+          <td align="right">添加在：</td>
+          <td colspan="4">
+            <qscms:subsite 列表名="subsite_list"/>
+            <if condition="$visitor['role_id'] eq 1">
+              <volist name="subsite_list" id="subsite">
+                <label style="color: rgb(102, 102, 102);">
+                  <input name="subsite_id[]" type="checkbox" value="{$subsite.s_id}" <if condition="$i eq 1">checked="checked"</if>>{$subsite.s_sitename}
+                </label>&nbsp;&nbsp;&nbsp;
+              </volist>
+            <else/>
+              <volist name="subsite_list" id="subsite">
+                <if condition="in_array($subsite['s_id'],$visitor['subsite'])">
+                  <label style="color: rgb(102, 102, 102);">
+                    <input name="subsite_id[]" type="checkbox" value="{$subsite.s_id}" <if condition="$i eq 1">checked="checked"</if>>{$subsite.s_sitename}
+                  </label>&nbsp;&nbsp;&nbsp;
+                </if>
+              </volist>
+            </if>
+         </td>
+        </tr>
+      </if>
+          <tr>
+            <td>&nbsp;</td>
+            <td height="60">
+			<input type="submit" name="Submit3" value="确定提交" class="admin_submit"   />
+			  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <input name="submit22" type="button" class="admin_submit" value="返 回" onclick="window.location='{:U('Ad/category')}'"/>
+			</td>
+          </tr>
+        </table>
+	</form>
+</div>
+<include file="public:footer" />
+<script type="text/javascript">
+	$('input[name="float"]').click(function(){
+		if($(this).val() == 1){
+			$('.J_float').show();
+		}else{
+			$('.J_float').hide().find('input').val(0);
+		}
+	});
+</script>
+</body>
+</html>

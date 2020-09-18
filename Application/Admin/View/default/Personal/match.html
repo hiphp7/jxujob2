@@ -1,0 +1,85 @@
+<include file="public:header" />
+ 
+  <div class="toptit">简历：{$resume.title}&nbsp;&nbsp;真实姓名：{$resume.fullname}</div>
+  <qscms:jobs_list 列表名="jobslist" 显示数目="20" 分页显示="1" 性别="$resume['sex']" 职位分类="$resume['intention_jobs_id']" 地区分类="$resume['district']" 行业="$resume['trade']" 学历="$resume['education']" 工作经验="$resume['experience']" 工资="$resume['wage']" 职位性质="$resume['nature']" 标签="$resume['jobtag']" 过滤已投递="$resume['deliver']"/>
+  <notempty name="jobslist['list']">
+    <form id="form1" name="form1" method="post" action="{:U('personal/apply')}">
+      <table width="100%" border="0" cellpadding="0" cellspacing="0" id="list" class="link_lan">
+        <tr>
+          <td   class="admin_list_tit admin_list_first">
+            <label id="chkAll"><input type="checkbox" name=" " title="全选/反选" id="chk"/>职位名称</label></td>
+            <td  class="admin_list_tit"> 发布公司 </td>
+            <td align="center"  width="10%" class="admin_list_tit">审核状态</td>
+            <td align="center" width="10%" class="admin_list_tit">公司规模</td>
+            <td align="center"  width="10%" class="admin_list_tit">行业</td>
+            <td align="center" width="8%"  class="admin_list_tit">性别要求</td>
+            <td align="center" width="8%"  class="admin_list_tit">学历要求</td>
+            <td align="center" width="8%" class="admin_list_tit">工资</td>
+            <td    width="100" align="center"  class="admin_list_tit">操作</td>
+          </tr>
+          <volist name="jobslist['list']" id="vo">
+            <tr>
+              <td  class="admin_list admin_list_first">
+                <input name="jid[]" type="checkbox" value="{$vo.id}"  />
+                <a href="{$vo['jobs_url']}" target="_blank" <if condition="$vo['deadline'] lt $now || $vo['display'] eq '2'">style="color:#999999"</if>>{$vo['jobs_name']}</a>
+                <if condition="$vo['emergency'] eq '1'">&nbsp;<span style="color: #FF6600">[急聘]</span></if>
+                <if condition="$vo['recommend'] eq '1'">&nbsp;<span style="color: #339900">[推荐]</span></if>
+                <if condition="$vo['stick'] eq '1'">&nbsp;<span style="color: #FF3399">[置顶]</span></if>
+                <if condition="$vo['highlight'] neq ''">&nbsp;<span style="color: #6633CC">[变色]</span></if>
+                <if condition="$vo['display'] eq '2'">&nbsp;<span style="color: #999999">[已暂停]</span></if>
+              </td>
+              <td class="admin_list">
+                <a href="{$vo['company_url']}" target="_blank" style="color: #000000" title="{$vo['companyname']}">{$vo['companyname']}</a>
+              </td>
+              <td class="admin_list" align="center">
+                <if condition="$vo['audit'] eq '1'">
+                <span style="color: #009900">审核通过 </span>
+                <elseif condition="$vo['audit'] eq '2'"/>
+                <span style="color:#FF0000">等待审核</span>
+                <elseif condition="$vo['audit'] eq '3'"/>
+                审核未通过
+                </if>
+              </td>
+              <td class="admin_list"align="center" >
+                {$vo.scale_cn}
+              </td>
+              <td class="admin_list" align="center" >
+                {$vo.trade_cn}
+              </td>
+              <td class="admin_list" align="center" >
+                {$vo.sex_cn}
+              </td>
+              <td class="admin_list" align="center" >
+                {$vo.education_cn}
+              </td>
+              <td class="admin_list" align="center" >
+                {$vo.wage_cn}
+              </td>
+              <td class="admin_list" align="center" >
+                <a href="{:U('personal/apply',array('id'=>$resume['id'],'uid'=>$resume['uid'],'jid'=>$vo['id']))}">投递</a>
+              </td>
+            </tr>
+        </volist>
+      </table>
+      <span id="OpAudit"></span>
+  <else/>
+    <div class="admin_list_no_info">没有任何匹配信息！</div>
+  </notempty>
+  <table width="100%" border="0" cellspacing="10" cellpadding="0" class="admin_list_btm">
+    <tr>
+      <td>
+        <input name="id" type="hidden" value="{$Think.get.id}">
+        <input name="uid" type="hidden" value="{$Think.get.uid}">
+        <notempty name="jobslist['list']">
+          <input name="ButAudit" type="submit" class="admin_submit" id="ButAudit" value="投递"/>
+        </notempty>
+        <input name="submit22" type="button" class="admin_submit" value="返 回" onclick="window.location='{:U('personal/index')}'"/>
+      </td>
+    </tr>
+  </table>
+  </form>
+  <div class="qspage">{$page}</div>
+</div>
+<include file="public:footer" />
+</body>
+</html>

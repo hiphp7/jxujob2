@@ -1,0 +1,103 @@
+<include file="Admin@default/public/header" />
+	<div class="toptip">
+        <h2>提示：</h2>
+        <p><span style="color:#FF6600">请勿频繁更改访问限制配置，会对搜索引擎收录有影响。</span><br />
+			新增分站后，需要将分站域名解析至主站，同时主网站需绑定此分站域名；<br />
+			如需使用触屏版域名，需要将触屏版域名解析至主站。
+		</p>
+    </div>
+    <div class="toptit">开启分站</div>
+	<form action="{:U('admin/config')}" method="post" enctype="multipart/form-data" name="form1" id="form1">
+		<table width="100%" border="0" cellspacing="5" cellpadding="5" id="set">
+		<tr>
+	      <td width="170" align="right">访问限制：</td>
+	      <td id="subsitetype">
+		  <label><input name="subsite_method" type="radio"  value="0" <if condition="C('qscms_subsite_method') eq 0">checked="checked"</if>/>404</label>
+	       &nbsp;&nbsp;&nbsp;&nbsp; 
+		   <label ><input type="radio" name="subsite_method" value="1" <if condition="C('qscms_subsite_method') eq 1">checked="checked"</if>/>301</label> <span class="admin_note">当使用非正常URL访问分站数据时，跳转到404或者301重定向到正确的URL</span></td>
+	      </tr>
+	      	<tr>
+		        <td height="30" align="right"  > 企业详细页域名（PC版）：</td>
+		      	<td ><input name="QS_companyshow" type="text" class="input_text_200"    value="{$info['QS_companyshow']}"/>
+		      	<span class="admin_note">输入二级域名，结尾不要加 " / " ，如：http://company.rencai.com</span></td>
+		    </tr>
+	      	<tr>
+		        <td height="30" align="right"  > 企业详细页域名（触屏版）：</td>
+		      	<td ><input name="QS_m_companyshow" type="text" class="input_text_200"    value="{$info['QS_m_companyshow']}"/>
+		      	<span class="admin_note">输入二级域名，结尾不要加 " / "，如：http://m_company.rencai.com</span></td>
+		    </tr>
+	      	<tr>
+		        <td height="30" align="right"  > 职位详细页域名（PC版）：</td>
+		      	<td ><input name="QS_jobsshow" type="text" class="input_text_200"    value="{$info['QS_jobsshow']}"/>
+		      	<span class="admin_note">输入二级域名，结尾不要加 " / "，如：http://job.rencai.com</span></td>
+		    </tr>
+	      	<tr>
+		        <td height="30" align="right"  > 职位详细页域名（触屏版）：</td>
+		      	<td ><input name="QS_m_jobsshow" type="text" class="input_text_200"    value="{$info['QS_m_jobsshow']}"/>
+		      	<span class="admin_note">输入二级域名，结尾不要加 " / "，如：http://m_job.rencai.com</span></td>
+		    </tr>
+	      	<tr>
+		        <td height="30" align="right"  > 简历详细页域名（PC版）：</td>
+		      	<td ><input name="QS_resumeshow" type="text" class="input_text_200"    value="{$info['QS_resumeshow']}"/>
+		      	<span class="admin_note">输入二级域名，结尾不要加 " / "，如：http://resume.rencai.com</span></td>
+		    </tr>
+	      	<tr>
+		        <td height="30" align="right"  > 简历详细页域名（触屏版）：</td>
+		      	<td ><input name="QS_m_resumeshow" type="text" class="input_text_200"    value="{$info['QS_m_resumeshow']}"/>
+		      	<span class="admin_note">输入二级域名，结尾不要加 " / "，如：http://m_resume.rencai.com</span></td>
+		    </tr>
+	      	<tr>
+		        <td height="30" align="right"  > 资讯详细页域名（PC版）：</td>
+		      	<td ><input name="QS_newsshow" type="text" class="input_text_200"    value="{$info['QS_newsshow']}"/>
+		      	<span class="admin_note">输入二级域名，结尾不要加 " / "，如：http://news.rencai.com</span></td>
+		    </tr>
+	      	<tr>
+		        <td height="30" align="right"  > 资讯详细页域名（触屏版）：</td>
+		      	<td ><input name="QS_m_newsshow" type="text" class="input_text_200"    value="{$info['QS_m_newsshow']}"/>
+		      	<span class="admin_note">输入二级域名，结尾不要加 " / "，如：http://m_news.rencai.com</span></td>
+		    </tr>
+	      	<tr>
+		        <td height="30" align="right"  > 说明页域名（PC版）：</td>
+		      	<td ><input name="QS_explainshow" type="text" class="input_text_200"    value="{$info['QS_explainshow']}"/>
+		      	<span class="admin_note">输入二级域名，结尾不要加 " / "，如：http://explain.rencai.com</span></td>
+		    </tr>
+	      	<tr>
+		        <td height="30" align="right"  > 公告详细页域名（PC版）：</td>
+		      	<td ><input name="QS_noticeshow" type="text" class="input_text_200"    value="{$info['QS_noticeshow']}"/>
+		      	<span class="admin_note">输入二级域名，结尾不要加 " / "，如：http://notice.rencai.com</span></td>
+		    </tr>
+	      	<tr>
+		        <td height="30" align="right"  > 公告详细页域名（触屏版）：</td>
+		      	<td ><input name="QS_m_noticeshow" type="text" class="input_text_200"    value="{$info['QS_m_noticeshow']}"/>
+		      	<span class="admin_note">输入二级域名，结尾不要加 " / "，如：http://m_notice.rencai.com</span></td>
+		    </tr>
+	      	<tr>
+		        <td height="30" align="right"  > 招聘会域名（PC版）：</td>
+		      	<td ><input name="QS_jobfair" type="text" class="input_text_200"    value="{$info['QS_jobfair']}"/>
+		      	<span class="admin_note">输入二级域名，结尾不要加 " / "，如：http://jobfair.rencai.com</span></td>
+		    </tr>
+	      	<tr>
+		        <td height="30" align="right"  > 招聘会域名（触屏版）：</td>
+		      	<td ><input name="QS_m_jobfair" type="text" class="input_text_200"    value="{$info['QS_m_jobfair']}"/>
+		      	<span class="admin_note">输入二级域名，结尾不要加 " / "，如：http://m_jobfair.rencai.com</span></td>
+		    </tr>
+	      	<tr>
+		        <td height="30" align="right"  > 积分商城域名（PC版）：</td>
+		      	<td ><input name="QS_mall" type="text" class="input_text_200"    value="{$info['QS_mall']}"/>
+		      	<span class="admin_note">输入二级域名，结尾不要加 " / "，如：http://mall.rencai.com</span></td>
+		    </tr>
+		    <tr>
+		        <td height="30" align="right"  > 积分商城域名（触屏版）：</td>
+		      	<td ><input name="QS_m_mall" type="text" class="input_text_200"    value="{$info['QS_m_mall']}"/>
+		      	<span class="admin_note">输入二级域名，结尾不要加 " / "，如：http://m_mall.rencai.com</span></td>
+		    </tr>
+		<tr>
+		  <td align="right">&nbsp;</td>
+		  <td><input type="submit" class="admin_submit" id="sub" value="保存修改"/></td>
+		  </tr>
+	  </table>
+	</form>
+</div>
+<include file="Admin@default/public/footer" />
+</body>
+</html>

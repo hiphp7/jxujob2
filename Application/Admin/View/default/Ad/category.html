@@ -1,0 +1,99 @@
+<include file="public:header" />
+    <div class="toptip">
+        <h2>提示：</h2>
+        <p>系统内置广告位不能编辑<br />自定义广告位调用名不可以以 “QS_”开头</p>
+    </div>
+    <notempty name="apply['Subsite']">
+	<div class="seltpye_x">
+	    <div class="left">所属分站</div>
+	    <qscms:subsite 列表名="subsite_list"/>
+	    <div class="right">
+	      <a href="{:P(array('subsite_id'=>''))}" <if condition="$Think.get.subsite_id eq ''">class="select"</if>>不限</a>
+	      <if condition="$visitor['role_id'] eq 1">
+	        <volist name="subsite_list" id="subsite">
+	          <a href="{:P(array('subsite_id'=>$subsite['s_id']))}" <if condition="$Think.get.subsite_id eq $subsite['s_id']">class="select"</if>>{$subsite.s_sitename}</a>
+	        </volist>
+	      <else/>
+	        <volist name="subsite_list" id="subsite">
+	          <if condition="in_array($subsite['s_id'],$visitor['subsite'])">
+	            <a href="{:P(array('subsite_id'=>$subsite['s_id']))}" <if condition="$Think.get.subsite_id eq $subsite['s_id']">class="select"</if>>{$subsite.s_sitename}</a>
+	          </if>
+	        </volist>
+	      </if>
+	      <div class="clear"></div>
+	    </div>
+	    <div class="clear"></div>
+	</div>
+	</notempty>
+	<table width="100%" border="0" cellpadding="0" cellspacing="0" id="list" class="link_lan">
+		<tr>
+			<td  class="admin_list_tit admin_list_first">广告位名称</td>
+            <td class="admin_list_tit">调用名称</td>
+            <td width="10%" align="center" class="admin_list_tit" >广告数量</td>
+            <td width="10%" align="center" class="admin_list_tit" >属性</td>
+            <td width="10%" align="center" class="admin_list_tit">类型</td>
+            <td width="10%" align="center" class="admin_list_tit">编辑</td>
+		</tr>
+		<volist name="list" id="list">
+			<tr>
+				<td  class="admin_list admin_list_first">
+					{$list.categoryname}	
+				</td>
+				<td class="admin_list">
+					{$list.alias}
+				</td>
+				<td align="center" class="admin_list">
+					{$list.ad_num}
+				</td>
+				<td align="center" class="admin_list">
+					<switch name="list['type_id']">
+						<case value="1">
+							文字
+						</case>
+						<case value="2">
+							图片
+						</case>
+						<case value="3">
+							代码
+						</case>
+						<case value="4">
+							FLASH
+						</case>
+						<case value="5">
+							视频
+						</case>
+					</switch>
+				</td>
+				<td align="center" class="admin_list">
+					<if condition="$list.admin_set eq 1">
+						<span style="color:#FF6600">系统内置</span>
+					<else/>
+						自定义广告位
+					</if>
+				</td>
+				<td align="center" class="admin_list">
+					<if condition="$list.admin_set neq 1">
+						<a href="{:U('Ad/category_edit',array('id'=>$list['id']))}">修改</a>
+						&nbsp;&nbsp;&nbsp;
+						<a href="{:U('Ad/category_del',array('id'=>$list['id']))}" onclick="return confirm('你确定要删除吗？')">删除</a>
+					<else/>
+						<a href="{:U('Ad/category_edit',array('id'=>$list['id']))}">修改</a>&nbsp;&nbsp;&nbsp;
+						<span style="color:#999999">删除</span>
+					</if>
+				</td>
+			</tr>
+		</volist>
+	</table>
+	<table width="100%" border="0" cellspacing="10" cellpadding="0" class="admin_list_btm">
+		<tr>
+			<td>
+				<input type="button" name="Submit22" value="新增广告位" class="admin_submit" onclick="window.location='{:U('Ad/category_add')}'"/> 
+			</td>
+			<td width="360"></td>
+		</tr>
+	</table>
+	<div class="qspage">{$page}</div>
+</div>
+<include file="public:footer" />
+</body>
+</html>

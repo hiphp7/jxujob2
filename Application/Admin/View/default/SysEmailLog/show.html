@@ -1,0 +1,35 @@
+<include file="public:header" />
+    <div class="toptit">邮件内容</div>
+		<table width="100%" border="0" cellspacing="5" cellpadding="5">
+			<tr>
+				<td width="120" align="right">发送帐号：</td>
+				<td>{$info.send_from}</td>
+			</tr>
+			<tr>
+				<td align="right">收件地址：</td>
+				<td>{$info.send_to}</td>
+			</tr>
+			 
+			<tr>
+				<td align="right">邮件主题：</td>
+				<td>{$info.subject}</td>
+			</tr>
+			<tr>
+				<td align="right">发送时间：</td>
+				<td>{$info.sendtime}</td>
+			</tr>
+			<tr>
+				<td align="right">邮件内容：</td>
+				<td><bar>{$info.body|nl2br}</bar></td>
+			</tr>
+			<tr>
+				<td align="right">&nbsp;</td>
+				<td height="50"> 
+					<input name="submit" type="submit" class="admin_submit"  value="返回" onclick="window.location='{:U('SysEmailLog/index')}'"/>
+				</td>
+			</tr>
+		</table>
+</div>
+<include file="public:footer" />
+</body>
+</html>

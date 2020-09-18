@@ -1,0 +1,95 @@
+<include file="public:header" />
+<div class="toptit">关键词过滤</div>
+ <form action="{:U('safety/badword_index')}" method="post"  name="form1" id="form1">
+    <table width="700" border="0" cellspacing="10" cellpadding="1" style=" margin-bottom:3px;">
+        <tr>
+          <td width="162" align="right">是否开启：</td>
+          <td>
+      
+      <label>
+        <input name="badword_status" type="radio" id="badword_status" value="1"  <if condition="C('qscms_badword_status') eq '1'">checked=checked </if>/>开启</label>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<label >
+<input type="radio" name="badword_status" value="0" id="badword_status"  <if condition="C('qscms_badword_status') eq '0'">checked=checked </if>/>关闭</label>
+      </td>
+        </tr>
+        <tr>
+          <td align="right">&nbsp;</td>
+          <td>
+            <input name="submit2" type="submit" class="admin_submit"    value="保存修改"/>          </td>
+        </tr>
+      </table>
+  </form>
+     <form id="form1" name="form1" method="post" action="{:U('safety/badword_delete')}">
+      <table width="100%" border="0" cellpadding="0" cellspacing="0"  id="list" class="link_lan" >
+        <tr>
+          <td    class="admin_list_tit admin_list_first">
+         <label id="chkAll">
+         <input name=" " type="checkbox" id="chk" title="全选/反选" checked="checked"/>
+         关键词</label>
+         </td>
+          <td class="admin_list_tit"  width="18%" align="center">替换词</td>           
+        <td class="admin_list_tit" width="18%" align="center">状态</td>
+        <td class="admin_list_tit" width="18%"  align="center">添加时间</td> 
+        <td width="18%" align="center" class="admin_list_tit"> 操作</td>
+        </tr>
+      <volist name="list" id="vo">
+          <tr>
+          <td class="admin_list admin_list_first">   
+       <label> <input name="tables[]" type="checkbox"   value="{$vo.id}" checked="checked"/>{$vo.badword}</label>
+         </td>
+            <td class="admin_list" align="center">{$vo.replace}</td>        
+        <td class="admin_list"  align="center">
+        {$vo.status}
+        </td>   
+        <td class="admin_list" align="center" >{:admin_date($vo['add_time'])}</td>     
+        <td align="center" class="admin_list">
+            <a href="{:U('safety/badword_edit',array('id'=>$vo['id']))}">编辑</a>
+            <a href="{:U('safety/badword_delete',array('id'=>$vo['id']))}" onclick="return confirm('你确定要删除吗？')">删除</a>
+        </td>
+          </tr>
+          </volist>
+      </table>
+   <if condition="!$list">
+  <div class="admin_list_no_info">没有任何信息！</div>
+  </if>
+  <table width="100%" border="0" cellspacing="10" cellpadding="0" class="admin_list_btm">
+      <tr>
+        <td>
+          <input name="ButAudit" type="button" class="admin_submit" id="ButAdd"  value="添加关键词"  onclick="javascript:location.href='{:U('safety/badword_add',array('menuid'=>$menuid))}'"/>
+          <input name="ButAudit" type="submit" class="admin_submit" id="ButDel"  value="删除关键词"  />
+    </td>
+        <td width="305" align="right">
+   
+      </td>
+      </tr>
+  </table>
+  </form>
+ <div class="qspage">{$page}</div>
+</div>
+<script type="text/javascript">
+$(document).ready(function()
+{
+  $("#selectAll").click(function()
+  { 
+    $("form :checkbox").attr("checked",true);
+    setbg();
+  });
+  $("#uncheckAll").click(function()
+  { 
+    $("form :checkbox").attr("checked",false);
+    setbg();
+  });
+  $("#opposite").click(function()
+  { 
+    $("form :checkbox").each(function()
+    {
+    $(this).attr("checked")?$(this).attr("checked",false):$(this).attr("checked",true);
+    });
+    setbg();
+  });
+});
+</script>
+<include file="public:footer" />
+</body>
+</html>

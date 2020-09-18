@@ -1,0 +1,32 @@
+<include file="Home@default/public/header_min" />
+<!--logo通栏-->
+<div class="index_head">
+	<div class="logobox"><a href="__ROOT__/"><img src="<if condition="C('qscms_logo_home')">{:attach(C('qscms_logo_home'),'resource')}<else/>__HOMEPUBLIC__/images/logo.gif</if>" border="0"/></a></div>
+	<div class="mall">{:C('qscms_points_byname')}商城</div>
+	<div class="sobox">
+	<form action="{:url_rewrite('QS_goods_list')}" method="get">
+          <input type="hidden" name="m" value="{:MODULE_NAME}">
+          <input type="hidden" name="c" value="{:CONTROLLER_NAME}">
+          <input type="hidden" name="a" value="goods_list">
+		 <div class="inputbg">
+		   <input name="key" type="text"  value="{$Think.get.key}" class="inoputso"/>
+			<input name="" type="submit" class="sobut" value="搜索" />
+		 </div>
+	</form>
+	</div>
+	<div class="mob">
+	<a target="_blank" href="{:url_rewrite('QS_m')}"><img src="__HOMEPUBLIC__/images/115.png" border="0"/></a>
+	</div>
+	<div class="clear"></div>
+</div>
+<div class="mall_nav">
+  <div class="main">
+  	<ul>
+	<li <if condition="ACTION_NAME eq 'index'">class="select"</if> onclick="window.location='{:url_rewrite('QS_mall_index')}'"><a href="{:url_rewrite('QS_mall_index')}">首页</a></li>
+	<li <if condition="ACTION_NAME eq 'goods_list' || ACTION_NAME eq 'goods_show'">class="select"</if> onclick="window.location='{:url_rewrite('QS_goods_list')}'"><a href="{:url_rewrite('QS_goods_list')}">全部商品</a></li>
+	<li <if condition="ACTION_NAME eq 'charts'">class="select"</if> onclick="window.location='{:url_rewrite('QS_mall_charts')}'"><a href="{:url_rewrite('QS_mall_charts')}">排行榜</a></li>
+	<li onclick="window.location='__ROOT__/'"><a href="__ROOT__/">返回人才网</a></li>
+	<div class="clear"></div>
+	</ul>
+  </div>
+</div>

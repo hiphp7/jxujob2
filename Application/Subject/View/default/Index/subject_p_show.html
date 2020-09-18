@@ -1,0 +1,739 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <qscms:subject_show 列表名="info" 专题id="$_GET['id']" />
+    <include file="Home@default/public/meta" />
+    <link href="{:C('TPL_HOME_PUBLIC_DIR')}/css/common.css" rel="stylesheet" type="text/css" />
+    <link href="{:C('TPL_HOME_PUBLIC_DIR')}/css/common_ajax_dialog.css" rel="stylesheet" type="text/css" />
+    <link href="{$url}/css/subject_new.css?v={:strtotime('today')}" rel="stylesheet" type="text/css" />
+    <style>
+        .description{line-height: 2em;text-align: 2em;padding: 2em;}
+    </style>
+</head>
+<body class="sub">
+    <include file="Home@default/public/header_other" />
+    <div class="top_ba_new" style="width: 100%; height: 300px; background: url('<if condition="$info['subject_ad_img']">{:attach($info['subject_ad_img'],'images')}<else />{$url}/images/no_ad.jpg</if>') center center no-repeat;"></div>    <div class="sub_container">
+        <div class="sub_b1">
+            <div class="b_tit">
+                <div class="bt_item">
+                    <div class="bt_1">参会企业</div>
+                    <div class="bt_2" id="J_com_count_box">
+                        <div class="t2_item">3</div>
+                        <div class="t2_item">9</div>
+                        <div class="t2_item">5</div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="bt_3">个</div>
+                    <div class="clear"></div>
+                </div>
+                <div class="bt_item i1">
+                    <div class="bt_1">可投职位</div>
+                    <div class="bt_2" id="J_job_count_box">
+                        <div class="t2_item">3</div>
+                        <div class="t2_item">9</div>
+                        <div class="t2_item">5</div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="bt_3">个</div>
+                    <div class="clear"></div>
+                </div>
+                <div class="bt_item i2">
+                    <div class="bt_1">求职者</div>
+                    <div class="bt_2" id="J_resume_count_box">
+                        <div class="t2_item">3</div>
+                        <div class="t2_item">9</div>
+                        <div class="t2_item">5</div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="bt_3">人</div>
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="b_con">
+                {:nl2br($info['content'])}
+            </div>
+        </div>
+        <div class="online_box">
+            <div class="on_app">
+                <span>最新动态：</span>
+            </div>
+            <div class="app_live" id="J_app_live">
+                <ul id="J_ajax_scroll">
+                    <script type="text/javascript">
+                        var ajaxScrollHtml = '';
+                        $.getJSON('{:U("Index/ajax_scroll",array('subject_id'=>$info['id']))}',function(result){
+                            if (result.status) {
+                                var dataArr = result.data;
+                                for (var i = 0; i < dataArr.length; i++) {
+                                    if (dataArr[i]['type'] == 'com') {
+                                        ajaxScrollHtml += '<li><a href="'+dataArr[i]['company_url']+'" target="_blank">'+dataArr[i]['companyname']+'</a>加入了招聘会</li>';
+                                    } else if(dataArr[i]['type'] == 'apply') {
+                                        ajaxScrollHtml += '<li><a href="'+dataArr[i]['resume_url']+'" target="_blank">'+dataArr[i]['fullname']+'</a>在招聘会中投递了<a href="'+dataArr[i]['job_url']+'" target="_blank">'+dataArr[i]['jobs_name']+'</a></li>';
+                                    } else if (dataArr[i]['type'] == 'resume') {
+                                        ajaxScrollHtml += '<li><a href="'+dataArr[i]['resume_url']+'" target="_blank">'+dataArr[i]['fullname']+'</a>加入了招聘会</li>';
+                                    }
+                                }
+                                $('#J_ajax_scroll').html(ajaxScrollHtml);
+                            }
+                        })
+                    </script>
+                </ul>
+            </div>
+            <div class="online_com_apply J_apply">企业参会 →</div>
+        </div>
+        <div class="sub_b2">
+            <div class="b_nav">
+                <div class="bn_box"><a href="{:U('subject_show',array('id'=>$info['id']))}" class="bn_link">参展企业大厅</a></div>
+                <div class="bn_box"><a href="{:U('subject_p_show',array('id'=>$info['id']))}" class="bn_link selected">活动详情介绍</a></div>
+                <div class="clear"></div>
+            </div>
+            <div class="b_group com">
+                <div class="description">{$info.description|htmlspecialchars_decode}</div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="J_job_count" value="{$info.job_count}">
+    <input type="hidden" id="J_com_count" value="{$info.com_count}">
+    <input type="hidden" id="J_resume_count" value="{$info.per_count}">
+    <if condition="$info['subject_open'] eq 1">
+        <div class="subject_chat_pack_up">本场招聘会参会人员正在热聊</div>
+        <div class="subject_chat_open_up">
+            <div class="chat_title substring">“{:cut_str($info['title'],12,0,'')}”聊天室 <div class="ct_close J_ct_close"></div></div>
+            <div class="chat_body">
+                <div class="chat_left">
+                    <div class="left_title">在线聊天室</div>
+                    <div class="left_qr"><img src="{$info.wx_img}" alt=""></div>
+                    <div class="left_txt">微信扫码</div>
+                    <div class="left_txt">联系网站客服</div>
+                </div>
+                <div class="chat_right">
+                    <if condition="$info['subject_note']">
+                    <div class="cr_notice">
+                        <div class="cr_notice_left">聊天室公告:</div>
+                        <div class="cr_notice_right" id="J_chat_notice">
+                            <marquee onmouseover="this.stop()" onmouseout="this.start()">{$info['subject_note']}</marquee>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    </if>
+                    <div class="cr_top" id="J_msg_wrapper"></div>
+                    <div class="cr_bottom" id="J_chat_bar">
+                        <div class="b_file" id="subject_message_img" name="subject_message_img"></div>
+                        <div class="b_text">
+                            <input type="text" id="J_chat_input" class="t_input" placeholder="请输入聊天内容">
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </if>
+    <include file="Home@default/public/footer_min" />
+    <script type="text/javascript" src="{:C('TPL_HOME_PUBLIC_DIR')}/js/layer/layer.js"></script>
+    <if condition="$info['subject_open'] eq 1">
+    <script src="{:C('TPL_HOME_PUBLIC_DIR')}/js/ajaxfileupload.js" type="text/javascript" language="javascript"></script>
+    <script src="{:C('TPL_HOME_PUBLIC_DIR')}/js/qscms.js" type="text/javascript" language="javascript"></script>
+    </if>
+    <script>
+        // 聊天
+        var cuSubjectId = "{$info.id}", cuUserName = "{$info.name}", cuUserAvatar = "{$info.photosrc}"
+        , cuUserId = "{$visitor.uid}";
+        if (eval(qscms.is_login)) {
+            $('#J_chat_input').prop('disabled', 0);
+        } else {
+            $('#J_chat_input').prop('disabled', !0);
+        }
+
+        function animateDown() {
+            $("#J_msg_wrapper").scrollTop($("#J_msg_wrapper")[0].scrollHeight);
+        }
+        var lastId = 0, getTimer = '', getUid = '';
+        // 请求数据
+        function getData() {
+            $.post("{:U('ajax_chat_log')}", {id: cuSubjectId, last_id: lastId, uid: getUid}, function(result) {
+                if (eval(result.status) === 1) {
+                    $('#J_msg_wrapper').append(result.data.html);
+                    animateDown();
+                }
+            });
+            getTimer = window.setTimeout(function() {
+                lastId = $("#J_msg_wrapper").find('.other_msg_box').last().attr('fid');
+                getData();
+            },60000)
+        }
+
+        // 获取时间
+        function getTime() {
+            function getNow(s) {
+                return s < 10 ? '0' + s: s;
+            }
+            var myDate = new Date();
+            var year=myDate.getFullYear();
+            var month=myDate.getMonth()+1;
+            var date=myDate.getDate();
+            var h=myDate.getHours();
+            var m=myDate.getMinutes();
+            var s=myDate.getSeconds();
+            var now = year+'-'+getNow(month)+"-"+getNow(date)+" "+getNow(h)+':'+getNow(m)+":"+getNow(s);
+            return getNow(h)+':'+getNow(m);
+        }
+
+        $('.J_ct_close').click(function() {
+            $('.subject_chat_open_up').css('visibility', 'hidden');
+            $('.subject_chat_pack_up').show();
+            window.clearTimeout(getTimer);
+        });
+        $('.subject_chat_pack_up').click(function() {
+            $('.subject_chat_pack_up').hide();
+            $('.subject_chat_open_up').css('visibility', 'inherit');
+            getData();
+        });
+        $('#J_chat_bar').click(function() {
+            if (eval(qscms.is_login)) {
+
+            } else {
+                var qsDialog = $(this).dialog({
+                    loading: true,
+                    footer: false,
+                    header: false,
+                    border: false,
+                    backdrop: false
+                });
+                var loginUrl = "{:U('Home/AjaxCommon/ajax_login')}";
+                $.getJSON(loginUrl, function(result){
+                    if(result.status==1){
+                        qsDialog.hide();
+                        var qsDialogSon = $(this).dialog({
+                            header: false,
+                            content: result.data.html,
+                            footer: false,
+                            border: false
+                        });
+                        qsDialogSon.setInnerPadding(false);
+                    } else {
+                        qsDialog.hide();
+                        disapperTooltip('remind',result.msg);
+                    }
+                });
+            }
+        });
+
+        $('#J_chat_input').bind('keypress',function(event){
+            if(event.keyCode == "13") {
+                var inputKey = $('#J_chat_input').val();
+                var url = "{:U('index/ajax_chat')}";
+                if (inputKey) {
+                    $.post(url, {id: cuSubjectId, note: inputKey}, function(result) {
+                        if (eval(result.status) === 1) {
+                            var minHtml = '<div class="mine_msg_box"><img src="'+cuUserAvatar+'" alt="" class="m_ava"><div class="m_wra_name">'+cuUserName+'</div><div class="m_wra_i"></div><div class="m_wra_txt">'+inputKey+'</div><div class="m_wra_time">'+getTime()+'</div></div>';
+                            $('#J_chat_input').val('');
+                            $('#J_msg_wrapper').append(minHtml);
+                            animateDown();
+							getUid = cuUserId;
+                        } else {
+                            disapperTooltip('remind',result.msg);
+                        }
+                    });
+                }
+            }
+        });
+        <if condition="$info['subject_open'] eq 1">
+        if (eval(qscms.is_login)) {
+            // 上传图片
+            $.upload("#subject_message_img",{id:cuSubjectId,type:'subject_message_img'},function(result){
+                if(eval(result.status) === 1){
+                    var minHtml = '<div class="mine_msg_box"><img src="'+cuUserAvatar+'" alt="" class="m_ava"><div class="m_wra_name">'+cuUserName+'</div><div class="m_wra_i"></div><div class="m_wra_txt"><div class="m_wra_img"><img class="J_for_bigimg" data-src="'+result.data.path+'" src="'+result.data.path+'" alt=""></div></div><div class="m_wra_time">'+getTime()+'</div></div>';
+                    $('#J_msg_wrapper').append(minHtml);
+                    animateDown();
+                    getUid = cuUserId;
+                } else {
+                    disapperTooltip('remind',result.msg);
+                }
+            });
+        }
+
+        </if>
+
+        $('.J_for_bigimg').die().live('click', function(event) {
+            var src = $(this).data('src');
+            var qsDialog = $(this).dialog({
+                title: '图片展示',
+                innerPadding: false,
+                border: false,
+                content: '<div style="max-width: 900px;max-height: 600px;padding:10px;background:#fff;"><img style="max-width: 900px;max-height: 600px;" src="'+src+'" /></div>',
+                showFooter: false
+            });
+        });
+
+        // 处理数字
+        var jobCountArray = $('#J_job_count').val().split('');
+        var comCountArray = $('#J_com_count').val().split('');
+        var resumeCountArray = $('#J_resume_count').val().split('');
+        function makeCountHtml(array) {
+            var cHtml = '';
+            $.each(array, function(index, value) {
+                cHtml += '<div class="t2_item">'+value+'</div>';
+            });
+            cHtml += '<div class="clear"></div>';
+            return cHtml;
+        }
+        $('#J_job_count_box').html(makeCountHtml(jobCountArray));
+        $('#J_com_count_box').html(makeCountHtml(comCountArray));
+        $('#J_resume_count_box').html(makeCountHtml(resumeCountArray));
+
+        // 动态
+        $(function(){
+            var _wrap=$('#J_app_live');
+            var _interval=2000;
+            var _moving;
+            _wrap.hover(function(){
+                clearInterval(_moving);
+            },function(){
+                _moving=setInterval(function(){
+                    var _field=_wrap.find('li:first');
+                    var _h=_field.outerHeight();
+                    _field.animate({marginTop:-_h+'px'},600,function(){
+                        _field.css('marginTop',0).appendTo(_wrap.find("ul"));
+                    })
+                },_interval)
+            }).trigger('mouseleave');
+        });
+
+        var isutype = "{$visitor['utype']}";
+        // 报名
+        $('.J_apply').click(function() {
+            var url = "{:U('Home/Company/ajax_enroll')}";
+            var subject_id = '{$info.id}';
+            if (eval(qscms.is_login)) {
+                if (eval(isutype) != 1) {
+                    layer.confirm('请登录企业帐号，是否切换？', {
+                        title: '账号切换',
+                        btn: ['确定','取消']
+                    }, function(){
+                        $.getJSON("{:U('Home/Members/ajax_switch_utype')}",{utype:1},function(result){
+                            if(result.status==1){
+                        		layer.msg(result.msg);
+                                qscms.is_login = 1;
+                                isutype = 1;
+                                setTimeout(function(){
+                                    ajaxApplyJoin();
+                                },1500);
+                            } else {
+                                layer.msg(result.msg);
+                                return false;
+                            }
+                        });
+                    });
+					return false;
+                }
+				ajaxApplyJoin();
+				function ajaxApplyJoin() {
+					layer.confirm('您确定要报名此网络招聘会吗？', {
+					    title: '企业报名',
+					    btn: ['确定','取消']
+					}, function(){
+					    $.post(url, { 'subject_id': subject_id }, function(result) {
+					        if(eval(result.status) === 1){
+					            layer.msg(result.msg);
+					            setTimeout(function () {
+					                window.location.reload();
+					            }, 2000);
+					        } else {
+					            if(result.data){
+					                if(result.data.type == 'setmeal'){
+                                           layer.confirm(result.msg, {
+                                                title: '温馨提示',
+                                                btn: ['升级套餐','取消']
+                                            }, function(){
+                                                location.href = result.data.url;
+                                            }, function(){
+
+                                            });
+                                    }else if(result.data.type == 'audit'){
+                                            layer.confirm(result.msg, {
+                                                title: '温馨提示',
+                                                btn: ['立即认证','取消']
+                                            }, function(){
+                                                location.href = result.data.url;
+                                            }, function(){
+
+                                            });
+                                    }else if(result.data.type == 'jobs'){
+                                        layer.confirm(result.msg, {
+                                            title: '温馨提示',
+                                            btn: ['发布职位','取消']
+                                        }, function(){
+                                            location.href = result.data.url;
+                                        }, function(){
+
+                                        });
+                                    }
+					            }else{
+					                layer.msg(result.msg);
+					                return false;
+					            }
+					        }
+					    })
+					});
+				}
+            } else {
+                var qsDialog = $(this).dialog({
+                    loading: true,
+                    footer: false,
+                    header: false,
+                    border: false,
+                    backdrop: false
+                });
+                var loginUrl = "{:U('Home/AjaxCommon/ajax_login')}";
+                $.getJSON(loginUrl, function(result){
+                    if(result.status==1){
+                        qsDialog.hide();
+                        var qsDialogSon = $(this).dialog({
+                            header: false,
+                            content: result.data.html,
+                            footer: false,
+                            border: false
+                        });
+                        qsDialogSon.setInnerPadding(false);
+                    } else {
+                        qsDialog.hide();
+                        disapperTooltip('remind',result.msg);
+                    }
+                });
+            }
+        });
+
+        // 搜素类型切换
+        $('.J_sea_choose').click(function(event) {
+            event.stopPropagation();
+            var $thisP = $(this).parent(), $thisDown = $thisP.find('.in_sea_down');
+            if ($thisP.hasClass('open')) {
+                $thisP.removeClass('open');
+            } else {
+                $thisP.addClass('open');
+            }
+            $(document).click(function(event){
+                var _con = $('#J_sea_down_box');
+                if(!_con.is(event.target) && _con.has(event.target).length === 0){
+                    $thisP.removeClass('open');
+                }
+            });
+        });
+        $('.J_sli').click(function() {
+            var oldType = $('#top_search_type').val(), oldText = $('.J_sea_choose').html(), newType = $(this).attr('type'), newText = $(this).html();
+            $('#top_search_type').val(newType);$('.J_sea_choose').html(newText);
+            $(this).attr('type', oldType);
+            $(this).html(oldText);
+            $(this).closest('.in_sea_cho').removeClass('open');
+        });
+        // 顶部搜索跳转
+        $('#top_search_btn').click(function() {
+            $('#top_search_input').val(htmlspecialchars($('#top_search_input').val()));
+            var post_data = $('#ajax_search_location').serialize();
+            if(qscms.keyUrlencode==1){
+                post_data = encodeURI(post_data);
+            }
+            $.post(qscms.root + '?m=Subject&c=Index&a=search_location_p',post_data,function(result){
+                if(result.status == 1){
+                    window.location.href=result.data;
+                }
+            },'json');
+        });
+         // 报名
+        $('.J_apply_p').click(function() {
+            var url = "{:U('Home/Personal/ajax_enroll')}";
+            var subject_id = '{$info.id}';
+            if (eval(qscms.is_login)) {
+                if (eval(isutype) != 2) {
+                    layer.confirm('请登录个人帐号，是否切换？', {
+                        title: '账号切换',
+                        btn: ['确定','取消']
+                    }, function(){
+                        $.getJSON("{:U('Home/Members/ajax_switch_utype')}",{utype:2},function(result){
+                            if(result.status==1){
+                        		layer.msg(result.msg);
+                                qscms.is_login = 1;
+                                isutype = 2;
+                                setTimeout(function(){
+                                    ajaxApplyBm();
+                                },1500);
+                            } else {
+                                layer.msg(result.msg);
+                                return false;
+                            }
+                        });
+                    });
+					return false;
+                }
+				ajaxApplyBm();
+				function ajaxApplyBm() {
+					layer.confirm('您确定要报名此网络招聘会吗？', {
+					    title: '个人报名',
+					    btn: ['确定','取消']
+					}, function(){
+					    $.post(url, { 'subject_id': subject_id }, function(result) {
+					        if(eval(result.status) === 1){
+					            layer.msg(result.msg);
+					            setTimeout(function () {
+					                window.location.reload();
+					            }, 2000);
+					        } else {
+					            if(result.data){
+					                layer.confirm(result.msg, {
+					                    title: '温馨提示',
+					                    btn: ['立即完善','取消']
+					                }, function(){
+					                    location.href = result.data;
+					                }, function(){
+
+					                });
+					            }else{
+					                layer.msg(result.msg);
+					                return false;
+					            }
+					        }
+					    })
+					});
+				}
+            } else {
+                var qsDialog = $(this).dialog({
+                    loading: true,
+                    footer: false,
+                    header: false,
+                    border: false,
+                    backdrop: false
+                });
+                var loginUrl = "{:U('Home/AjaxCommon/ajax_login')}";
+                $.getJSON(loginUrl, function(result){
+                    if(result.status==1){
+                        qsDialog.hide();
+                        var qsDialogSon = $(this).dialog({
+                            header: false,
+                            content: result.data.html,
+                            footer: false,
+                            border: false
+                        });
+                        qsDialogSon.setInnerPadding(false);
+                    } else {
+                        qsDialog.hide();
+                        disapperTooltip('remind',result.msg);
+                    }
+                });
+            }
+        });
+        // 申请职位点击事件绑定
+        $(".apply_jobs").die().live('click',function(){
+            var qsDialog = $(this).dialog({
+                loading: true,
+                footer: false,
+                header: false,
+                border: false,
+                backdrop: false
+            });
+            $('.J_dismiss_modal_close').die().live('click',function(){
+                location.reload();
+            })
+            if (eval(qscms.smsTatus)) {
+                var url = "{:U('Home/ajaxPersonal/resume_apply')}";
+                var jid = $(this).data('id');
+                $.getJSON(url,{jid:jid},function(result){
+                    if(result.status==1) {
+
+                        if(result.data.html){
+                            qsDialog.hide();
+                            if(result.data.rid){
+                                var qsDialogSon = $(this).dialog({
+                                    title: '申请职位',
+                                    content: result.data.html,
+                                    yes: function () {
+                                        var url = "{:U('Home/Personal/index')}";
+                                        url = url.replace('rid',result.data.rid);
+                                        location.href = url;
+                                    },
+                                    btns: ['完善简历', '放弃申请']
+                                });
+                            }else{
+                                var qsDialogSon = $(this).dialog({
+                                    title: '申请职位',
+                                    content: result.data.html,
+                                    yes: function () {
+                                        window.location.reload();
+                                    },
+                                });
+                            }
+                        }
+                        else {
+                            qsDialog.hide();
+                            disapperTooltip("remind", result.msg);
+                        }
+                    }
+                    else if(result.data==1){
+
+                        qsDialog.hide();
+                        disapperTooltip('remind',result.msg);
+                        setTimeout(function() {
+                            location.href="{:U('Home/Personal/resume_add')}";
+                        },1000);
+                    }
+                    else
+                    {
+                        var regResume = "{:C('qscms_rapid_registration_resume')}";
+                        if ( regResume== 1){
+                            if (eval(result.dialog)) {
+                                var creatsUrl = "{:U('Home/AjaxPersonal/resume_add_dig')}";
+                                $.getJSON(creatsUrl,{jid:jid}, function(result){
+                                    if(result.status==1){
+                                        qsDialog.hide();
+                                        var qsDialogSon = $(this).dialog({
+                                            content: result.data.html,
+                                            footer: false,
+                                            header: false,
+                                            border: false
+                                        });
+                                        qsDialogSon.setInnerPadding(false);
+                                    } else {
+                                        qsDialog.hide();
+                                        disapperTooltip('remind',result.msg);
+                                    }
+                                });
+                                return false;
+                            } else {
+                                if(result.msg=='请登录个人帐号！'){
+                                    qsDialog.hide();
+                                    var qsDialogSec = $(this).dialog({
+                                        title: '账号切换',
+                                        content: '<div style="width:300px;text-align:center;">请登录个人帐号，是否切换？</div>',
+                                        yes: function () {
+                                            var url = "{:U('Home/Members/switch_utype',array('utype'=>2))}";
+                                            location.href = url;
+                                        },
+                                        footer: true,
+                                        header: true,
+                                        border: false
+                                    });
+                                    return false;
+                                }else{
+                                    qsDialog.hide();
+                                    qsDialogSec.hide();
+                                    disapperTooltip('remind',result.msg);
+                                    return false;
+                                }
+                            }
+                        }else{
+                            var loginUrl = "{:U('Home/AjaxCommon/ajax_login')}";
+                            $.getJSON(loginUrl, function(result){
+                                if(result.status==1){
+                                    qsDialog.hide();
+                                    var qsDialogSon = $(this).dialog({
+                                        header: false,
+                                        content: result.data.html,
+                                        footer: false,
+                                        border: false
+                                    });
+                                    qsDialogSon.setInnerPadding(false);
+                                } else {
+                                    qsDialog.hide();
+                                    disapperTooltip('remind',result.msg);
+                                }
+                            });
+                            return false;
+                        }
+                        if(!result.data && result.status==0){
+                            qsDialog.hide();
+                            disapperTooltip('remind',result.msg);
+                            return false;
+                        }
+                    }
+                });
+            } else {
+                <if condition="C('visitor')">
+                    var url = "{:U('Home/ajaxPersonal/resume_apply')}";
+                    var jid = $(this).data('id');
+                    $.getJSON(url,{jid:jid},function(result){
+                    if(result.status==1) {
+                        if(result.data.html){
+                            qsDialog.hide();
+                            if(result.data.rid){
+                                var qsDialogSon = $(this).dialog({
+                                    title: '申请职位',
+                                    content: result.data.html,
+                                    yes: function () {
+                                        var url = "{:U('Home/Personal/index')}";
+                                        url = url.replace('rid',result.data.rid);
+                                        location.href = url;
+                                    },
+                                    btns: ['完善简历', '放弃申请']
+                                });
+                            }else{
+                                var qsDialogSon = $(this).dialog({
+                                    title: '申请职位',
+                                    content: result.data.html,
+                                    yes: function () {
+                                        window.location.reload();
+                                    },
+                                });
+                            }
+                        }
+                        else {
+                            qsDialog.hide();
+                            disapperTooltip("remind", result.msg);
+                            return false;
+                        }
+                    }
+                    else if(result.data==1){
+                        qsDialog.hide();
+                        disapperTooltip('remind',result.msg);
+                        setTimeout(function() {
+                            location.href="{:U('Home/Personal/resume_add')}";
+                        },1000);
+                    }
+                    else
+                    {
+                        if (eval(result.dialog)) {
+                            var creatsUrl = "{:U('Home/AjaxPersonal/resume_add_dig')}";
+                            $.getJSON(creatsUrl,{jid:jid}, function(result){
+                                if(result.status==1){
+                                    qsDialog.hide();
+                                    var qsDialogSon = $(this).dialog({
+                                        content: result.data.html,
+                                        footer: false,
+                                        header: false,
+                                        border: false
+                                    });
+                                    qsDialogSon.setInnerPadding(false);
+                                } else {
+                                    qsDialog.hide();
+                                    disapperTooltip('remind',result.msg);
+                                }
+                            });
+                        } else {
+                            qsDialog.hide();
+                            disapperTooltip('remind',result.msg);
+                        }
+                    }
+                });
+                <else />
+                    var loginUrl = "{:U('Home/AjaxCommon/ajax_login')}";
+                    $.getJSON(loginUrl, function(result){
+                        if(result.status==1){
+                            qsDialog.hide();
+                            var qsDialogSon = $(this).dialog({
+                                header: false,
+                                content: result.data.html,
+                                footer: false,
+                                border: false
+                            });
+                            qsDialogSon.setInnerPadding(false);
+                        } else {
+                            qsDialog.hide();
+                            disapperTooltip('remind',result.msg);
+                        }
+                    });
+                </if>
+            }
+        });
+    </script>
+</body>
+</html>

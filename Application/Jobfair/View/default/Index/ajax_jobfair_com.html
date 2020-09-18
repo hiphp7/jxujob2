@@ -1,0 +1,16 @@
+<qscms:jobfair_exhibitors_list 列表名="list" 招聘会id="$_GET['jobfair_id']" 显示数目="10" 开始位置="$start"/>
+<notempty name="list['list']">
+<volist name="list['list']" id="vo">
+  <div class="cli">
+    <div class="cinfo">
+ 	  <div class="comtit link_gray6"><a target="_blank" href="{$vo['url']}"><strong>{$vo['companyname']}</strong></a><span>展位号：{$vo['position']}</span></div>
+	   <div class="jobs">
+	   <volist name="vo['jobslist']" id="jobs">
+		<a href="{$jobs['jobs_url']}" target="_blank">{$jobs['jobs_name']}</a>
+	   </volist>
+		<div class="clear"></div>
+	  </div>
+	</div>
+  </div>
+</volist>
+</notempty>

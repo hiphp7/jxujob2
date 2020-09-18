@@ -1,0 +1,36 @@
+<div style="max-height:400px; overflow:auto">
+<div class="note" style="padding:10px;background-color:#FFF8DC;color:#ff9300;">
+    加入黑名单后该会员将失去领取红包资格<br />超出期限后会员将自动恢复领取红包资格。
+  </div>
+  <form id="form3" name="form3" method="post" action="{:U('set_blacklist_save')}">
+  <input type="hidden" name="uid" value="{$uid}">
+<table width="100%" border="0" cellspacing="10" cellpadding="0">
+    <tr>
+      <td width="40">
+        期限：
+      </td>
+      <td>
+        <volist name="timelimit_options" id="vo">
+        <label><input type="radio" name="timelimit" value="{$key}" <if condition="$key eq 0">checked</if>>{$vo}</label>
+        </volist>
+      </td>
+    </tr>
+    <tr>
+      <td width="40">
+        备注：
+      </td>
+      <td>
+        <textarea cols="60" rows="4" name="note"></textarea>
+      </td>
+    </tr>
+    <tr>
+      <td width="40">
+        &nbsp;
+      </td>
+      <td>
+        <input type="button" name="" value="确定" class="admin_submit set_blacklist_save" id="set_blacklist_save"/>
+      </td>
+    </tr>
+  </table>
+  </form>
+</div>

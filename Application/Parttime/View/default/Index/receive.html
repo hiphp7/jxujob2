@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <include file="Home@default/public/meta" />
+    <link href="{:C('TPL_HOME_PUBLIC_DIR')}/css/common.css" rel="stylesheet" type="text/css" />
+    <link href="{:C('TPL_PUBLIC_DIR')}/css/parttime.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<include file="Home@default/public/header_other" />
+<!--搜索 -->
+<div class="new-search-box"></div>
+<div class="main-box manage">
+    <div class="user_main">
+        <div class="mright">
+            <div class="user_pagetitle">
+                <div class="pat_l">收到的报名</div>
+                <div class="clear"></div>
+            </div>
+            <notempty name="applylist">
+            <form id="form1" action="{:U('delete_receive')}" class="J_allListBox" method="post">
+                <input name="pid" type="hidden" value="{$pid}">
+                <div class="jobsWrap">
+                    <volist name="applylist" id="vo">
+                        <div class="jobsList">
+                            <div class="selWrap">
+                                <input name="id[]" class="selStatus J_allList" type="checkbox" value="{$vo['id']}">
+                            </div>
+                            <div class="jobs fl">
+                                <div class="title">
+                                    <a>{$vo['realname']}</a>
+                                </div>
+                                <div class="update">
+                                    {$vo['sex_cn']}&nbsp;|&nbsp;{$vo['age']}岁&nbsp;|&nbsp;{$vo['mobile']}
+                                </div>
+                            </div>
+                            <div class="s-t-box fl">
+                                <div class="status fl">应聘岗位：{$jobslist[$vo['pid']]}</div>
+                            </div>
+                            <div class="edit link_blue fl">
+                                <div class="refreshtime">刷新时间：{$vo['addtime_cn']}</div>
+                                <div>
+                                    <a href="javascript:;" data-url="{:U('delete_receive',array('id'=>$vo['id'],'pid'=>$pid))}" class="J_delete">删除</a>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </volist>
+                </div>
+                <div class="jobsWrap">
+                    <div class="allSelWrap">
+                        <input name="" class="allSel J_allSelected" type="checkbox">
+                    </div>
+                    <div class="btn_lightgray J_hoverbut btn_inline btn_border" id="delete_all">删除信息</div>
+                    <div class="qspage">{$applylist.page}</div>
+                    <div class="clear"></div>
+                </div>
+            </form>
+            <else/>
+                <div class="jobsWrap">
+                    <div class="res_empty">
+                        当前职位还没有收到报名
+                    </div>
+                </div>
+            </notempty>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<div class="clear"></div>
+<include file="Home@default/public/footer_min" />
+<script type="text/javascript" src="{:C('TPL_HOME_PUBLIC_DIR')}/js/jquery.allselected.js"></script>
+<script type="text/javascript">
+    $('.J_delete').click(function(){
+        var url = $(this).data('url');
+        var qsDialog = $(this).dialog({
+            title: '删除信息',
+            border: false,
+            content:'<div class="warning_dialog"><div class="tip">被删除后将无法恢复，您确定要删除选中的信息吗？</div></div>',
+            yes: function () {
+                $.getJSON(url,function(result){
+                    if(result.status==1){
+                        disapperTooltip('success', result.msg);
+                        setTimeout(function () {
+                            location.reload();
+                        }, 2000);
+                    }else{
+                        disapperTooltip('remind', result.msg);
+                    }
+                });
+            }
+        });
+    });
+    $("#delete_all").click(function(){
+        var listCheckedArray = $('.J_allListBox .J_allList:checked');
+        if (!listCheckedArray.length) {
+            disapperTooltip("remind",'请选择信息');
+            return false;
+        }
+        var url = "{:U('delete_receive')}";
+        var qsDialog = $(this).dialog({
+            title: '删除信息',
+            border: false,
+            content:'<div class="warning_dialog"><div class="tip">被删除后将无法恢复，您确定要删除选中的信息吗？</div></div>',
+            yes: function () {
+                $("#form1").submit();
+            }
+        });
+    });
+</script>
+</body>
+</html>

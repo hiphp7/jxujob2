@@ -1,0 +1,200 @@
+<include file="Admin@default/public/header" />
+
+<div class="seltpye_y">
+    <div class="tit">显示状态</div>
+    <div class="ct">
+        <div class="txt <neq name='Think.get.display' value=''>select</neq>">{$Think.get.display_cn|default="不限"}</div>
+    </div>
+    <div class="downlist">
+        <li url="{:P(array('display'=>'','display_cn'=>'不限'))}">不限</li>
+        <li url="{:P(array('display'=>'1','display_cn'=>'显示'))}">显示</li>
+        <li url="{:P(array('display'=>'0','display_cn'=>'隐藏'))}">隐藏</li>
+    </div>
+</div>
+<div class="seltpye_y">
+    <div class="tit">添加时间</div>
+    <div class="ct">
+        <div class="txt <notempty name='Think.get.addsettr'>select</notempty>">{$Think.get.addsettr_cn|default="不限"}</div>
+    </div>
+    <div class="downlist">
+        <li url="{:P(array('addsettr'=>'','addsettr_cn'=>'不限'))}">不限</li>
+        <li url="{:P(array('addsettr'=>'3','addsettr_cn'=>'三天内'))}">三天内</li>
+        <li url="{:P(array('addsettr'=>'7','addsettr_cn'=>'一周内'))}">一周内</li>
+        <li url="{:P(array('addsettr'=>'30','addsettr_cn'=>'一月内'))}">一月内</li>
+    </div>
+</div>
+<div class="seltpye_y">
+    <div class="tit">刷新时间</div>
+    <div class="ct">
+        <div class="txt <notempty name='Think.get.settr'>select</notempty>">{$Think.get.settr_cn|default="不限"}</div>
+    </div>
+    <div class="downlist">
+        <li url="{:P(array('settr'=>'','settr_cn'=>'不限'))}">不限</li>
+        <li url="{:P(array('settr'=>'3','settr_cn'=>'三天内'))}">三天内</li>
+        <li url="{:P(array('settr'=>'7','settr_cn'=>'一周内'))}">一周内</li>
+        <li url="{:P(array('settr'=>'30','settr_cn'=>'一月内'))}">一月内</li>
+    </div>
+</div>
+<div class="seltpye_y">
+    <div class="tit">排序方式</div>
+    <div class="ct">
+        <div class="txt <if condition="($Think.get.orderby neq '') AND ($Think.get.orderby neq 'addtime')">select</if>">{$Think.get.orderby_cn|default="发布时间"}</div>
+    </div>
+    <div class="downlist">
+        <li url="{:P(array('orderby'=>'addtime','orderby_cn'=>'发布时间'))}">发布时间</li>
+        <li url="{:P(array('orderby'=>'refreshtime','orderby_cn'=>'刷新时间'))}">刷新时间</li>
+    </div>
+</div>
+<notempty name="apply['Subsite']">
+    <div class="seltpye_y">
+        <div class="tit">所属分站</div>
+        <div class="ct">
+            <div class="txt <neq name='Think.get.subsite_id' value=''>select</neq>">{$Think.get.subsite_cn|default="不限"}</div>
+        </div>
+        <qscms:subsite 列表名="subsite_list"/>
+        <div class="downlist">
+            <li url="{:P(array('subsite_id'=>'','subsite_cn'=>'不限'))}">不限</li>
+            <if condition="$visitor['role_id'] eq 1">
+                <volist name="subsite_list" id="subsite">
+                    <li url="{:P(array('subsite_id'=>$subsite['s_id'],'subsite_cn'=>$subsite['s_sitename']))}">{$subsite.s_sitename}</li>
+                </volist>
+                <else/>
+                <volist name="subsite_list" id="subsite">
+                    <if condition="in_array($subsite['s_id'],$visitor['subsite'])">
+                        <li url="{:P(array('subsite_id'=>$subsite['s_id'],'subsite_cn'=>$subsite['s_sitename']))}">{$subsite.s_sitename}</li>
+                    </if>
+                </volist>
+            </if>
+        </div>
+    </div>
+</notempty>
+<div class="clear"></div>
+
+<form id="form1" name="form1" method="post" action="{:U('set_display')}">
+    <div class="list_th">
+        <div class="td" style=" width:20%;">
+            <label id="chkAll" class="left_padding">
+                <input type="checkbox" name="chkAll" id="chk" title="全选/反选"/>招聘岗位
+            </label>
+        </div>
+        <div class="td center" style=" width:8%;">招聘人数</div>
+        <div class="td center" style=" width:8%;">工作地区</div>
+        <div class="td center" style=" width:8%;">薪资待遇</div>
+        <div class="td center" style=" width:8%;">显示状态</div>
+        <div class="td center" style=" width:8%;">发布时间</div>
+        <div class="td center" style=" width:8%;">刷新时间</div>
+        <div class="td center" style=" width:8%;">报名/浏览</div>
+        <div class="td" style=" width:18%;">操作</div>
+        <div class="clear"></div>
+    </div>
+
+    <volist name="list" id="vo">
+        <div class="list_tr link_black">
+            <div class="td" style=" width:20%;">
+                <div class="left_padding striking">
+                    <input name="id[]" type="checkbox" id="id" value="{$vo['id']}"/>{$vo['jobs_name']}
+                </div>
+            </div>
+            <div class="td center" style=" width:8%;"><eq name="vo['amount']" value="0">若干<else />{$vo['amount']}人</eq></div>
+            <div class="td center" style=" width:8%;">{$vo['district_cn']}</div>
+            <div class="td center" style=" width:8%;">{$vo['wage_cn']}</div>
+            <div class="td center" style=" width:8%;">
+                <if condition="$vo['display'] eq 1">
+                    <span style="color:green;">显示</span>
+                    <elseif condition="$vo['display'] eq 0"/>
+                    <span style="color:#FF6600">隐藏</span>
+                </if>
+            </div>
+            <div class="td center" style=" width:8%;">{:admin_date($vo['addtime'])}</div>
+            <div class="td center" style=" width:8%;">{:admin_date($vo['refreshtime'])}</div>
+            <div class="td center" style=" width:8%;">{$vo['apply_num']} / {$vo['click']}</div>
+            <div class="td edit" style=" width:18%;">
+                <a href="{:U('receive',array('id'=>$vo['id']))}">收到的报名</a>
+                <a href="{:U('edit',array('id'=>$vo['id']))}">编辑</a>
+                <a href="{:U('del_jobs',array('id'=>$vo['id']))}" onClick="return confirm('你确定要删除该职位吗？')" class="gray">删除</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </volist>
+</form>
+
+<empty name="list">
+    <div class="list_empty">没有任何信息！</div>
+</empty>
+
+<div class="list_foot">
+    <div class="btnbox">
+        <input type="button" class="admin_submit" id="ButAdd" value="添加" onclick="javascript:location.href='{:U('add')}'"/>
+        <input type="button" class="admin_submit" id="ButAudit" value="显示/隐藏"/>
+        <input type="button" class="admin_submit" id="ButRefresh" value="刷新"/>
+        <input type="button" class="admin_submit" id="ButDel" value="删除"/>
+    </div>
+
+    <div class="footso">
+        <form action="?" method="get">
+            <div class="sobox">
+                <input type="hidden" name="m" value="{:MODULE_NAME}">
+                <input type="hidden" name="c" value="{:CONTROLLER_NAME}">
+                <input type="hidden" name="a" value="{:ACTION_NAME}">
+                <input name="key" type="text" class="sinput" value="{$Think.get.key}"/>
+                <input name="key_type" id="J_key_type_id" type="hidden" value="{$Think.get.key_type|default='1'}" />
+                <input name="key_type_cn" id="J_key_type_cn" type="hidden" value="{$Think.get.key_type_cn|default='招聘岗位'}"/>
+                <input name="" type="submit" value="" class="sobtn"/>
+                <div class="sotype" id="J_key_click">{$Think.get.key_type_cn|default='职位名'}</div>
+                <div class="mlist" id="J_mlist">
+                    <ul>
+                        <li id="1" title="招聘岗位">招聘岗位</li>
+                        <li id="2" title="发布人">发布人</li>
+                        <li id="3" title="手机号">手机号</li>
+                        <li id="4" title="职位ID">职位ID</li>
+                    </ul>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="pages">{$page}</div>
+
+</div>
+<include file="Admin@default/public/footer" />
+
+</body>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //显示/隐藏
+        $("#ButAudit").click(function () {
+            var data = $("form[name=form1]").serialize();
+            if(data.length == 0){
+                disapperTooltip('remind','请选择职位！');
+            } else {
+                var qsDialog = $(this).dialog({
+                    title: '显示/隐藏',
+                    loading: true,
+                    footer : false
+                });
+                var url = "{:U('set_display')}";
+                $.post(url, data, function (result) {
+                    if(result.status == 1){
+                        qsDialog.setContent(result.data);
+                    } else {
+                        qsDialog.hide();
+                        disapperTooltip('remind',result.msg);
+                    }
+                });
+            }
+        });
+        //点击批量删除
+        $("#ButDel").click(function () {
+            if (confirm('你确定要删除吗？')) {
+                $("form[name=form1]").attr("action", "{:U('del_jobs')}");
+                $("form[name=form1]").submit();
+            }
+        });
+        //点击批量刷新
+        $("#ButRefresh").click(function () {
+            $("form[name=form1]").attr("action", "{:U('refresh')}");
+            $("form[name=form1]").submit();
+        });
+    });
+</script>
+</html>

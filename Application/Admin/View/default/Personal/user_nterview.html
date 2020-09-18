@@ -1,0 +1,140 @@
+<include file="public:header" />
+	<div class="seltpye_x">
+        <div class="left">查看状态</div>    
+        <div class="right">
+	        <a href="{:P(array('personal_look'=>''))}" <if condition="$Think.get.personal_look eq ''">class="select"</if>>全部</a>
+	        <a href="{:P(array('personal_look'=>1))}" <if condition="$Think.get.personal_look eq 1">class="select"</if>>已查看</a>
+	        <a href="{:P(array('personal_look'=>0))}" <if condition="$Think.get.personal_look eq '0'">class="select"</if>>未查看</a>
+        	<div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="seltpye_x">
+        <div class="left">邀请时间</div>    
+        <div class="right">
+	        <a href="{:P(array('settr'=>''))}" <if condition="$Think.get.settr eq ''">class="select"</if>>不限</a>
+	        <a href="{:P(array('settr'=>3))}" <if condition="$Think.get.settr eq 3">class="select"</if>>三天内</a>
+	        <a href="{:P(array('settr'=>7))}" <if condition="$Think.get.settr eq 7">class="select"</if>>一周内</a>
+	        <a href="{:P(array('settr'=>30))}" <if condition="$Think.get.settr eq 30">class="select"</if>>一月内</a>
+	        <a href="{:P(array('settr'=>180))}" <if condition="$Think.get.settr eq 180">class="select"</if>>半年内</a>
+	        <a href="{:P(array('settr'=>360))}" <if condition="$Think.get.settr eq 360">class="select"</if>>一年内</a>
+        	<div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+	<form id="form1" name="form1" method="post" action="{:U('Personal/user_interview_delete')}">
+		<input name="_k_v" type="hidden" value="{$Think.get._k_v}">
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" id="list" class="link_lan">
+			<tr>
+				<td class="admin_list_tit admin_list_first">
+					<label id="chkAll"><input type="checkbox" name=" " title="全选/反选" id="chk"/>职位名称</label>
+				</td>
+				<td  class="admin_list_tit"> 公司名称 </td>
+				<td  class="admin_list_tit"> 简历名称 </td>
+				<td align="center"  width="10%" class="admin_list_tit">查看状态</td>
+				<td align="center" width="8%"  class="admin_list_tit">邀请时间</td>
+				<td width="100" align="center" class="admin_list_tit">操作</td>
+			</tr>
+			<volist name="list" id="vo">
+				<if condition="$vo['company_id']">
+					<tr>
+						<td  class="admin_list admin_list_first">
+							<input name="did[]" type="checkbox" value="{$vo['did']}"  />
+							<a href="{$vo['jobs_url']}" target="_blank">{$vo['jobs_name']}</a>
+						</td>
+						<td class="admin_list">
+							<a href="{$vo['company_url']}" target="_blank" style="color: #000000" title="{$vo['companyname']}">{$vo['companyname']}</a>
+						</td>
+						<td class="admin_list">
+							<a href="{$vo['resume_url']}" target="_blank" style="color: #000000" title="{$vo['resume_name']}">{$vo['resume_name']}</a>
+						</td>
+						<td class="admin_list" align="center">
+							<switch name="vo['personal_look']">
+								<case value="0">
+									未查看
+								</case>
+								<case value="1">
+									已查看
+								</case>
+							</switch>
+						</td>
+						<td class="admin_list" align="center" >
+							{:admin_date($vo['interview_addtime'])}
+						</td>
+						<td class="admin_list" align="center" >
+							<a href="{:U('Personal/user_interview_delete',array('did'=>$vo['did'],'_k_v'=>$_GET['_k_v']))}" onclick="return confirm('你确定要删除吗？')">删除</a>
+						</td>
+					</tr>
+				<else/>
+					<tr>
+						<td  class="admin_list admin_list_first" colspan="5">
+							<input name="did[]" type="checkbox" value="{$vo['did']}"  />
+							该职位不存在或已被删除
+						</td>
+						<td class="admin_list" align="center" >
+							<a href="{:U('Personal/user_interview_delete',array('did'=>$vo['did'],'_k_v'=>$_GET['_k_v']))}" onclick="return confirm('你确定要删除吗？')">删除</a>
+						</td>
+					</tr>
+				</if>
+			</volist>
+		</table>
+	</form>
+	<empty name="list">
+		<div class="admin_list_no_info">没有任何信息！</div>
+	</empty>
+	<table width="100%" border="0" cellspacing="10"  class="admin_list_btm">
+	    <tr>
+	        <td>
+		        <input type="button" class="admin_submit" id="ButDel"  value="删除所选"/>
+		        <input type="button" value="返回" class="admin_submit" onclick="window.location='{:U('Personal/member_list')}'"/> 
+	        </td>
+	        <td width="305" align="right">
+	            <form id="formseh" name="formseh" method="get" action="">  
+	                <div class="seh">
+	                    <div class="keybox"><input name="key" type="text"   value="{$Think.get.key}" /></div>
+	                    <div class="selbox">
+	                        <input id="key_type_cn" type="text" value="{$Think.get.key_type_cn|default="职位名称"}" readonly="true"/>
+	                        <div>
+	                            <input name="key_type" id="key_type" type="hidden" value="{$Think.get.key_type|default="1"}" />
+	                            <div id="sehmenu" class="seh_menu">
+	                                <ul>
+	                                    <li id="1" title="职位名称">职位名称</li>
+	                                    <li id="2" title="职位ID">职位ID</li>
+	                                    <li id="3" title="公司名称">公司名称</li>
+	                                    <li id="4" title="公司ID">公司ID</li>
+	                                    <li id="5" title="简历名称">简历名称</li>
+	                                    <li id="6" title="简历ID">简历ID</li>
+	                                </ul>
+	                            </div>
+	                        </div>              
+	                    </div>
+	                    <div class="sbtbox">
+	                        <input type="hidden" name="m" value="{:C('admin_alias')}">
+	                        <input type="hidden" name="c" value="{:CONTROLLER_NAME}">
+	                        <input type="hidden" name="a" value="{:ACTION_NAME}">
+							<input type="hidden" name="uid" value="{$Think.get.uid}">
+	                        <input type="submit" class="sbt" id="sbt" value="搜索"/>
+	                    </div>
+	                    <div class="clear"></div>
+	                </div>
+	            </form>
+	        </td>
+		</tr>
+    </table>
+	<div class="qspage">{$page}</div>
+</div>
+<include file="public:footer" />
+<script type="text/javascript">
+    $(document).ready(function(){
+    	showmenu("#key_type_cn","#sehmenu","#key_type");
+        //点击批量取消    
+        $("#ButDel").click(function(){
+            if (confirm('你确定要删除吗？'))
+            {
+                $("form[name=form1]").submit()
+            }
+        }); 
+    });
+</script>
+</body>
+</html>

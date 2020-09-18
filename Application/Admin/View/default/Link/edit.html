@@ -1,0 +1,73 @@
+<include file="public:header" />
+<div class="toptip">
+  <h2>提示：</h2>
+  <p>
+图片友情连接请上传LOGO或填写LOGO路径
+</p>
+</div>
+<div class="toptit">修改友情链接</div>
+<form action="{:U('edit')}" method="post" enctype="multipart/form-data" name="FormData" id="FormData"  >
+<input name="link_id" type="hidden" value="{$info.link_id}" />
+        <table width="100%" border="0" cellspacing="3" cellpadding="3" class="link_lan">
+    <tr>
+            <td align="right">显示状态：</td>
+            <td>
+      <label>
+              <input name="display" type="radio" value="1" <if condition="$info['display'] eq 1">checked="checked"</if>/>
+              显示</label>
+        &nbsp; &nbsp; &nbsp;
+        <label>
+              <input type="radio" name="display" value="2" <if condition="$info['display'] eq 2">checked="checked"</if>/>
+              不显示</label>       </td>
+          </tr>
+          <tr>
+            <td width="120" align="right">链接名称：</td>
+            <td><input name="link_name" type="text" class="input_text_200" id="link_name"  value="{$info.link_name}"/></td>
+          </tr>
+          <tr>
+            <td align="right">链接地址：</td>
+            <td><input name="link_url" type="text" class="input_text_200" id="link_url"  value="{$info.link_url}" maxlength="80"/></td>
+          </tr>
+          <tr>
+            <td align="right">添 加 到：</td>
+            <td><select name="alias" id="category_id">
+            <volist name="category" id="li">
+              <option value="{$li.c_alias}" <if condition="$info['alias'] eq $li['c_alias']">selected="selected"</if>>{$li.categoryname}</option>          
+            </volist>                
+            </select></td>
+          </tr>
+          <tr>
+            <td align="right">显示顺序：</td>
+            <td><input name="show_order" type="text" class="input_text_200" id="show_order"   maxlength="3"  value="{$info.show_order}"/>
+            数字越大越靠前</td>
+          </tr>
+          <tr>
+            <td align="right">链接LOGO：</td>
+            <td><input type="file" name="logo"  style="height:24px; width:272px; font-size:12px; line-height:20px;"  onkeydown="alert('请点击右侧“浏览”选择您电脑上的图片！');return false"/></td>
+          </tr>
+          <tr>
+            <td align="right">或LOGO地址：</td>
+            <td><input name="link_logo" type="text" class="input_text_200" id="link_logo" maxlength="80" value="{$info.link_logo}"/>
+        <if condition="$info['link_logo']">
+              <a href="{$info.link_logo}" target="_blank">[查看logo]</a>
+        </if>
+        </td>
+          </tr>
+      <tr>
+            <td align="right" valign="top">备注：</td>
+            <td><textarea name="notes" style="width:300px; height:50px; font-size:12px; line-height:180%" onpropertychange="if(this.value.length>100){this.value=this.value.slice(0,100)}">{$info.notes}</textarea>
+              <br />
+              (备注不在前台显示，只作为管理员的备忘标记) </td>
+      </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td align="left">
+      <input type="submit" name="Submit3" value="确定提交" class="admin_submit"   />
+      <input name="submit22" type="button" class="admin_submit"    value="返 回" onclick="window.location='{:U('Link/index')}'"/>      </td>
+          </tr>
+        </table>
+  </form>
+</div>
+<include file="public:footer" />
+</body>
+</html>

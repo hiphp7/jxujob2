@@ -1,0 +1,45 @@
+.jobfair_position{}
+.jobfair_position .pic{ width:1160px; margin:0 auto; margin-top:20px;}
+.jobfair_position .pic img{width:1160px;}
+.jobfair_position .ptit{ font-size:26px; text-align:center; color:#FF3300; height:60px;  border-bottom:1px #EEEEEE solid}
+.jobfair_position .ptit.re{ border-top:1px #EEEEEE solid; line-height:60px; background-color:#F7F7F7}
+.jobfair_position .txt{ padding-left:50px; line-height:200%; padding-top:25px;}
+.jobfair_position .txt .state{ border:1px #CCCCCC solid; padding:5px 10px; margin-left:30px; margin-right:7px;border-radius:4px;}
+.jobfair_position .txt .state.s1{ background-color:#FFFFFF; color:#FFFFFF;}
+.jobfair_position .txt .state.s2{ background-color: #999999; color:#999999; border-color: #666666}
+.jobfair_position .txt .state.s3{ background-color: #FF6600; color:#FF6600; border-color: #FF3300}
+.jobfair_position .txt .state.s4{ background-color:#FFFFFF; color:#FFFFFF;border:1px  #999999 dashed; padding:5px 6px; }
+.jobfair_position .txt strong{ padding-right:20px;}
+.jobfair_position .txt u{ color:#FF6600; text-decoration:none; font-weight:bold}
+.jobfair_position .area{ padding-top:25px; text-align:center}
+.jobfair_position .area ul{display:inline-block;*display:inline;*zoom:1;font-size:16px;}
+.jobfair_position .area li{ float:left; padding:4px 30px; background-color:#FFF3D9; border:1px #F5D485 solid; cursor:pointer; margin-right:30px; margin-bottom:20px;border-radius:4px;}
+.jobfair_position .area li:hover{ background-color:#FF9900; color:#FFFFFF; border:1px #FF8800 solid;}
+.jobfair_position .area li.select{ background-color:#FF6600; color:#FFFFFF; border:1px #FF5500 solid;}
+.jobfair_position .booth{ padding-top:15px; width:1080px; padding-left:80px;}
+.jobfair_position .booth .li{ width:95px; font-size:16px; height:32px; line-height:32px; text-align:center; border:1px #CCCCCC solid; color:#999999; margin-right:20px; float:left; margin-bottom:20px; cursor:pointer;border-radius:4px; position:relative}
+.jobfair_position .booth .li:hover{ border:1px  #999999 solid; color:#666666; background-color:#F5F5F5}
+.jobfair_position .booth .li.invalid{border:1px  #999999  dashed; color:#cccccc; background-color:#F9F9F9;  text-decoration: line-through}
+.jobfair_position .booth .li.audit{border:1px  #FF3300 solid; color:#FFFFFF; background-color:#FF6600}
+.jobfair_position .booth .li.succeed{border:1px  #666666 solid; color:#FFFFFF; background-color:#999999}
+
+.jobfair_position .booth .li  .tip{ position:absolute; left:-1px; top:33px; width:320px; z-index:1;}
+.jobfair_position .booth .li  .tip .arrow{ width:18px; height:7px; margin-left:38px; background-image:url(../images/03.png); background-repeat:no-repeat; background-position:-87px 0px;}
+.jobfair_position .booth .li  .tip .box{ width:318px;  border:1px #FC4C4E solid; background-color:#FFFCF1;border-radius:4px;
+-moz-box-shadow: 0px 0px 10px #E4E4E4;/*firefox*/
+-webkit-box-shadow: 0px 0px 10px #E4E4E4;/*safari或chrome*/
+box-shadow:0px 0px 10px #E4E4E4;/*opera或ie9*/ 
+}
+.jobfair_position .booth .li  .tip .box .t{ height:38px; line-height:38px; background-color:#FC4C4E; color:#FFFFFF; padding-left:20px; text-align:left;}
+.jobfair_position .booth .li  .tip .box .restxt{ text-align:center; padding-top:20px; padding-bottom:20px;width:280px; margin:0 auto;overflow:hidden;white-space: nowrap;text-overflow: ellipsis; color:#666666}
+.jobfair_position .booth .li  .tip .box .restxt .btn{ padding:8px 20px; font-size:14px; margin-left:20px; background-color:#FF6600; color:#FFFFFF;border-radius:20px;}
+.jobfair_position .booth .li  .tip .box .restxt .btn:hover{ background-color:#FF5500;}
+
+.jobfair_position .booth .li  .tip.audit{}/*审核中的样式*/ 
+.jobfair_position .booth .li  .tip.audit .arrow{background-position:0px 0px;}
+.jobfair_position .booth .li  .tip.audit .box{ border:1px #FF6600 solid;}
+.jobfair_position .booth .li  .tip.audit .box .t{ background-color:#FF6600;}
+.jobfair_position .booth .li  .tip.succeed{}/*已完成的样式*/ 
+.jobfair_position .booth .li  .tip.succeed .arrow{background-position:-45px 0px;}
+.jobfair_position .booth .li  .tip.succeed .box{ border:1px #4B4B4B solid;}
+.jobfair_position .booth .li  .tip.succeed .box .t{ background-color:#4B4B4B;}

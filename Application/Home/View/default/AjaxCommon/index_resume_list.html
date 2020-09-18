@@ -1,0 +1,15 @@
+<volist name="resume_list" id="resume">
+	<div class="rlist">
+		<div class="li">
+			<div class="photo"><a href="{$resume.resume_url}" target="_blank"><img src="{$resume.photosrc}" border="0"/></a></div>
+      <div class="photo-blur">
+        <img class="p-blur" src="{$resume.photosrc}" width="226" border="0"/>
+      </div>
+			<div class="name link_gray6"><a href="{$resume.resume_url}" target="_blank">{$resume.fullname}</a></div>
+			<div class="txt">
+				{$resume.education_cn},{$resume.experience_cn}<br />
+				<div class="ijobs substring">{$resume.intention_jobs}</div>
+			</div>
+		</div>
+	</div>
+</volist>

@@ -1,0 +1,89 @@
+<div class="refresh_resume_dialog">
+	<div class="tip">
+		今天还没刷新，刷新简历将<strong>简历排名提前</strong><br>
+		让企业更容易看到你，<strong>提高求职成功率！</strong>
+	</div>
+	<div id="J_refreshWrap" class="content">
+		<div class="orgWrap">
+			<div class="td">刷新前请确认以下信息准确完整：</div>
+			<div class="td1">手机号码：</div>
+			<div class="td2">{$resume.telephone}</div>
+			<div class="clear"></div>
+			<div class="td1">求职状态：</div>
+			<div class="td2">
+				{$resume.current_cn}
+				<a id="J_refresh_edit" href="javascript:;">修改</a>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div id="J_telWrap" class="telWrap refresh_resume_edit_dialog" pid="{$resume.id}">
+			<div class="td">刷新前请确认以下信息准确完整：</div>
+			<if condition="$visitor['mobile_audit']">
+				<div class="default td1">手机号码：</div>
+				<div class="default td2">
+					{$resume.telephone}
+					<a id="J_mobile_edit" href="javascript:;">修改</a>
+				</div>
+				<div class="default clear"></div>
+				<div class="approve td1"><span class="asterisk"></span>&nbsp;手机号码：</div>
+				<div class="approve td2">
+					<input type="text" value="{$resume.telephone}" class="input_245_34" name="mobile">
+				</div>
+				<div class="approve clear"></div>
+				<div class="approve td1"><span class="asterisk"></span>&nbsp;验证码：</div>
+				<div class="approve td2">
+					<div class="code">
+						<input type="text" class="" name="verifycode">
+					</div>
+			        <div class="codebtn"><div id="J_get_code" class="btn_blue J_hoverbut">获取验证码</div></div>
+					<div class="clear"></div>
+				</div>
+			<else/>
+				<div class="td1"><span class="asterisk"></span>&nbsp;手机号码：</div>
+				<div class="td2">
+					<input type="text" value="{$resume.telephone}" class="input_245_34" name="mobile">
+				</div>
+			</if>
+			<div class="clear"></div>
+			<div class="td1"><span class="asterisk"></span>&nbsp;求职状态：</div>
+			<div class="td2">
+				<div class="input_245_34_div J_hoverinput J_dropdown J_listitme_parent">
+					<span class="J_listitme_text">{$resume.current_cn|default='请选择'}</span>
+					<div class="dropdowbox4 J_dropdown_menu">
+			            <div class="dropdow_inner4">
+			                <ul class="nav_box">
+			                	<volist name="current" id="current">
+			                		<li><a class="J_listitme" href="javascript:;" data-code="{$key}">{$current}</a></li>
+								</volist>
+			                </ul>
+			            </div>
+			        </div>
+					<input class="J_listitme_code" name="current" id="current" type="hidden" value="{$resume.current}" />
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$('#J_refresh_edit').click(function(){
+		$('#J_refreshWrap').addClass('c');
+	});
+	$('#J_mobile_edit').click(function(){
+		$('#J_telWrap').addClass('c');
+	});
+	$('#J_get_code').click(function(){
+		var mobile = $('#J_telWrap input[name="mobile"]').val();
+		if(mobile == ''){
+			disapperTooltip('remind','手机号不能不空！');
+			return false;
+		}
+		$.post("{:U('Members/send_mobile_code')}",{mobile:mobile},function(result){
+			if(result.status == 1){
+				disapperTooltip('success',result.msg);
+			}else{
+				disapperTooltip('remind',result.msg);
+			}
+		},'json');
+	});
+</script>

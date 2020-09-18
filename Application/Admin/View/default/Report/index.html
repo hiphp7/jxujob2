@@ -1,0 +1,173 @@
+<include file="public:header" />
+  <notempty name="apply['Subsite']">
+  <div class="seltpye_x">
+    <div class="left">所属分站</div>
+    <qscms:subsite 列表名="subsite_list"/>
+    <div class="right">
+      <a href="{:P(array('subsite_id'=>''))}" <if condition="$Think.get.subsite_id eq ''">class="select"</if>>不限</a>
+      <if condition="$visitor['role_id'] eq 1">
+        <volist name="subsite_list" id="subsite">
+          <a href="{:P(array('subsite_id'=>$subsite['s_id']))}" <if condition="$Think.get.subsite_id eq $subsite['s_id']">class="select"</if>>{$subsite.s_sitename}</a>
+        </volist>
+      <else/>
+        <volist name="subsite_list" id="subsite">
+          <if condition="in_array($subsite['s_id'],$visitor['subsite'])">
+            <a href="{:P(array('subsite_id'=>$subsite['s_id']))}" <if condition="$Think.get.subsite_id eq $subsite['s_id']">class="select"</if>>{$subsite.s_sitename}</a>
+          </if>
+        </volist>
+      </if>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+</div>
+</notempty>
+ <div class="seltpye_x">
+    <div class="left">举报时间</div>  
+    <div class="right">
+    <a href="{:P(array('settr'=>''))}" <if condition="$Think.get.settr eq ''">class="select"</if>>不限</a>
+    <a href="{:P(array('settr'=>'3'))}" <if condition="$Think.get.settr eq '3'">class="select"</if>>三天内</a>
+    <a href="{:P(array('settr'=>'7'))}" <if condition="$Think.get.settr eq '7'">class="select"</if>>一周内</a>
+    <a href="{:P(array('settr'=>'30'))}" <if condition="$Think.get.settr eq '30'">class="select"</if>>一月内</a>
+    <a href="{:P(array('settr'=>'180'))}" <if condition="$Think.get.settr eq '180'">class="select"</if>>半年内</a>
+    <a href="{:P(array('settr'=>'360'))}" <if condition="$Think.get.settr eq '360'">class="select"</if>>一年内</a>
+    <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+</div>
+ <div class="seltpye_x">
+    <div class="left">举报类型</div>  
+    <div class="right">
+    <a href="{:P(array('type'=>1))}" <if condition="$Think.get.type eq 1 or $Think.get.type eq ''">class="select"</if>>职位<if condition="$count[0]"><span>({$count[0]})</span></if></a>
+    <a href="{:P(array('type'=>2))}" <if condition="$Think.get.type eq 2">class="select"</if>>简历<if condition="$count[1]"><span>({$count[1]})</span></if></a>
+    <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="seltpye_x">
+    <div class="left">投诉类型</div>  
+    <div class="right">
+    <a href="{:P(array('report_type'=>''))}" <if condition="$Think.get.report_type eq ''">class="select"</if>>不限</a>
+    <volist name="type_arr" id="vo">
+    <a href="{:P(array('report_type'=>$key))}" <if condition="$Think.get.report_type eq $key">class="select"</if>>{$vo}</a>
+    </volist>
+    <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="seltpye_x">
+    <div class="left">核实情况</div>  
+    <div class="right">
+    <a href="{:P(array('audit'=>''))}" <if condition="$Think.get.audit eq ''">class="select"</if>>不限</a>
+    <a href="{:P(array('audit'=>'1'))}" <if condition="$Think.get.audit eq '1'">class="select"</if>>未审核</a>
+    <a href="{:P(array('audit'=>'2'))}" <if condition="$Think.get.audit eq '2'">class="select"</if>>属实</a>
+    <a href="{:P(array('audit'=>'3'))}" <if condition="$Think.get.audit eq '3'">class="select"</if>>不属实</a>
+    <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+</div>
+  <form id="form1" name="form1" method="post" action="{:U('report_audit')}">
+    <input type="hidden" name="type" value="{$Think.get.type|default=1}">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0"  id="list" class="link_lan">
+    <tr>
+      <td width="15%"  class="admin_list_tit admin_list_first" >
+        <label id="chkAll">
+          <input type="checkbox" name="chkAll"  id="chk" title="全选/反选" />
+          <if condition="$Think.get.type eq 2">
+            投诉简历
+          <else/>
+            投诉职位
+          </if>
+        </label>
+      </td>
+        <td width="180" align="center"  class="admin_list_tit">核实情况</td>
+        <td width="180" align="center"  class="admin_list_tit">投诉类型</td>
+        <td class="admin_list_tit">投诉内容</td>
+        <td width="180" align="center"  class="admin_list_tit">投诉者</td>
+        <td width="160" align="center"   class="admin_list_tit">投诉时间</td>
+  
+      </tr>
+   <volist name="list" id="vo">
+   <tr> 
+      <td  class="admin_list admin_list_first">
+      <input name="id[]" type="checkbox" id="id" value="{$vo.id}" />
+      <if condition="$Think.get.type eq 2">
+        <a href="{:url_rewrite('QS_resumeshow',array('id'=>$vo['resume_id']))}" target="_blank">{$vo.resume_realname}</a> 
+      <else/>
+        <a href="{:url_rewrite('QS_jobsshow',array('id'=>$vo['jobs_id']),$vo['subsite_id'])}" target="_blank">{$vo.jobs_name}</a>
+      </if>  
+      </td>
+          <td align="center"  class="admin_list"><if condition="$vo['audit'] eq 2">属实<elseif condition="$vo['audit'] eq 3"/>不属实<else /><font color="red">未审核</font></if></td>
+          <td align="center"  class="admin_list">{$type_arr[$vo['report_type']]}</td>
+          <td  class="admin_list vtip" title="{$vo.content|nl2br}" >{$vo.content}</td>
+      <td align="center"  class="admin_list">{$vo.username}</td>
+        <td align="center"  class="admin_list">{:admin_date($vo['addtime'])}</td>
+      </tr>
+   </volist>
+  </table>
+    <if condition="!$list">
+<div class="admin_list_no_info">没有任何信息！</div>
+</if>
+<table width="100%" border="0" cellspacing="10" cellpadding="0" class="admin_list_btm">
+      <tr>
+        <td>
+        <input name="verify" type="button" class="admin_submit" id="ButVerify" value="审核"/>
+        <input name="del" type="button" class="admin_submit" id="ButDel" value="删除所选" />
+    </td>
+        <td width="305" align="right">    
+      </td>
+      </tr>
+  </table>
+  <span id="OpVerify"></span>
+  </form>
+<div class="qspage">{$page}</div>
+
+<div style="display:none" id="VerifySet">
+<table width="400" border="0" align="center" cellpadding="0" cellspacing="6">
+    <tr>
+      <td width="20" height="30">&nbsp;</td>
+      <td height="30"><strong  style="color:#0066CC; font-size:14px;">将所选信息置为：</strong></td>
+    </tr>
+        <tr>
+      <td width="27" height="25">&nbsp;</td>
+      <td>
+                      <label><input name="audit" type="radio" value="2" checked="checked"  />
+                      属实</label></td>
+    </tr>
+    <tr>
+      <td width="27" height="25">&nbsp;</td>
+      <td>
+                      <label><input type="radio" name="audit" value="3"  />
+                       不属实</label></td>
+    </tr>
+    <tr>
+      <td height="25">&nbsp;</td>
+      <td>
+    <input type="submit" value="确定" class="admin_submit"/>
+ </td>
+    </tr>
+  </table>
+  </div>
+
+</div>
+<include file="public:footer" />
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#ButVerify").QSdialog({
+      DialogTitle:"请选择",
+      DialogContent:"#VerifySet",
+      DialogContentType:"id",
+      DialogAddObj:"#OpVerify", 
+      DialogAddType:"html"  
+    });
+    //删除
+    $("#ButDel").click(function(){
+      if (confirm('你确定要删除吗？'))
+      {
+        $("form[name=form1]").attr("action","{:U('delete')}");
+        $("form[name=form1]").submit()
+      }
+    });
+  });
+</script>
+</body>
+</html>

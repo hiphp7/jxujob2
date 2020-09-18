@@ -1,0 +1,27 @@
+<include file="public:header" />
+<div class="toptit">添加简历醒目标签内容</div>
+    <form id="form1" name="form1" method="post" action="{:U('Personal/tag_category_add')}">
+    <table width="800" border="0" cellpadding="3" cellspacing="3">
+      <tr>
+        <td width="120" align="right">标签名称：</td>
+        <td width="391"><input name="name" type="text" class="input_text_200" id="name" value=""/></td>
+      </tr>
+      <tr>
+        <td align="right">排序：</td>
+        <td><input name="sort" type="text" class="input_text_50" id="sort" maxlength="10" value=""/>
+         <span class="admin_note">(数字越大越靠前) </span></td>
+      </tr>
+      <tr>
+        <td align="center">&nbsp;</td>
+        <td height="50" align="left"><input type="submit" name="Submit3" value="提交" class="admin_submit"   />
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+             <input name="submit22" type="button" class="admin_submit"    value="返 回" onclick="Javascript:window.history.go(-1)"/>
+    </td>
+      </tr>
+    </table>
+  
+    </form>
+    </div>
+<include file="public:footer" />
+</body>
+</html>

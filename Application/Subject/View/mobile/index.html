@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <qscms:subject 列表名="list" 分页显示="1" 填补字符="…" 摘要长度="160" 显示数目="15"/>
+        <include file="Mobile@public/meta" />
+        <link rel="stylesheet" href="{$tpl_public_dir}/css/subject_new.css?v={:strtotime('today')}">
+    </head>
+    <body>
+        <include file="Mobile@public/header" />
+        <script>showAndroidTopBack();</script>
+        <div class="sub_b2"></div>
+        <div class="sub_b3">
+            <volist name="list['list']" id="vo">
+                <div class="b_item" onclick="window.location='{$vo.url}'">
+                    <img src="{$vo.img}" alt="" class="face_img">
+                    <a href="{$vo.url}" class="b_name font13">{$vo.title}</a>
+                    <div class="b_date font12">{:date('m月d日',$vo['holddate_start'])}-{:date('m月d日',$vo['holddate_end'])}</div>
+                    <div class="b_other font12">
+                        <div class="b_ot">{$vo.com_count}个</div>
+                        <div class="b_ot">{$vo.job_count}个</div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </volist>
+        </div>
+        <div class="qspage">{$list['page']}</div>
+        <include file="Mobile@public/footer_min" />
+        <script type="text/javascript" charset="utf-8" src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+        <script>
+            wx.config({
+                // debug: true,
+                appId: '{$signPackage.appId}',
+                timestamp: '{$signPackage.timestamp}',
+                nonceStr: '{$signPackage.nonceStr}',
+                signature: '{$signPackage.signature}',
+                jsApiList: [
+                    // 所有要调用的 API 都要加到这个列表中
+                    "onMenuShareTimeline",
+                    "onMenuShareAppMessage",
+                    "onMenuShareQQ",
+                    "onMenuShareWeibo"
+                ]
+            });
+            wx.ready(function () {
+                var linkUrl = "{:build_mobile_url(array('c'=>'subject','a'=>'index'))}";//放链接
+                var title = "{:C('qscms_site_name')}-网络招聘会汇总";
+                var desc = "{$info['seo_keywords']}";
+                var imgUrl = "{:attach(C('qscms_logo_home'),'resource')}";//图片链接
+
+                wx.onMenuShareTimeline({
+                    title: title, // 分享标题
+                    desc: desc, // 分享描述
+                    link: linkUrl, // 分享链接
+                    imgUrl: imgUrl, // 分享图标
+                    success: function () {
+                    },
+                    cancel: function () {
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+                wx.onMenuShareAppMessage({
+                    title: title, // 分享标题
+                    desc: desc, // 分享描述
+                    link: linkUrl, // 分享链接
+                    imgUrl: imgUrl, // 分享图标
+                    type: '', // 分享类型,music、video或link，不填默认为link
+                    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                    success: function () {
+                    },
+                    cancel: function () {
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+                wx.onMenuShareQQ({
+                    title: title, // 分享标题
+                    desc: desc, // 分享描述
+                    link: linkUrl, // 分享链接
+                    imgUrl: imgUrl, // 分享图标
+                    success: function () {
+                    },
+                    cancel: function () {
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+                wx.onMenuShareWeibo({
+                    title: title, // 分享标题
+                    desc: desc, // 分享描述
+                    link: linkUrl, // 分享链接
+                    imgUrl: imgUrl, // 分享图标
+                    success: function () {
+                    },
+                    cancel: function () {
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

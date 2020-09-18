@@ -1,0 +1,108 @@
+<include file="Admin@default/public/header" />
+<script type="text/javascript" src="../public/js/fusioncharts/fusioncharts.js"></script>
+<script type="text/javascript" src="../public/js/fusioncharts/fusioncharts.theme.fint.js"></script>
+<div class="data-chart">
+        <div class="clearfix">
+              <div id="add_personal_member_line">加载中...</div>
+              <script type="text/javascript">
+                FusionCharts.ready(function(){
+                  var revenueChart = new FusionCharts({
+                      "type": "line",//
+                      "renderAt": "add_personal_member_line",
+                      "width": "90%",
+                      "height": "400",
+                      "dataFormat": "json",
+                      "dataSource":  {
+                        "chart": {
+                          "slantLabels":"1",
+                          "caption": "求职新增曲线图",
+                          "xAxisName": "日期",
+                          "yAxisName": "求职者数量",
+                         "numbersuffix":"人",
+                          "theme": "fint"
+                       },
+                       "data": {$add_personal_member_line}
+                    }
+
+                });
+              revenueChart.render();
+              });
+
+            </script>
+            <div id="add_jobs_line">加载中...</div>
+              <script type="text/javascript">
+                FusionCharts.ready(function(){
+                  var revenueChart = new FusionCharts({
+                      "type": "line",//
+                      "renderAt": "add_jobs_line",
+                      "width": "90%",
+                      "height": "400",
+                      "dataFormat": "json",
+                      "dataSource":  {
+                        "chart": {
+                          "slantLabels":"1",
+                          "caption": "岗位新增曲线图",
+                          "xAxisName": "日期",
+                          "yAxisName": "岗位数量",
+                         "numbersuffix":"个",
+                          "theme": "fint"
+                       },
+                       "data": {$add_jobs_line}
+                    }
+
+                });
+              revenueChart.render();
+              });
+
+            </script>
+             <div id="exp_pie" style="margin:10px 20px;float:left;">加载中...</div>
+              <script type="text/javascript">
+                FusionCharts.ready(function(){
+                  var revenueChart = new FusionCharts({
+                      "type": "pie3d",//
+                      "renderAt": "exp_pie",
+                      "width": "450",
+                      "height": "300",
+                      "dataFormat": "json",
+                      "dataSource":  {
+                        "chart": {
+                          "caption": "个人信息-工作经验",
+                          "numbersuffix":"%",
+                          "theme": "fint"
+                       },
+                       "data": {$exp_pie}
+                    }
+
+                });
+              revenueChart.render();
+              });
+              </script>
+              <div id="edu_pie" style="margin:10px 20px;float:left;">加载中...</div>
+              <script type="text/javascript">
+                FusionCharts.ready(function(){
+                  var revenueChart = new FusionCharts({
+                      "type": "pie3d",//
+                      "renderAt": "edu_pie",
+                      "width": "450",
+                      "height": "300",
+                      "dataFormat": "json",
+                      "dataSource":  {
+                        "chart": {
+                          "caption": "个人信息-学历",
+                          "numbersuffix":"%",
+                          "theme": "fint"
+                       },
+                       "data": {$edu_pie}
+                    }
+
+                });
+              revenueChart.render();
+              });
+              </script>
+        </div>
+      </div>
+      <div class="clear"></div>
+</div>
+<include file="Admin@default/public/footer" />
+</body>
+</html>

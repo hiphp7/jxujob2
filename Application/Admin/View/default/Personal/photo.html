@@ -1,0 +1,381 @@
+<include file="public:header" />
+  <div class="toptip link_g">
+    <h2>提示：</h2>
+    <p>
+      可见简历是指：审核通过、审核中等能正常显示的简历。<br />
+	  不可见简历指：审核未通过等网站前台不显示的简历。<br />
+</p>
+  </div>
+<div class="seltpye_y">
+  <div class="tit link_lan">
+    <strong>简历列表</strong><span>(共找到{$total}条)</span>
+    <a href="{:U('index')}">[恢复默认]</a>
+    <div class="pli link_bk"><u>每页显示：</u>
+      <a href="{:P(array('pagesize'=>10))}" <if condition="!$Think.get.pagesize || $Think.get.pagesize eq '10'">class="select"</if>>10</a>
+      <a href="{:P(array('pagesize'=>20))}" <if condition="$Think.get.pagesize eq '20'">class="select"</if>>20</a>
+      <a href="{:P(array('pagesize'=>30))}" <if condition="$Think.get.pagesize eq '30'">class="select"</if>>30</a>
+      <a href="{:P(array('pagesize'=>60))}" <if condition="$Think.get.pagesize eq '60'">class="select"</if>>60</a>
+      <div class="clear"></div>
+    </div>
+  </div>
+  <div class="list">
+    <div class="t">可见状态</div>
+    <div class="txt link_lan">
+      <a href="{:P(array('tabletype'=>0))}" <if condition="$Think.get.tabletype eq '' || $Think.get.tabletype eq '0'">class="select"</if>>不限<span>({$count[0]})</span></a>
+      <a href="{:P(array('tabletype'=>1))}" <if condition="$Think.get.tabletype eq 1">class="select"</if>>可见简历<span>({$count[1]})</span></a>
+      <a href="{:P(array('tabletype'=>2))}" <if condition="$Think.get.tabletype eq 2">class="select"</if>>非可见简历<span>({$count[2]})</span></a>
+    </div>
+  </div>
+  <div class="list">
+    <div class="t">审核状态</div>
+    <div class="txt link_lan">
+      <a href="{:P(array('audit'=>''))}" <if condition="$Think.get.audit eq ''">class="select"</if>>不限</a>
+	    <a href="{:P(array('audit'=>'2'))}" <if condition="$Think.get.audit eq '2'">class="select"</if>>等待审核<span>({$count[4]})</span></a>
+      <a href="{:P(array('audit'=>'1'))}" <if condition="$Think.get.audit eq '1'">class="select"</if>>审核通过<span>({$count[3]})</span></a>
+    
+	  <if condition="$Think.get.tabletype neq '1'">
+      <a href="{:P(array('audit'=>'3'))}" <if condition="$Think.get.audit eq '3'">class="select"</if>>审核未通过<span>({$count[5]})</span></a> </if>
+    </div>
+  </div>
+  <div class="list">
+    <div class="t">照片审核</div>
+    <div class="txt link_lan">
+      <a href="{:P(array('photo_audit'=>''))}" <if condition="$Think.get.photo_audit eq ''">class="select"</if>>不限({$count[6]})</a>
+      <a href="{:P(array('photo_audit'=>'2'))}" <if condition="$Think.get.photo_audit eq '2'">class="select"</if>>等待审核<span <if condition="$count[7] gt 0">style="color:#FF0000"</if>>({$count[7]})</span></a>
+      <a href="{:P(array('photo_audit'=>'1'))}" <if condition="$Think.get.photo_audit eq '1'">class="select"</if>>审核通过<span>({$count[8]})</span></a>
+      <a href="{:P(array('photo_audit'=>'3'))}" <if condition="$Think.get.photo_audit eq '3'">class="select"</if>>审核未通过<span>({$count[9]})</span></a>
+    </div>
+  </div>
+  <div class="list" >
+    <div class="t">添加时间</div>
+    <div class="txt link_lan">
+      <a href="{:P(array('addtimesettr'=>''))}" <if condition="$Think.get.addtimesettr eq ''">class="select"</if>>不限</a>
+      <a href="{:P(array('addtimesettr'=>'3'))}" <if condition="$Think.get.addtimesettr eq '3'">class="select"</if>>三天内</a>
+      <a href="{:P(array('addtimesettr'=>'7'))}" <if condition="$Think.get.addtimesettr eq '7'">class="select"</if>>一周内</a>
+      <a href="{:P(array('addtimesettr'=>'30'))}" <if condition="$Think.get.addtimesettr eq '30'">class="select"</if>>一月内</a>
+    </div>
+  </div>
+  <div class="list" >
+    <div class="t">刷新时间</div>
+    <div class="txt link_lan">
+      <a href="{:P(array('settr'=>''))}" <if condition="$Think.get.settr eq ''">class="select"</if>>不限</a>
+      <a href="{:P(array('settr'=>'3'))}" <if condition="$Think.get.settr eq '3'">class="select"</if>>三天内</a>
+      <a href="{:P(array('settr'=>'7'))}" <if condition="$Think.get.settr eq '7'">class="select"</if>>一周内</a>
+      <a href="{:P(array('settr'=>'30'))}" <if condition="$Think.get.settr eq '30'">class="select"</if>>一月内</a>
+    </div>
+  </div>
+  <div class="list" >
+    <div class="t">是否委托</div>
+    <div class="txt link_lan">
+      <a href="{:P(array('entrust'=>''))}" <if condition="$Think.get.entrust eq ''">class="select"</if>>不限</a>
+      <a href="{:P(array('entrust'=>'1'))}" <if condition="$Think.get.entrust eq '1'">class="select"</if>>一周</a>
+      <a href="{:P(array('entrust'=>'2'))}" <if condition="$Think.get.entrust eq '2'">class="select"</if>>二周</a>
+      <a href="{:P(array('entrust'=>'3'))}" <if condition="$Think.get.entrust eq '3'">class="select"</if>>一个月</a>
+    </div>
+  </div>
+  <notempty name="apply['Subsite']">
+  <div class="list" >
+      <div class="t">所属分站</div>
+      <qscms:subsite 列表名="subsite_list"/>
+      <div class="txt link_lan">
+        <a href="{:P(array('subsite_id'=>''))}" <if condition="$Think.get.subsite_id eq ''">class="select"</if>>不限</a>
+        <if condition="$visitor['role_id'] eq 1">
+          <volist name="subsite_list" id="subsite">
+            <a href="{:P(array('subsite_id'=>$subsite['s_id']))}" <if condition="$Think.get.subsite_id eq $subsite['s_id']">class="select"</if>>{$subsite.s_sitename}</a>
+          </volist>
+        <else/>
+          <volist name="subsite_list" id="subsite">
+            <if condition="in_array($subsite['s_id'],$visitor['subsite'])">
+              <a href="{:P(array('subsite_id'=>$subsite['s_id']))}" <if condition="$Think.get.subsite_id eq $subsite['s_id']">class="select"</if>>{$subsite.s_sitename}</a>
+            </if>
+          </volist>
+        </if>
+      </div>
+  </div>
+  </notempty>
+  <div class="clear"></div>
+</div>
+<form id="form1" name="form1" enctype="multipart/form-data" method="post" action="{:U('set_audit')}">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" class="link_lan">
+    <tr>
+      <td class="admin_list_tit admin_list_first" >
+        <label id="chkAll"><input type="checkbox" name="" title="全选/反选" id="chk"/>姓名</label>   </td>
+        <td   align="center"  width="140" class="admin_list_tit">完整指数 </td>
+        <td align="center"  width="8%"  class="admin_list_tit">审核状态</td>
+        <td align="center"  width="8%"  class="admin_list_tit">照片</td>
+        <td   align="center" width="8%" class="admin_list_tit">公开</td>
+        <td align="center" width="12%"  class="admin_list_tit">添加时间</td>
+        <td align="center"  width="12%"  class="admin_list_tit">刷新时间</td>
+        <td align="center"  width="100"  class="admin_list_tit">委托状态</td>
+        <td  align="center"  width="160" class="admin_list_tit">操作</td>
+    </tr>
+      <volist name="list" id="vo">
+      <tr>
+        <td  class="admin_list admin_list_first" >
+          <input name="id[]" type="checkbox" id="id" value="{$vo['id']}"  />
+          <a href="{$vo['resume_url']}" target="_blank">{$vo['fullname']}</a>
+          <if condition="$vo['photo_img'] neq ''">
+		  <span class="pictip vtip" title="<img src='{:attach($vo['photo_img'],'avatar')}'  border=0  align=absmiddle>">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+           </if>
+        </td>
+        <td align="center"  class="admin_list">
+          <div style="width:100px;text-align:left; background-color:#CCCCCC; position:relative; font-size:0px">
+            <div style="background-color: #99CC00; height:13px; color:#990000;width:{$vo['complete_percent']}%;font-size:0px"></div>
+            <div style="position:absolute;top:0px; left:40%; font-size:9px;">{$vo['complete_percent']}%</div>
+          </div> </td>
+          <td align="center"  class="admin_list">
+            <if condition="$vo['audit'] eq '1'">审核通过</if>
+            <if condition="$vo['audit'] eq '2'"><span style="color: #FF6600">等待审核</span></if>
+            <if condition="$vo['audit'] eq '3'"><span style="color: #666666">审核未通过</span></if>
+			<span class="view audit_log" title="查看日志" parameter="type=resume_id&id={$vo['id']}">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          </td>
+          <td align="center"  class="admin_list">
+            <if condition="$vo['photo_audit'] eq '1'">审核通过</if>
+            <if condition="$vo['photo_audit'] eq '2'"><span style="color: #FF6600">等待审核</span></if>
+            <if condition="$vo['photo_audit'] eq '3'"><span style="color: #666666">审核未通过</span></if>
+          </td>
+          <td align="center"  class="admin_list">
+            <if condition="$vo['display'] eq '1'">
+            公开
+            <else />
+            保密
+            </if>
+          </td>
+          <td align="center"  class="admin_list">{:admin_date($vo['addtime'])}</td>
+          <td align="center"  class="admin_list">{:admin_date($vo['refreshtime'])}</td>
+		  <td align="center"  class="admin_list">
+		  
+          <if condition="$vo['entrust'] eq '0'">
+		  无
+		   <elseif condition="$vo['entrust'] eq '1'"/>
+		   <span class="entrustinfo" uid="{$vo['uid']}" rid="{$vo['id']}">一周</span>
+		   <elseif condition="$vo['entrust'] eq '2'"/>
+		   <span class="entrustinfo" uid="{$vo['uid']}" rid="{$vo['id']}">二周</span>
+		    <else />
+			<span class="entrustinfo" uid="{$vo['uid']}" rid="{$vo['id']}">一个月</span>
+			</if>
+        </td>
+          <td align="center"  class="admin_list">
+            <a href="{:U('resume_show',array('id'=>$vo['id']))}" >查看</a>
+            &nbsp;
+            <a class="userinfo"  parameter="uid={$vo['uid']}" href="javascript:void(0);" hideFocus="true">管理</a>
+            &nbsp;
+            <a class="userinfo"  href="{:U('Personal/resume_delete',array('id'=>$vo['id']))}" onClick="return confirm('您确定删除吗?')">删除</a>
+          </td>
+        </tr>
+       </volist>
+      </table>
+      <span id="OpAudit"></span>
+      <span id="OpPhotoresume"></span>
+      <span id="OpImportresume"></span>
+    </form>
+    <if condition="!$list">
+    <div class="admin_list_no_info">没有任何信息！</div>
+    </if>
+    <table width="100%" border="0" cellspacing="10" cellpadding="0" class="admin_list_btm">
+      <tr>
+        <td>
+          <input type="button" class="admin_submit" id="ButPhotoAudit" value="审核照片" />
+          <input type="button" class="admin_submit" id="ButAudit" value="审核简历" />
+          <input type="button" class="admin_submit" id="Butrefresh" value="刷新"/>
+          <input type="button" class="admin_submit" id="ButDel" value="删除"/>
+        </td>
+        <td width="305" align="right">
+          <form id="formseh" name="formseh" method="get" action="?">
+          <input type="hidden" name="m" value="{:C('admin_alias')}">
+          <input type="hidden" name="c" value="{:CONTROLLER_NAME}">
+          <input type="hidden" name="a" value="{:ACTION_NAME}">
+            <div class="seh">
+              <div class="keybox"><input name="key" type="text"   value="{$Think.get.key}" /></div>
+              <div class="selbox">
+                <input name="key_type_cn"  id="key_type_cn" type="text" value="{$Think.get.key_type_cn|default='姓名'}" readonly="true"/>
+                <div>
+                  <input name="key_type" id="key_type" type="hidden" value="{$Think.get.key_type|default='1'}" />
+                  <div id="sehmenu" class="seh_menu">
+                    <ul>
+                      <li id="1" title="姓名">姓名</li>
+                      <li id="2" title="ID">ID</li>
+                      <li id="3" title="UID">UID</li>
+                      <li id="4" title="电话">电话</li>
+                      <!--<li id="5" title="QQ">QQ</li>-->
+                      <li id="6" title="地址">地址</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="sbtbox">
+                <input type="submit" name="" class="sbt" id="sbt" value="搜索"/>
+              </div>
+              <div class="clear"></div>
+            </div>
+          </form>
+        </td>
+      </tr>
+    </table>
+    <div class="qspage">{$page}</div>
+  </div>
+  <div id="AuditSetPhoto" style="display: none" >
+    <table width="400" border="0" align="center" cellpadding="0" cellspacing="6" >
+      <tr>
+        <td height="30">&nbsp;</td>
+        <td height="30"><strong  style="color:#0066CC; font-size:14px;">将所选简历设置为：</strong></td>
+      </tr>
+      <tr>
+        <td width="40" height="25">&nbsp;</td>
+        <td>
+          <label >
+            <input name="photo_audit" type="radio" value="1" checked="checked" id="success" />
+          照片审核通过 </label>   </td>
+        </tr>
+        <tr>
+          <td width="40" height="25">&nbsp;</td>
+          <td width="400"><label >
+            <input type="radio" name="photo_audit" value="3"  id="fail"/>
+          照片审核未通过</label></td>
+        </tr>
+        <tr>
+          <td width="50" height="25">&nbsp;</td>
+          <td>
+            <label><input type="checkbox" name="pms_notice" value="1"  checked="checked"/>
+            站内信通知
+          </label></td>
+        </tr>
+        <tr id="reason">
+          <td width="40" height="25" >备注：</td>
+          <td>
+            <textarea name="reason" id="reason" cols="40" style="font-size:12px"></textarea>
+          </td>
+        </tr>
+        <tr>
+          <td height="25">&nbsp;</td>
+          <td><span style="border-top: 1px #A3C7DA solid;">
+            <input type="button" value="确定" class="set_photo_audit admin_submit">
+          </span></td>
+        </tr>
+      </table>
+    </div>
+  <div id="AuditSet" style="display: none" >
+    <table width="400" border="0" align="center" cellpadding="0" cellspacing="6" >
+      <tr>
+        <td height="30">&nbsp;</td>
+        <td height="30"><strong  style="color:#0066CC; font-size:14px;">将所选简历设置为：</strong></td>
+      </tr>
+      <tr>
+        <td width="40" height="25">&nbsp;</td>
+        <td>
+          <label >
+            <input name="audit" type="radio" value="1" checked="checked" id="success" />
+          审核通过 </label>   </td>
+        </tr>
+        <tr>
+          <td width="40" height="25">&nbsp;</td>
+          <td width="400"><label >
+            <input type="radio" name="audit" value="3"  id="fail"/>
+          审核未通过</label></td>
+        </tr>
+        <tr>
+          <td width="50" height="25">&nbsp;</td>
+          <td>
+            <label><input type="checkbox" name="pms_notice" value="1"  checked="checked"/>
+            站内信通知
+          </label></td>
+        </tr>
+        <tr id="reason">
+          <td width="40" height="25" >备注：</td>
+          <td>
+            <textarea name="reason" id="reason" cols="40" style="font-size:12px"></textarea>
+          </td>
+        </tr>
+        <tr>
+          <td height="25">&nbsp;</td>
+          <td><span style="border-top: 1px #A3C7DA solid;">
+            <input type="submit" name="set_audit" value="确定" class="admin_submit">
+          </span></td>
+        </tr>
+      </table>
+    </div>
+    <div id="ImportSet" style="display: none" >
+      <table width="400" border="0" align="center" cellpadding="0" cellspacing="6" >
+        <tr>
+          <input type="file" name="file"  style="height:21px; width:210px; border:1px #999999 solid" />
+        </tr>
+        <tr>
+          <td height="25">&nbsp;</td>
+          <td><span style="border-top: 1px #A3C7DA solid;">
+            <input type="button" name="set_import" id="set_import" value="确定" class="admin_submit">
+          </span></td>
+        </tr>
+      </table>
+    </div>
+   
+    <include file="public:footer" />
+    
+    <script type="text/javascript" src="__ADMINPUBLIC__/js/jquery.entrustinfotip-min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function()
+    {
+      $(".ajax_send_sms").QSdialog({
+    DialogTitle:"发送短信",
+    DialogContentType:"url",
+    DialogContent:"{:U('Ajax/ajax_send_sms')}&"
+    });
+  $(".ajax_send_email").QSdialog({
+    DialogTitle:"发送邮件",
+    DialogContentType:"url",
+    DialogContent:"{:U('Ajax/ajax_send_email')}&"
+    });
+    showmenu("#key_type_cn","#sehmenu","#key_type");
+    $("#ButPhotoAudit").QSdialog({
+    DialogAddObj:"#OpPhotoresume",
+    DialogTitle:"请选择",
+    DialogContent:"#AuditSetPhoto",
+    DialogContentType:"id"
+    });
+    $("#ButAudit").QSdialog({
+    DialogAddObj:"#OpAudit",
+    DialogTitle:"请选择",
+    DialogContent:"#AuditSet",
+    DialogContentType:"id"
+    });
+	 $(".userinfo").QSdialog({
+  DialogTitle:"管理",
+  DialogContentType:"url",
+  DialogContent:"{:U('ajax/userinfo')}&"
+  });
+  $(".audit_log").QSdialog({
+  DialogTitle:"审核日志",
+  DialogContentType:"url",
+  DialogContent:"{:U('ajax/audit_log')}&"
+  });
+    //点击批量删除
+    $("#ButDel").click(function(){
+    if (confirm('你确定要删除吗？'))
+    {
+    $("form[name=form1]").attr("action","{:U('resume_delete')}");
+    $("form[name=form1]").submit()
+    }
+    });
+    $("#Butrefresh").click(function(){
+    $("form[name=form1]").attr("action","{:U('refresh')}");
+    $("form[name=form1]").submit()
+    });
+    //纵向列表排序
+    $(".listod .txt").each(function(i){
+    var li=$(this).children(".select");
+    var htm="<a href=\""+li.attr("href")+"\" class=\""+li.attr("class")+"\">"+li.text()+"</a>";
+    li.detach();
+    $(this).prepend(htm);
+    });
+    $("#not_audit").click(function(){
+    $("#is_del_img").show();
+    });
+    $("#yes_audit").click(function(){
+    $("#is_del_img").hide();
+    });
+    $('.set_photo_audit').live('click',function(){
+      $('#form1').attr('action',"{:U('set_photo_audit')}").submit();
+    });
+    });
+    </script>
+  </body>
+</html>

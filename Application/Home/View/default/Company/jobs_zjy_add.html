@@ -1,0 +1,1294 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<include file="public:meta" />
+		<link href="../public/css/company/common.css" rel="stylesheet" type="text/css" />
+		<!-- <link href="../public/css/company/company_jobs.css" rel="stylesheet" type="text/css" /> -->
+		<link href="../public/css/company/company_ajax_dialog.css" rel="stylesheet" type="text/css" />
+        <link href="../public/css/jobmoney.css" rel="stylesheet" type="text/css" />
+		<script src="../public/js/company/jquery.common.js" type="text/javascript" language="javascript"></script>
+		<qscms:load type="category"/>
+		<link rel="stylesheet" type="text/css" href="../public/zjy/css/having.css">
+<link rel="stylesheet" type="text/css" href="../public/zjy/css/job.css">
+<script type="text/javascript" src="../public/zjy/js/jquery.min.js"></script>
+<link href="../public/zjy/css/select2.min.css" rel="stylesheet" />
+<script src="../public/zjy/js/select2.min.js"></script>
+<script src="../public/zjy/js/zh-CN.js"></script>
+<script type="text/javascript" src="../public/zjy/js/drop.js"></script>
+<link rel="stylesheet" href="../public/zjy/css/sweetalert.css">
+<script type="text/javascript" src="../public/zjy/js/sweetalert.min.js"></script>
+    <script type="text/javascript" src="../public/zjy/js/addjob.js"></script>
+    <script type="text/javascript" src="../public/zjy/laydate/laydate.js"></script>
+    <script type="text/javascript" src="../public/zjy/js/jquery.dropdown.js"></script>
+    <script type="text/javascript" src="../public/zjy/js/jquery.listitem.js"></script>
+	
+<style type="text/css">
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove
+    {
+    float: right;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice
+    {
+    background-color: beige;
+}
+.select2-results__message {
+    color: red;
+}
+</style>
+	</head>
+	<body>
+		<include file="index_header" />
+		<div class="user_main">
+			<div class="mleft">
+				<include file="left_zjy_jobs" /> 
+			</div>
+<div class="mright">
+            <div class="user_pagetitle">
+                <div class="pat_l">发布职位</div>
+                <div class="pat_r">
+                    (注：带&nbsp;<span class="asterisk"></span> 号为必填项)
+                </div>
+                <div class="clear"></div>
+            </div>
+
+            <div class="modTitle">职位信息</div>
+            <form id="jobs_form" method="post">
+            <input type="hidden" id="shtyxydm" value="{$shtyxydm}"/>
+            <input type="hidden" id="company_id" value="{$company_id}"/>
+
+            <input type="hidden" id="dwyhm" value=""/>
+            <input type="hidden" id="zpdw" value="{$zpdw}"/>
+            <input type="hidden" id="zpdwlb" value="机关"/>
+            <input type="hidden" id="zpdwlbdm" value="10"/>
+            <input type="hidden" id="schoolcode" value=""/>
+            <input type="hidden" id="sfxwgk" value="1"/>
+            
+            <input type="hidden" id="url" value="/Precision"/>
+        
+                <div class="mod J_focus">
+                   <div class="mb16">
+                        <div class="modKey" style="color:red;">
+                            <span></span>招聘信息有效期：
+                        </div>
+                        <div class="modVal" style="color:red;">
+                            <div class="fl">
+                                <div>
+                                    从&nbsp;
+                                    <input type="text" id="startdatetest" class="input_245_34 " style="width: 193px;" value="">
+                                    &nbsp;&nbsp;&nbsp;到 &nbsp;&nbsp;&nbsp;
+                                    <input type="text" id="enddatetest" class="input_245_34 " style="width: 193px;" value="">
+                                    有效
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="mb16">
+                        <div class="modKey">
+                            <span></span>职位名称：
+                        </div>
+                        <div class="modVal">
+                            <div class="fl">
+                                <input name="zpzw" id="zpzw" type="text"
+                                    class="input_245_34 fl" >
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    
+                    <div class="mb16">
+                        <div class="modKey">
+                            <span></span>工作区域：
+                        </div>
+                        <div class="modVal">
+                            <div class="fl">
+                                <select class="js-example-basic-multiple" name="states[]"
+                                    multiple="multiple" id="gzqyjob" style="width: 244px;">
+                                </select> <span>(输入关键字查询，并且可以多选)</span>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    
+                    
+                        <div class="mb16">
+                        <div class="modKey">
+                            <span></span>学历：
+                        </div>
+                        <div class="modVal">
+                            <div class="fl">
+                                <div
+                                        class="select_input w113 fl mr10 J_hoverinput J_dropdown J_listitme_parent"
+                                        style="">
+                                        <span class="J_listitme_text" id="xlyq"></span>
+                                        <div class="dropdowbox13 J_dropdown_menu">
+                                            <div class="dropdow_inner13">
+                                                <ul class="nav_box" id="xlyqul">
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <input class="J_listitme_code" name="xlyqdm" id="xlyqdm"
+                                            type="hidden" >
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    
+                    
+                    <div class="mb16">
+                        <div class="modKey">
+                            <span></span>专业需求：
+                        </div>
+                        <div class="modVal">
+                            <div class="fl">
+                                <select class="js-example-basic-multiple" name="states[]"
+                                    multiple="multiple" id="zygjz" style="width: 244px;">
+
+                                </select> <span>(输入关键字查询，并且可以多选)</span>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="mb16">
+                        <div class="modKey">
+                            <span></span>招聘职位类别：
+                        </div>
+                        <div class="modVal">
+                            <div class="fl">
+                                <select class="js-example-basic-multiple" name="states[]"
+                                    multiple="multiple" id="zpzwlb" style="width: 244px;">
+                                </select> <span>(输入关键字查询，并且可以多选)</span>
+                            </div>  
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+
+                    <div class="mb16">
+                        <div class="modKey">
+                            <span></span>薪资：
+                        </div>
+                        <div class="modVal">
+                            <div
+                                class="select_input w113 fl mr10 J_hoverinput J_dropdown J_listitme_parent"
+                                style="">
+                                <span class="J_listitme_text" id="xz"></span>
+                                <div class="dropdowbox13 J_dropdown_menu">
+                                    <div class="dropdow_inner13">
+                                        <ul class="nav_box" id="xcdmbul">
+                                        </ul>
+                                    </div>
+                                </div>
+                                <input class="J_listitme_code" name="xzdm" id="xzdm"
+                                    type="hidden" value="">
+                            </div>
+                            <div class="fl">
+                                <div class="modKey">
+                                    <span></span>工作环境：
+                                </div>
+                                <div class="modVal">
+                                        <div
+                                    class="select_input w113 fl mr10 J_hoverinput J_dropdown J_listitme_parent"
+                                    style="">
+                                    <span class="J_listitme_text" id="gzhj"></span>
+                                    <div class="dropdowbox13 J_dropdown_menu">
+                                        <div class="dropdow_inner13">
+                                            <ul class="nav_box" id="environmentul">
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <input class="J_listitme_code" name="gzhjdm" id="gzhjdm"
+                                        type="hidden" >
+                                
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="mb16" id="tsms" style="display: none;">
+                        <div class="modKey">
+                            <span></span>特殊工种描述：
+                        </div>
+                        <div class="modVal">
+                            <textarea name="kjsrgzhjms" id="kjsrgzhjms" cols="" rows="" maxlength="400"  placeholder="最多输入200字"
+                                class="textarea_638_80 w518"></textarea> 
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="mb16">
+                        <div class="modKey">
+                            <span></span>计算机证书：
+                        </div>
+                        <div class="modVal">
+                            <div class="span_font">
+                                <span class="radio-box" id="jsjdj"><font>是</font><font  class="selected">否</font></span>
+                            </div>
+                            <div class="fl">
+                                <div class="modKey">
+                                    <span></span>外语证书：
+                                </div>
+                                <div class="modVal">
+                                    <div class="span_font">
+                                        <span class="radio-box" id="wydj"><font>是</font><font  class="selected">否</font></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+
+
+
+
+
+                    <div class="mb16">
+                        <div class="modKey">
+                            <span></span>驾驶证：
+                        </div>
+                        <div class="modVal">
+                            <div class="span_font">
+                                <span class="radio-box" id="drivinglicense"><font>是</font><font  class="selected">否</font></span>
+                            </div>
+                            <div class="fl">
+                                <div class="modKey">
+                                    <span></span>职业准入资格证：
+                                </div>
+                                <div class="modVal">
+                                    <div class="span_font">
+                                        <span class="radio-box" id="zyzrzgz"><font>是</font><font  class="selected">否</font></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="mb16">
+                        <div class="modKey">
+                            <span></span>性别：
+                        </div>
+                        <div class="modVal">
+                            <div class="span_fonts" style="width: 203px;">
+                                <span class="radio-box" id="xb"> <font class="selected">不限</font>
+                                    <font>男</font> <font>女</font>
+                                </span>
+                            </div>
+                            <div class="fl">
+                                <div class="modKey">
+                                    <span></span>政治面貌：
+                                </div>
+                                <div class="modVal">
+                                    <div
+                                        class="select_input w113 fl mr10 J_hoverinput J_dropdown J_listitme_parent"
+                                        style="">
+                                        <span class="J_listitme_text" id="political"></span>
+                                        <div class="dropdowbox13 J_dropdown_menu">
+                                            <div class="dropdow_inner13">
+                                                <ul class="nav_box" id="politicalul">
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <input class="J_listitme_code" name="politicalid" id="politicalid"
+                                            type="hidden" >
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+
+
+                            <div class="mb16">
+                                <div class="modKey"><span></span>需求人数：</div>
+                                <div class="modVal">
+                                    <div class="span_font">
+                                                        <input name="xqrs" id="xqrs" type="text"
+                                    class="input_245_34 fl" value="" maxlength='3'>
+                                    </div>
+                                      <div class="fl" style="    display: none;">
+                                        <div class="modKey"><span></span>招聘日期范围：</div>
+                                        <div class="modVal">
+                                            <input type="text" id="datetest" class="input_245_34 fl" style="width: 193px;" value="">
+                                        </div>
+                                    </div>
+                                
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+
+
+                    <div class="mb16">
+                        <div class="modKey">
+                            <span></span>职位描述：
+                        </div>
+                        <div class="modVal">
+                            <textarea name="qtyq" id="qtyq" cols="" rows="" style="border-radius: 4px;width:555px;" maxlength="1000" placeholder="最多输入500字"
+                                class="textarea_638_80 w518"></textarea>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+
+                <div class="modTitle">素质要求</div>
+                <div class="mod J_focus">
+                    <div class="mb16">
+                        <div class="modKey">
+                            <span></span>身高要求：
+                        </div>
+                        <div class="modVal">
+                            <div
+                                class="select_input w113 fl mr10 J_hoverinput J_dropdown J_listitme_parent"
+                                style="">
+                                <span class="J_listitme_text" id="height"></span>
+                                <div class="dropdowbox13 J_dropdown_menu">
+                                    <div class="dropdow_inner13">
+                                        <ul class="nav_box" id="statureul">
+
+                                        </ul>
+                                    </div>
+                                </div>
+                                <input class="J_listitme_code" name="heightcode" id="heightcode"
+                                    type="hidden" >
+                            </div>
+                            <div class="fl">
+                                <div class="modKey">
+                                    <span></span>体重要求：
+                                </div>
+                                <div class="modVal">
+                                    <div
+                                        class="select_input w113 fl mr10 J_hoverinput J_dropdown J_listitme_parent"
+                                        style="">
+                                        <span class="J_listitme_text" id="weight"></span>
+                                        <div class="dropdowbox13 J_dropdown_menu">
+                                            <div class="dropdow_inner13">
+                                                <ul class="nav_box" id="weightul">
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <input class="J_listitme_code" name="weightcode" id="weightcode" type="hidden" >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="mb16">
+                        <div class="modKey">
+                            <span></span>左眼视力要求：
+                        </div>
+                        <div class="modVal">
+                            <div
+                                class="select_input w113 fl mr10 J_hoverinput J_dropdown J_listitme_parent"
+                                style="">
+                                <span class="J_listitme_text" id="lefteye"></span>
+                                <div class="dropdowbox13 J_dropdown_menu">
+                                    <div class="dropdow_inner13">
+                                        <ul class="nav_box" id="leftyeul">
+
+                                        </ul>
+                                    </div>
+                                </div>
+                                <input class="J_listitme_code" name="lefteyecode" id="lefteyecode"
+                                    type="hidden" >
+                            </div>
+                            <div class="fl">
+                                <div class="modKey">
+                                    <span></span>右眼视力要求：
+                                </div>
+                                <div class="modVal">
+                                    <div
+                                        class="select_input w113 fl mr10 J_hoverinput J_dropdown J_listitme_parent"
+                                        style="">
+                                        <span class="J_listitme_text" id="righteye"></span>
+                                        <div class="dropdowbox13 J_dropdown_menu">
+                                            <div class="dropdow_inner13">
+                                                <ul class="nav_box" id="righteyeul">
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <input class="J_listitme_code" name="righteyecode" id="righteyecode"
+                                            type="hidden" >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="mb16">
+                        <div class="modKey">
+                            <span></span>是否色盲：
+                        </div>
+                        <div class="modVal">
+                            <div class="span_font">
+                                <span class="radio-box" id="sfsm"><font>是</font><font  class="selected">否</font></span>
+                            </div>
+                            <div class="fl">
+                                <div class="modKey">
+                                    <span></span>是否有身体残疾：
+                                </div>
+                                <div class="modVal">
+                                    <div class="span_font">
+                                        <span class="radio-box" id="sfystcj"><font>是</font><font class="selected">否</font></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="mb16">
+                        <div class="modKey">
+                            <span></span>是否家庭困难：
+                        </div>
+                        <div class="modVal">
+                            <div class="span_font">
+                                <span class="radio-box" id="sfjtkn"><font >是</font><font  class="selected">否</font></span>
+                            </div>
+                            <div class="fl">
+                                <div class="modKey">
+                                    <span></span>政府立档建卡贫困户：
+                                </div>
+                                <div class="modVal">
+                                    <div class="span_font">
+                                        <span class="radio-box" id="sfzfldjkpkh"><font>是</font><font  class="selected">否</font></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="mb16">
+                        <div class="modKey">
+                            <span></span>是否少数民族：
+                        </div>
+                        <div class="modVal">
+                            <div class="span_font">
+                                <span class="radio-box" id="sfssmz"><font>是</font><font  class="selected">否</font></span>
+                            </div>
+                        
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+
+                </div>
+
+
+                <div class="modTitle">职位福利</div>
+                <div class="mod J_focus">
+                    <div class="mb16">
+                        <div class="modKey">
+                            <span></span>5天制工作日：
+                        </div>
+                        <div class="modVal">
+                            <div class="span_font">
+                                <span class="radio-box" id="sf5tgzr"><font>是</font><font class="selected">否</font></span>
+                            </div>
+                            <div class="fl">
+                                <div class="modKey">
+                                    <span></span>6天制工作日：
+                                </div>
+                                <div class="modVal">
+                                    <div class="span_font">
+                                        <span class="radio-box" id="sf6tgzr"><font >是</font><font  class="selected">否</font></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="mb16">
+                        <div class="modKey">
+                            <span></span>倒班制：
+                        </div>
+                        <div class="modVal">
+                            <div class="span_font">
+                                <span class="radio-box" id="sfdbz"><font>是</font><font  class="selected">否</font></span>
+                            </div>
+                            <div class="fl">
+                                <div class="modKey">
+                                    <span></span>8小时并偶尔加班：
+                                </div>
+                                <div class="modVal">
+                                    <div class="span_font">
+                                        <span class="radio-box" id="sf8xsborjb"><font>是</font><font class="selected">否</font></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="mb16">
+                        <div class="modKey">
+                            <span></span>8小时+较多加班：
+                        </div>
+                        <div class="modVal">
+                            <div class="span_font">
+                                <span class="radio-box" id="sf8xsbjdjb"><font >是</font><font class="selected">否</font></span>
+                            </div>
+                            <div class="fl">
+                                <div class="modKey">
+                                    <span></span>签订正式劳动合同：
+                                </div>
+                                <div class="modVal">
+                                    <div class="span_font">
+                                        <span class="radio-box" id="sfdjyhjdzsndht"><font class="selected">是</font><font>否</font></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="mb16">
+                        <div class="modKey">
+                            <span></span>四险一金：
+                        </div>
+                        <div class="modVal">
+                            <div class="span_font">
+                                <span class="radio-box" id="sfdwgmwxyj"><font class="selected">是</font><font>否</font></span>
+                            </div>
+                            <div class="fl">
+                                <div class="modKey">
+                                    <span></span>提供住处：
+                                </div>
+                                <div class="modVal">
+                                    <div class="span_font">
+                                        <span class="radio-box" id="accommodation"><font class="selected">是</font><font>否</font></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="mb16">
+                        <div class="modKey">
+                            <span></span>协助租房：
+                        </div>
+                        <div class="modVal">
+                            <div class="span_font">
+                                <span class="radio-box" id="renting"><font class="selected">是</font><font>否</font></span>
+                            </div>
+                            <div class="fl">
+                                <div class="modKey">
+                                    <span></span>是否有食堂：
+                                </div>
+                                <div class="modVal">
+                                    <div class="span_font">
+                                        <span class="radio-box" id="canteen"><font class="selected">是</font><font>否</font></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="mb16">
+                        <div class="modKey">
+                            <span></span>用餐情况：
+                        </div>
+                        <div class="modVal">
+                            <div class="span_fonts">
+                                <span class="radio-box"id="meals"><font class="selected">免费</font><font>补贴</font><font>自费</font><font>其他</font>
+                                </span>
+                            </div>
+
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="mb16">
+                        <div class="modKey">简历匹配度：</div>
+                        <div class="modVal">
+                            <div class="fl">
+                                <div
+                                        class="select_input w113 fl mr10 J_hoverinput J_dropdown J_listitme_parent"
+                                        style="">
+                                        <span class="J_listitme_text" id="righteye"></span>
+                                        <div class="dropdowbox13 J_dropdown_menu">
+                                            <div class="dropdow_inner13">
+                                                <ul class="nav_box" id="righteyeul">
+                                                    <li><a class="J_listitme" href="javascript:;" data-code='0.4'>40%</a></li>
+                                                    <li><a class="J_listitme" href="javascript:;" data-code='0.5'>50%</a></li>
+                                                    <li><a class="J_listitme" href="javascript:;" data-code='0.6'>60%</a></li>
+                                                    <li><a class="J_listitme" href="javascript:;" data-code='0.7'>70%</a></li>
+                                                    <li><a class="J_listitme" href="javascript:;" data-code='0.8'>80%</a></li>
+                                                    <li><a class="J_listitme" href="javascript:;" data-code='0.9'>90%</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <input class="J_listitme_code" name="percent" id="percent"
+                                            type="hidden" >
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="mb16">
+                        <div class="modKey">匹配后学生同意时间：</div>
+                        <div class="modVal">
+                            <div class="fl">
+                                <div
+                                        class="select_input w113 fl mr10 J_hoverinput J_dropdown J_listitme_parent"
+                                        style="">
+                                        <span class="J_listitme_text" id="righteye"></span>
+                                        <div class="dropdowbox13 J_dropdown_menu">
+                                            <div class="dropdow_inner13">
+                                                <ul class="nav_box" id="righteyeul">
+                                                    <li><a class="J_listitme" href="javascript:;" data-code='24'>24小时</a></li>
+                                                    <li><a class="J_listitme" href="javascript:;" data-code='48'>48小时</a></li>
+                                                    <li><a class="J_listitme" href="javascript:;" data-code='72'>72小时</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <input class="J_listitme_code" name="matchtime" id="matchtime"
+                                            type="hidden" >
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+
+                </div>
+
+                <input name="id" type="hidden" id="id" value="">
+            </form>
+            <div class="mod">
+                <div class="mb16">
+                    <div class="modKey">&nbsp;</div>
+                    <div class="modVal">
+                        <input type="button" id="J_release" onclick="addjobtest()"
+                            class="btn_blue J_hoverbut btn_80_38 w140" data-title="发布职位"
+                            value="发布职位">
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="clear"></div>
+			<div class="clear"></div>
+		</div>
+		<include file="index_footer" />
+		<script type="text/javascript" src="../public/js/jquery.modal.userselectlayer.js"></script>
+		<script type="text/javascript" src="../public/js/emailAutoComplete.js"></script>
+	</body>
+	<script type="text/javascript">
+		$('.allowance_explain').click(function(){
+			var qsDialog = $(this).dialog({
+                loading: true,
+                footer: false,
+                header: false,
+                border: false,
+                backdrop: false
+            });
+            $.getJSON(qscms.root+"?m=Allowance&c=Ajax&a=explain", function(result){
+                if(result.status==1){
+                    qsDialog.hide();
+                    var explainDialog = $(this).dialog({
+                        title: "职位打赏说明",
+                        content: result.data,
+                        footer: false,
+                        innerPadding: false
+                    });
+                }
+            });
+		});
+		$('.J_other').click(function(){
+			$(this).hide();
+			$('.J_contact').show();
+			$('.J_basic').attr('checked',false);
+		});
+		$('.J_basic').click(function(){
+			if(!$(this).is(":checked")){
+				$('.J_other').hide();
+				$('.J_contact').show();
+				$('.J_basic').attr('checked',false);
+			}else{
+				$('.J_other').show();
+				$('.J_contact').hide();
+				$('.J_basic').attr('checked',true);
+			}
+		});
+		<if condition="ACTION_NAME eq 'edit_jobs'">
+			$('.J_other').click();
+		</if>
+
+		// 单选值切换
+		$('.J_switch').click(function(event) {
+			if ($(this).is(':checked')) {
+				$(this).val('1');
+			} else {
+				$(this).val('0');
+			}
+		});
+
+		if ($('#J_negotiable').is(':checked')) {
+			$('#J_negotiable').closest('.modVal').find('.input_val').val('').prop('disabled', !0);
+		} 
+	</script>
+	<script type="text/javascript">
+        $(document).ready(function() {
+            
+            //开始时间时间
+            var start_a = laydate.render({
+                elem: '#startdatetest',
+                // min: moment().format("YYYY-MM-DD"),
+                min: 0,
+                max: '2099-6-16',
+                trigger: 'click', //采用click弹出
+                done: function (value, date, endDate) {
+                    end.config.min = {
+                        year: date.year,
+                        month: date.month - 1,
+                        date: date.date,
+                        hours: date.hours,
+                        minutes: date.minutes,
+                        seconds: date.seconds
+                    }; //开始日选好后，重置结束日的最小日期
+                    end.config.value = {
+                        year: date.year,
+                        month: date.month - 1,
+                        date: date.date,
+                        hours: date.hours,
+                        minutes: date.minutes,
+                        seconds: date.seconds
+                    }; //将结束日的初始值设定为开始日
+
+                  
+                }
+            });
+
+
+            //结束时间
+            var end = laydate.render({
+                elem: '#enddatetest',
+                min: 0,
+                max: 182,
+                trigger: 'click', //采用click弹出
+                done: function (value, date, endDate) {
+                    start_a.config.max = {
+                        year: date.year,
+                        month: date.month - 1,
+                        date: date.date,
+                        hours: date.hours,
+                        minutes: date.minutes,
+                        seconds: date.seconds
+                    }; //结束日选好后，重置开始日的最大日期
+                }
+            });
+            
+            
+            
+            
+            $("#xqrs").bind("keyup", function () {
+                $(this).val($(this).val().replace(/[\D]/g, ""));
+            });
+            $('#gzqyjob').select2();
+			
+			
+			
+
+            $("#gzqyjob").select2({
+                minimumSelectionLength : 1,
+                maximumSelectionLength : 3,
+                language : 'zh-CN'
+            });
+            
+            $('#zygjz').select2();
+            $("#zygjz").select2({
+                minimumSelectionLength : 1,
+                maximumSelectionLength : 5,
+                language : 'zh-CN'
+            });
+
+            $('#zpzwlb').select2();
+            $("#zpzwlb").select2({
+                minimumSelectionLength : 1,
+                maximumSelectionLength : 3,
+                language : 'zh-CN'
+            });
+            
+            var jyqy = JYQYDMB.jyqydmb;
+            for ( var i in jyqy) {
+                //用javascript的for/in循环遍历对象的属性 
+                $("#gzqyjob").append("<option value='"+jyqy[i].code+"'>" + jyqy[i].name + "</option>");
+            }
+			
+			
+			  
+			
+			
+            var profession = JYQYDMB.profession;
+            for ( var i in profession) {
+                //用javascript的for/in循环遍历对象的属性 
+                $("#zygjz").append("<option value='"+profession[i].code+"'>" + profession[i].name + "</option>");
+            }   
+            
+            var zwlbb = JYQYDMB.zwlbb;
+            for ( var i in zwlbb) {
+                $("#zpzwlb").append(
+                        "<option value='"+zwlbb[i].code+"'>"
+                                + zwlbb[i].name + "</option>");
+            }
+            
+            var xcdmb = JYQYDMB.xcdmb;
+                        for ( var i in xcdmb) {
+                            $("#xcdmbul").append(
+                                    "<li><a class='J_listitme' href='javascript:;' data-code='"+xcdmb[i].code+"'>"
+                                    + xcdmb[i].name + "</a></li>");
+                        }
+            
+            var xldmb = JYQYDMB.xlyqdmb;
+           for ( var i in xldmb) {
+                    $("#xlyqul").append("<li><a class='J_listitme' href='javascript:;' data-code='"+xldmb[i].code+"'>"
+                                                + xldmb[i].name + "</a></li>");
+                                    }
+            var dwlbbmb = JYQYDMB.dwlbb;
+               for ( var i in dwlbbmb) {
+                        $("#dwlbbul").append("<li><a class='J_listitme' href='javascript:;' data-code='"+dwlbbmb[i].code+"'>"
+                                                    + dwlbbmb[i].name + "</a></li>");
+                                        }
+           
+            
+            var environmentdmb = JYQYDMB.environment;
+           for ( var i in environmentdmb) {
+                    $("#environmentul").append("<li><a class='J_listitme' href='javascript:;' data-code='"+environmentdmb[i].code+"'>"
+                                                + environmentdmb[i].name + "</a></li>");
+                                    }
+            
+            var politicaldmb = JYQYDMB.political;
+           for ( var i in politicaldmb) {
+                    $("#politicalul").append("<li><a class='J_listitme' href='javascript:;' data-code='"+politicaldmb[i].code+"'>"
+                                                + politicaldmb[i].name + "</a></li>");
+                                    }
+           
+            var staturedmb = JYQYDMB.stature;
+               for ( var i in staturedmb) {
+                        $("#statureul").append("<li><a class='J_listitme' href='javascript:;' data-code='"+staturedmb[i].code+"'>"
+                                                    + staturedmb[i].name + "</a></li>");
+                                        }
+             
+            var weightdmb = JYQYDMB.weight;
+             for ( var i in weightdmb) {
+                        $("#weightul").append("<li><a class='J_listitme' href='javascript:;' data-code='"+weightdmb[i].code+"'>"
+                                                        + weightdmb[i].name + "</a></li>");
+                }
+            
+            var lefteyedmb = JYQYDMB.lefteye;
+             for ( var i in lefteyedmb) {
+                          $("#leftyeul").append("<li><a class='J_listitme' href='javascript:;' data-code='"+lefteyedmb[i].code+"'>"
+                                                            + lefteyedmb[i].name + "</a></li>");
+                    }
+             
+            var righteyedmb = JYQYDMB.righteye;
+                     for ( var i in righteyedmb) {
+                                    $("#righteyeul").append("<li><a class='J_listitme' href='javascript:;' data-code='"+righteyedmb[i].code+"'>"
+                                                                + righteyedmb[i].name + "</a></li>");
+                                                    }
+													
+													
+			
+													
+			
+													
+													
+        });
+        function post(URL, PARAMS) {      
+            var temp = document.createElement("form");      
+            temp.action = URL;      
+            temp.method = "post";      
+            temp.style.display = "none";      
+            for (var x in PARAMS) {      
+                var opt = document.createElement("textarea");      
+                opt.name = x;      
+                opt.value = PARAMS[x];    
+                
+                temp.appendChild(opt);      
+            }      
+            document.body.appendChild(temp);      
+            temp.submit();      
+            return temp;      
+        } 
+
+        function add(){
+               var shtyxydm=$('#shtyxydm').val();
+             post("/Precision/company!addjobsel", {
+                 shtyxydm : shtyxydm
+            });
+        }
+        $("#environmentul").on("click","a",function(){ 
+            if((this).innerHTML=='特殊工种'){
+                $("#tsms").css('display','block'); 
+            }else{
+                $("#kjsrgzhjms").val('');
+                $("#tsms").css('display','none');
+            }
+        });
+        $('.radio-box font').click(function() {
+            $(this).addClass('selected').siblings().removeClass('selected');
+        })
+        
+            function selcompany(){
+                var url=$("#url").val();
+                    var shtyxydm=$('#shtyxydm').val();
+                     post(url+"/company!selorUpCompany",{shtyxydm:shtyxydm});
+        }
+        function selMath(){
+            var url=$("#url").val();
+            var shtyxydm=$('#shtyxydm').val();
+             post(url+"/match!companyMatchstudent",{shtyxydm:shtyxydm,state:1});
+    }
+            
+        function seltest(){
+                var url=$("#url").val();
+                    var shtyxydm=$('#shtyxydm').val();
+                     post(url+"/company!Allowlgn",{shtyxydm:shtyxydm});
+        }
+    </script>
+    <script>
+function addjobtest() {
+	var zpzw = $('#zpzw').val();
+	if (zpzw == "") {
+		sweetAlert("请填写职位名称", "", "error");
+		return false;
+	}
+	var gzqyjob = $("#gzqyjob").select2("data"); // 多选
+	if (gzqyjob.length == 0) {
+
+		sweetAlert("请选择工作区域", "", "error");
+		return false;
+	}
+	var gzqysize = $("#gzqyjob option:selected").length;
+	var gzqydm = "";
+	var gzqy = "";
+	var gzqy2dm = "";
+	var gzqy2 = "";
+	var gzqy3dm = "";
+	var gzqy3 = "";
+	if (gzqysize == 1) {
+		gzqydm = $("#gzqyjob option:selected")[0].value;
+		gzqy = $("#gzqyjob option:selected")[0].text;
+	} else if (gzqysize == 2) {
+		gzqydm = $("#gzqyjob option:selected")[0].value;
+		gzqy = $("#gzqyjob option:selected")[0].text;
+		gzqy2dm = $("#gzqyjob option:selected")[1].value;
+		gzqy2 = $("#gzqyjob option:selected")[1].text;
+	} else if (gzqysize == 3) {
+		gzqydm = $("#gzqyjob option:selected")[0].value;
+		gzqy = $("#gzqyjob option:selected")[0].text;
+		gzqy2dm = $("#gzqyjob option:selected")[1].value;
+		gzqy2 = $("#gzqyjob option:selected")[1].text;
+		gzqy3dm = $("#gzqyjob option:selected")[2].value;
+		gzqy3 = $("#gzqyjob option:selected")[2].text;
+	}
+	var zygjz = $("#zygjz").select2("data"); // 多选
+	if (zygjz.length == 0) {
+		sweetAlert("请选择专业需求", "", "error");
+		return false;
+	}
+	var zygjzsize = $("#zygjz option:selected").length;
+	var zygjz1 = "";
+	var zygjz1dm = "";
+	var zygjz2 = "";
+	var zygjz2dm = "";
+	var zygjz3="";
+	var zygjz3dm = "";
+
+	var zygjz4="";
+	var zygjz4dm = "";
+
+	var zygjz5="";
+	var zygjz5dm = "";
+	
+	switch(zygjzsize){
+		case 1:
+			zygjz1 = $("#zygjz option:selected")[0].text;
+			zygjz1dm = $("#zygjz option:selected")[0].value;
+			break;
+		case 2:
+			zygjz1 = $("#zygjz option:selected")[0].text;
+			zygjz1dm = $("#zygjz option:selected")[0].value;
+			zygjz2 = $("#zygjz option:selected")[1].text;
+			zygjz2dm = $("#zygjz option:selected")[1].value;
+			break;
+		case 3:
+			zygjz1 = $("#zygjz option:selected")[0].text;
+			zygjz1dm = $("#zygjz option:selected")[0].value;
+			zygjz2 = $("#zygjz option:selected")[1].text;
+			zygjz2dm = $("#zygjz option:selected")[1].value;
+
+			zygjz3 = $("#zygjz option:selected")[2].text;
+			zygjz3dm = $("#zygjz option:selected")[2].value;
+			break;
+		case 4:
+			zygjz1 = $("#zygjz option:selected")[0].text;
+			zygjz1dm = $("#zygjz option:selected")[0].value;
+			zygjz2 = $("#zygjz option:selected")[1].text;
+			zygjz2dm = $("#zygjz option:selected")[1].value;
+			zygjz3 = $("#zygjz option:selected")[2].text;
+			zygjz3dm = $("#zygjz option:selected")[2].value;
+			zygjz4 = $("#zygjz option:selected")[3].text;
+			zygjz4dm = $("#zygjz option:selected")[3].value;
+			break;
+		case 5:
+			zygjz1 = $("#zygjz option:selected")[0].text;
+			zygjz1dm = $("#zygjz option:selected")[0].value;
+			zygjz2 = $("#zygjz option:selected")[1].text;
+			zygjz2dm = $("#zygjz option:selected")[1].value;
+			zygjz3 = $("#zygjz option:selected")[2].text;
+			zygjz3dm = $("#zygjz option:selected")[2].value;
+			zygjz4 = $("#zygjz option:selected")[3].text;
+			zygjz4dm = $("#zygjz option:selected")[3].value;
+			zygjz5 = $("#zygjz option:selected")[4].text;
+			zygjz5dm = $("#zygjz option:selected")[4].value;
+			break;
+		
+	}
+	
+	
+	var zpzwlb = $("#zpzwlb").select2("data"); // 多选
+	if (zpzwlb.length == 0) {
+		sweetAlert("请选择招聘职位类别", "", "error");
+		return false;
+	}
+	var zpzwlbsize = $("#zpzwlb option:selected").length;
+	var zpzwlb1dm = ""
+	var zpzwlb1 = "";
+	var zpzwlb2dm = "";
+	var zpzwlb2 = "";
+	var zpzwlb3dm = "";
+	var zpzwlb3 = "";
+	if (zpzwlbsize == 1) {
+		zpzwlb1dm = $("#zpzwlb option:selected")[0].value;
+		zpzwlb1 = $("#zpzwlb option:selected")[0].text;
+	} else if (zpzwlbsize == 2) {
+		zpzwlb1dm = $("#zpzwlb option:selected")[0].value;
+		zpzwlb1 = $("#zpzwlb option:selected")[0].text;
+		zpzwlb2dm = $("#zpzwlb option:selected")[1].value;
+		zpzwlb2 = $("#zpzwlb option:selected")[1].text;
+	} else if (zpzwlbsize == 3) {
+		zpzwlb1dm = $("#zpzwlb option:selected")[0].value;
+		zpzwlb1 = $("#zpzwlb option:selected")[0].text;
+		zpzwlb2dm = $("#zpzwlb option:selected")[1].value;
+		zpzwlb2 = $("#zpzwlb option:selected")[1].text;
+		zpzwlb3dm = $("#zpzwlb option:selected")[2].value;
+		zpzwlb3 = $("#zpzwlb option:selected")[2].text;
+	}
+	var xzdm = $('#xzdm').val();
+	var xz = $('#xz').html();
+	if (xzdm == "") {
+		sweetAlert("请选择薪资", "", "error");
+		return false;
+	}
+	var xlyqdm = $('#xlyqdm').val();
+	var xlyq = $('#xlyq').html();
+	if (xlyq == "") {
+		sweetAlert("请选择学历", "", "error");
+		return false;
+	}
+	var gzhjdm = $('#gzhjdm').val();
+	var gzhj = $('#gzhj').html();
+	if (gzhjdm == "") {
+		sweetAlert("请选择工作环境", "", "error");
+		return false;
+	}
+	var zpdwlbdm = $('#zpdwlbdm').val();
+	var zpdwlb = $('#zpdwlb').val();
+    var shtyxydm=$('#shtyxydm').val();
+    var zpdw=$('#zpdw').val();
+    var schoolcode=$('#schoolcode').val();
+
+    var company_id=$('#company_id').val();
+	var sfxwgk=$('#sfxwgk').val();
+	var kjsrgzhjms = $('#kjsrgzhjms').val();
+	var jsjdj = $("#jsjdj .selected").html();
+	var wydj = $("#wydj .selected").html();
+	var drivinglicense = $("#drivinglicense .selected").html();
+	var xb = $("#xb .selected").html();
+	var politicalid = $('#politicalid').val();
+	var political = $('#political').html();
+	if (politicalid == "") {
+		sweetAlert("请选择政治面貌", "", "error");
+		return false;
+	}
+	var xqrs = $('#xqrs').val();
+	if (xqrs == "") {
+		sweetAlert("请填写需求人数", "", "error");
+		return false;
+	}
+	
+	
+	var dates =$('#startdatetest').val();
+	if(dates==""){
+		sweetAlert("请选择招聘日期有效期", "", "error");
+		return false;
+	}
+	var qzxqfbsj=$('#startdatetest').val();
+	
+    var qzxqjssj=$('#enddatetest').val();
+	var qtyq = $('#qtyq').val();
+	if (qtyq == "") {
+		sweetAlert("请填写职位描述", "", "error");
+		return false;
+	}
+	var heightcode = $('#heightcode').val();
+	var height = $('#height').html();
+	if (heightcode == "") {
+		sweetAlert("请选择身高要求", "", "error");
+		return false;
+	}
+	var weightcode = $('#weightcode').val();
+	var weight = $('#weight').html();
+	if (weightcode == "") {
+		sweetAlert("请选择体重要求", "", "error");
+		return false;
+	}
+	var lefteyecode = $('#lefteyecode').val();
+	var lefteye = $('#lefteye').html();
+	if (lefteyecode == "") {
+		sweetAlert("请选择左眼视力要求", "", "error");
+		return false;
+	}
+	var righteyecode = $('#righteyecode').val();
+	var righteye = $('#righteye').html();
+	if (righteyecode == "") {
+		sweetAlert("请选择右眼视力要求", "", "error");
+		return false;
+	}
+	var sfsm = $("#sfsm .selected").html();
+	var sfystcj = $("#sfystcj .selected").html();
+	var sfjtkn = $("#sfjtkn .selected").html();
+	var sfzfldjkpkh = $("#sfzfldjkpkh .selected").html();
+	var sfssmz = $("#sfssmz .selected").html();
+	var sf5tgzr = $("#sf5tgzr .selected").html();
+	var sf6tgzr = $("#sf6tgzr .selected").html();
+	var sfdbz = $("#sfdbz .selected").html();
+	var sf8xsborjb = $("#sf8xsborjb .selected").html();
+	var sf8xsbjdjb = $("#sf8xsbjdjb .selected").html();
+	var sfdjyhjdzsndht = $("#sfdjyhjdzsndht .selected").html();
+	var sfdwgmwxyj = $("#sfdwgmwxyj .selected").html();
+	var accommodation = $("#accommodation .selected").html();
+	var renting = $("#renting .selected").html();
+	var canteen = $("#canteen .selected").html();
+    var meals = $("#meals .selected").html();
+    var zyzrzgz=$("#zyzrzgz .selected").html();
+    var percent = $("#percent").val();
+
+    var matchtime = $("#matchtime").val();
+	kjsrgzhjms = kjsrgzhjms.replace(/\r\n/g, '<br/>'); //IE9、FF、chrome
+	kjsrgzhjms = kjsrgzhjms.replace(/\n/g, '<br/>'); //IE7-8
+	kjsrgzhjms = kjsrgzhjms.replace(/\s/g, ' '); //空格处理
+
+	qtyq = qtyq.replace(/\r\n/g, '<br/>'); //IE9、FF、chrome
+	qtyq = qtyq.replace(/\n/g, '<br/>'); //IE7-8
+	qtyq = qtyq.replace(/\s/g, ' '); //空格处理
+
+
+
+	$.ajax({
+		type : "post",
+		url : "{:U('Company/jobs_zjy_add')}",
+		data : {
+			company_id:company_id,
+            shtyxydm:shtyxydm,
+            schoolcode:schoolcode,
+            sfxwgk:sfxwgk,
+            qzxqfbsj:qzxqfbsj,
+            qzxqjssj:qzxqjssj,
+            zpzw:zpzw,
+            zpdw:zpdw,
+            gzqydm:gzqydm,
+            gzqy:gzqy,
+            gzqy2dm:gzqy2dm,
+            gzqy2:gzqy2,
+            gzqy3dm:gzqy3dm,
+            gzqy3:gzqy3,
+            xzdm:xzdm,
+            xz:xz,
+            gzhjdm:gzhjdm,
+            gzhj:gzhj,
+            kjsrgzhjms:kjsrgzhjms,
+            xb:xb,
+            xlyqdm:xlyqdm,
+            xlyq:xlyq,
+            zygjz1:zygjz1,
+            zygjz1dm:zygjz1dm,
+            zygjz2:zygjz2,
+            zygjz2dm:zygjz2dm,
+            zygjz3:zygjz3,
+            zygjz3dm:zygjz3dm,
+            zygjz4:zygjz4,
+            zygjz4dm:zygjz4dm,
+            zygjz5:zygjz5,
+            zygjz5dm:zygjz5dm,
+            zpdwlbdm:zpdwlbdm,
+            zpdwlb:zpdwlb,
+            zpzwlb1dm:zpzwlb1dm,
+            zpzwlb1:zpzwlb1,
+            zpzwlb2dm:zpzwlb2dm,
+            zpzwlb2:zpzwlb2,
+            zpzwlb3dm:zpzwlb3dm,
+            zpzwlb3:zpzwlb3,
+            sf5tgzr:sf5tgzr,
+            sf6tgzr:sf6tgzr,
+            sfdbz:sfdbz,
+            sf8xsborjb:sf8xsborjb,
+            sf8xsbjdjb:sf8xsbjdjb,
+            sfdjyhjdzsndht:sfdjyhjdzsndht,
+            sfdwgmwxyj:sfdwgmwxyj,
+            qtyq:qtyq,
+            xqrs:xqrs,
+            heightcode:heightcode,
+            height:height,
+            weightcode:weightcode,
+            weight:weight,
+            lefteyecode:lefteyecode,
+            lefteye:lefteye,
+            righteyecode:righteyecode,
+            righteye:righteye,
+            sfsm:sfsm,
+            sfystcj:sfystcj,
+            sfssmz:sfssmz,
+            sfjtkn:sfjtkn,
+            sfzfldjkpkh:sfzfldjkpkh,
+            jsjdj:jsjdj,
+            wydj:wydj,
+            drivinglicense:drivinglicense,
+            zyzrzgz:zyzrzgz,
+            accommodation:accommodation,
+            renting:renting,
+            canteen:canteen,
+            meals:meals,
+            percent:percent,
+            political:political,
+            politicalid:politicalid,
+            matchtime:matchtime
+		}
+
+    }).done(function(data) {
+                    disapperTooltip('success',data.msg);
+					location.href = 'http://www.jxujob.com/index.php?m=&c=company&a=jobs_zjy_list';
+				
+            })
+            .fail(function(result) {
+                
+                disapperTooltip("remind", result.msg);
+            });
+    
+
+    	
+}
+
+
+
+
+
+    
+
+
+
+    </script>
+	
+	
+</html>

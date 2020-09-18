@@ -1,0 +1,51 @@
+<include file="public:header" />
+    <div class="toptip">
+        <h2>提示：</h2>
+        <p>不同的运营阶段您可以选择不同的设置。</p>
+    </div>
+	<form action="{:U('config_task')}" method="post" enctype="multipart/form-data" name="form1" id="form1">
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" id="list" class="link_lan">
+    <tr>
+      <td width="100" class="admin_list_tit admin_list_first">任务名称</td>
+      <td width="100" class="admin_list_tit" align="center">是否启用</td>
+      <td width="100" align="center" class="admin_list_tit">增加{:C('qscms_points_byname')}</td>
+      <td width="110" align="center" class="admin_list_tit">每天赠送积分上限</td>
+    </tr>
+    <volist name="list" id="vo">
+      <tr>
+        <td class="admin_list admin_list_first"><input type="hidden" name="id[]" value="{$vo.id}">{$vo.title}</td>
+        <td class="admin_list" align="center">
+        <if condition="$vo['t_alias'] eq 'sign'">
+        <span class="admin_note" style="color: rgb(153, 153, 153);">(该项不允许关闭)</span>
+        <input type="hidden" name="status_{$vo['id']}" value="1">
+        <else />
+        <label><input type="radio" name="status_{$vo['id']}" value="1" <if condition="$vo['status'] eq 1">checked</if>>是</label>&nbsp;&nbsp;&nbsp;
+        <label><input type="radio" name="status_{$vo['id']}" value="0" <if condition="$vo['status'] eq 0">checked</if>>否</label>
+        </if>
+        </td>
+        <td class="admin_list" align="center"><input name="points[]" type="text" class="input_text_50" value="{$vo.points}" maxlength="4"/></td>
+        <td class="admin_list" align="center">
+        <if condition="$vo['once'] eq '0' && $vo['times'] neq '-1' && $vo['dayly'] eq 0">
+        <input name="times[]" type="text" class="input_text_50" value="{$vo.times}" maxlength="4"/> 次
+        <else />
+        --
+        <input type="hidden" name="times[]" value="{$vo.times}">
+        </if>
+        </td>
+      </tr>
+    </volist>
+  </table> 
+  <table width="100%" border="0" cellspacing="10" cellpadding="0" class="admin_list_btm">
+    <tr>
+      <td>
+        <input name="submit" type="submit" class="admin_submit"    value="保存"/>
+      </td>
+      <td width="305" align="right"></td>
+    </tr>
+  </table> 
+	</form>
+	
+</div>
+<include file="public:footer" />
+</body>
+</html>

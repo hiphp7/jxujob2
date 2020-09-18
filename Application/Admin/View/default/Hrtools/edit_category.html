@@ -1,0 +1,48 @@
+<include file="public:header" />
+    <div class="toptip">
+		<h2>提示：</h2>
+		<p>点击“继续添加”按钮，可同时添加多个分类！<br /></p>
+	</div>
+	<div class="toptit">修改属性分类</div>
+	<form id="form1" name="form1" method="post" action="{:U('hrtools/edit_category')}" enctype="multipart/form-data">
+		<div id="html_tpl">
+			<table width="100%" border="0" cellspacing="6" cellpadding="0" style="border-bottom:1px #96B7E2 dashed">
+				<tr>
+					<td width="120" align="right">分类名称:</td>
+					<td><input name="c_name" type="text" class="input_text_200"  value="{$info.c_name}" maxlength=""/></td>
+				</tr>
+				<tr>
+			    <td width="120" align="right">描述:</td>
+			    <td><textarea name="c_desc" class="input_text_400" style="height:60px;">{$info.c_desc}</textarea></td>
+			  </tr>
+			   <tr>
+			    <td width="120" align="right">缩略图:</td>
+			    <td><input name="c_img" type="file" class="input_text_200" value=""/></td>
+			  </tr>
+			  <if condition="$info['c_img']">
+			   <tr>
+			    <td width="120" align="right">&nbsp;</td>
+			    <td><img src="{:attach($info['c_img'],'hrtools_img')}" width="80" height="80"></td>
+			  </tr>
+			  </if>
+				<tr>
+					<td width="120" align="right">排序:</td>
+					<td><input name="c_order" type="text" class="input_text_200"  value="{$info.c_order}" maxlength=""/></td>
+				</tr>
+			</table>
+		</div>
+		<table width="100%" border="0" cellspacing="6" cellpadding="0">
+			<tr>
+				<td width="120"> </td>
+				<td>
+					<input name="c_id" type="hidden" value="{$info.c_id}" />
+					<input type="submit" value="保存" class="admin_submit" />
+					<input name="submit22" type="button" class="admin_submit"    value="返 回" onclick="window.location='{:U('hrtools/category')}'"/>
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+<include file="public:footer" />
+</body>
+</html>

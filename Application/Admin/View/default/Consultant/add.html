@@ -1,0 +1,61 @@
+<include file="public:header" />
+  <div class="toptit">添加顾问</div>
+  <form id="form1" name="form1" method="post" action="{:U('add')}" enctype="multipart/form-data">
+    <table width="100%" border="0" cellpadding="4" cellspacing="0"   >
+      <tr>
+        <td width="120" height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">姓名：</td>
+        <td  style=" border-bottom:1px #CCCCCC dashed"> <input name="name" type="text" class="input_text_200" id="name" maxlength="25" value=""/> </td>
+      </tr>
+      <tr>
+        <td height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">照片：</td>
+        <td  style=" border-bottom:1px #CCCCCC dashed" ><input name="pic" type="file" style="width:200px; height:22px; border:1px #7797A8 solid; font-size:12px;" id="pic" value=""/></td>
+      </tr>
+      <tr>
+        <td height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">QQ：</td>
+        <td  style=" border-bottom:1px #CCCCCC dashed" ><input name="qq" type="text" class="input_text_200" id="qq" maxlength="15" value=""/></td>
+      </tr>
+      <tr>
+        <td height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">手机：</td>
+        <td  style=" border-bottom:1px #CCCCCC dashed" ><input name="mobile" type="text" class="input_text_200" id="mobile" maxlength="15" value=""/></td>
+      </tr>
+      <tr>
+        <td height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">电话：</td>
+        <td  style=" border-bottom:1px #CCCCCC dashed" ><input name="tel" type="text" class="input_text_200" id="tel" maxlength="15" value=""/></td>
+      </tr>
+      <if condition="$apply['Subsite']">
+        <tr>
+          <td align="right">添加在：</td>
+          <td colspan="4">
+            <qscms:subsite 列表名="subsite_list"/>
+            <if condition="$visitor['role_id'] eq 1">
+              <volist name="subsite_list" id="subsite">
+                <label style="color: rgb(102, 102, 102);">
+                  <input name="subsite_id[]" type="checkbox" value="{$subsite.s_id}" <if condition="$i eq 1">checked="checked"</if>>{$subsite.s_sitename}
+                </label>&nbsp;&nbsp;&nbsp;
+              </volist>
+            <else/>
+              <volist name="subsite_list" id="subsite">
+                <if condition="in_array($subsite['s_id'],$visitor['subsite'])">
+                  <label style="color: rgb(102, 102, 102);">
+                    <input name="subsite_id[]" type="checkbox" value="{$subsite.s_id}">{$subsite.s_sitename}
+                  </label>&nbsp;&nbsp;&nbsp;
+                </if>
+              </volist>
+            </if>
+         </td>
+        </tr>
+      </if>
+      <tr>
+        <td height="30" align="right"  >&nbsp;</td>
+        <td height="60"  ><span style="font-size:14px;">
+          <input name="submit3" type="submit" class="admin_submit"    value="添加"/>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <input name="submit22" type="button" class="admin_submit"    value="返 回" onclick="window.location.href='{:U('index')}'"/>
+        </span></td>
+      </tr>
+    </table>
+  </form>
+</div>
+<include file="public:footer" />
+</body>
+</html>

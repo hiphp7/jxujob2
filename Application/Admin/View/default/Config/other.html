@@ -1,0 +1,53 @@
+<include file="public:header" />
+	<div class="toptit">搜索设置</div>
+	<form action="{:U('config/edit')}" method="post"  name="form1" id="form1">
+	<table width="100%" border="0" cellspacing="10" cellpadding="1" style=" margin-bottom:3px; margin-top:10px;">
+		<tr>
+				<td align="right" width="200">开启关键词URL编码：</td>
+				<td>
+					<label>
+					<input name="key_urlencode" type="radio" id="key_urlencode" value="0" <if condition="C('qscms_key_urlencode') eq 0">checked="checked"</if>/>否</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<label >
+					<input type="radio" name="key_urlencode" value="1" <if condition="C('qscms_key_urlencode') eq 1">checked="checked"</if>/>是</label>
+					<span class="admin_note" >（当关键词搜索出现乱码时，请开启此项）</span>
+				</td>
+			</tr>
+		<tr>
+			<td align="right">&nbsp;</td>
+			<td height="50">
+				<span style="font-size:14px;">
+					<input name="submit2" type="submit" class="admin_submit" value="保存修改"/>
+				</span>
+			</td>
+		</tr>
+	</table>
+	</form>
+	<div class="toptit">薪资单位设置</div>
+	<form action="{:U('config/edit')}" method="post"  name="form1" id="form1">
+	<table width="100%" border="0" cellspacing="10" cellpadding="1" style=" margin-bottom:3px; margin-top:10px;">
+		<tr>
+				<td align="right" width="200">薪资单位：</td>
+				<td>
+					<label>
+					<input name="wage_unit" type="radio" id="key_urlencode" value="1" <if condition="C('qscms_wage_unit') eq 1">checked="checked"</if>/>K</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<label >
+					<input type="radio" name="wage_unit" value="2" <if condition="C('qscms_wage_unit') eq 2">checked="checked"</if>/>千</label>
+					<span class="admin_note" >（如：1.5K~3K ，8千5~1万）</span>
+				</td>
+			</tr>
+		<tr>
+			<td align="right">&nbsp;</td>
+			<td height="50">
+				<span style="font-size:14px;">
+					<input type="submit" class="admin_submit" value="保存修改"/>
+				</span>
+			</td>
+		</tr>
+	</table>
+	</form>
+</div>
+<include file="public:footer" />
+</body>
+</html>

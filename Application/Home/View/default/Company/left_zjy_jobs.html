@@ -1,0 +1,32 @@
+<div class="left_jobs">
+	<if condition="$upper_limit eq 1">
+
+		<div class="J_addJobsDig li link_gray6 J_hoverbut t1 <if condition="ACTION_NAME eq 'jobs_add'">select</if>" href="javascript:;"><a href="javascript:;">发布职位</a></div>
+	<else/>
+  <div class="li link_gray6 J_hoverbut t2 <if condition="ACTION_NAME eq 'jobs_zjy_code' || ACTION_NAME eq 'jobs_edit'">select</if>" onclick="window.location='{:U('company/jobs_zjy_code')}'"><a href="{:U('company/jobs_zjy_code')}">绑定企业信用代码</a></div>
+		<div class="li link_gray6 J_hoverbut t1 <if condition="ACTION_NAME eq 'jobs_zjy_add'">select</if>" onclick="window.location='{:U('company/jobs_zjy_add')}'"><a href="{:U('company/jobs_zjy_add')}">发布职位</a></div>
+	</if>
+  <div class="li link_gray6 J_hoverbut t2 <if condition="ACTION_NAME eq 'jobs_zjy_list' || ACTION_NAME eq 'jobs_edit'">select</if>" onclick="window.location='{:U('company/jobs_zjy_list')}'"><a href="{:U('company/jobs_zjy_list')}">管理职位</a></div>
+  <div class="li link_gray6 J_hoverbut t2 onclick="window.location='{:U('company/jobs_zjy_ztzp')}'"><a href="#" id="idname">专题招聘</a></div>
+  <div id="box-bottom" style="width: 123px;height: 170px;line-height: 45px; padding-left: 60px;">
+    <a target="_blank" style="display: block;width: 100%;color: #666666;" href="http://www.jxujob.com/index.php?m=subject&c=index&a=subject_show&act=com&id=29">义乌专场</a>
+    <a target="_blank" style="display: block;width: 100%;color: #666666;" href="http://www.jxujob.com/index.php?m=subject&c=index&a=subject_show&act=com&id=30">江西省教育厅中行招聘专场</a>
+  </div>
+  
+  <!-- -->
+  <include file="left_complaint" />
+ <!-- -->
+ 
+</div>
+<style>
+  #box-bottom{
+    display: none;
+  }
+</style>
+<script>
+  let list = document.getElementById("idname")
+  list.onclick = function(){
+    document.getElementById("box-bottom").style.display="block";
+  }
+ 
+</script>

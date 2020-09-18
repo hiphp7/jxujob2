@@ -1,0 +1,94 @@
+<include file="public:header" />
+	<div class="toptip link_g">
+		<h2>提示：</h2>
+		<p>
+		短信模块属收费模块，需申请开通后才能使用，请点击 <a href="http://www.74cms.com/sms.php" target="_blank">这里</a> 申请开通。
+		<br />
+		资费标准请联系骑士销售获取，更多介绍请进入 <a href="http://www.74cms.com" target="_blank">骑士人才系统官方网站</a></p>
+		<p><font color="red">开启短信发送服务前，请确认短信服务商已正确配置！</font></p>
+		<p><font color="red">阿里大于的短信暂时不能正常发送招聘类信息，使用前请先向阿里大于官方核实，谨慎使用！</font></p>
+	</div>
+	<div class="toptit">设置</div>
+	<form action="{:U('sms/config_edit')}" method="post" enctype="multipart/form-data" name="form1" id="form1">
+		<table width="100%" border="0" cellspacing="5" cellpadding="5">
+			<tr>
+				<td width="121" align="right">开启短信发送：</td>
+				<td>
+					<label>
+						<input name="sms_open" class="J_sms_open" id="J_sms_open_1" type="radio" value="1" <if condition="C('qscms_sms_open') eq 1">checked="checked"</if>/> 开启
+					</label>&nbsp;&nbsp;&nbsp;
+				<label>
+					<input name="sms_open"  class="J_sms_open" type="radio" value="0" <if condition="C('qscms_sms_open') eq 0">checked="checked"</if>/>关闭</label>			  </td>
+			</tr>
+			</table>
+			<table width="100%" border="0" cellspacing="5" cellpadding="5" id="j_show" <if condition="C('qscms_sms_open') eq 0">style="display:none"</if>>
+			<tr>
+				<td width="120" height="30" align="right" bgcolor="#FFFFFF" style=" border-bottom:1px #CCCCCC dashed">默认短信服务商：</td>
+				<td bgcolor="#FFFFFF" style=" border-bottom:1px #CCCCCC dashed" >
+					<select name="sms_default_service" style="width:200px">
+						<option value="" <if condition="C('qscms_sms_default_service') eq ''">selected="selected"></if>>请选择短信服务商</option>
+						<volist name="sms_list" id="sms">
+							<option value="{$key}" <if condition="$key eq C('qscms_sms_default_service')">selected="selected"</if>>{$sms.name}</option>
+						</volist>
+					</select>
+					（请在“服务商接入”栏目下安装短信接口）
+				</td>
+			</tr>
+			<tr>
+				<td height="30" align="right" bgcolor="#FFFFFF" style=" border-bottom:1px #CCCCCC dashed">验证码类短信服务商：</td>
+				<td bgcolor="#FFFFFF" style=" border-bottom:1px #CCCCCC dashed" >
+					<select name="sms_captcha_service" style="width:200px">
+						<option value="" <if condition="C('qscms_sms_captcha_service') eq ''">selected="selected"></if>>请选择短信服务商</option>
+						<volist name="sms_list" id="sms">
+							<option value="{$key}" <if condition="$key eq C('qscms_sms_captcha_service')">selected="selected"</if>>{$sms.name}</option>
+						</volist>
+					</select>
+					（请在“服务商接入”栏目下安装短信接口）
+				</td>
+			</tr>
+			<tr>
+				<td height="30" align="right" bgcolor="#FFFFFF" style=" border-bottom:1px #CCCCCC dashed">通知类短信服务商：</td>
+				<td bgcolor="#FFFFFF" style=" border-bottom:1px #CCCCCC dashed" >
+					<select name="sms_notice_service" style="width:200px">
+						<option value="" <if condition="C('qscms_sms_notice_service') eq ''">selected="selected"></if>>请选择短信服务商</option>
+						<volist name="sms_list" id="sms">
+							<option value="{$key}" <if condition="$key eq C('qscms_sms_notice_service')">selected="selected"</if>>{$sms.name}</option>
+						</volist>
+					</select>
+					（请在“服务商接入”栏目下安装短信接口）
+				</td>
+			</tr>
+			<tr>
+				<td height="30" align="right" bgcolor="#FFFFFF" style=" border-bottom:1px #CCCCCC dashed">其它类短信服务商：</td>
+				<td bgcolor="#FFFFFF" style=" border-bottom:1px #CCCCCC dashed" >
+					<select name="sms_other_service" style="width:200px">
+						<option value="" <if condition="C('qscms_sms_other_service') eq ''">selected="selected"</if>>请选择短信服务商</option>
+						<volist name="sms_list" id="sms">
+							<option value="{$key}" <if condition="$key eq C('qscms_sms_other_service')">selected="selected"</if>>{$sms.name}</option>
+						</volist>
+					</select>
+					（请在“服务商接入”栏目下安装短信接口）
+				</td>
+			</tr>
+			<table width="100%" border="0" cellspacing="5" cellpadding="5" >
+			<tr>
+				<td align="right" width="120" >&nbsp;</td>
+				<td height="50"> 
+					<input type="submit" class="admin_submit"    value="保存修改"/>
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+<include file="public:footer" />
+<script type="text/javascript">
+  $(".J_sms_open").click(function(){
+    if($("#J_sms_open_1").is(':checked')){
+      $("#j_show").show();
+    }else{
+      $("#j_show").hide();
+    }
+  });
+</script>
+</body>
+</html>

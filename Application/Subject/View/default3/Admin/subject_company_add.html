@@ -1,0 +1,135 @@
+<include file="Admin@default/public/header"/>
+<div class="toptit">新增网络专题招聘会企业</div>
+<form action="{:U('subject_company_add')}" method="post" name="FormData">
+    <div style="padding: 0 20px;">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td width="380" valign="top">
+                    <table width="100%" border="0" cellpadding="10" cellspacing="0" bgcolor="#F5F7F8"
+                           style="border-bottom:1px #DFDFDF solid;border-top:1px #DFDFDF solid;border-left:1px #DFDFDF solid;">
+                        <tr>
+                            <td height="32" align="right">请输入企业名称：</td>
+                            <td >
+                                <input type="text" class="input_text_default small" id="get_comname" maxlength="25"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td height="32" align="right">或会员UID：</td>
+                            <td>
+                                <input type="text" class="input_text_default small" id="get_uid" maxlength="25"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <table width="100%" border="0" cellspacing="0" cellpadding="10">
+                        <tr>
+                            <td height="35" align="right">&nbsp;</td>
+                            <td height="60">
+                                <notempty name="apply['Subsite']">
+                                    <input type="hidden" name="subsite_id" value="0"/>
+                                </notempty>
+                                <input type="hidden" name="subject_id" value="{$subject_id}"/>
+                                <input type="button" class="admin_submit" id="BtnAdd" value="确定"/>
+                                <input type="button" class="admin_submit" value="返回" onclick="Javascript:window.history.go(-1)"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td height="35" align="right">&nbsp;</td>
+                            <td height="60">&nbsp;</td>
+                        </tr>
+                    </table>
+
+                </td>
+                <td valign="top">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td style="border:1px #DFDFDF solid; height:256px;" id="showtd" bgcolor="#FFFFFF" valign="top">
+                                <div style="padding:20px; color: #0066CC">请在左侧表单中输入你要查找的值。</div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>
+
+</div>
+<include file="public:footer"/>
+<script type="text/javascript" src="__ADMINPUBLIC__/js/jquery.listitem.js"></script>
+<script type="text/javascript" src="__ADMINPUBLIC__/js/jquery.dropdown.js"></script>
+</body>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#get_comname,#get_uid").keyup(function () {
+            if ($(this).val()) {
+                var tsTimeStamp = new Date().getTime();
+                $.get("{:U('ajax_get_jobs')}", {
+                            "tstime": tsTimeStamp,
+                            "key": $(this).val(),
+                            "type": $(this).attr("id")
+                        },
+                        function (data) {
+                            if (data) {
+                                html = "<table width=\"100%\" border=\"0\" cellpadding=\"10\" cellspacing=\"0\" style=\"margin-bottom:10px;\" class=\"link_blue\">";
+                                html += "<tr style=\"color: #333333;\" bgcolor=\"#F5F7F8\">";
+                                html += "<td width=\"25%\" height=\"30\">&nbsp;&nbsp;<strong>职位名称<\/strong><\/td>";
+                                html += "<td><strong>公司名称<\/strong><\/td>";
+                                html += "<td width=\"13%\" align=\"center\"><strong>发布时间<\/strong><\/td>";
+                                html += "<td width=\"13%\" align=\"center\"><strong>到期时间<\/strong><\/td>";
+                                html += "<td width=\"13%\" align=\"center\"><strong>刷新时间<\/strong><\/td>";
+                                html += "<\/tr>";
+                                var str = data.split("@@@");
+                                var i = 1;
+                                for (x in str) {
+                                    var val = str[x].split("%%%");
+                                    html += "<tr>";
+                                    html += "<td height=\"30\" style=\"border-bottom:1px #DFDFDF dashed\" >&nbsp;";
+                                    html += "<label>";
+                                    html += "<input type=\"radio\" class=\"cp_jobid\" name=\"uid\" value=\"" + val[0] + "\" data=\"" + val[8] + "\" \/>";
+                                    html += "<\/label>";
+                                    html += "<a href=\"" + val[2] + "\" target=\"_blank\">" + val[1] + "<\/a><\/td>";
+                                    html += "<td  style=\"border-bottom:1px #DFDFDF dashed\"><a href=\"" + val[4] + "\" target=\"_blank\">" + val[3] + "<\/a><\/td>";
+                                    html += "<td align=\"center\"  style=\"border-bottom:1px #DFDFDF dashed\">" + val[5] + "<\/td>";
+                                    html += "<td align=\"center\"  style=\"border-bottom:1px #DFDFDF dashed\">" + val[6] + "<\/td>";
+                                    html += "<td align=\"center\"  style=\"border-bottom:1px #DFDFDF dashed\">" + val[7] + "<\/td>";
+                                    html += "<\/tr>";
+                                    i++;
+                                }
+                                html += "<\/table>";
+                                $("#showtd").html(html);
+                            }
+                            else {
+                                html = "<div style=\"padding:20px; color:#0066CC\">没有找到对应的企业。</div>";
+                                $("#showtd").html(html);
+                            }
+                        })
+            }
+        });
+        //点击提交
+        $("#BtnAdd").live('click', function () {
+            var uid = $("input[name='uid']:checked");
+            if (uid.length == 0) {
+                disapperTooltip('remind',"请选择要添加的企业！");
+                return false;
+            }
+            $("form[name='FormData']").submit();
+        });
+    });
+</script>
+<notempty name="apply['Subsite']">
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".cp_jobid").live('click', function () {
+                var subsite_id = $(this).attr('data');
+                if(subsite_id){
+                    $("input[name='subsite_id']").val(subsite_id);
+                } else {
+                    $("input[name='subsite_id']").val("0");
+                }
+
+            });
+        });
+    </script>
+</notempty>
+</html>

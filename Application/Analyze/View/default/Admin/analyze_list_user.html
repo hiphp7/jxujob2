@@ -1,0 +1,151 @@
+<include file="Admin@default/public/header" />
+    <div class="toptip">
+		<h2>提示：</h2>
+		<p>行为分析可将用户访问、用户操作等用列表的形式表现出来，从而获取用户页面停留时间，操作终止，体验受阻等信息。</p>
+	</div>
+  <notempty name="apply['Subsite']">
+    <div class="seltpye_x">
+        <div class="left">所属分站</div>
+        <qscms:subsite 列表名="subsite_list"/>
+        <div class="right">
+          <a href="{:P(array('subsite_id'=>''))}" <if condition="$Think.get.subsite_id eq ''">class="select"</if>>不限</a>
+          <if condition="$visitor['role_id'] eq 1">
+            <volist name="subsite_list" id="subsite">
+              <a href="{:P(array('subsite_id'=>$subsite['s_id']))}" <if condition="$Think.get.subsite_id eq $subsite['s_id']">class="select"</if>>{$subsite.s_sitename}</a>
+            </volist>
+          <else/>
+            <volist name="subsite_list" id="subsite">
+              <if condition="in_array($subsite['s_id'],$visitor['subsite'])">
+                <a href="{:P(array('subsite_id'=>$subsite['s_id']))}" <if condition="$Think.get.subsite_id eq $subsite['s_id']">class="select"</if>>{$subsite.s_sitename}</a>
+              </if>
+            </volist>
+          </if>
+          <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+  </notempty>
+  <if condition="ACTION_NAME eq 'index'">
+    <div class="seltpye_x">
+        <div class="left">用户类型</div>    
+        <div class="right">
+        <a href="{:P(array('utype'=>''))}" <if condition="$Think.get.utype eq ''">class="select"</if>>不限</a>
+        <a href="{:P(array('utype'=>1))}" <if condition="$Think.get.utype eq 1">class="select"</if>>企业会员</a>
+        <a href="{:P(array('utype'=>2))}" <if condition="$Think.get.utype eq 2">class="select"</if>>个人会员</a>
+        <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+  </if>
+	 <div class="seltpye_x">
+        <div class="left">时间</div>    
+        <div class="right">
+        <a href="{:P(array('settr'=>''))}" <if condition="$Think.get.settr eq ''">class="select"</if>>不限</a>
+        <a href="{:P(array('settr'=>3))}" <if condition="$Think.get.settr eq 3">class="select"</if>>三天内</a>
+        <a href="{:P(array('settr'=>7))}" <if condition="$Think.get.settr eq 7">class="select"</if>>一周内</a>
+        <a href="{:P(array('settr'=>30))}" <if condition="$Think.get.settr eq 30">class="select"</if>>一月内</a>
+        <a href="{:P(array('settr'=>180))}" <if condition="$Think.get.settr eq 180">class="select"</if>>半年内</a>
+        <a href="{:P(array('settr'=>360))}" <if condition="$Think.get.settr eq 360">class="select"</if>>一年内</a>
+        <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+	<form id="form1" name="form1" method="post" action="{:U('delete_group')}">
+    <input name="_k_v" type="hidden" value="{$Think.get._k_v}">
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" id="list" class="link_lan">
+			<tr>
+			<td height="26"  class="admin_list_tit admin_list_first"  width="300">
+			<label id="chkAll"><input type="checkbox" name=" " title="全选/反选" id="chk"/>名称</label></td>
+			<td  align="center" class="admin_list_tit">用户名</td>
+      <if condition="ACTION_NAME eq 'index'">
+			 <td  align="center" class="admin_list_tit">用户类型</td>
+      </if>
+			<td   align="center" class="admin_list_tit">生成时间</td>
+			<td  align="center" class="admin_list_tit">跳出时间</td>
+			<td  align="center" class="admin_list_tit">停留时长</td>
+			<td width="100" align="center"  class="admin_list_tit">操作</td>
+			</tr>
+			<volist name="list" id="vo">
+				<tr>
+				<td  class="admin_list admin_list_first">
+				<input name="id[]" type="checkbox" value="{$vo.id}"/>
+				&nbsp;<a href="<if condition="ACTION_NAME eq 'analyze_list_com'">{:U('Analyze/Admin/analyze_detail_com',array('uid'=>$vo['uid'],'gid'=>$vo['id'],'_k_v'=>$_GET['_k_v']))}<elseif condition="ACTION_NAME eq analyze_list_per"/>{:U('Analyze/Admin/analyze_detail_per',array('uid'=>$vo['uid'],'gid'=>$vo['id'],'_k_v'=>$_GET['_k_v']))}<else/>{:U('Analyze/Admin/analyze_detail',array('uid'=>$vo['uid'],'gid'=>$vo['id'],'_k_v'=>$_GET['_k_v']))}</if>">{$vo['name']}</a>				</td>
+				<td class="admin_list" align="center">{$vo['username']}（{$vo['uid']}）</td>
+        <if condition="ACTION_NAME eq 'index'">
+  				<td class="admin_list" align="center">
+            <if condition="$vo['utype'] eq 2">
+              个人会员
+            <else/>
+              企业会员
+            </if>
+          </td>
+        </if>
+				<td class="admin_list" align="center">{:admin_date($vo['addtime'])}</td>
+				<td class="admin_list" align="center"><if condition="$vo['endtime']">{:admin_date($vo['endtime'])}<else />--</if></td>
+				<td class="admin_list" align="center">{:sub_day($vo['during'])}</td>
+				<td align="center"  class="admin_list"><a href="{:U('delete_group',array('id'=>$vo['id'],'_k_v'=>$_GET['_k_v']))}" onclick="return confirm('你确定要删除吗？')">删除</a></td>
+				</tr>
+			</volist>
+		</table>
+		<empty name="list">
+			<div class="admin_list_no_info">没有任何信息！</div>
+		</empty>
+		<span id="OpPi"></span>
+	</form>
+
+	 
+  <table width="100%" border="0" cellspacing="10" cellpadding="0" class="admin_list_btm">
+    <tr>
+      <td>
+      
+        <input type="button" name="" value="删除" class="admin_submit"   id="ButDel"/>
+
+        
+      </td>
+      <td width="305" align="right">
+        <form id="formseh" name="formseh" method="get" action="?">
+              <input type="hidden" name="uid" value="{$Think.get.uid}">
+              <input type="hidden" name="m" value="{:MODULE_NAME}">
+              <input type="hidden" name="c" value="{:CONTROLLER_NAME}">
+              <input type="hidden" name="a" value="{:ACTION_NAME}">
+          <div class="seh">
+            <div class="keybox"><input name="key" type="text"   value="{$Think.get.key}" /></div>
+            <div class="selbox">
+              <input name="key_type_cn"  id="key_type_cn" type="text" value="{$Think.get.key_type_cn|default="会员名"}" readonly="true"/>
+              <div>
+                <input name="key_type" id="key_type" type="hidden" value="{$Think.get.key_type|default="1"}" />
+                <div id="sehmenu" class="seh_menu">
+                  <ul>
+
+                    <li id="1" title="会员名">会员名</li>
+                    <li id="2" title="会员id">会员Uid</li>
+
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="sbtbox">
+              <input type="submit" name="" class="sbt" id="sbt" value="搜索"/>
+            </div>
+            <div class="clear"></div>
+          </div>
+        </form>
+      </td>
+    </tr>
+  </table>
+	<div class="qspage">{$page}</div>
+</div>
+<include file="Admin@default/public/footer" />
+<script type="text/javascript">
+	$(document).ready(function(){
+  		showmenu("#key_type_cn","#sehmenu","#key_type");
+		//点击批量取消	
+		$("#ButDel").click(function(){
+			if (confirm('你确定要删除吗？')){
+				$("form[name=form1]").submit()
+			}
+		});
+	});
+</script>
+</body>
+</html>

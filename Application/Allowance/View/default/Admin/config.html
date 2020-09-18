@@ -1,0 +1,685 @@
+<include file="Admin@default/public/header" />
+  <div class="toptit">参数配置</div>
+	<form action="{:U('Admin/config')}" method="post" enctype="multipart/form-data" name="form1" id="form1">
+		<table width="100%" border="0" cellspacing="5" cellpadding="5">
+			<tr>
+				<td width="220" align="right">新创建简历多长时间内不能领取红包：</td>
+				<td><input name="new_resume_apply_timespace" type="text"  class="input_text_100" id="new_resume_apply_timespace" value="{$config['new_resume_apply_timespace']}" maxlength="30" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/> 分钟<span class="admin_note">0为不限</span></td>
+			</tr>
+      <tr>
+        <td align="right">个人领取红包是否需要通过手机号验证：</td>
+        <td>
+          <label>
+          <input name="apply_need_auth_mobile" type="radio" id="apply_need_auth_mobile" value="0" <if condition="$config['apply_need_auth_mobile'] eq 0">checked="checked"</if>/>否</label>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <label >
+          <input type="radio" name="apply_need_auth_mobile" value="1" <if condition="$config['apply_need_auth_mobile'] eq 1">checked="checked"</if>/>是</label>
+        </td>
+      </tr>
+      <tr>
+        <td align="right">同一账号领取红包时间间隔：</td>
+        <td><input name="signon_timespace" type="text"  class="input_text_100" id="signon_timespace" value="{$config['signon_timespace']}" maxlength="30" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onblur="if(value<15) value=15;" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/> 秒<span class="admin_note">微信官方要求向同一账号付款时间间隔不小于15秒</span></td>
+      </tr>
+			<tr>
+				<td align="right">简历意向职位修改时间间隔：</td>
+				<td><input name="resume_intentionjobs_edit_timespace" type="text"  class="input_text_100" id="resume_intentionjobs_edit_timespace" value="{$config['resume_intentionjobs_edit_timespace']}" maxlength="30" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/> 小时<span class="admin_note">0为不限</span></td>
+			</tr>
+			<tr>
+				<td align="right">红包职位每天最多可申请次数：</td>
+				<td><input name="apply_maxtime_perday" type="text"  class="input_text_100" id="apply_maxtime_perday" value="{$config['apply_maxtime_perday']}" maxlength="30" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/> 次<span class="admin_note">0为不限</span></td>
+			</tr>
+			<tr>
+				<td align="right">红包职位最近30天最多可申请次数：</td>
+				<td><input name="apply_maxtime_per_one_month" type="text"  class="input_text_100" id="apply_maxtime_per_one_month" value="{$config['apply_maxtime_per_one_month']}" maxlength="30" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/> 次<span class="admin_note">0为不限</span></td>
+			</tr>
+			<tr>
+				<td align="right">红包职位最近90天最多可申请次数：</td>
+				<td><input name="apply_maxtime_per_three_month" type="text"  class="input_text_100" id="apply_maxtime_per_three_month" value="{$config['apply_maxtime_per_three_month']}" maxlength="30" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/> 次<span class="admin_note">0为不限</span></td>
+			</tr>
+			<tr>
+				<td align="right">服务费：</td>
+				<td><input name="service_charge" type="text"  class="input_text_100" id="service_charge" value="{$config['service_charge']}" maxlength="30" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/> %<span class="admin_note">0为不收取</span></td>
+			</tr>
+			<tr>
+				<td align="right">红包金额范围：</td>
+				<td><input name="amount_range[]" type="text"  class="input_text_100" id="amount_min" value="{$config['amount_range'][0]}" maxlength="30" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/> 
+				- <input name="amount_range[]" type="text"  class="input_text_100" id="amount_max" value="{$config['amount_range'][1]}" maxlength="30" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/> 
+				</td>
+			</tr>
+			<tr>
+				<td align="right">个人申请投递红包是否开启审核：</td>
+				<td>
+					<label>
+					<input name="apply_audit_open" type="radio" id="apply_audit_open" value="0" <if condition="$config['apply_audit_open'] eq 0">checked="checked"</if>/>否</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<label >
+					<input type="radio" name="apply_audit_open" value="1" <if condition="$config['apply_audit_open'] eq 1">checked="checked"</if>/>是</label>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">黑名单期限：</td>
+				<td><input name="blacklist_time_limit" type="text"  class="input_text_100" id="blacklist_time_limit" value="{$config['blacklist_time_limit']}" maxlength="30" onkeyup="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/> 天
+				<span class="admin_note">系统自动加入黑名单的期限，0为永久</span></td>
+			</tr>
+			<tr>
+				<td align="right">&nbsp;</td>
+				<td height="50"> 
+					<input name="submit" type="submit" class="admin_submit"    value="保存修改"/>
+				</td>
+			</tr>
+		</table>
+	</form>
+
+	<div class="toptit">短信通知规则<span class="admin_note">如需开启短信通知，请先到<a href="{:U('Admin/Sms/config_edit')}">系统-短信设置</a>中配置短信参数。</span></div>
+	<table width="100%" border="0" cellspacing="0" cellpadding="5">
+       <tr>
+        <td height="30" style="font-size:12px;padding-left:20px;">
+		<form action="{:U('Admin/sms_rule')}" method="post"   name="form2" id="form2">
+		<table width="800" border="0" cellspacing="7" cellpadding="1" style=" margin-bottom:3px;" class="link_lan">
+            <tr>
+              <td align="right" width="280">企业添加打赏职位：</td>
+              <td>
+			   <label>
+                <input name="set_allowance_jobs_add" type="radio" value="1" <if condition="$smsConfig['set_allowance_jobs_add'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                  <input type="radio" name="set_allowance_jobs_add" value="0" <if condition="$smsConfig['set_allowance_jobs_add'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(企业添加打赏职位 - 通知企业)</td>
+            </tr>
+            <tr>
+              <td align="right">【投递红包】个人申请职位：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_apply_audit_personal" type="radio" value="1" <if condition="$smsConfig['set_allowance_apply_audit_personal'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_apply_audit_personal" type="radio"  value="0" <if condition="$smsConfig['set_allowance_apply_audit_personal'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【投递红包】个人申请职位后待审核 - 通知个人)</td>
+            </tr>
+            <tr>
+              <td align="right">【投递红包】个人申请职位：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_apply_audit_company" type="radio" value="1" <if condition="$smsConfig['set_allowance_apply_audit_company'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_apply_audit_company" type="radio"  value="0" <if condition="$smsConfig['set_allowance_apply_audit_company'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【投递红包】个人申请职位后待审核 - 通知企业)</td>
+            </tr>
+            <tr>
+              <td align="right">【投递红包】个人申请职位：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_apply_signon_personal" type="radio" value="1" <if condition="$smsConfig['set_allowance_apply_signon_personal'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_apply_signon_personal" type="radio"  value="0" <if condition="$smsConfig['set_allowance_apply_signon_personal'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【投递红包】个人申请职位发放红包 - 通知个人)</td>
+            </tr>
+            <tr>
+              <td align="right">【投递红包】个人申请职位：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_apply_signon_company" type="radio" value="1" <if condition="$smsConfig['set_allowance_apply_signon_company'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_apply_signon_company" type="radio"  value="0" <if condition="$smsConfig['set_allowance_apply_signon_company'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【投递红包】个人申请职位发放红包 - 通知企业)</td>
+            </tr>
+            <tr>
+              <td align="right">【投递红包】管理员审核通过：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_audit_pass_personal" type="radio" value="1" <if condition="$smsConfig['set_allowance_audit_pass_personal'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_audit_pass_personal" type="radio"  value="0" <if condition="$smsConfig['set_allowance_audit_pass_personal'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【投递红包】管理员审核通过 - 通知个人)</td>
+            </tr>
+            <tr>
+              <td align="right">【投递红包】管理员审核通过：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_audit_pass_company" type="radio" value="1" <if condition="$smsConfig['set_allowance_audit_pass_company'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_audit_pass_company" type="radio"  value="0" <if condition="$smsConfig['set_allowance_audit_pass_company'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【投递红包】管理员审核通过 - 通知企业)</td>
+            </tr>
+            <tr>
+              <td align="right">【投递红包】管理员审核未通过：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_audit_nopass_personal" type="radio" value="1" <if condition="$smsConfig['set_allowance_audit_nopass_personal'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_audit_nopass_personal" type="radio"  value="0" <if condition="$smsConfig['set_allowance_audit_nopass_personal'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【投递红包】管理员审核未通过 - 通知个人)</td>
+            </tr>
+            <tr>
+              <td align="right">【投递红包】管理员审核未通过：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_audit_nopass_company" type="radio" value="1" <if condition="$smsConfig['set_allowance_audit_nopass_company'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_audit_nopass_company" type="radio"  value="0" <if condition="$smsConfig['set_allowance_audit_nopass_company'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【投递红包】管理员审核未通过 - 通知企业)</td>
+            </tr>
+            <tr>
+              <td align="right">【面试红包】个人申请面试：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_apply_interview_personal" type="radio" value="1" <if condition="$smsConfig['set_allowance_apply_interview_personal'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_apply_interview_personal" type="radio"  value="0" <if condition="$smsConfig['set_allowance_apply_interview_personal'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【面试红包】个人申请面试 - 通知个人)</td>
+            </tr>
+            <tr>
+              <td align="right">【面试红包】个人申请面试：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_apply_interview_company" type="radio" value="1" <if condition="$smsConfig['set_allowance_apply_interview_company'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_apply_interview_company" type="radio"  value="0" <if condition="$smsConfig['set_allowance_apply_interview_company'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【面试红包】个人申请面试 - 通知企业)</td>
+            </tr>
+            <tr>
+              <td align="right">【面试红包】企业同意面试：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_agree_interview_personal" type="radio" value="1" <if condition="$smsConfig['set_allowance_agree_interview_personal'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_agree_interview_personal" type="radio"  value="0" <if condition="$smsConfig['set_allowance_agree_interview_personal'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【面试红包】企业同意面试 - 通知个人)</td>
+            </tr>
+            <tr>
+              <td align="right">【面试红包】企业同意面试：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_agree_interview_company" type="radio" value="1" <if condition="$smsConfig['set_allowance_agree_interview_company'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_agree_interview_company" type="radio"  value="0" <if condition="$smsConfig['set_allowance_agree_interview_company'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【面试红包】企业同意面试 - 通知企业)</td>
+            </tr>
+            <tr>
+              <td align="right">【面试红包】企业拒绝面试：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_refuse_interview_personal" type="radio" value="1" <if condition="$smsConfig['set_allowance_refuse_interview_personal'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_refuse_interview_personal" type="radio"  value="0" <if condition="$smsConfig['set_allowance_refuse_interview_personal'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【面试红包】企业拒绝面试 - 通知个人)</td>
+            </tr>
+            <tr>
+              <td align="right">【面试红包】企业拒绝面试：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_refuse_interview_company" type="radio" value="1" <if condition="$smsConfig['set_allowance_refuse_interview_company'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_refuse_interview_company" type="radio"  value="0" <if condition="$smsConfig['set_allowance_refuse_interview_company'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【面试红包】企业拒绝面试 - 通知企业)</td>
+            </tr>
+            <tr>
+              <td align="right">【面试红包】个人确认面试：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_ever_interview_personal" type="radio" value="1" <if condition="$smsConfig['set_allowance_ever_interview_personal'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_ever_interview_personal" type="radio"  value="0" <if condition="$smsConfig['set_allowance_ever_interview_personal'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【面试红包】个人确认面试 - 通知个人)</td>
+            </tr>
+            <tr>
+              <td align="right">【面试红包】个人确认面试：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_ever_interview_company" type="radio" value="1" <if condition="$smsConfig['set_allowance_ever_interview_company'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_ever_interview_company" type="radio"  value="0" <if condition="$smsConfig['set_allowance_ever_interview_company'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【面试红包】个人确认面试 - 通知企业)</td>
+            </tr>
+            <tr>
+              <td align="right">【面试红包】企业确认面试：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_confirm_interview_personal" type="radio" value="1" <if condition="$smsConfig['set_allowance_confirm_interview_personal'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_confirm_interview_personal" type="radio"  value="0" <if condition="$smsConfig['set_allowance_confirm_interview_personal'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【面试红包】企业确认面试 - 通知个人)</td>
+            </tr>
+            <tr>
+              <td align="right">【面试红包】企业确认面试：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_confirm_interview_company" type="radio" value="1" <if condition="$smsConfig['set_allowance_confirm_interview_company'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_confirm_interview_company" type="radio"  value="0" <if condition="$smsConfig['set_allowance_confirm_interview_company'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【面试红包】企业确认面试 - 通知企业)</td>
+            </tr>
+            <tr>
+              <td align="right">【面试红包】管理员仲裁给企业退款：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_arbitrate_refund_interview_personal" type="radio" value="1" <if condition="$smsConfig['set_allowance_arbitrate_refund_interview_personal'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_arbitrate_refund_interview_personal" type="radio"  value="0" <if condition="$smsConfig['set_allowance_arbitrate_refund_interview_personal'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【面试红包】管理员仲裁给企业退款 - 通知个人)</td>
+            </tr>
+            <tr>
+              <td align="right">【面试红包】管理员仲裁给企业退款：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_arbitrate_refund_interview_company" type="radio" value="1" <if condition="$smsConfig['set_allowance_arbitrate_refund_interview_company'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_arbitrate_refund_interview_company" type="radio"  value="0" <if condition="$smsConfig['set_allowance_arbitrate_refund_interview_company'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【面试红包】管理员仲裁给企业退款 - 通知企业)</td>
+            </tr>
+            <tr>
+              <td align="right">【面试红包】管理员仲裁给个人发红包：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_arbitrate_putout_interview_personal" type="radio" value="1" <if condition="$smsConfig['set_allowance_arbitrate_putout_interview_personal'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_arbitrate_putout_interview_personal" type="radio"  value="0" <if condition="$smsConfig['set_allowance_arbitrate_putout_interview_personal'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【面试红包】管理员仲裁给个人发红包 - 通知个人)</td>
+            </tr>
+            <tr>
+              <td align="right">【面试红包】管理员仲裁给个人发红包：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_arbitrate_putout_interview_company" type="radio" value="1" <if condition="$smsConfig['set_allowance_arbitrate_putout_interview_company'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_arbitrate_putout_interview_company" type="radio"  value="0" <if condition="$smsConfig['set_allowance_arbitrate_putout_interview_company'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【面试红包】管理员仲裁给个人发红包 - 通知企业)</td>
+            </tr>
+            <tr>
+              <td align="right">【面试红包】企业24小时内未确认面试自动发放：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_24hours_noconfirm_auto_putout_personal" type="radio" value="1" <if condition="$smsConfig['set_allowance_24hours_noconfirm_auto_putout_personal'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_24hours_noconfirm_auto_putout_personal" type="radio"  value="0" <if condition="$smsConfig['set_allowance_24hours_noconfirm_auto_putout_personal'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【面试红包】企业24小时内未确认面试自动发放 - 通知个人)</td>
+            </tr>
+            <tr>
+              <td align="right">【面试红包】企业24小时内未确认面试自动发放：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_24hours_noconfirm_auto_putout_company" type="radio" value="1" <if condition="$smsConfig['set_allowance_24hours_noconfirm_auto_putout_company'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_24hours_noconfirm_auto_putout_company" type="radio"  value="0" <if condition="$smsConfig['set_allowance_24hours_noconfirm_auto_putout_company'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【面试红包】企业24小时内未确认面试自动发放 - 通知企业)</td>
+            </tr>
+            <tr>
+              <td align="right">【面试红包】企业72小时内未同意面试自动退款：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_3days_noagree_auto_refund_personal" type="radio" value="1" <if condition="$smsConfig['set_allowance_3days_noagree_auto_refund_personal'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_3days_noagree_auto_refund_personal" type="radio"  value="0" <if condition="$smsConfig['set_allowance_3days_noagree_auto_refund_personal'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【面试红包】企业72小时内未同意面试自动退款- 通知个人)</td>
+            </tr>
+            <tr>
+              <td align="right">【面试红包】企业72小时内未同意面试自动退款：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_3days_noagree_auto_refund_company" type="radio" value="1" <if condition="$smsConfig['set_allowance_3days_noagree_auto_refund_company'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_3days_noagree_auto_refund_company" type="radio"  value="0" <if condition="$smsConfig['set_allowance_3days_noagree_auto_refund_company'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【面试红包】企业72小时内未同意面试自动退款- 通知企业)</td>
+            </tr>
+            <tr>
+              <td align="right">【面试红包】企业判定缺席：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_absent_interview_personal" type="radio" value="1" <if condition="$smsConfig['set_allowance_absent_interview_personal'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_absent_interview_personal" type="radio"  value="0" <if condition="$smsConfig['set_allowance_absent_interview_personal'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【面试红包】企业判定缺席 - 通知个人)</td>
+            </tr>
+            <tr>
+              <td align="right">【面试红包】企业判定缺席：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_absent_interview_company" type="radio" value="1" <if condition="$smsConfig['set_allowance_absent_interview_company'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_absent_interview_company" type="radio"  value="0" <if condition="$smsConfig['set_allowance_absent_interview_company'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【面试红包】企业判定缺席 - 通知企业)</td>
+            </tr>
+            <tr>
+              <td align="right">【入职红包】个人申请职位：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_apply_entry_jobs_personal" type="radio" value="1" <if condition="$smsConfig['set_allowance_apply_entry_jobs_personal'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_apply_entry_jobs_personal" type="radio"  value="0" <if condition="$smsConfig['set_allowance_apply_entry_jobs_personal'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【入职红包】个人申请职位 - 通知个人)</td>
+            </tr>
+            <tr>
+              <td align="right">【入职红包】个人申请职位：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_apply_entry_jobs_company" type="radio" value="1" <if condition="$smsConfig['set_allowance_apply_entry_jobs_company'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_apply_entry_jobs_company" type="radio"  value="0" <if condition="$smsConfig['set_allowance_apply_entry_jobs_company'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【入职红包】个人申请职位 - 通知企业)</td>
+            </tr>
+            <tr>
+              <td align="right">【入职红包】个人确认入职：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_ever_entry_personal" type="radio" value="1" <if condition="$smsConfig['set_allowance_ever_entry_personal'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_ever_entry_personal" type="radio"  value="0" <if condition="$smsConfig['set_allowance_ever_entry_personal'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【入职红包】个人确认入职 - 通知个人)</td>
+            </tr>
+            <tr>
+              <td align="right">【入职红包】个人确认入职：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_ever_entry_company" type="radio" value="1" <if condition="$smsConfig['set_allowance_ever_entry_company'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_ever_entry_company" type="radio"  value="0" <if condition="$smsConfig['set_allowance_ever_entry_company'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【入职红包】个人确认入职 - 通知企业)</td>
+            </tr>
+            <tr>
+              <td align="right">【入职红包】企业确认入职：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_confirm_entry_personal" type="radio" value="1" <if condition="$smsConfig['set_allowance_confirm_entry_personal'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_confirm_entry_personal" type="radio"  value="0" <if condition="$smsConfig['set_allowance_confirm_entry_personal'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【入职红包】企业确认入职 - 通知个人)</td>
+            </tr>
+            <tr>
+              <td align="right">【入职红包】企业确认入职：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_confirm_entry_company" type="radio" value="1" <if condition="$smsConfig['set_allowance_confirm_entry_company'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_confirm_entry_company" type="radio"  value="0" <if condition="$smsConfig['set_allowance_confirm_entry_company'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【入职红包】企业确认入职 - 通知企业)</td>
+            </tr>
+            <tr>
+              <td align="right">【入职红包】企业确认缺席：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_absent_entry_personal" type="radio" value="1" <if condition="$smsConfig['set_allowance_absent_entry_personal'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_absent_entry_personal" type="radio"  value="0" <if condition="$smsConfig['set_allowance_absent_entry_personal'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【入职红包】企业确认缺席 - 通知个人)</td>
+            </tr>
+            <tr>
+              <td align="right">【入职红包】企业确认缺席：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_absent_entry_company" type="radio" value="1" <if condition="$smsConfig['set_allowance_absent_entry_company'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_absent_entry_company" type="radio"  value="0" <if condition="$smsConfig['set_allowance_absent_entry_company'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【入职红包】企业确认缺席 - 通知企业)</td>
+            </tr>
+            <tr>
+              <td align="right">【入职红包】管理员仲裁给企业退款：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_arbitrate_refund_entry_personal" type="radio" value="1" <if condition="$smsConfig['set_allowance_arbitrate_refund_entry_personal'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_arbitrate_refund_entry_personal" type="radio"  value="0" <if condition="$smsConfig['set_allowance_arbitrate_refund_entry_personal'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【入职红包】管理员仲裁给企业退款 - 通知个人)</td>
+            </tr>
+            <tr>
+              <td align="right">【入职红包】管理员仲裁给企业退款：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_arbitrate_refund_entry_company" type="radio" value="1" <if condition="$smsConfig['set_allowance_arbitrate_refund_entry_company'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_arbitrate_refund_entry_company" type="radio"  value="0" <if condition="$smsConfig['set_allowance_arbitrate_refund_entry_company'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【入职红包】管理员仲裁给企业退款 - 通知企业)</td>
+            </tr>
+            <tr>
+              <td align="right">【入职红包】管理员仲裁给个人发红包：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_arbitrate_putout_entry_personal" type="radio" value="1" <if condition="$smsConfig['set_allowance_arbitrate_putout_entry_personal'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_arbitrate_putout_entry_personal" type="radio"  value="0" <if condition="$smsConfig['set_allowance_arbitrate_putout_entry_personal'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【入职红包】管理员仲裁给个人发红包 - 通知个人)</td>
+            </tr>
+            <tr>
+              <td align="right">【入职红包】管理员仲裁给个人发红包：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_arbitrate_putout_entry_company" type="radio" value="1" <if condition="$smsConfig['set_allowance_arbitrate_putout_entry_company'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_arbitrate_putout_entry_company" type="radio"  value="0" <if condition="$smsConfig['set_allowance_arbitrate_putout_entry_company'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(【入职红包】管理员仲裁给个人发红包 - 通知企业)</td>
+            </tr>
+            <tr>
+              <td align="right">管理员退款成功：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_admin_refund_company" type="radio" value="1" <if condition="$smsConfig['set_allowance_admin_refund_company'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_admin_refund_company" type="radio"  value="0" <if condition="$smsConfig['set_allowance_admin_refund_company'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(管理员退款成功 - 通知企业)</td>
+            </tr>
+            <tr>
+              <td align="right">个人7天内未确认自动退款：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_7days_noconfirm_auto_refund_personal" type="radio" value="1" <if condition="$smsConfig['set_allowance_7days_noconfirm_auto_refund_personal'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_7days_noconfirm_auto_refund_personal" type="radio"  value="0" <if condition="$smsConfig['set_allowance_7days_noconfirm_auto_refund_personal'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(个人7天内未确认自动退款 - 通知个人)</td>
+            </tr>
+            <tr>
+              <td align="right">个人7天内未确认自动退款：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_7days_noconfirm_auto_refund_company" type="radio" value="1" <if condition="$smsConfig['set_allowance_7days_noconfirm_auto_refund_company'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_7days_noconfirm_auto_refund_company" type="radio"  value="0" <if condition="$smsConfig['set_allowance_7days_noconfirm_auto_refund_company'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(个人7天内未确认自动退款 - 通知企业)</td>
+            </tr>
+            <tr>
+              <td align="right">加入黑名单通知：</td>
+              <td>
+			  <label>
+                <input name="set_allowance_add_blacklist" type="radio" value="1" <if condition="$smsConfig['set_allowance_add_blacklist'] eq 1">checked="checked"</if>/>
+                通知</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                <input name="set_allowance_add_blacklist" type="radio"  value="0" <if condition="$smsConfig['set_allowance_add_blacklist'] eq 0">checked="checked"</if>/>
+              不通知</label>			  </td>
+              <td  style="color:#999999">(加入黑名单通知)</td>
+            </tr>
+            <tr>
+              <td align="right">&nbsp;</td>
+              <td height="55"><span style="font-size:14px;">
+                <input type="submit" class="admin_submit" value="保存修改"/>
+              </span></td>
+              <td>&nbsp;</td>
+            </tr>
+          </table>
+		  </form>
+		  </td>
+      </tr>
+    </table>
+    <if condition="C('apply.Weixin')">
+	<div class="toptit">微信通知规则<span class="admin_note">如需开启微信通知，请先到<a href="{:U('Admin/Weixin/index')}">系统-微信公众平台</a>中配置微信参数。</span></div>
+    <form action="{:U('Admin/weixin_rule')}" method="post" enctype="multipart/form-data" name="form3" id="form3">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" id="list" class="link_lan"  >
+			<tr>
+			<td height="80" class="admin_list_tit admin_list_first" >通知事件</td>
+			<td width="160"   align="center"  class="admin_list_tit">状态</td>
+			<td width="160"   align="center"  class="admin_list_tit">模板名称</td>
+			<td width="180"   align="center"  class="admin_list_tit">所属行业</td>
+			<td width="170"   align="center"  class="admin_list_tit">模板编号</td>
+			<td width="350"   align="center"  class="admin_list_tit">模板ID</td>
+			</tr>
+				<volist name="weixin_config_list" id="list">
+					<tr>
+					<td class="admin_list admin_list_first vtip"  title="{$list.name}">
+						<input name="alias[]" type="hidden" value="{$list.alias}"/>
+						{$list.name}
+					</td>
+					<td align="center"  class="admin_list">
+						<label>
+							<input name="{$list.alias}_value" type="radio" value="1" <if condition="$list['value'] eq 1">checked="checked"</if>/>开启
+						</label>&nbsp;&nbsp;&nbsp;&nbsp;
+						<label>
+							<input type="radio" name="{$list.alias}_value" value="0" <if condition="$list['value'] eq 0">checked="checked"</if>/>关闭
+						</label>	
+					</td>
+					<td align="center"  class="admin_list">
+					{$list.template_title}
+					</td>
+					<td align="center"  class="admin_list">
+					{$list.template_trade}
+					</td>
+					<td align="center"  class="admin_list">
+					{$list.template_no}
+					</td>
+					<td align="center"  class="admin_list">
+					<input type="text" class="input_text_300" name="template_id[]" value="{$list['template_id']}">
+					</td>
+					</tr>
+				</volist>
+		</table>
+		<table width="100%" border="0" cellspacing="10"  class="admin_list_btm">
+			<tr>
+				<td>
+					<input name="save" type="submit" class="admin_submit" value="保存"/>
+				</td>
+				<td width="305" align="right"></td>
+			</tr>
+		</table>
+	</form>
+	</if>
+</div>
+<include file="Admin@default/public/footer" />
+</body>
+</html>

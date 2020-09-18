@@ -1,0 +1,391 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<include file="public:meta" />
+	<link href="../public/css/personal/common.css" rel="stylesheet" type="text/css" />
+	<link href="../public/css/personal/personal_index.css" rel="stylesheet" type="text/css" />
+	<link href="../public/css/personal/personal_ajax_dialog.css" rel="stylesheet" type="text/css" />
+	<script src="../public/js/personal/jquery.common.js" type="text/javascript" language="javascript"></script>
+	<script src="../public/js/jquery.cookie.js" type="text/javascript" language="javascript"></script>
+</head>
+<body>
+	<include file="index_header" />
+	<div class="user_main">
+		<include file="index_left_nav" />
+		<div class="mainbox">
+			<!-- 完善简历提示-->
+			<if condition="$resume_info['complete_percent'] lt 60 && $hidden_perfect_notice neq 1">
+				<div class="toptip">   
+				    <div class="topadd">
+				        <div class="td1"></div>
+					    <div class="td2"><span class="font_blue">您的简历完整度太低，会极大影响求职成功率哦！</span><br />完善工作经验、教育培训经历、语言能力、技能证书…等，可以有效提高求职成功率</div>
+					    <div class="td3"><div class="but_blue_115 J_hoverbut" onclick="window.location='{:U('personal/resume_edit',array('pid'=>$resume_info['id']))}'">马上完善简历</div></div>
+					    <div class="td4"><div class="but_gray_60 J_hoverbut" id="ignore">忽略</div></div>
+					    <div class="clear"></div> 
+					</div>
+				    <div class="topaddarrow"></div>
+				</div>
+			</if>
+			<!-- 完善简历提示结束-->
+			<!-- 用户名微信绑定提示-->
+			<div class="userbox <if condition="$resume_info['complete_percent'] lt 60 && $hidden_perfect_notice neq 1">showtip</if>">
+				<div class="td1 substring"><strong><if condition="date('a') eq 'am'">上午<else/>下午</if>好，{$resume_info['fullname']}</strong></div>
+				<div class="td2 <if condition="$visitor['mobile_audit']">ok link_blue<else/>link_gray6</if>"><a href="{:U('personal/user_safety')}">{$resume_info['telephone']}</a></div>
+				<div class="td3 <if condition="$visitor['email_audit']">ok link_blue<else/>link_gray6</if>"><a href="{:U('personal/user_safety')}">{$resume_info['email']}</a></div>
+				<notempty name="wx_status">
+					<empty name="qrcode">
+						<div class="td4 ok link_blue"><a href="{:U('personal/user_safety')}">已绑定微信</a></div>
+					<else/>
+						<div class="td4 link_gray6">
+							<a href="javascript:;" class="bind_wx">未绑定微信</a>
+							<div class="popWeixin" id="J_popWeixin">
+								<div><div class="qrarrow"></div></div>
+								<div><a class="close" href="javascript:void(0)">×</a></div>
+								<div class="qrimg">{$qrcode}</div>
+								<div class="qrtxt">
+									<div class="dd">微信扫一扫绑定账号</div>
+									<div class="dd_small">微信收取面试邀请</div>
+									<div class="dd_small">使用微信快速登录</div>
+								</div>
+								<div class="clear"></div>
+							</div>
+						</div>
+					</empty>
+				</notempty>
+				<div class="clear"></div>
+			</div>
+			<!--结束 -->
+			<!-- 我的简历和统计部分-- -->
+		 	<div class="infobox">
+				<div class="picbox">
+					<div class="photo"><a href="{:U('personal/user_avatar')}"><img src="{$visitor['avatars']}?{:time()}" border="0"/></a></div>
+			    	<div class="txt link_blue">我的简历</div>
+				</div>
+				<div class="clear"></div>
+				<div class="td1 J_hoverbut">
+					<if condition="$resume_info['level'] eq 3">
+					<div class="val font_green">{$resume_info['complete_percent']}%</div>
+					简历完整度<span class="green_light">(优)</span>
+					<div class="des_box">
+						<div class="desarrow"></div>
+					  	<div class="des_txt">
+							<strong>您的简历完整度很好！</strong><br />
+							投递简历不仅可快速找到工作，还赠送<span>+{$points_rule['points']}</span>的{:C('qscms_points_byname')}！<br />
+							<div class="btn"><a href="{:url_rewrite('QS_jobs')}" class="btn_yellow btn_inline">搜索职位</a></div>
+						</div>
+					</div>
+					<elseif condition="$resume_info['level'] eq 1" />
+					<div class="val font_red">{$resume_info['complete_percent']}%</div>
+					简历完整度<span class="red_light">(差)</span>
+					<div class="des_box">
+						<div class="desarrow"></div>
+					  	<div class="des_txt">
+							<strong>您的简历完整度太差！</strong><br />
+								完整的简历才能快速好到工作！<br />
+						  		完善简历还可以获取<span>+{$points_rule['points']}</span>{:C('qscms_points_byname')}哦！<br />
+							<div class="btn"><a href="{:U('personal/resume_edit',array('pid'=>$resume_info['id']))}" class="btn_yellow btn_inline">立即完善简历</a></div>
+						</div>
+					</div>
+					<else />
+					<div class="val font_yellow">{$resume_info['complete_percent']}%</div>
+					简历完整度<span class="yellow_light">(良)</span>
+					<div class="des_box">
+						<div class="desarrow"></div>
+					  	<div class="des_txt">
+							<strong>您的简历完整度一般！</strong><br />
+								完整的简历才能快速好到工作！<br />
+						  		完善简历还可以获取<span>+{$points_rule['points']}</span>{:C('qscms_points_byname')}哦！<br />
+								<div class="btn"><a href="{:U('personal/resume_edit',array('pid'=>$resume_info['id']))}" class="btn_yellow btn_inline">立即完善简历</a></div>
+						</div>
+					</div>
+					</if>
+				</div>
+				<div class="td2 J_hoverbut" onclick="window.location='{:U('personal/resume_privacy')}'"><div class="pic <if condition="$resume_info['display'] eq 0">close</if>"></div> <if condition="$resume_info['display']">简历公开<else/>简历关闭</if></div>
+				<div class="td3 J_hoverbut" onclick="window.location='{:U('personal/jobs_apply',array('resume_id'=>$resume_info['id']))}'"><div class="val">{$resume_info['countapply']}</div> 已申请职位</div>
+				<div class="td4 J_hoverbut" onclick="window.location='{:U('personal/jobs_interview',array('resume_id'=>$resume_info['id']))}'"><div class="val">{$resume_info['countinterview']}</div> 面试邀请</div>
+				<div class="td5 J_hoverbut" onclick="window.location='{:U('personal/attention_me',array('resume_id'=>$resume_info['id']))}'"><div class="val">{$resume_info['views']}</div> 谁在关注我</div>
+				<div class="clear"></div>
+			</div>
+			<!-- 我的简历和统计部分结束-- -->
+			<!-- 刷新推广修改-- -->
+			<div class="resumeinfo">
+			  <div class="linfo">	
+			    <div class="td1">
+			      审核状态：<switch name="resume_info['_audit']">
+			        <case value="1">
+			          <span class="font_green">审核通过</span>			          </case>
+			        <case value="2">
+			          <span class="font_yellow">审核中</span>			          </case>
+			        <case value="3">
+			          <span class="font_red">审核未通过</span>			          </case>
+			        </switch>
+			      <br />
+			      期望职位：{:cut_str($resume_info['intention_jobs'],12,0,'..')}<br />
+			      期望薪资：{$resume_info['wage_cn']}<br />
+			      求职状态：{$resume_info['current_cn']}<br />
+			      更新时间：{:fdate($resume_info['refreshtime'])}<br />
+			      </div>
+			    <div class="td2">
+					<div class="butlist"><div id="J_refresh_resume" class="J_hoverbut <if condition="$resume_info['_audit'] eq 1 && $resume_info['display'] eq 1">
+							btn_blue<else />btn_lightgray</if> btn_100_38" pid="{$resume_info.id}" _audit="{$resume_info['_audit']}" is_display="{$resume_info['display']}">刷新简历</div></div>
+				    <div class="butlist"><a class="J_hoverbut btn_blue   btn_100_38" href="{:U('personal/resume_edit',array('pid'=>$resume_info['id']))}" >修改简历</a></div>
+				    <div class="butlist"><a class="J_hoverbut btn_blue   btn_100_38" href="{:U('personal/jobs_matching_list',array('jobcategory'=>$resume_info['jobcategory']))}" target="_blank">匹配职位</a></div>
+					<if condition="$resume_info['_audit'] eq 1 && $resume_info['display'] eq 1">
+						<eq name="resume_info['stick']" value="1">
+						  	<div class="butlist">
+								<div class="for_hover">
+									<a class="btn_lightgray btn_100_38">简历已置顶</a>
+									<div class="des_box">
+										<div class="desarrow"></div>
+										<div class="des_txt">
+											<!-- -->
+											<strong>已购买【简历置顶】服务</strong><br />
+											有效时间：{:date('Y-m-d',$resume_info['stick_info']['addtime'])} 至 {:date('Y-m-d',$resume_info['stick_info']['endtime'])}
+										</div>
+									</div>
+								</div>
+						 	 </div>
+						<else />
+						  	<div class="butlist"><a class="btn_yellow btn_100_38 resume_stick" resume_id="{$resume_info['id']}" _audit="{$resume_info['_audit']}" is_display="{$resume_info['display']}">简历置顶</a></div>
+						</eq>
+					<else />
+						<div class="butlist"><a class="btn_lightgray btn_100_38 resume_stick" resume_id="{$resume_info['id']}" _audit="{$resume_info['_audit']}" is_display="{$resume_info['display']}">简历置顶</a></div>
+					</if>
+			      <div class="clear"></div>
+				  </div>
+			    <div class="clear"></div>
+		      </div>
+			  
+			  
+			   <div class="rinfo">
+			     <div class="goldtxt link_blue">
+				 我的{:C('qscms_points_byname')}：<span class="my_points_num">{$points|default=0}</span><br />
+				 <notempty name="apply['Mall']"><a href="{:url_rewrite('QS_mall_index')}" target="_blank">兑换礼品</a><br /></notempty>
+				<a href="{:U('PersonalService/task')}" target="_blank">做任务赚{:C('qscms_points_byname')}</a>
+				 </div>
+				 <div class="sign"><a id="J_sign_in" href="javascript:;" class="J_hoverbut btn_inline <if condition="$issign">btn_lightgray<else />	btn_yellow</if>"><if condition="$issign">已签到<else />未签到</if></a></div>
+				 <div class="clear"></div>
+			   </div>
+			   <div class="clear"></div>
+		  </div>
+ 
+			 
+			<!--推荐职位，最新职位切换卡 -->
+			<div class="tabindex">
+				 <div class="li J_tab select" data-ajaxtype="recommend_jobs" ajaxpage="2">推荐职位</div>
+				 <div class="li J_tab" data-ajaxtype="nearby_jobs" ajaxpage="2">附近职位</div>
+				 <div class="li J_tab" data-ajaxtype="new_jobs" ajaxpage="2">最新职位</div>
+			  	 <div class="clear"></div>
+			     <div class="refresh link_gray6 J_refresh"><a href="javascript:;">换一批</a></div>
+			</div>
+			<!--职位切换卡结束 -->
+			<!--选项卡对应内容div -->
+			<div class="tabshow J_tab_menu" style="display:block" >
+				<div class="ajax_loading"><div class="ajaxloadtxt"></div></div>
+				<div class="J_tab_menu_html">
+					<notempty name="jobs_list">
+						<volist name="jobs_list" id="jobs">
+							<div class="list_cell_box">
+								<div class="td1">
+									<div class="jobname link_blue substring"><a target="_blank" href="{$jobs.jobs_url}" title="{$jobs.jobs_name}">{$jobs.jobs_name}</a></div>
+									<div class="edu_wage substring">
+										<div class="education">经验{$jobs.experience_cn} / {$jobs.education_cn}</div>
+										<div class="wage font_yellow">{$jobs.wage_cn}</div>
+										<div class="clear"></div>
+									</div>
+									<div class="cname link_gray9 substring"><a target="_blank" href="{$jobs.company_url}" title="{$jobs.companyname}">{$jobs.companyname}</a></div>
+								</div>
+							</div>
+						</volist>
+						<div class="clear"></div>
+					<else />
+						<div class="empty_tipstxt link_blue">没有找到相关职位，您可以<a target="_blank" href="{:url_rewrite('QS_jobslist')}" target="_blank">进入职位库</a>搜索您心仪的职位！</div>
+					</notempty>
+				</div>
+			</div>
+			<div class="tabshow J_tab_menu"><div class="ajax_loading"><div class="ajaxloadtxt"></div></div><div class="J_tab_menu_html"></div></div>
+			<div class="tabshow J_tab_menu"><div class="ajax_loading"><div class="ajaxloadtxt"></div></div><div class="J_tab_menu_html"></div></div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<include file="index_footer" />
+	<script type="text/javascript">
+		$(".bind_wx").click(function(){
+			$('#J_popWeixin').show();
+		});
+		// 关闭微信绑定提示
+        $('#J_popWeixin .close').on('click', function(){
+            $('#J_popWeixin').hide();
+        });
+        // 推荐职位、附近职位、最新职位切换加载内容
+        var isDone = true; // 防止重复点击
+        $('.J_tab').on('click', function(event) {
+        	$(this).addClass("select").siblings(".J_tab").removeClass("select");
+        	var obj = $('.J_tab.select');
+        	var index = $(".J_tab").index(this);
+        	var ajaxtype = $(this).data('ajaxtype');
+        	var ajaxpage = parseInt(obj.attr('ajaxpage')); // 记录页数
+        	$('.J_tab_menu').eq(index).find('.ajax_loading').show();
+        	$.getJSON("{:U('Personal/ajax_get_interest_jobs')}", {type: ajaxtype}, function(data) {
+        		$('.J_tab_menu').find('.ajax_loading').hide();
+        		if (data.data.html) {
+        			$('.J_tab_menu').eq(index).find('.J_tab_menu_html').html(data.data.html);
+        			if(data.data.isfull){
+                        obj.attr('ajaxpage', 1);
+                    }else{
+                        obj.attr('ajaxpage', ajaxpage+1);
+                    }
+        		} else {
+        			$('.J_tab_menu').eq(index).find('.J_tab_menu_html').html('<div class="empty_tipstxt link_blue">没有找到相关职位，您可以<a href="{:U('jobs/index')}" target="_blank">进入职位库</a>试试手气！</div>');
+        		}
+        	});
+        	$('.J_tab_menu').eq(index).show().siblings(".J_tab_menu").hide();
+        	isDone = true; // 切换tab之后重置
+        });
+        // 换一批
+        $('.J_refresh').on('click', function(event) {
+        	var obj = $('.J_tab.select');
+        	var ajaxtype = obj.data('ajaxtype');
+        	var ajaxpage = parseInt(obj.attr('ajaxpage')); // 记录页数
+        	var sub = 0; // 获取选中tab的下标
+        	$('.J_tab').each(function(index, el) {
+        		if ($(this).hasClass('select')) {
+        			sub = index;
+        		}
+        	});
+        	$('.J_tab_menu').eq(sub).find('.ajax_loading').show();
+        	if (isDone) {
+        		isDone = false;
+	        	$.getJSON("{:U('Personal/ajax_get_interest_jobs')}", {type: ajaxtype, p: ajaxpage}, function(data) {
+	        		$('.J_tab_menu').eq(sub).find('.J_tab_menu_html').html(data.data.html);
+	        		obj.attr('ajaxpage', ajaxpage+1);
+	        		isDone = true;
+	        		$('.J_tab_menu').find('.ajax_loading').hide();
+	        		if(data.data.isfull){
+                        obj.attr('ajaxpage', 1);
+                    }else{
+                        obj.attr('ajaxpage', ajaxpage+1);
+                    }
+	        	});
+        	};
+        });
+        $('#J_refresh_resume').click(function() {
+        	var pid = $(this).attr('pid');
+			var _audit = $(this).attr('_audit');
+			var is_display = eval($(this).attr('is_display'));
+			if (_audit != 1){
+				disapperTooltip('remind',"审核中或未通过的简历无法刷新！");
+			} else if(!is_display){
+				disapperTooltip('remind',"默认简历已关闭，无法刷新！");
+			} else {
+				$.post("{:U('Personal/refresh_resume')}",{pid:pid},function(result){
+					if(result.status == 1){
+						if(result.data){
+							disapperTooltip("goldremind", '刷新简历增加'+result.data+'{:C('qscms_points_byname')}<span class="point">+'+result.data+'</span>');
+						}else{
+							disapperTooltip('success',result.msg);
+						}
+						setTimeout(function () {
+							window.location.reload();
+						}, 2000);
+					}else{
+						disapperTooltip('remind',result.msg);
+					}
+				},'json');
+			}
+        });
+        // 签到
+        $('#J_sign_in').click(function(){
+        	var f = $(this);
+        	$.getJSON("{:U('Members/sign_in')}",function(result){
+        		if(result.status == 1){
+        			disapperTooltip("goldremind", '每天签到增加'+result.data+'{:C("qscms_points_byname")}<span class="point">+'+result.data+'</span>');
+        			f.addClass('btn_lightgray').text('已签到');
+	    			$(".my_points_num").html(parseInt($(".my_points_num").html())+parseInt(result.data));
+        		}else{
+        			disapperTooltip('remind',result.msg);
+        		}
+        	});
+        });
+        $(".resume_stick").click(function(){
+			var _audit = $(this).attr('_audit');
+			var is_display = eval($(this).attr('is_display'));
+			if (_audit != 1){
+				disapperTooltip('remind',"审核中或未通过的简历无法置顶！");
+			} else if(!is_display){
+				disapperTooltip('remind',"默认简历已关闭，无法置顶！");
+			} else {
+				var qsDialog = $(this).dialog({
+					title: '简历置顶',
+					loading:true,
+					showFooter: false
+				});
+				var url = "{:U('PersonalService/resume_stick')}";
+				var resume_id = $(this).attr('resume_id');
+				$.getJSON(url,{resume_id:resume_id},function(result){
+					qsDialog.setContent(result.msg);
+				});
+			}
+        });
+        <if condition="$resume">
+        	var qsDialog = $('#J_refresh_resume').dialog({
+        		title: '刷新简历',
+				loading: true,
+				showFooter: false,
+				yes: function() {
+					var options = {};
+					options['pid'] = $('#J_telWrap').attr('pid');
+					if($('#J_refreshWrap').hasClass('c')){
+						options['current'] = $('#J_telWrap #current').val();
+						if($('#J_telWrap').hasClass('c')){
+							options['mobile'] = $('#J_telWrap input[name="mobile"]').val();
+							options['verifycode'] = $('#J_telWrap input[name="verifycode"]').val();
+						}
+					}
+					$.post("{:U('Personal/refresh_resume')}",options,function(result){
+						if(result.status == 1){
+							if(result.data){
+								disapperTooltip("goldremind", '刷新简历增加'+result.data+'{:C('qscms_points_byname')}<span class="point">+'+result.data+'</span>');
+							}else{
+								disapperTooltip('success',result.msg);
+							}
+						}else{
+							disapperTooltip('remind',result.msg);
+						}
+					},'json');
+				}
+			});
+        	$.ajax({
+        		url: "{:U('Personal/ajax_refresh_resume')}",
+        		type: 'GET',
+        		dataType: 'json',
+        		data: {pid: $('#J_refresh_resume').attr('pid')},
+        		success: function(result) {
+        			if(result.status == 1){
+        				qsDialog.setContent(result.data);
+        				qsDialog.showFooter(true);
+        				qsDialog.setBtns(['刷新', '取消']);
+	        		}else{
+	        			qsDialog.setContent('<div class="confirm">' + result.msg + '</div>');
+	        		}
+        		}
+        	});
+        </if>
+        <if condition="$wx_status eq '' and $qrcode neq ''">
+			function waiting_weixin_bind(){
+				$.getJSON("{:U('Members/waiting_weixin_bind')}",function(result){
+					if(result.status == 1){
+						location.reload();
+					}
+				});
+			}
+			var qrcode_time = setInterval(waiting_weixin_bind,5000);
+		</if>
+		$("#ignore").click(function(){
+			$.cookie("{$resume_info['uid']}_hidden_perfect_notice",1);
+			$(".toptip").hide();
+			$(".userbox").removeClass('showtip');
+		});
+    </script>
+</body>
+</html>

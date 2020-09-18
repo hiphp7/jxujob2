@@ -1,0 +1,22 @@
+.plugin-recommend-box{width:870px;position:relative;padding-top:159px;*zoom:1;}
+.plugin-recommend-box .prb-logo{position:absolute;top:0;left:245px;width:378px;height:214px;background:url(./images/01.png) no-repeat;}
+.plugin-recommend-box .prb-close{display:block;position:absolute;top:93px;right:24px;width:44px;height:44px;background:url(./images/02.png) no-repeat;}
+.plugin-recommend-box .prb-container{width:840px;padding-top:67px;padding-bottom:30px;padding-left:30px;background:#FFF;-webkit-border-radius:15px;-moz-border-radius:15px;border-radius:15px;*zoom:1;}
+.prb-container .prb-group{width:788px;padding-left:20px;padding-top:20px;border:1px solid #e2e2e2;}
+.prb-group .job-list-item{background:#ffffff;width:238px;float:left;margin:0 15px 15px 0;}
+.prb-group .job-list-item .info .line-one{width:238px;height:26px;line-height:26px;margin-bottom:3px;*zoom:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.prb-group .job-list-item .info .line-two{width:238px;height:20px;line-height:20px;margin-bottom:3px;*zoom:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.prb-group .job-list-item .info .line-four{width:238px;height:20px;line-height:20px;margin-bottom:3px;*zoom:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.prb-group .job-list-item .company{width:238px;height:20px;line-height:20px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.prb-group .job-list-item .info .line-two .category {float:left;width:138px;height:20px;line-height:20px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.prb-h26{width:100%;height:26px;}
+.prb-container .prb-btn-group{height:42px;padding-left:251px;*zoom:1;}
+.prb-btn-group .prb-btn{display:block;float:left;width:134px;height:42px;line-height:42px;text-align:center;text-decoration:none;font-size:16px;}
+.prb-btn-group .b1{color:#793600;background:url(./images/03.png) 0 0 no-repeat;}
+.prb-btn-group .b1:hover{background:url(./images/03.png) 0 -50px no-repeat;}
+.prb-btn-group .b2{color:#666666;background:url(./images/03.png) 0 -101px no-repeat;}
+.prb-btn-group .b2:hover{background:url(./images/03.png) 0 -151px no-repeat;}
+.prb-btn-group .h-w39{width:39px;height:42px;float:left;}
+.prb-group .resumelist{width:247px;height:65px;float:left;margin:0 15px 15px 0;}
+.prb-group .resumelist .con .name{width:162px;padding-left:20px;height:25px;}
+.prb-group .resumelist .con .ijobs{width:162px;}

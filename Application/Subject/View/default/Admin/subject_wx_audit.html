@@ -1,0 +1,29 @@
+<div class="dialog_box">
+    <form action="{:U('subject_wx_audit')}" method="post" name="form" id="form">
+        <volist name="ids" id="vo">
+            <input name="id[]" type="hidden" value="{$vo}"/>
+        </volist>
+        <table width="400" border="0" align="center" cellpadding="0" cellspacing="6">
+            <tr>
+                <td width="20" height="20">&nbsp;</td>
+                <td height="20">将所选企业微信直面设置为：</td>
+            </tr>
+            <tr>
+                <td width="20" height="25">&nbsp;</td>
+                <td>
+                    <div class="imgradio">
+                        <input name="audit" type="hidden" value="1">
+                        <div class="radio" data="1">客服</div>
+                        <div class="clear"></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td height="25">&nbsp;</td>
+                <td>
+                    <input type="submit" name="set_audit" value="确定" class="admin_submit"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>

@@ -1,0 +1,50 @@
+<form id="subsite_form" name="form1" method="post" action="">
+    <table width="100%" border="0" cellpadding="4" cellspacing="0" bgcolor="#FFFFFF"  >
+        <tr>
+            <td height="25" bgcolor="#FFFFFF" style=" border-bottom:1px #CCCCCC dashed; padding-left:20px;"><strong>请选择分站：</strong></td>
+        </tr>
+        <tr>
+            <td  bgcolor="#FFFFFF" style="  padding-left:14px;">
+                <ul style="margin:0px; padding:3px; list-style:none">
+                    <qscms:subsite 列表名="subsite_list"/> 
+                    <volist name="subsite_list" id="subsite">
+                    <if condition="$key neq 0">
+                        <li  class="user_box_li">
+                            <label>
+                                <input name="sid[]" type="checkbox"  value="{$subsite.s_id}" <if condition="in_array($subsite['s_id'],$subsites)">checked="checked"</if>/>{$subsite.s_sitename}
+                            </label>
+                        </li>
+                    </if>
+                    </volist>
+                    <li class="clear" style="list-style:none; display:none"></li>
+                </ul>   
+            </td>
+        </tr>
+    </table>
+    <if condition="!$subsite_list">
+        <div class="admin_list_no_info">还没有任何分站信息！</div>
+    </if>
+    <table width="100%" border="0" cellspacing="10"  class="admin_list_btm">
+        <tr>
+            <td>
+                <input type="hidden" name="aid" value="{$Think.get.id}"></input>
+                <input type="submit" class="admin_submit" id="ajaxSubsiteBtn" value="确定"/>
+                <input type="button" class="DialogClose admin_submit" value="返回" />
+            </td>
+            <td width="305" align="right"></td>
+        </tr>
+    </table>
+</form>
+<script type="text/javascript">
+    $('#ajaxSubsiteBtn').die().live('click',function(){
+        $.post("{:U('Admin/set_subsite')}",$('#subsite_form').serialize(),function(result){
+            if(result.status == 1){
+                $(".FloatBg").remove();
+                $(".FloatBox").remove();
+            }else{
+                alert(result.msg);
+            }
+        },'json');
+        return !1;
+    });
+</script>
